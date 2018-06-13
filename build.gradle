@@ -1,0 +1,33 @@
+buildscript {
+    
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+    group = 'ru.noties'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion '4.8'
+    distributionType 'all'
+}
+
+ext {
+    MIN_SDK = 16
+    TARGET_SDK = 27
+    BUILD_TOOLS = '27.0.3'
+}
