@@ -15,4 +15,10 @@ android {
 
 dependencies {
 
+    api SUPPORT_ANNOTATIONS
+    api SUPPORT_RECYCLER_VIEW
+
+    testImplementation TEST_JUNIT
+    testImplementation TEST_MOCKITO
+    testImplementation TEST_ROBOLECTRIC
 }

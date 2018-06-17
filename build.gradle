@@ -1,5 +1,4 @@
 buildscript {
-    
     repositories {
         google()
         jcenter()
@@ -30,4 +29,12 @@ ext {
     MIN_SDK = 16
     TARGET_SDK = 27
     BUILD_TOOLS = '27.0.3'
+
+    final def supportVersion = '27.1.1'
+    SUPPORT_ANNOTATIONS = "com.android.support:support-annotations:$supportVersion"
+    SUPPORT_RECYCLER_VIEW = "com.android.support:recyclerview-v7:$supportVersion"
+
+    TEST_JUNIT = 'junit:junit:4.12'
+    TEST_MOCKITO = 'org.mockito:mockito-core:2.18.3'
+    TEST_ROBOLECTRIC = 'org.robolectric:robolectric:3.8'
 }
