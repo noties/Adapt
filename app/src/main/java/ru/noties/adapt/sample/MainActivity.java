@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import ru.noties.adapt.Adapt;
 import ru.noties.adapt.Holder;
 import ru.noties.adapt.ItemView;
+import ru.noties.adapt.OnClickViewProcessor;
 import ru.noties.adapt.ViewProcessor;
 
 public class MainActivity extends Activity {
@@ -21,17 +22,12 @@ public class MainActivity extends Activity {
         final Adapt<CharSequence> adapt = Adapt.builder(CharSequence.class)
                 .include(String.class, new StringView())
                 .include(String.class, new CharSequenceView())
-                .include(String.class, new CharSequenceView(), new ViewProcessor<String>() {
+                .include(String.class, new CharSequenceView(), OnClickViewProcessor.create(new OnClickViewProcessor.OnClick<String>() {
                     @Override
-                    public void process(@NonNull String item, @NonNull View view) {
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                
-                            }
-                        });
+                    public void onClick(@NonNull String item, @NonNull View view) {
+
                     }
-                })
+                }))
 //                .include(CharSequence.class, new StringView())
                 .build();
     }

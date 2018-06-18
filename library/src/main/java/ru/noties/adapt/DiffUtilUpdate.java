@@ -7,15 +7,14 @@ import android.support.v7.util.DiffUtil;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class DiffUtilUpdate<T> implements AdaptUpdate<T> {
 
-    @SuppressWarnings("unused")
     @NonNull
     public static <T> DiffUtilUpdate<T> create(@NonNull Callback<T> callback) {
         return new DiffUtilUpdate<>(callback);
     }
 
-    @SuppressWarnings("unused")
     @NonNull
     public static <T> DiffUtilUpdate<T> create(@NonNull final AreItemsTheSame<T> areItemsTheSame) {
         return new DiffUtilUpdate<>(new Callback<T>() {

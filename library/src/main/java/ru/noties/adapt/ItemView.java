@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ItemView<T, H extends Holder> {
 
     @NonNull
@@ -14,6 +15,7 @@ public abstract class ItemView<T, H extends Holder> {
 
     public abstract void bindHolder(@NonNull H holder, @NonNull T item);
 
+    @SuppressWarnings("unused")
     public void bindHolder(@NonNull H holder, @NonNull T item, @NonNull List<Object> payloads) {
         bindHolder(holder, item);
     }

@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
 
@@ -38,7 +41,7 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
 
     @NonNull
     @Override
-    public RecyclerView.Adapter<? extends Holder> toRecyclerViewAdapter() {
+    public RecyclerView.Adapter<? extends Holder> recyclerViewAdapter() {
         return adapter;
     }
 
@@ -50,12 +53,6 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
     @Override
     public void updateItems(@Nullable List<? extends T> items) {
         this.items = items;
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> recyclerViewAdapter() {
-        return adapter;
     }
 
     @NonNull
@@ -87,6 +84,57 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
     @Override
     public int assignedViewType(@NonNull Class<? extends T> type) {
         return adaptSource.assignedViewType(type);
+    }
+
+    @Override
+    public boolean supportsItems(@Nullable List<? extends T> items) {
+
+        if (items == null
+                || items.size() == 0) {
+            return true;
+        }
+
+        final Set<Class<?>> set = new HashSet<>(3);
+        for (T item : items) {
+
+            // null elements are not supported
+            if (item == null) {
+                return false;
+            }
+
+            set.add(item.getClass());
+        }
+
+        return supportsItemTypes(set);
+    }
+
+    @Override
+    public boolean supportsItemTypes(@Nullable Collection<Class<?>> itemTypes) {
+
+        if (itemTypes == null
+                || itemTypes.size() == 0) {
+            return true;
+        }
+
+        // maybe we could execute a check if supplied collection is a set
+        // if not -> copy its contents to a new set (to eliminate duplicates)
+
+        for (Class<?> type : itemTypes) {
+
+            // cannot process nulls
+            if (type == null) {
+                return false;
+            }
+
+            try {
+                //noinspection unchecked
+                adaptSource.assignedViewType((Class<? extends T>) type);
+            } catch (AdaptRuntimeError e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @NonNull

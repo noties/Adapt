@@ -21,9 +21,18 @@ public class AdaptBuilderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void include_interface_throws() {
+
         try {
             new AdaptBuilder<>(I.class)
                     .include(I.class, mock(ItemView.class));
+            assertTrue(false);
+        } catch (AdaptConfigurationError e) {
+            assertTrue(true);
+        }
+
+        try {
+            new AdaptBuilder<>(I.class)
+                    .include(I.class, mock(ItemView.class), mock(ViewProcessor.class));
             assertTrue(false);
         } catch (AdaptConfigurationError e) {
             assertTrue(true);
@@ -33,9 +42,29 @@ public class AdaptBuilderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void include_abstract_throws() {
+
         try {
             new AdaptBuilder<>(A.class)
                     .include(A.class, mock(ItemView.class));
+            assertTrue(false);
+        } catch (AdaptConfigurationError e) {
+            assertTrue(true);
+        }
+
+        try {
+            new AdaptBuilder<>(A.class)
+                    .include(A.class, mock(ItemView.class), mock(ViewProcessor.class));
+            assertTrue(false);
+        } catch (AdaptConfigurationError e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void build_nothing_added_throws() {
+        try {
+            new AdaptBuilder<>(A.class)
+                    .build();
             assertTrue(false);
         } catch (AdaptConfigurationError e) {
             assertTrue(true);

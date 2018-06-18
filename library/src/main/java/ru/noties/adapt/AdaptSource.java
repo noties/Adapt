@@ -9,14 +9,14 @@ import java.util.Map;
 abstract class AdaptSource<T> {
 
     @NonNull
-    abstract AdaptEntry<T> entry(@NonNull T item);
+    abstract AdaptEntry<T> entry(@NonNull T item) throws AdaptRuntimeError;
 
     @NonNull
-    abstract AdaptEntry<T> entry(int assignedViewType);
+    abstract AdaptEntry<T> entry(int assignedViewType) throws AdaptRuntimeError;
 
-    abstract int assignedViewType(@NonNull T item);
+    abstract int assignedViewType(@NonNull T item) throws AdaptRuntimeError;
 
-    abstract int assignedViewType(@NonNull Class<? extends T> type);
+    abstract int assignedViewType(@NonNull Class<? extends T> type) throws AdaptRuntimeError;
 
 
     @SuppressWarnings("unused")
@@ -78,7 +78,7 @@ abstract class AdaptSource<T> {
 
         @NonNull
         @Override
-        AdaptEntry<T> entry(@NonNull T item) {
+        AdaptEntry<T> entry(@NonNull T item) throws AdaptRuntimeError {
             //noinspection unchecked
             final AdaptEntry<T> entry = (AdaptEntry<T>) sparseArray.get(keyProvider.provideKey(item.getClass()));
             if (entry == null) {
@@ -90,7 +90,7 @@ abstract class AdaptSource<T> {
 
         @NonNull
         @Override
-        AdaptEntry<T> entry(int assignedViewType) {
+        AdaptEntry<T> entry(int assignedViewType) throws AdaptRuntimeError {
             //noinspection unchecked
             final AdaptEntry<T> entry = (AdaptEntry<T>) sparseArray.get(assignedViewType);
             if (entry == null) {
@@ -101,13 +101,13 @@ abstract class AdaptSource<T> {
         }
 
         @Override
-        int assignedViewType(@NonNull T item) {
+        int assignedViewType(@NonNull T item) throws AdaptRuntimeError {
             //noinspection unchecked
             return assignedViewType((Class<? extends T>) item.getClass());
         }
 
         @Override
-        int assignedViewType(@NonNull Class<? extends T> type) {
+        int assignedViewType(@NonNull Class<? extends T> type) throws AdaptRuntimeError {
 
             final int key = keyProvider.provideKey(type);
 

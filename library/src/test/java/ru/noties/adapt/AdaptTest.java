@@ -11,11 +11,15 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -48,10 +52,10 @@ public class AdaptTest {
                 .include(Item_1.class, mock(ItemView.class))
                 .build();
 
-        final RecyclerView.Adapter<? extends Holder> adapter = adapt.toRecyclerViewAdapter();
-        assertTrue(adapter == adapt.toRecyclerViewAdapter());
-        assertTrue(adapter == adapt.toRecyclerViewAdapter());
-        assertTrue(adapter == adapt.toRecyclerViewAdapter());
+        final RecyclerView.Adapter<? extends Holder> adapter = adapt.recyclerViewAdapter();
+        assertTrue(adapter == adapt.recyclerViewAdapter());
+        assertTrue(adapter == adapt.recyclerViewAdapter());
+        assertTrue(adapter == adapt.recyclerViewAdapter());
     }
 
     @Test
@@ -170,7 +174,7 @@ public class AdaptTest {
                 }
         );
 
-        for (Action<List<Item>> action: actions) {
+        for (Action<List<Item>> action : actions) {
             try {
                 //noinspection unchecked
                 action.apply((List<Item>) adapt.getItems());
@@ -228,6 +232,128 @@ public class AdaptTest {
         assertEquals(keyProvider.provideKey(Item_1.class), adapt.assignedViewType(Item_1.class));
     }
 
+    @Test
+    public void assigned_view_type_not_present_throws() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        try {
+            adapt.assignedViewType(Item_2.class);
+            assertTrue(false);
+        } catch (AdaptRuntimeError e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void data_set_null_or_empty_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertTrue(adapt.supportsItems(null));
+        assertTrue(adapt.supportsItems(Collections.<Item>emptyList()));
+    }
+
+    @Test
+    public void data_set_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertTrue(adapt.supportsItems(Collections.singletonList(new Item_1())));
+
+        assertTrue(adapt.supportsItems(Arrays.asList(new Item_1(), new Item_1(), new Item_1())));
+    }
+
+    @Test
+    public void data_set_not_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertFalse(adapt.supportsItems(Collections.singletonList(new Item_2(1))));
+        assertFalse(adapt.supportsItems(Arrays.asList(new Item_2(1), new Item_2(2), new Item_2(3))));
+
+        // mix
+        assertFalse(adapt.supportsItems(Arrays.asList(new Item_1(), new Item_2(0))));
+    }
+
+    @Test
+    public void data_set_contains_nulls_not_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertFalse(adapt.supportsItems(Arrays.asList(new Item_1(), null)));
+        assertFalse(adapt.supportsItems(Arrays.asList(null, new Item_1())));
+    }
+
+    @Test
+    public void data_types_null_or_empty_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertTrue(adapt.supportsItemTypes(null));
+        assertTrue(adapt.supportsItemTypes(new HashSet<Class<?>>()));
+    }
+
+    @Test
+    public void data_types_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertTrue(adapt.supportsItemTypes(setOf(Item_1.class)));
+
+        assertTrue(adapt.supportsItemTypes(setOf(
+                Item_1.class,
+                Item_1.class,
+                Item_1.class
+        )));
+    }
+
+    @Test
+    public void data_types_not_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertFalse(adapt.supportsItemTypes(setOf(Item_2.class)));
+        assertFalse(adapt.supportsItemTypes(setOf(Item_1.class, Item_2.class)));
+        assertFalse(adapt.supportsItemTypes(setOf(Item_2.class, Item_1.class)));
+    }
+
+    @Test
+    public void data_types_contains_null_elements_not_supported() {
+
+        //noinspection unchecked
+        final Adapt<Item> adapt = Adapt.builder(Item.class)
+                .include(Item_1.class, mock(ItemView.class))
+                .build();
+
+        assertFalse(adapt.supportsItemTypes(setOf(Item_1.class, null)));
+        assertFalse(adapt.supportsItemTypes(setOf(null, Item_1.class)));
+    }
+
     // we can... maybe there must be a _validator_ abstraction...
 //    @Test
 //    public void cannot_add_items_with_nulls() {
@@ -261,5 +387,12 @@ public class AdaptTest {
 
     private interface Action<T> {
         void apply(T t);
+    }
+
+    @NonNull
+    private static Collection<Class<?>> setOf(Class<?>... types) {
+        final Set<Class<?>> set = new HashSet<>(types.length);
+        Collections.addAll(set, types);
+        return set;
     }
 }

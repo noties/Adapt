@@ -3,6 +3,7 @@ package ru.noties.adapt;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+@SuppressWarnings("unused")
 public abstract class OnLongClickViewProcessor<T> implements ViewProcessor<T> {
 
     @NonNull
