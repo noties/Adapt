@@ -67,6 +67,8 @@ public abstract class Adapt<T> {
     @NonNull
     public abstract T getItem(int position);
 
+    public abstract int itemViewType(int position);
+
     /**
      * @param type of an item to obtain assigned view type for
      * @return assigned view type

@@ -82,6 +82,11 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
     }
 
     @Override
+    public int itemViewType(int position) {
+        return itemViewType(getItem(position));
+    }
+
+    @Override
     public int assignedViewType(@NonNull Class<? extends T> type) {
         return adaptSource.assignedViewType(type);
     }

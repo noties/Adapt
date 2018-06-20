@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000"
+    android:gravity="center"
+    android:paddingBottom="2dip"
+    android:paddingLeft="16dip"
+    android:paddingRight="16dip"
+    android:paddingTop="8dip"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="#fff"
+    android:textStyle="bold"
+    tools:text="2018-26f ksjl sxhjv" />
