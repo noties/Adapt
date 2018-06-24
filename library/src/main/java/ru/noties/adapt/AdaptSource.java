@@ -55,7 +55,7 @@ abstract class AdaptSource<T> {
             }
 
             // now, generate our source collection
-            // iterate over classes (types), put them in an array, sort it
+            // iterate over classes (types), put them in an sparse array
 
             final SparseArray<AdaptEntry<? extends T>> sparseArray = new SparseArray<>(size);
             for (Map.Entry<Class<? extends T>, AdaptEntry<? extends T>> entry : map.entrySet()) {

@@ -20,5 +20,5 @@ class SectionView : ItemView<SectionItem, SectionHolder>() {
 }
 
 class SectionHolder(view: View) : Holder(view) {
-    val text: TextView = findView(R.id.text)
+    val text: TextView = requireView(R.id.text)
 }

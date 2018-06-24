@@ -16,6 +16,7 @@ import ru.noties.adapt.sample.core.item.SectionItem
 import ru.noties.adapt.sample.core.item.ShapeItem
 import ru.noties.adapt.sample.kotlin.view.AppendView
 import ru.noties.adapt.sample.kotlin.view.SectionView
+import ru.noties.adapt.sample.kotlin.view.SectionView2
 import ru.noties.adapt.sample.kotlin.view.ShapeView
 
 class MainActivity : Activity() {
@@ -29,7 +30,7 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
 
         adapt = Adapt.builder(Item::class.java)
-                .include(SectionItem::class.java, SectionView())
+                .include(SectionItem::class.java, SectionView2())
                 .include(ShapeItem::class.java, ShapeView())
                 .include(
                         AppendItem::class.java,

@@ -207,5 +207,13 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
             final T item = getItem(position);
             return itemView(item).itemId(item);
         }
+
+        @Override
+        public void onViewRecycled(@NonNull Holder holder) {
+            final int position = holder.getAdapterPosition();
+            if (position > -1) {
+                itemView(getItem(position)).onViewRecycled(holder);
+            }
+        }
     }
 }

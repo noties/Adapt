@@ -18,6 +18,7 @@ import ru.noties.adapt.sample.core.item.SectionItem;
 import ru.noties.adapt.sample.core.item.ShapeItem;
 import ru.noties.adapt.sample.java.view.AppendView;
 import ru.noties.adapt.sample.java.view.SectionView;
+import ru.noties.adapt.sample.java.view.SectionView2;
 import ru.noties.adapt.sample.java.view.ShapeView;
 
 public class MainActivity extends Activity {
@@ -32,7 +33,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         adapt = Adapt.builder(Item.class)
-                .include(SectionItem.class, new SectionView())
+                .include(SectionItem.class, new SectionView2())
                 .include(ShapeItem.class, new ShapeView())
                 .include(
                         AppendItem.class,
