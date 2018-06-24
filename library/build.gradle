@@ -26,3 +26,7 @@ dependencies {
 if (project.hasProperty('release')) {
     apply from: 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
 }
+
+afterEvaluate {
+    generateReleaseBuildConfig.enabled = false
+}

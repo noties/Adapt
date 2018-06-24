@@ -84,7 +84,7 @@ public abstract class Adapt<T> {
 
     /**
      * Helper method to iterate over a collection of items and call {@link #assignedViewType(Class)}
-     * on each, ignoring runtime exception. If any of the items are not supported -> whole list
+     * on each, ignoring runtime exception. If any of the items are not supported - whole list
      * is considered to be invalid (not-supported). In case of null (or empty) collection `true` will
      * be returned. If a collection contains `null`s then collection is also considered invalid
      *
