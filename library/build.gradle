@@ -9,7 +9,7 @@ android {
         minSdkVersion MIN_SDK
         targetSdkVersion TARGET_SDK
         versionCode 1
-        versionName '1.0.0-SNAPSHOT'
+        versionName version
     }
 }
 
@@ -21,4 +21,8 @@ dependencies {
     testImplementation TEST_JUNIT
     testImplementation TEST_MOCKITO
     testImplementation TEST_ROBOLECTRIC
+}
+
+if (project.hasProperty('release')) {
+    apply from: 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
 }
