@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.TextView
 import ru.noties.adapt.Adapt
+import ru.noties.adapt.DynamicItemView
 import ru.noties.adapt.OnClickViewProcessor
 import ru.noties.adapt.sample.R
 import ru.noties.adapt.sample.core.ItemGenerator
@@ -15,8 +17,6 @@ import ru.noties.adapt.sample.core.item.Item
 import ru.noties.adapt.sample.core.item.SectionItem
 import ru.noties.adapt.sample.core.item.ShapeItem
 import ru.noties.adapt.sample.kotlin.view.AppendView
-import ru.noties.adapt.sample.kotlin.view.SectionView
-import ru.noties.adapt.sample.kotlin.view.SectionView2
 import ru.noties.adapt.sample.kotlin.view.ShapeView
 
 class MainActivity : Activity() {
@@ -30,7 +30,13 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
 
         adapt = Adapt.builder(Item::class.java)
-                .include(SectionItem::class.java, SectionView2())
+//                .include(SectionItem::class.java, SectionView2())
+                .include(
+                        SectionItem::class.java,
+                        DynamicItemView.create<SectionItem>(R.layout.view_section) { holder, item ->
+                            holder.on<TextView>(R.id.text, { it.text = item.name() })
+                        }
+                )
                 .include(ShapeItem::class.java, ShapeView())
                 .include(
                         AppendItem::class.java,

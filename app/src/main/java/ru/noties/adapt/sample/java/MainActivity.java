@@ -7,8 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import ru.noties.adapt.Adapt;
+import ru.noties.adapt.DynamicHolder;
+import ru.noties.adapt.DynamicItemView;
 import ru.noties.adapt.OnClickViewProcessor;
 import ru.noties.adapt.sample.R;
 import ru.noties.adapt.sample.core.ItemGenerator;
@@ -17,8 +20,6 @@ import ru.noties.adapt.sample.core.item.Item;
 import ru.noties.adapt.sample.core.item.SectionItem;
 import ru.noties.adapt.sample.core.item.ShapeItem;
 import ru.noties.adapt.sample.java.view.AppendView;
-import ru.noties.adapt.sample.java.view.SectionView;
-import ru.noties.adapt.sample.java.view.SectionView2;
 import ru.noties.adapt.sample.java.view.ShapeView;
 
 public class MainActivity extends Activity {
@@ -33,7 +34,20 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         adapt = Adapt.builder(Item.class)
-                .include(SectionItem.class, new SectionView2())
+//                .include(SectionItem.class, new SectionView2())
+                .include(
+                        SectionItem.class,
+                        new DynamicItemView<SectionItem>(R.layout.view_section) {
+                            @Override
+                            public void bindHolder(@NonNull DynamicHolder holder, @NonNull final SectionItem item) {
+                                holder.on(R.id.text, new DynamicHolder.Action<TextView>() {
+                                    @Override
+                                    public void apply(@NonNull TextView view) {
+                                        view.setText(item.name());
+                                    }
+                                });
+                            }
+                        })
                 .include(ShapeItem.class, new ShapeView())
                 .include(
                         AppendItem.class,

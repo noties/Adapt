@@ -13,7 +13,7 @@ allprojects {
         google()
         jcenter()
     }
-    group = 'ru.noties'
+    group = GROUP
     version = VERSION_NAME
 }
 
@@ -21,21 +21,30 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion '4.8'
+wrapper {
+    gradleVersion '4.10'
     distributionType 'all'
 }
 
 ext {
-    MIN_SDK = 16
-    TARGET_SDK = 27
-    BUILD_TOOLS = '27.0.3'
+
+    config = [
+            'min-sdk'        : 16,
+            'target-sdk'     : 27,
+            'build-tools'    : '27.0.3',
+            'push-aar-gradle': 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
+    ]
 
     final def supportVersion = '27.1.1'
-    SUPPORT_ANNOTATIONS = "com.android.support:support-annotations:$supportVersion"
-    SUPPORT_RECYCLER_VIEW = "com.android.support:recyclerview-v7:$supportVersion"
 
-    TEST_JUNIT = 'junit:junit:4.12'
-    TEST_MOCKITO = 'org.mockito:mockito-core:2.18.3'
-    TEST_ROBOLECTRIC = 'org.robolectric:robolectric:3.8'
+    deps = [
+            'support-annotations': "com.android.support:support-annotations:$supportVersion",
+            'recycler-view'      : "com.android.support:recyclerview-v7:$supportVersion"
+    ]
+
+    deps['test'] = [
+            'junit'      : 'junit:junit:4.12',
+            'mockito'    : 'org.mockito:mockito-core:2.18.3',
+            'robolectric': 'org.robolectric:robolectric:3.8'
+    ]
 }
