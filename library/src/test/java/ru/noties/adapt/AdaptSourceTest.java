@@ -1,14 +1,15 @@
 package ru.noties.adapt;
 
-import android.support.annotation.NonNull;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static ru.noties.adapt.TestUtils.assertThrows;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -25,20 +26,23 @@ public class AdaptSourceTest {
                 AdaptSourceTest.class
         };
 
-        for (Class<?> type: types) {
+        for (Class<?> type : types) {
             assertEquals(type.hashCode(), keyProvider.provideKey(type));
         }
     }
 
     @Test
     public void nothing_added_build_throws() {
-        try {
-            new AdaptSource.Builder<CharSequence>(new AdaptSource.KeyProvider())
-                    .build();
-            assertTrue(false);
-        } catch (AdaptConfigurationError e) {
-            assertTrue(true);
-        }
+        assertThrows(
+                "AdaptSource.Builder: No entries were added",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        new AdaptSource.Builder<CharSequence>(new AdaptSource.KeyProvider())
+                                .build();
+                    }
+                }
+        );
     }
 
     @Test
@@ -63,34 +67,41 @@ public class AdaptSourceTest {
 
         final AdaptSource<CharSequence> source = builder.build();
 
-//        assertThrows(() -> source.entry(keyProvider.provideKey(CharSequence.class)));
-        assertThrows(new Action() {
-            @Override
-            public void apply() {
-                source.entry(keyProvider.provideKey(String.class));
-            }
-        });
+        assertThrows(
+                "AdaptSource: Specified viewType is not registered with this Adapt instance: " + keyProvider.provideKey(String.class),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        source.entry(keyProvider.provideKey(String.class));
+                    }
+                }
+        );
 
-        assertThrows(new Action() {
-            @Override
-            public void apply() {
-                source.entry("Not present");
-            }
-        });
+        assertThrows(
+                "AdaptSource: Specified type is not registered with this Adapt instance: " + String.class.getName(),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        source.entry("Not present");
+                    }
+                }
+        );
 
-        assertThrows(new Action() {
-            @Override
-            public void apply() {
-                source.assignedViewType("Not present");
-            }
-        });
-
-        assertThrows(new Action() {
-            @Override
-            public void apply() {
-                source.assignedViewType(String.class);
-            }
-        });
+        assertThrows(
+                "AdaptSource: Specified type is not registered with this Adapt instance: " + String.class.getName(),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        source.assignedViewType("Not present");
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        source.assignedViewType(String.class);
+                    }
+                }
+        );
     }
 
     @Test
@@ -121,18 +132,5 @@ public class AdaptSourceTest {
         assertEquals(stringBuilder, source.entry(keyProvider.provideKey(StringBuilder.class)));
         assertEquals(keyProvider.provideKey(StringBuilder.class), source.assignedViewType(new StringBuilder()));
         assertEquals(keyProvider.provideKey(StringBuilder.class), source.assignedViewType(StringBuilder.class));
-    }
-
-    private interface Action {
-        void apply();
-    }
-
-    private static void assertThrows(@NonNull Action action) {
-        try {
-            action.apply();
-            assertTrue(false);
-        } catch (AdaptRuntimeError e) {
-            assertTrue(true);
-        }
     }
 }

@@ -43,8 +43,8 @@ public class Holder extends RecyclerView.ViewHolder {
     public <V extends View> V requireView(@IdRes int id) throws NullPointerException {
         final View view = itemView.findViewById(id);
         if (view == null) {
-            throw new NullPointerException("View with specified id is not found: " +
-                    "R.id." + itemView.getResources().getResourceName(id));
+            throw AdaptError.halt(new NullPointerException(), "Holder: View with " +
+                    "specified id is not found: R.id.%s", itemView.getResources().getResourceName(id));
         }
         //noinspection unchecked
         return (V) view;

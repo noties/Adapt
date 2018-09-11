@@ -76,11 +76,11 @@ public abstract class Adapt<T> {
     /**
      * @param type of an item to obtain assigned view type for
      * @return assigned view type
-     * @throws AdaptRuntimeError if specified type is not registered
+     * @throws AdaptError if specified type is not registered
      *                           via {@link AdaptBuilder#include(Class, ItemView)}
      *                           or {@link AdaptBuilder#include(Class, ItemView, ViewProcessor)}
      */
-    public abstract int assignedViewType(@NonNull Class<? extends T> type) throws AdaptRuntimeError;
+    public abstract int assignedViewType(@NonNull Class<? extends T> type) throws AdaptError;
 
     /**
      * Helper method to iterate over a collection of items and call {@link #assignedViewType(Class)}

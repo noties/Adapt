@@ -79,10 +79,11 @@ public class DynamicHolder extends Holder {
             // here. This is why we need to additionally check for nullability (as this
             // method forbids nullable types).
             if (view == null) {
-                throw new NullPointerException("Requested view is not found in layout and " +
-                        "was previously requested by `findView` method call. Prefer using " +
-                        "one method for the same view to be found (`findView` or `requestView`), " +
-                        "id: R.id." + itemView.getResources().getResourceName(id));
+                throw AdaptError.halt(new NullPointerException(), "DynamicHolder: " +
+                                "Requested view is not found in layout and was previously requested " +
+                                "by `findView` method call. Prefer using one method for the same view " +
+                                "to be found (`findView` or `requestView`), id: R.id.%s",
+                        itemView.getResources().getResourceName(id));
             }
 
         } else {

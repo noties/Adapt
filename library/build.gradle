@@ -11,6 +11,10 @@ android {
         versionCode 1
         versionName version
     }
+
+    sourceSets {
+        main.java.srcDirs += './build/src-gen/'
+    }
 }
 
 dependencies {
@@ -31,6 +35,29 @@ if (project.hasProperty('release')) {
     apply from: config['push-aar-gradle']
 }
 
+task generateBuildConfig {
+    final def folder = file('build/src-gen/ru/noties/adapt/')
+    folder.mkdirs()
+    new File(folder, 'AdaptBuildConfig.java').withWriter("UTF-8", {
+        it.write("""
+package ru.noties.adapt;
+
+abstract class AdaptBuildConfig {
+
+  static final String VERSION_NAME = \"$version\";
+
+  private AdaptBuildConfig() {
+  }
+}
+""")
+    })
+}
+
 afterEvaluate {
     generateReleaseBuildConfig.enabled = false
+    generateDebugBuildConfig.enabled = false
+
+    tasks.withType(JavaCompile.class).all {
+        it.dependsOn generateBuildConfig
+    }
 }

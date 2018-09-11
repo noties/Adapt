@@ -56,11 +56,15 @@ public class DynamicHolderTest {
 
         final DynamicHolder holder = new DynamicHolder(view);
 
-        try {
-            holder.requireView(1);
-        } catch (NullPointerException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("View with specified id is not found"));
-        }
+        TestUtils.assertThrows(
+                "Holder: View with specified id is not found: R.id.mocked-resource-name",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.requireView(1);
+                    }
+                }
+        );
     }
 
     @Test
@@ -74,11 +78,17 @@ public class DynamicHolderTest {
         final DynamicHolder holder = new DynamicHolder(view);
         assertNull(holder.findView(1));
 
-        try {
-            holder.requireView(1);
-            assertTrue(false);
-        } catch (NullPointerException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("Requested view is not found in layout and"));
-        }
+        TestUtils.assertThrows(
+                "DynamicHolder: " +
+                        "Requested view is not found in layout and was previously requested " +
+                        "by `findView` method call. Prefer using one method for the same view " +
+                        "to be found (`findView` or `requestView`), id: R.id.mocked-resource-name",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.requireView(1);
+                    }
+                }
+        );
     }
 }

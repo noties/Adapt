@@ -9,14 +9,14 @@ import java.util.Map;
 abstract class AdaptSource<T> {
 
     @NonNull
-    abstract AdaptEntry<T> entry(@NonNull T item) throws AdaptRuntimeError;
+    abstract AdaptEntry<T> entry(@NonNull T item) throws AdaptError;
 
     @NonNull
-    abstract AdaptEntry<T> entry(int assignedViewType) throws AdaptRuntimeError;
+    abstract AdaptEntry<T> entry(int assignedViewType) throws AdaptError;
 
-    abstract int assignedViewType(@NonNull T item) throws AdaptRuntimeError;
+    abstract int assignedViewType(@NonNull T item) throws AdaptError;
 
-    abstract int assignedViewType(@NonNull Class<? extends T> type) throws AdaptRuntimeError;
+    abstract int assignedViewType(@NonNull Class<? extends T> type) throws AdaptError;
 
 
     @SuppressWarnings("unused")
@@ -51,7 +51,7 @@ abstract class AdaptSource<T> {
 
             final int size = map.size();
             if (size == 0) {
-                throw new AdaptConfigurationError("No entries were added");
+                throw AdaptError.halt("AdaptSource.Builder: No entries were added");
             }
 
             // now, generate our source collection
@@ -78,43 +78,43 @@ abstract class AdaptSource<T> {
 
         @NonNull
         @Override
-        AdaptEntry<T> entry(@NonNull T item) throws AdaptRuntimeError {
+        AdaptEntry<T> entry(@NonNull T item) throws AdaptError {
             //noinspection unchecked
             final AdaptEntry<T> entry = (AdaptEntry<T>) sparseArray.get(keyProvider.provideKey(item.getClass()));
             if (entry == null) {
-                throw new AdaptRuntimeError("Specified type is not registered with this " +
-                        "Adapt instance:" + item.getClass().getName());
+                throw AdaptError.halt("AdaptSource: Specified type is not registered " +
+                        "with this Adapt instance: %s", item.getClass().getName());
             }
             return entry;
         }
 
         @NonNull
         @Override
-        AdaptEntry<T> entry(int assignedViewType) throws AdaptRuntimeError {
+        AdaptEntry<T> entry(int assignedViewType) throws AdaptError {
             //noinspection unchecked
             final AdaptEntry<T> entry = (AdaptEntry<T>) sparseArray.get(assignedViewType);
             if (entry == null) {
-                throw new AdaptRuntimeError("Specified viewType is not registered with this " +
-                        "Adapt instance: " + assignedViewType);
+                throw AdaptError.halt("AdaptSource: Specified viewType is not " +
+                        "registered with this Adapt instance: %s", assignedViewType);
             }
             return entry;
         }
 
         @Override
-        int assignedViewType(@NonNull T item) throws AdaptRuntimeError {
+        int assignedViewType(@NonNull T item) throws AdaptError {
             //noinspection unchecked
             return assignedViewType((Class<? extends T>) item.getClass());
         }
 
         @Override
-        int assignedViewType(@NonNull Class<? extends T> type) throws AdaptRuntimeError {
+        int assignedViewType(@NonNull Class<? extends T> type) throws AdaptError {
 
             final int key = keyProvider.provideKey(type);
 
             // additionally validate that requested type is initially registered
             if (sparseArray.indexOfKey(key) < 0) {
-                throw new AdaptRuntimeError("Specified type is not registered with this " +
-                        "Adapt instance: " + type.getName());
+                throw AdaptError.halt("AdaptSource: Specified type is not " +
+                        "registered with this Adapt instance: %s", type.getName());
             }
 
             return key;

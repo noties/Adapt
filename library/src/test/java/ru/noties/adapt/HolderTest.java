@@ -46,19 +46,21 @@ public class HolderTest {
         when(resources.getResourceName(anyInt())).thenReturn("mocked-resource-name");
         when(view.getResources()).thenReturn(resources);
 
-        try {
-            holder.requireView(1);
-            assertTrue(false);
-        } catch (NullPointerException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("View with specified id is not found"));
-        }
-
-        try {
-            holder.requireView(2);
-            assertTrue(false);
-        } catch (NullPointerException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("View with specified id is not found"));
-        }
+        TestUtils.assertThrows(
+                "Holder: View with specified id is not found: R.id.mocked-resource-name",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.requireView(1);
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.requireView(2);
+                    }
+                }
+        );
     }
 
     @Test

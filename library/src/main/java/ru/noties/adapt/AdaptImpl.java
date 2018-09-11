@@ -134,7 +134,7 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
             try {
                 //noinspection unchecked
                 adaptSource.assignedViewType((Class<? extends T>) type);
-            } catch (AdaptRuntimeError e) {
+            } catch (AdaptError e) {
                 return false;
             }
         }

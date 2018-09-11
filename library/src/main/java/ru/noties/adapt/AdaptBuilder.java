@@ -32,19 +32,19 @@ public class AdaptBuilder<T> {
     /**
      * Specify an item type to be included in {@link Adapt} instance.
      * Please note that only _exact_ type are supported (the ones that can be instantiated), so
-     * no interfaces or abstract classes will be accepted and {@link AdaptConfigurationError}
+     * no interfaces or abstract classes will be accepted and {@link AdaptError}
      * will be thrown
      *
      * @param itemType type of an item
      * @param itemView {@link ItemView}
      * @return self
-     * @throws AdaptConfigurationError if specified type is an interface or an abstract class
+     * @throws AdaptError if specified type is an interface or an abstract class
      * @see #include(Class, ItemView, ViewProcessor)
      */
     @NonNull
     public <I extends T> AdaptBuilder<T> include(
             @NonNull Class<I> itemType,
-            @NonNull ItemView<? super I, ? extends Holder> itemView) throws AdaptConfigurationError {
+            @NonNull ItemView<? super I, ? extends Holder> itemView) throws AdaptError {
         addEntry(itemType, itemView, null);
         return this;
     }
@@ -52,7 +52,7 @@ public class AdaptBuilder<T> {
     /**
      * Specify an item type to be included in {@link Adapt} instance.
      * Please note that only _exact_ type are supported (the ones that can be instantiated), so
-     * no interfaces or abstract classes will be accepted and {@link AdaptConfigurationError}
+     * no interfaces or abstract classes will be accepted and {@link AdaptError}
      * will be thrown
      *
      * @param itemType      type of an item
@@ -60,7 +60,7 @@ public class AdaptBuilder<T> {
      * @param viewProcessor {@link ViewProcessor} to be applied to a view after view is bound in adapter.
      *                      can be used for example to apply click listeners
      * @return self
-     * @throws AdaptConfigurationError if specified type is an interface or an abstract class
+     * @throws AdaptError if specified type is an interface or an abstract class
      * @see #include(Class, ItemView)
      * @see ViewProcessor
      */
@@ -114,11 +114,11 @@ public class AdaptBuilder<T> {
 
     /**
      * @return an instance of {@link Adapt}
-     * @throws AdaptConfigurationError if no items were added via {@link #include(Class, ItemView)}
-     *                                 or {@link #include(Class, ItemView, ViewProcessor)} calls
+     * @throws AdaptError if no items were added via {@link #include(Class, ItemView)}
+     *                    or {@link #include(Class, ItemView, ViewProcessor)} calls
      */
     @NonNull
-    public Adapt<T> build() throws AdaptConfigurationError {
+    public Adapt<T> build() throws AdaptError {
 
         if (adaptUpdate == null) {
             adaptUpdate = NotifyDataSetChangedUpdate.create();
@@ -136,17 +136,19 @@ public class AdaptBuilder<T> {
     private <I extends T> void addEntry(
             @NonNull Class<I> type,
             @NonNull ItemView<? super I, ? extends Holder> itemView,
-            @Nullable ViewProcessor<I> viewProcessor) throws AdaptConfigurationError {
+            @Nullable ViewProcessor<I> viewProcessor) throws AdaptError {
 
         if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
-            throw new AdaptConfigurationError("Cannot include an interface or an abstract class: " + type.getName());
+            throw AdaptError.halt("AdaptBuilder: Cannot include an interface or " +
+                    "an abstract class: %s", type.getName());
         }
 
         //noinspection unchecked
         final AdaptEntry<I> entry = new AdaptEntry<>((ItemView<I, Holder>) itemView, viewProcessor);
 
         if (!adaptSourceBuilder.append(type, entry)) {
-            throw new AdaptConfigurationError("Provided type has been added already: " + type.getName());
+            throw AdaptError.halt("AdaptBuilder: Provided type has been " +
+                    "added already: %s", type.getName());
         }
     }
 }

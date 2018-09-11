@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+/**
+ * Redux-like behavior
+ */
 public abstract class AdaptDispatcher<M, T> {
 
     @NonNull

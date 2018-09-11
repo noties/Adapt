@@ -243,7 +243,7 @@ public class AdaptTest {
         try {
             adapt.assignedViewType(Item_2.class);
             assertTrue(false);
-        } catch (AdaptRuntimeError e) {
+        } catch (AdaptError e) {
             assertTrue(true);
         }
     }
@@ -371,7 +371,7 @@ public class AdaptTest {
 //                    null
 //            ));
 //            assertTrue(false);
-//        } catch (AdaptRuntimeError e) {
+//        } catch (AdaptError e) {
 //            assertTrue(true);
 //        }
 //    }
