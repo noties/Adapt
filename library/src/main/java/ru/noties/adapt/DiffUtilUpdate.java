@@ -15,24 +15,20 @@ public class DiffUtilUpdate<T> implements AdaptUpdate<T> {
         return new DiffUtilUpdate<>(callback);
     }
 
+    /**
+     * Create a {@link DiffUtilUpdate} with default Callback implementation
+     */
     @NonNull
-    public static <T> DiffUtilUpdate<T> create(@NonNull final AreItemsTheSame<T> areItemsTheSame) {
-        return new DiffUtilUpdate<>(new Callback<T>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull T oldItem, @NonNull T newItem) {
-                return areItemsTheSame.areItemsTheSame(oldItem, newItem);
-            }
-        });
-    }
-
-    public interface AreItemsTheSame<T> {
-        boolean areItemsTheSame(@NonNull T oldItem, @NonNull T newItem);
+    public static <T> DiffUtilUpdate<T> create() {
+        return new DiffUtilUpdate<>(new Callback<T>());
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static abstract class Callback<T> {
+    public static class Callback<T> {
 
-        public abstract boolean areItemsTheSame(@NonNull T oldItem, @NonNull T newItem);
+        public boolean areItemsTheSame(@NonNull T oldItem, @NonNull T newItem) {
+            return oldItem.equals(newItem);
+        }
 
         @SuppressWarnings("unused")
         public boolean detectMoves(
@@ -42,7 +38,7 @@ public class DiffUtilUpdate<T> implements AdaptUpdate<T> {
         }
 
         public boolean areContentsTheSame(@NonNull T oldItem, @NonNull T newItem) {
-            return oldItem.equals(newItem);
+            return true;
         }
 
         @SuppressWarnings("unused")
