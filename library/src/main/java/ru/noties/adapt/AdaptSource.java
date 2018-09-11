@@ -1,6 +1,7 @@
 package ru.noties.adapt;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 
 import java.util.HashMap;
@@ -58,8 +59,22 @@ abstract class AdaptSource<T> {
             // iterate over classes (types), put them in an sparse array
 
             final SparseArray<AdaptEntry<? extends T>> sparseArray = new SparseArray<>(size);
+
+            int key;
+
             for (Map.Entry<Class<? extends T>, AdaptEntry<? extends T>> entry : map.entrySet()) {
-                sparseArray.append(keyProvider.provideKey(entry.getKey()), entry.getValue());
+
+                key = keyProvider.provideKey(entry.getKey());
+
+                // @since 1.1.0
+                if (RecyclerView.INVALID_TYPE == key) {
+                    // it's rare.. at least it must be, but it's still can happen
+                    throw AdaptError.halt("AdaptSource.Builder: Specified type: %s has " +
+                            "hashcode value of -1 which is the same value for INVALID_TYPE used by " +
+                            "RecyclerView", entry.getKey().getName());
+                }
+
+                sparseArray.append(key, entry.getValue());
             }
 
             return new Impl<>(keyProvider, sparseArray);

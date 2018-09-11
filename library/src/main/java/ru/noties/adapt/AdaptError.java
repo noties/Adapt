@@ -28,8 +28,6 @@ class AdaptError extends IllegalStateException {
 
     @NonNull
     private static String message(@NonNull String message, Object... args) {
-        return args != null && args.length > 0
-                ? MESSAGE_PREFIX + String.format(Locale.US, message, args)
-                : MESSAGE_PREFIX + message;
+        return MESSAGE_PREFIX + String.format(Locale.US, message, args);
     }
 }

@@ -210,9 +210,9 @@ class AdaptImpl<T> extends Adapt<T> implements AdaptUpdate.Source<T> {
 
         @Override
         public void onViewRecycled(@NonNull Holder holder) {
-            final int position = holder.getAdapterPosition();
-            if (position > -1) {
-                itemView(getItem(position)).onViewRecycled(holder);
+            final int viewType = holder.getItemViewType();
+            if (RecyclerView.INVALID_TYPE != viewType) {
+                itemView(viewType).onViewRecycled(holder);
             }
         }
     }

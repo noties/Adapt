@@ -1,5 +1,7 @@
 package ru.noties.adapt;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -132,5 +134,33 @@ public class AdaptSourceTest {
         assertEquals(stringBuilder, source.entry(keyProvider.provideKey(StringBuilder.class)));
         assertEquals(keyProvider.provideKey(StringBuilder.class), source.assignedViewType(new StringBuilder()));
         assertEquals(keyProvider.provideKey(StringBuilder.class), source.assignedViewType(StringBuilder.class));
+    }
+
+    @Test
+    public void type_hashcode_is_invalid_type() {
+
+        final AdaptSource.KeyProvider keyProvider = new AdaptSource.KeyProvider() {
+            @Override
+            int provideKey(@NonNull Class<?> type) {
+                return -1;
+            }
+        };
+
+        final AdaptSource.Builder<CharSequence> builder = new AdaptSource.Builder<>(keyProvider);
+
+        //noinspection unchecked
+        builder.append(String.class, mock(AdaptEntry.class));
+
+        assertThrows(
+                "AdaptSource.Builder: Specified type: java.lang.String has " +
+                        "hashcode value of -1 which is the same value for INVALID_TYPE used by " +
+                        "RecyclerView",
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        builder.build();
+                    }
+                }
+        );
     }
 }
