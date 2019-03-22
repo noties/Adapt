@@ -28,5 +28,7 @@ android {
 
 dependencies {
     implementation project(':library')
+    implementation 'ru.noties:debug:4.0.0@jar'
+    implementation 'com.google.android:flexbox:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

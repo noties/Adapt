@@ -24,7 +24,7 @@ class AdaptError extends IllegalStateException {
         super(message, cause);
     }
 
-    private static final String MESSAGE_PREFIX = "Adapt[v" + AdaptBuildConfig.VERSION_NAME + "] ";
+    private static final String MESSAGE_PREFIX = "Adapt[v" + BuildConfig.VERSION_NAME + "] ";
 
     @NonNull
     private static String message(@NonNull String message, Object... args) {

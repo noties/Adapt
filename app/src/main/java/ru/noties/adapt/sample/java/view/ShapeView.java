@@ -21,7 +21,6 @@ public class ShapeView extends ItemView<ShapeItem, Holder> {
 
     @Override
     public void bindHolder(@NonNull Holder holder, @NonNull ShapeItem item) {
-
         final Drawable background = holder.itemView.getBackground();
         if (background == null
                 || !(background instanceof ShapeItemDrawable)) {

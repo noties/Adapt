@@ -22,6 +22,10 @@
             android:exported="true"
             android:label="Kotlin" />
 
+        <activity
+            android:name=".next.NextActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

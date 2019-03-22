@@ -28,6 +28,7 @@ public class ShapeItemDrawable extends Drawable {
         this.paint.setColor(color);
 
         path.reset();
+        invalidateSelf();
     }
 
     @Override
