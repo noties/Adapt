@@ -9,16 +9,7 @@ import ru.noties.adapt.BuildConfig;
 
 class AdaptException extends IllegalStateException {
 
-    @NonNull
-    static AdaptException create(@NonNull Throwable cause) {
-        return new AdaptException(cause);
-    }
-
-    @NonNull
-    static AdaptException create(@NonNull Throwable cause, @NonNull String message) {
-        return new AdaptException(message, cause);
-    }
-
+    @SuppressWarnings("SameParameterValue")
     @NonNull
     static AdaptException create(@NonNull Throwable cause, @NonNull String message, Object... args) {
         return new AdaptException(String.format(Locale.US, message, args), cause);
@@ -40,10 +31,6 @@ class AdaptException extends IllegalStateException {
 
     private AdaptException(String message, Throwable cause) {
         super(appendVersion(message), cause);
-    }
-
-    private AdaptException(Throwable cause) {
-        super(appendVersion(null), cause);
     }
 
     @NonNull

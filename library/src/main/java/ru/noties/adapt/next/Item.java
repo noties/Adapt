@@ -3,25 +3,37 @@ package ru.noties.adapt.next;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Item<H extends Item.Holder> {
 
-    // todo: if we have a different item with the same id, we will render it wrong
-    //      so, user submits one list, then another and one item has the same id althought it's now in a different item
-    //      this will actually cause class-cast-exception (as we won't be able to cast holder)
+    /**
+     * Helper method to obtain automatically assigned itemViewType ({@link #recyclerViewType()}).
+     * If you override {@link #recyclerViewType()} to provide own value then do not use this method.
+     *
+     * @param type of Item to obtain value
+     * @return generated item-view-type
+     */
+    public static int generatedRecyclerViewType(@NonNull Class<? extends Item> type) {
+        return ViewTypeStore.viewType(type);
+    }
 
-    // todo: make equals and hashcode non-final and do not implement them at all
-    //      keep id final, but allow items to have different equals and hashcode
+    public static final long NO_ID = RecyclerView.NO_ID;
 
-    private final long id;
+    private static final int NO_VIEW_TYPE = -1;
 
-    private int viewType;
+    protected final long id;
+
+    // cached value of viewType (once initialized will be saved)
+    private int viewType = NO_VIEW_TYPE;
 
     protected Item(long id) {
         this.id = id;
@@ -45,42 +57,22 @@ public abstract class Item<H extends Item.Holder> {
     }
 
     /**
-     * Used only in RecyclerView context. By default returns hashCode of `getClass().getName()`.
+     * Used only in RecyclerView context.
      */
     public int recyclerViewType() {
         int viewType = this.viewType;
-        if (viewType == 0) {
-            viewType = this.viewType = getClass().getName().hashCode();
+        if (viewType == NO_VIEW_TYPE) {
+            viewType = this.viewType = generatedRecyclerViewType(getClass());
         }
         return viewType;
     }
 
     /**
-     * Used only in RecyclerView
+     * Used only in RecyclerView context.
      */
     @Nullable
     public RecyclerView.ItemDecoration recyclerDecoration() {
         return null;
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-//        if (o == null || getClass() != o.getClass()) return false;
-
-        // _IF_ we are going to use ItemWrapper then we must check for instanceof
-        // because the final thing to consider is id which should be the same for wrapped/non-wrapped item
-        // this is not good because when received a new set of items, they can be different,
-        // for example have new wrapped items that returns different views, and this is not good
-        Item<?> item = (Item<?>) o;
-
-        return id == item.id;
-    }
-
-    @Override
-    public final int hashCode() {
-        return (int) (id ^ (id >>> 32));
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -98,6 +90,28 @@ public abstract class Item<H extends Item.Holder> {
         @NonNull
         protected <V extends View> V requireView(@NonNull View view, @IdRes int id) {
             return ViewUtils.requireView(view, id);
+        }
+    }
+
+    @VisibleForTesting
+    static class ViewTypeStore {
+
+        static final SparseIntArray CACHE = new SparseIntArray();
+        static final AtomicInteger GENERATOR = new AtomicInteger();
+
+        static int viewType(@NonNull Class<? extends Item> type) {
+            final int hash = type.hashCode();
+            int viewType = CACHE.get(hash, NO_VIEW_TYPE);
+            if (viewType == NO_VIEW_TYPE) {
+                synchronized (CACHE) {
+                    viewType = CACHE.get(hash, NO_VIEW_TYPE);
+                    if (viewType == NO_VIEW_TYPE) {
+                        viewType = GENERATOR.incrementAndGet();
+                        CACHE.put(hash, viewType);
+                    }
+                }
+            }
+            return viewType;
         }
     }
 }

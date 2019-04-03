@@ -63,7 +63,6 @@ class NextActivity : Activity() {
 
             return
         }
-
         val parent = findViewById<ViewGroup>(/*R.id.group*/0)
 
         if (true) {
@@ -215,7 +214,7 @@ class NextActivity : Activity() {
         }
 
         override fun recyclerDecoration(): RecyclerView.ItemDecoration? {
-            return object: RecyclerView.ItemDecoration() {
+            return object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     outRect.set(48, 48, 48, 48)
 //                    outRect.set(0, 0, 0, 0)

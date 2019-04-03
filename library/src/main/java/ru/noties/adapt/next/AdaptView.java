@@ -8,6 +8,15 @@ import android.view.ViewGroup;
 
 import ru.noties.adapt.R;
 
+/**
+ * Class to render an {@link Item} to a regular android.view.View
+ *
+ * @see #append(ViewGroup, Item)
+ * @see #append(LayoutInflater, ViewGroup, Item)
+ * @see #create(View, Item, HolderProvider)
+ * @see #create(View, int, Item, HolderProvider)
+ * @since 2.0.0-SNAPSHOT
+ */
 public abstract class AdaptView<I extends Item> {
 
     public interface HolderProvider<H extends Item.Holder> {
@@ -44,7 +53,9 @@ public abstract class AdaptView<I extends Item> {
     }
 
     /**
-     * Create {@link AdaptView} with the specified view as holder\'s itemView
+     * Create {@link AdaptView} with the specified view as holder\'s itemView.
+     *
+     * @since 2.0.0-SNAPSHOT
      */
     @NonNull
     public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> create(
@@ -58,6 +69,9 @@ public abstract class AdaptView<I extends Item> {
         return new Impl<>(view);
     }
 
+    /**
+     * @since 2.0.0-SNAPSHOT
+     */
     @NonNull
     public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> create(
             @NonNull View parent,

@@ -6,6 +6,11 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
+import static ru.noties.adapt.next.Item.NO_ID;
+
+/**
+ * @since 2.0.0-SNAPSHOT
+ */
 public class DiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
 
     public interface PayloadProvider {
@@ -66,7 +71,18 @@ public class DiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return oldList.get(oldItemPosition).id() == newList.get(newItemPosition).id();
+                // NO_ID has special case handling, if any of items has NO_ID than it's not the same
+                //  otherwise in case when both items have NO_ID they will be considered as same,
+                //  which is not true
+                final long oldId = oldList.get(oldItemPosition).id();
+                if (oldId == NO_ID) {
+                    return false;
+                }
+                final long newId = newList.get(newItemPosition).id();
+                if (newId == NO_ID) {
+                    return false;
+                }
+                return oldId == newId;
             }
 
             @Override

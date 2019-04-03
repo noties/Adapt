@@ -17,6 +17,7 @@ import java.util.List;
 import ru.noties.adapt.next.AdaptViewGroupDiff.Parent;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -182,7 +183,8 @@ public class AdaptViewGroupDiffTest {
         final List<Item> current = Collections.singletonList((Item) new MockItem(1) {
         });
 
-        assertEquals(previous.get(0), current.get(0));
+        assertEquals(previous.get(0).id(), current.get(0).id());
+        assertNotEquals(previous.get(0), current.get(0));
 
         final Parent parent = mock(Parent.class);
 
@@ -209,7 +211,9 @@ public class AdaptViewGroupDiffTest {
                 },
                 new MockItem(1));
 
-        assertEquals(previous.get(1), current.get(0));
+        // ids are the same, but actual equals is false
+        assertEquals(previous.get(1).id(), current.get(0).id());
+        assertNotEquals(previous.get(1), current.get(0));
 
         final Parent parent = mock(Parent.class);
 

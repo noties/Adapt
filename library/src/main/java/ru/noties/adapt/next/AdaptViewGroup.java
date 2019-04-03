@@ -11,6 +11,9 @@ import java.util.List;
 
 import ru.noties.adapt.R;
 
+/**
+ * @since 2.0.0-SNAPSHOT
+ */
 public abstract class AdaptViewGroup {
 
     public interface Builder {

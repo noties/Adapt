@@ -12,6 +12,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @since 2.0.0-SNAPSHOT
+ */
 public class AsyncDiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
 
     @NonNull

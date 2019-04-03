@@ -15,8 +15,10 @@ import java.util.Set;
 
 public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
+    /**
+     * @since 2.0.0-SNAPSHOT
+     */
     public interface DataSetChangeHandler {
-
         void handleDataSetChange(
                 @NonNull Adapt adapt,
                 @Nullable ItemViewTypeFactory itemViewTypeFactory,
@@ -24,8 +26,11 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
                 @NonNull List<Item> newList);
     }
 
-    // we must have enumeration of present viewTypes here
-    interface ItemViewTypeFactory {
+    /**
+     * @see #createItemViewFactory(List)
+     * @since 2.0.0-SNAPSHOT
+     */
+    public interface ItemViewTypeFactory {
 
         @NonNull
         Item itemWithViewType(int viewType);
@@ -34,12 +39,28 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
         Set<Integer> viewTypes();
     }
 
-
+    /**
+     * Creates {@link Adapt} instance with {@link NotifyDataSetChanged} as {@link DataSetChangeHandler}
+     *
+     * @see NotifyDataSetChanged
+     * @see #create(DataSetChangeHandler)
+     * @since 2.0.0-SNAPSHOT
+     */
     @NonNull
     public static Adapt create() {
         return create(NotifyDataSetChanged.create());
     }
 
+    /**
+     * Creates {@link Adapt} instance specified {@link DataSetChangeHandler}
+     *
+     * @param dataSetChangeHandler {@link DataSetChangeHandler}
+     * @see DataSetChangeHandler
+     * @see NotifyDataSetChanged
+     * @see DiffUtilDataSetChanged
+     * @see AsyncDiffUtilDataSetChanged
+     * @since 2.0.0-SNAPSHOT
+     */
     @NonNull
     public static Adapt create(@NonNull DataSetChangeHandler dataSetChangeHandler) {
         return new Adapt(dataSetChangeHandler);
@@ -67,12 +88,14 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+        this.inflater = ensureLayoutInflater(recyclerView);
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        // we also could remove all decorations here
         this.recyclerView = null;
+        this.inflater = null;
+        // we also could remove all decorations here
     }
 
     @Override
@@ -136,7 +159,12 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     /**
      * Update items with precomputed {@link ItemViewTypeFactory}
+     *
+     * @see #createItemViewFactory(List)
+     * @see ItemViewTypeFactory
+     * @since 2.0.0-SNAPSHOT
      */
+    @SuppressWarnings("WeakerAccess")
     public void setItems(
             @Nullable List<Item> items,
             @Nullable ItemViewTypeFactory itemViewTypeFactory) {
@@ -155,7 +183,10 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
     /**
      * Can be used to dispatch adapter updates manually. Beware that after this method
      * one of the `notify*` methods must be called.
+     *
+     * @since 2.0.0-SNAPSHOT
      */
+    @SuppressWarnings("unused")
     @NonNull
     @CheckResult(suggest = "#notifyDataSetChanged()," +
             "#notifyItemChanged(int)," +
@@ -173,7 +204,10 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
     /**
      * Can be used to dispatch adapter updates manually (or in {@link DataSetChangeHandler}.
      * Beware that after this method one of the `notify*` methods must be called.
+     *
+     * @since 2.0.0-SNAPSHOT
      */
+    @SuppressWarnings("WeakerAccess")
     @NonNull
     @CheckResult(suggest = "#notifyDataSetChanged()," +
             "#notifyItemChanged(int)," +
@@ -261,7 +295,6 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
         // it's not added in our tracked collection -> add it
         itemDecorations.append(viewType, itemDecoration);
-
 
         final RecyclerView recyclerView = ensureRecyclerView();
 
@@ -356,6 +389,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
                 : Collections.<T>emptyList();
     }
 
+    @SuppressWarnings("WeakerAccess")
     @NonNull
     public static ItemViewTypeFactory createItemViewFactory(@Nullable List<Item> items) {
 
