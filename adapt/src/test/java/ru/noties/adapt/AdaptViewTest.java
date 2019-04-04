@@ -44,10 +44,10 @@ public class AdaptViewTest {
         assertNull(view.getTag(R.id.adapt_internal_item));
 
         try {
-            adaptView.bind(mock(Item.class));
+            adaptView.setItem(mock(Item.class));
             fail();
         } catch (AdaptException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("Unexpected state, there is no previous item saved"));
+            assertTrue(e.getMessage(), e.getMessage().contains("Unexpected state, there is no item bound"));
         }
     }
 
@@ -60,7 +60,7 @@ public class AdaptViewTest {
         assertNull(view.getTag(R.id.adapt_internal_holder));
 
         try {
-            adaptView.bind(mock(Item.class));
+            adaptView.setItem(mock(Item.class));
             fail();
         } catch (AdaptException e) {
             assertTrue(e.getMessage(), e.getMessage().contains("Unexpected state, there is no Holder associated"));
@@ -75,7 +75,7 @@ public class AdaptViewTest {
         when(view.getTag(eq(R.id.adapt_internal_holder))).thenReturn(mock(Item.Holder.class));
 
         try {
-            adaptView.bind(new Item(0) {
+            adaptView.setItem(new Item(0) {
                 @NonNull
                 @Override
                 public Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -89,7 +89,7 @@ public class AdaptViewTest {
             });
             fail();
         } catch (AdaptException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("Supplied item has different type as previously"));
+            assertTrue(e.getMessage(), e.getMessage().contains("Supplied item has different view-type as previously bound one"));
         }
     }
 
@@ -103,7 +103,7 @@ public class AdaptViewTest {
 
         final Item item = mock(Item.class);
 
-        adaptView.bind(item);
+        adaptView.setItem(item);
 
         verify(item, times(1)).render(eq(holder));
         verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));

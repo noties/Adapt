@@ -42,11 +42,11 @@ public class ItemWrapper<H extends Item.Holder> extends Item<H> {
     }
 
     @Override
-    public int recyclerViewType() {
+    public int viewType() {
         // we will be using original viewType (if not all wrapped items will have the same viewType).
         // Please note, that wrapper must not modify view of original item (which can lead to unexpected
         // errors and bugs)
-        return item.recyclerViewType();
+        return item.viewType();
     }
 
     @Nullable

@@ -85,7 +85,7 @@ public class DiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
                 // execute viewType check after id check (so, if ids are different, we won't
                 // go to second condition)
                 return oldId == newId
-                        && oldItem.recyclerViewType() == newItem.recyclerViewType();
+                        && oldItem.viewType() == newItem.viewType();
             }
 
             @Override

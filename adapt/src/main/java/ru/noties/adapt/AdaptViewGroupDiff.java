@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.noties.adapt.TypeUtils.sameClass;
-
 /**
  * @since 2.0.0-SNAPSHOT
  */
@@ -64,7 +62,7 @@ public abstract class AdaptViewGroupDiff {
 
                     // validate that both items are of the same type
                     // this is required because different items can have the same id
-                    if (sameClass(item, list.get(index))) {
+                    if (item.viewType() == list.get(index).viewType()) {
 
                         // if item has different position in old list, then we move it
                         if (index != i) {

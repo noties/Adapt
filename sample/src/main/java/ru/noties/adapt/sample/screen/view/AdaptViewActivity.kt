@@ -17,7 +17,7 @@ class AdaptViewActivity : BaseSampleActivity() {
     override fun title() = "View"
 
     override fun addMoreItems() {
-        val items = adapt.items.toMutableList().apply {
+        val items = adapt.currentItems.toMutableList().apply {
             addAll(generator.generate(3))
         }
         adapt.setItems(items).also {
@@ -26,7 +26,7 @@ class AdaptViewActivity : BaseSampleActivity() {
     }
 
     override fun shuffleItems() {
-        adapt.setItems(generator.shuffle(adapt.items)).also {
+        adapt.setItems(generator.shuffle(adapt.currentItems)).also {
             bindLastCircle()
         }
     }
@@ -50,13 +50,17 @@ class AdaptViewActivity : BaseSampleActivity() {
     }
 
     private fun bindLastCircle() {
-        adapt.items.lastOrNull { it is CircleItem }?.let { item ->
+
+        // for example, if our item wrapped in OnClick wrapper, we still can
+        // bind it
+
+        adapt.currentItems.lastOrNull { it is CircleItem }?.let { item ->
 
             // cast
             item as CircleItem
 
             if (this::adaptView.isInitialized) {
-                adaptView.bind(item)
+                adaptView.setItem(item)
             } else {
                 adaptView = AdaptView.append(findViewById(R.id.last_circle_group), item)
             }

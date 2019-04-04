@@ -17,7 +17,7 @@ class AdaptGridActivity : BaseSampleActivity() {
     override fun title() = "Recycler Grid"
 
     override fun addMoreItems() {
-        val items = adapt.items.toMutableList()
+        val items = adapt.currentItems.toMutableList()
                 .apply {
                     addAll(generator.generate(3))
                 }
@@ -25,7 +25,7 @@ class AdaptGridActivity : BaseSampleActivity() {
     }
 
     override fun shuffleItems() {
-        adapt.setItems(generator.shuffle(adapt.items))
+        adapt.setItems(generator.shuffle(adapt.currentItems))
     }
 
     private lateinit var adapt: Adapt

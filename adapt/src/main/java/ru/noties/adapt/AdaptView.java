@@ -85,7 +85,10 @@ public abstract class AdaptView<I extends Item> {
     }
 
 
-    public abstract void bind(@NonNull I item);
+    public abstract void setItem(@NonNull I item);
+
+    @NonNull
+    public abstract I getCurrentItem();
 
 
     static class Impl<I extends Item> extends AdaptView<I> {
@@ -97,15 +100,9 @@ public abstract class AdaptView<I extends Item> {
         }
 
         @Override
-        public void bind(@NonNull I item) {
+        public void setItem(@NonNull I item) {
 
-            final Item previousItem = (Item) view.getTag(R.id.adapt_internal_item);
-            if (previousItem == null) {
-                // unexpected internal error, no item is specified (we cannot create an AdaptView without
-                // item)
-                throw AdaptException.create("Unexpected state, there is no previous item saved, " +
-                        "supplied item: %s, view: %s", item, view);
-            }
+            final Item currentItem = getCurrentItem();
 
             final Item.Holder holder = (Item.Holder) view.getTag(R.id.adapt_internal_holder);
             if (holder == null) {
@@ -114,11 +111,11 @@ public abstract class AdaptView<I extends Item> {
                         "with this view, supplied item: %s, view: %s", item, view);
             }
 
-            if (!TypeUtils.sameClass(previousItem, item)) {
+            if (currentItem.viewType() != item.viewType()) {
                 // different type is supplied, cannot proceed
-                throw AdaptException.create("Supplied item has different type as previously " +
+                throw AdaptException.create("Supplied item has different view-type as previously " +
                                 "bound one, previous: `%s`, supplied: `%s`, view: %s",
-                        previousItem.getClass().getName(), item.getClass().getName(), view);
+                        currentItem, item, view);
             }
 
             //noinspection unchecked
@@ -126,6 +123,20 @@ public abstract class AdaptView<I extends Item> {
 
             // save item information
             view.setTag(R.id.adapt_internal_item, item);
+        }
+
+        @NonNull
+        @Override
+        public I getCurrentItem() {
+            //noinspection unchecked
+            final I currentItem = (I) view.getTag(R.id.adapt_internal_item);
+            if (currentItem == null) {
+                // unexpected internal error, no item is specified (we cannot create an AdaptView without
+                // item)
+                throw AdaptException.create("Unexpected state, there is no item bound, " +
+                        "view: %s", view);
+            }
+            return currentItem;
         }
     }
 }

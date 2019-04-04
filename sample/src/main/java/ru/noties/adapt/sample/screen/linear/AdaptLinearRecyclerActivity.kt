@@ -15,7 +15,7 @@ class AdaptLinearRecyclerActivity : BaseSampleActivity() {
     override fun title() = "RecyclerView"
 
     override fun addMoreItems() {
-        val items = adapt.items.toMutableList().apply {
+        val items = adapt.currentItems.toMutableList().apply {
             val list = generator.generate(3)
                     .map { LinearWrapper(it) }
             addAll(list)
@@ -24,7 +24,7 @@ class AdaptLinearRecyclerActivity : BaseSampleActivity() {
     }
 
     override fun shuffleItems() {
-        adapt.setItems(generator.shuffle(adapt.items))
+        adapt.setItems(generator.shuffle(adapt.currentItems))
     }
 
     private lateinit var adapt: Adapt

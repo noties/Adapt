@@ -15,13 +15,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Item<H extends Item.Holder> {
 
     /**
-     * Helper method to obtain automatically assigned itemViewType ({@link #recyclerViewType()}).
-     * If you override {@link #recyclerViewType()} to provide own value then do not use this method.
+     * Helper method to obtain automatically assigned itemViewType ({@link #viewType()}).
+     * If you override {@link #viewType()} to provide own value then do not use this method.
      *
      * @param type of Item to obtain value
      * @return generated item-view-type
      */
-    public static int generatedRecyclerViewType(@NonNull Class<? extends Item> type) {
+    public static int generatedViewType(@NonNull Class<? extends Item> type) {
         return ViewTypeStore.viewType(type);
     }
 
@@ -47,13 +47,10 @@ public abstract class Item<H extends Item.Holder> {
 
     public abstract void render(@NonNull H holder);
 
-    /**
-     * Used only in RecyclerView context.
-     */
-    public int recyclerViewType() {
+    public int viewType() {
         int viewType = this.viewType;
         if (viewType == NO_VIEW_TYPE) {
-            viewType = this.viewType = generatedRecyclerViewType(getClass());
+            viewType = this.viewType = generatedViewType(getClass());
         }
         return viewType;
     }

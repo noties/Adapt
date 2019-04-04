@@ -176,7 +176,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).recyclerViewType();
+        return items.get(position).viewType();
     }
 
     @Override
@@ -212,7 +212,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
     }
 
     @NonNull
-    public List<Item> getItems() {
+    public List<Item> getCurrentItems() {
         return Collections.unmodifiableList(safeList(items));
     }
 
@@ -465,7 +465,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
         int index;
 
         for (Item item : safeList(items)) {
-            viewType = item.recyclerViewType();
+            viewType = item.viewType();
             index = array.indexOfKey(viewType);
             if (index < 0) {
                 array.append(viewType, item);
