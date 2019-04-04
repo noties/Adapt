@@ -21,6 +21,7 @@
         <activity android:name=".screen.group.AdaptViewGroupActivity" />
         <activity android:name=".screen.flex.AdaptFlexActivity" />
         <activity android:name=".screen.linear.AdaptLinearRecyclerActivity" />
+        <activity android:name=".screen.view.AdaptViewActivity" />
 
     </application>
 

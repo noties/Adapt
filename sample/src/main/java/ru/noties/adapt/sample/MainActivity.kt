@@ -12,6 +12,7 @@ import ru.noties.adapt.sample.screen.flex.AdaptFlexActivity
 import ru.noties.adapt.sample.screen.grid.AdaptGridActivity
 import ru.noties.adapt.sample.screen.group.AdaptViewGroupActivity
 import ru.noties.adapt.sample.screen.linear.AdaptLinearRecyclerActivity
+import ru.noties.adapt.sample.screen.view.AdaptViewActivity
 import ru.noties.debug.AndroidLogDebugOutput
 import ru.noties.debug.Debug
 
@@ -20,6 +21,7 @@ enum class Screen(val activity: Class<out Activity>, val title: String, val desc
     GRID(AdaptGridActivity::class.java, "Recycler Grid", "Usage in RecyclerView with GridLayoutManager"),
     VIEW_GROUP(AdaptViewGroupActivity::class.java, "ViewGroup", "Usage in a ViewGroup"),
     FLEX_VIEW_GROUP(AdaptFlexActivity::class.java, "FlexLayout", "Usage with a FlexLayout in a ViewGroup context"),
+    VIEW(AdaptViewActivity::class.java, "View", "Usage with a regular View (bind Item)")
 }
 
 class MainActivity : Activity() {
