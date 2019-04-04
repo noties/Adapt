@@ -1,0 +1,68 @@
+package ru.noties.adapt.sample
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import ru.noties.adapt.Adapt
+import ru.noties.adapt.Item
+import ru.noties.adapt.OnClickWrapper
+import ru.noties.adapt.sample.screen.flex.AdaptFlexActivity
+import ru.noties.adapt.sample.screen.grid.AdaptGridActivity
+import ru.noties.adapt.sample.screen.group.AdaptViewGroupActivity
+import ru.noties.adapt.sample.screen.linear.AdaptLinearRecyclerActivity
+import ru.noties.debug.AndroidLogDebugOutput
+import ru.noties.debug.Debug
+
+enum class Screen(val activity: Class<out Activity>, val title: String, val description: String? = null) {
+    LINEAR(AdaptLinearRecyclerActivity::class.java, "Recycler", "Usage in RecyclerView with LinearLayoutManager"),
+    GRID(AdaptGridActivity::class.java, "Recycler Grid", "Usage in RecyclerView with GridLayoutManager"),
+    VIEW_GROUP(AdaptViewGroupActivity::class.java, "ViewGroup", "Usage in a ViewGroup"),
+    FLEX_VIEW_GROUP(AdaptFlexActivity::class.java, "FlexLayout", "Usage with a FlexLayout in a ViewGroup context"),
+}
+
+class MainActivity : Activity() {
+
+    companion object {
+        init {
+            Debug.init(AndroidLogDebugOutput(true))
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val recycler = findViewById<RecyclerView>(R.id.recycler_view)
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.setHasFixedSize(true)
+
+        val adapt = Adapt.create()
+        recycler.adapter = adapt
+        adapt.setItems(items())
+    }
+
+    private fun items(): List<Item<*>> {
+
+        val randomizer = SampleRandomizer()
+
+        return Screen.values()
+                .map {
+                    OnClickWrapper(SampleItem(sample(randomizer, it))) { _, _ ->
+                        display(it.activity)
+                    }
+                }
+    }
+
+    private fun sample(randomizer: SampleRandomizer, screen: Screen) = Sample(
+            randomizer.nextColor(),
+            randomizer.nextShape(),
+            screen.title,
+            screen.description)
+
+    private fun display(activity: Class<out Activity>) {
+        startActivity(Intent(this, activity))
+        overridePendingTransition(R.anim.in_appear, R.anim.in_disappear)
+    }
+}

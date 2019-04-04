@@ -10,11 +10,28 @@ buildscript {
 
 allprojects {
     repositories {
+        if (project.hasProperty('LOCAL_MAVEN_URL')) {
+            maven { url LOCAL_MAVEN_URL }
+        }
         google()
         jcenter()
     }
     group = GROUP
     version = VERSION_NAME
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+}
+
+if (hasProperty('local')) {
+    if (!hasProperty('LOCAL_MAVEN_URL')) {
+        throw new RuntimeException('Cannot publish to local maven as no such property exists: LOCAL_MAVEN_URL')
+    }
+    ext.RELEASE_REPOSITORY_URL = LOCAL_MAVEN_URL
+    ext.SNAPSHOT_REPOSITORY_URL = LOCAL_MAVEN_URL
 }
 
 task clean(type: Delete) {
