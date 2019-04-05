@@ -126,7 +126,10 @@ class ColorItem(
 }
 ```
 
-If an Item specifies `RecyclerView.ItemDecoration` then this decoration will be used for all items of the same type (in this case for all `ColorItem`s). There is no need to explicitly add or remove ItemDecorations specified in an Item.
+Please note that returned `ItemDecoration` must be a _generic_ one, as only one decoration will be registered with RecyclerView for one item-view-type (read: _all instances of an item must return a decoration that does the same_). Which item's decoration will be used should be considered _undefined behaviour_ and **must not** be relied upon.
+
+Also note that using an `ItemWrapper` only for some items to specify `ItemDecoration` might (and will) lead to unexpected results. Consider moving decoration to item itself or fallback to _old_ decoration registration (via `RecyclerView#addItemDecoration`)
+
 
 ## Usage in ViewGroup
 
