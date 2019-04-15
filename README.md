@@ -188,7 +188,7 @@ adaptView.setItem(ColorItem(Color.BLUE))
 ## License
 
 ```
-  Copyright 2018, 2019 Dimitry Ivanov (contact@noties.io)
+  Copyright 2018, 2019 Dimitry Ivanov (legal@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
