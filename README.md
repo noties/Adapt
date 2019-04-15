@@ -6,10 +6,10 @@
 
 ## Install
 
-[![adapt](https://img.shields.io/maven-central/v/ru.noties/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22adapt%22)
+[![adapt](https://img.shields.io/maven-central/v/io.noties/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22adapt%22)
 
 ```gradle
-implementation "ru.noties:adapt:${adaptVersion}"
+implementation "io.noties:adapt:${adaptVersion}"
 ```
 
 ## Usage
@@ -188,7 +188,7 @@ adaptView.setItem(ColorItem(Color.BLUE))
 ## License
 
 ```
-  Copyright 2018 Dimitry Ivanov (mail@dimitryivanov.ru)
+  Copyright 2018, 2019 Dimitry Ivanov (contact@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
