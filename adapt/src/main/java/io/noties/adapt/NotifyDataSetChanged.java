@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.List;
 
 /**
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public class NotifyDataSetChanged implements Adapt.DataSetChangeHandler {
 

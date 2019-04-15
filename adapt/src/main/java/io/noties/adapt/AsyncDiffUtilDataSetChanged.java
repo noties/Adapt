@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Executes {@link DiffUtilDataSetChanged} handler in background thread. Additionally
  * creates {@link Adapt.ItemViewTypeFactory}
  *
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public class AsyncDiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
 

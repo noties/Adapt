@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public abstract class AdaptViewGroupDiff {
 

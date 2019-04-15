@@ -14,7 +14,7 @@ import android.view.ViewGroup;
  * original item. Ids are shared (the same for original and wrapped (this) items)
  *
  * @see OnClickWrapper
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public class ItemWrapper<H extends Item.Holder> extends Item<H> {
 

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * @see #append(LayoutInflater, ViewGroup, Item)
  * @see #create(View, Item, HolderProvider)
  * @see #create(View, int, Item, HolderProvider)
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public abstract class AdaptView<I extends Item> {
 
@@ -53,7 +53,7 @@ public abstract class AdaptView<I extends Item> {
     /**
      * Create {@link AdaptView} with the specified view as holder\'s itemView.
      *
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @NonNull
     public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> create(
@@ -68,7 +68,7 @@ public abstract class AdaptView<I extends Item> {
     }
 
     /**
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @NonNull
     public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> create(

@@ -9,7 +9,7 @@ import java.util.List;
 import static io.noties.adapt.Item.NO_ID;
 
 /**
- * @since 2.0.0-SNAPSHOT
+ * @since 2.0.0
  */
 public class DiffUtilDataSetChanged implements Adapt.DataSetChangeHandler {
 

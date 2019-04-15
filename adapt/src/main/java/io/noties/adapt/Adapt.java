@@ -19,7 +19,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      * @see NotifyDataSetChanged
      * @see DiffUtilDataSetChanged
      * @see AsyncDiffUtilDataSetChanged
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     public interface DataSetChangeHandler {
 
@@ -48,7 +48,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     /**
      * @see #createItemViewFactory(List)
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     public interface ItemViewTypeFactory {
 
@@ -64,7 +64,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      *
      * @see NotifyDataSetChanged
      * @see #create(DataSetChangeHandler)
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @NonNull
     public static Adapt create() {
@@ -79,7 +79,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      * @see NotifyDataSetChanged
      * @see DiffUtilDataSetChanged
      * @see AsyncDiffUtilDataSetChanged
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @NonNull
     public static Adapt create(@NonNull DataSetChangeHandler dataSetChangeHandler) {
@@ -198,7 +198,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      *
      * @see #createItemViewFactory(List)
      * @see ItemViewTypeFactory
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @SuppressWarnings("WeakerAccess")
     public void setItems(
@@ -220,7 +220,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      * Can be used to dispatch adapter updates manually. Beware that after this method
      * one of the \'notify*\' methods must be called.
      *
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @SuppressWarnings("unused")
     @NonNull
@@ -241,7 +241,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      * Can be used to dispatch adapter updates manually (or in {@link DataSetChangeHandler}.
      * Beware that after this method one of the \'notify*\' methods must be called.
      *
-     * @since 2.0.0-SNAPSHOT
+     * @since 2.0.0
      */
     @SuppressWarnings("WeakerAccess")
     @NonNull
