@@ -1,7 +1,8 @@
 package io.noties.adapt;
 
-import android.support.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 public class OnClickWrapper<H extends Item.Holder> extends ItemWrapper<H> {
 

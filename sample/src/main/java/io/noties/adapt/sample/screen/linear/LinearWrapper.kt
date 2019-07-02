@@ -1,8 +1,8 @@
 package io.noties.adapt.sample.screen.linear
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
 import io.noties.adapt.ItemWrapper
 

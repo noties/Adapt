@@ -1,11 +1,11 @@
 package io.noties.adapt.sample
 
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.utils.setTextOrHide
 

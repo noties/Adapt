@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.1'
     }
 }
 
@@ -39,7 +39,7 @@ task clean(type: Delete) {
 }
 
 wrapper {
-    gradleVersion '4.10.2'
+    gradleVersion '5.5'
     distributionType 'all'
 }
 
@@ -52,11 +52,9 @@ ext {
             'push-aar-gradle': 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
     ]
 
-    final def supportVersion = '28.0.0'
-
     deps = [
-            'support-annotations': "com.android.support:support-annotations:$supportVersion",
-            'recycler-view'      : "com.android.support:recyclerview-v7:$supportVersion"
+            'x-annotations'  : 'androidx.annotation:annotation:1.1.0',
+            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.0.0'
     ]
 
     deps['test'] = [

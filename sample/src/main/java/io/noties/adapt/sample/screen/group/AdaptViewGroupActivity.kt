@@ -7,7 +7,7 @@ import io.noties.adapt.OnClickWrapper
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.screen.BaseSampleActivity
-import ru.noties.debug.Debug
+import io.noties.debug.Debug
 
 class AdaptViewGroupActivity : BaseSampleActivity() {
 

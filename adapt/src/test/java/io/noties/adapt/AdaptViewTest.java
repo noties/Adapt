@@ -1,9 +1,10 @@
 package io.noties.adapt;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import org.junit.Before;
 import org.junit.Test;

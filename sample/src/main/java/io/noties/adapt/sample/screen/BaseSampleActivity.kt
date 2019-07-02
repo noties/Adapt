@@ -2,9 +2,9 @@ package io.noties.adapt.sample.screen
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.annotation.LayoutRes
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import io.noties.adapt.sample.R
 
 abstract class BaseSampleActivity : Activity() {

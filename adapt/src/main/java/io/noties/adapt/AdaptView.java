@@ -1,10 +1,11 @@
 package io.noties.adapt;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 
 /**
  * Class to render an {@link Item} to a regular android.view.View

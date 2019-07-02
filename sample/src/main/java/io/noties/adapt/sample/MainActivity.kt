@@ -3,8 +3,8 @@ package io.noties.adapt.sample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.OnClickWrapper
@@ -13,8 +13,8 @@ import io.noties.adapt.sample.screen.grid.AdaptGridActivity
 import io.noties.adapt.sample.screen.group.AdaptViewGroupActivity
 import io.noties.adapt.sample.screen.linear.AdaptLinearRecyclerActivity
 import io.noties.adapt.sample.screen.view.AdaptViewActivity
-import ru.noties.debug.AndroidLogDebugOutput
-import ru.noties.debug.Debug
+import io.noties.debug.AndroidLogDebugOutput
+import io.noties.debug.Debug
 
 enum class Screen(val activity: Class<out Activity>, val title: String, val description: String? = null) {
     LINEAR(AdaptLinearRecyclerActivity::class.java, "Recycler", "Usage in RecyclerView with LinearLayoutManager"),
