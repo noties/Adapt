@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
  * by default will use own \'recyclerViewType\' in order to distinguish from original (wrapped) item.
  * Other methods {@link #createHolder(LayoutInflater, ViewGroup)}, {@link #render(Holder)},
  * {@link #recyclerDecoration(RecyclerView)} are calling
- * original item. Ids are shared (the same for original and wrapped (this) items)
+ * original item. Ids are shared (the same for original and wrapped (this) items).
+ * <p>
+ * Since 2.2.0-SNAPSHOT implements {@link HasWrappedItem}
  *
  * @see OnClickWrapper
  * @since 2.0.0
  */
-public class ItemWrapper<H extends Item.Holder> extends Item<H> {
+public class ItemWrapper<H extends Item.Holder>
+        extends Item<H> implements HasWrappedItem<H> {
 
     private final Item<H> item;
 
@@ -26,7 +29,11 @@ public class ItemWrapper<H extends Item.Holder> extends Item<H> {
         this.item = item;
     }
 
+    /**
+     * @since 2.2.0-SNAPSHOT this method comes from {@link HasWrappedItem} interface
+     */
     @NonNull
+    @Override
     public Item<H> item() {
         return item;
     }

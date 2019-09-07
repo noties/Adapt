@@ -3,5 +3,6 @@
 
     <item name="adapt_internal_item" type="id" />
     <item name="adapt_internal_holder" type="id" />
+    <item name="adapt_internal_nested_recycler_state_cache" type="id" />
 
 </resources>

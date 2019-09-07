@@ -52,12 +52,4 @@ class AdaptGridActivity : BaseSampleActivity() {
 
         addMoreItems()
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        if (isFinishing) {
-            overridePendingTransition(R.anim.out_appear, R.anim.out_disappear)
-        }
-    }
 }
