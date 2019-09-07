@@ -13,6 +13,7 @@ import io.noties.adapt.sample.screen.grid.AdaptGridActivity
 import io.noties.adapt.sample.screen.group.AdaptViewGroupActivity
 import io.noties.adapt.sample.screen.linear.AdaptLinearRecyclerActivity
 import io.noties.adapt.sample.screen.nestedrecycler.NestedRecyclerActivity
+import io.noties.adapt.sample.screen.nestedrecyclersuper.NestedRecyclerSuperActivity
 import io.noties.adapt.sample.screen.view.AdaptViewActivity
 import io.noties.debug.AndroidLogDebugOutput
 import io.noties.debug.Debug
@@ -23,7 +24,8 @@ enum class Screen(val activity: Class<out Activity>, val title: String, val desc
     VIEW_GROUP(AdaptViewGroupActivity::class.java, "ViewGroup", "Usage in a ViewGroup"),
     FLEX_VIEW_GROUP(AdaptFlexActivity::class.java, "FlexLayout", "Usage with a FlexLayout in a ViewGroup context"),
     VIEW(AdaptViewActivity::class.java, "View", "Usage with a regular View (bind Item)"),
-    NESTED_RECYCLER(NestedRecyclerActivity::class.java, "Nested RecyclerView items", "Usage of nested RecyclerView in items")
+    NESTED_RECYCLER(NestedRecyclerActivity::class.java, "Nested RecyclerView items", "Usage of nested RecyclerView in items"),
+    NESTED_RECYCLER_SUPER(NestedRecyclerSuperActivity::class.java, "Nested RecyclerView super (2 levels)", "Usage of deeply nested recycler views (2 levels deep)")
 }
 
 class MainActivity : Activity() {
