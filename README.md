@@ -1,8 +1,9 @@
 # Adapt
 
-`RecyclerView.Adapter` only shorter. Abstraction to create re-usable components that can be used inside RecyclerView, ViewGroup or be bound to a View directly.
+`RecyclerView.Adapter` only shorter. Abstraction to create re-usable components that can be used inside RecyclerView, ViewGroup or be bound to a View directly. 
 
 ![sample-gif](art/sample.gif)
+![sample-gif-220](art/sample-220.gif)
 
 ## Install
 
