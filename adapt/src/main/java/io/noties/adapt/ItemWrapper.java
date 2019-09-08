@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * {@link #recyclerDecoration(RecyclerView)} are calling
  * original item. Ids are shared (the same for original and wrapped (this) items).
  * <p>
- * Since 2.2.0-SNAPSHOT implements {@link HasWrappedItem}
+ * Since 2.2.0 implements {@link HasWrappedItem}
  *
  * @see OnClickWrapper
  * @since 2.0.0
@@ -30,7 +30,7 @@ public class ItemWrapper<H extends Item.Holder>
     }
 
     /**
-     * @since 2.2.0-SNAPSHOT this method comes from {@link HasWrappedItem} interface
+     * @since 2.2.0 this method comes from {@link HasWrappedItem} interface
      */
     @NonNull
     @Override

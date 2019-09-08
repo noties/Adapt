@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  * Please note that this item automatically takes care
  *
- * @since 2.2.0-SNAPSHOT
+ * @since 2.2.0
  */
 public abstract class ItemGroup extends Item<ItemGroup.Holder> {
 

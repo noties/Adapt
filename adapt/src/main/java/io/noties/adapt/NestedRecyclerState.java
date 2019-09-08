@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @see #process(long, RecyclerView)
- * @since 2.2.0-SNAPSHOT
+ * @since 2.2.0
  */
 public abstract class NestedRecyclerState {
 

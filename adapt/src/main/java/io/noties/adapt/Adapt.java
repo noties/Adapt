@@ -192,7 +192,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     /**
      * @param position of item
-     * @since 2.2.0-SNAPSHOT
+     * @since 2.2.0
      */
     @NonNull
     public Item getItem(int position) {

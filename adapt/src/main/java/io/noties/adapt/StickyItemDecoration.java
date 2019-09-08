@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * <p>
  * Sticky view will always have width equal to RecyclerView width (minus horizontal padding).
  *
- * @since 2.2.0-SNAPSHOT
+ * @since 2.2.0
  */
 public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecoration {
 

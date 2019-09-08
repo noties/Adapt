@@ -92,7 +92,7 @@ public abstract class AdaptView<I extends Item> {
     public abstract I getCurrentItem();
 
     /**
-     * @since 2.2.0-SNAPSHOT
+     * @since 2.2.0
      */
     @NonNull
     public abstract View view();

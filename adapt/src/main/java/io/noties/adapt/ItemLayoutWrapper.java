@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * uses supplied item {@code viewType} so make sure that all items of the same type is wrapped
  * with the same ItemLayoutWrapper.
  *
- * @since 2.2.0-SNAPSHOT
+ * @since 2.2.0
  */
 public class ItemLayoutWrapper<H extends Item.Holder>
         extends Item<ItemLayoutWrapper.Holder> implements HasWrappedItem<H> {

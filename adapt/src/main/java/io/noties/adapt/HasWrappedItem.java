@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  *
  * @see ItemWrapper
  * @see ItemLayoutWrapper
- * @since 2.2.0-SNAPSHOT
+ * @since 2.2.0
  */
 public interface HasWrappedItem<H extends Item.Holder> {
 
