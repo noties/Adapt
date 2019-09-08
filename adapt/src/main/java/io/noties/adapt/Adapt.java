@@ -190,6 +190,15 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
         return safeList(items).size();
     }
 
+    /**
+     * @param position of item
+     * @since 2.2.0-SNAPSHOT
+     */
+    @NonNull
+    public Item getItem(int position) {
+        return items.get(position);
+    }
+
     public void setItems(@Nullable List<Item> items) {
         setItems(items, null);
     }

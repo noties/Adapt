@@ -91,6 +91,12 @@ public abstract class AdaptView<I extends Item> {
     @NonNull
     public abstract I getCurrentItem();
 
+    /**
+     * @since 2.2.0-SNAPSHOT
+     */
+    @NonNull
+    public abstract View view();
+
 
     static class Impl<I extends Item> extends AdaptView<I> {
 
@@ -138,6 +144,12 @@ public abstract class AdaptView<I extends Item> {
                         "view: %s", view);
             }
             return currentItem;
+        }
+
+        @NonNull
+        @Override
+        public View view() {
+            return view;
         }
     }
 }

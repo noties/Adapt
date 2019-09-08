@@ -24,6 +24,7 @@
         <activity android:name=".screen.view.AdaptViewActivity" />
         <activity android:name=".screen.nestedrecycler.NestedRecyclerActivity" />
         <activity android:name=".screen.nestedrecyclersuper.NestedRecyclerSuperActivity" />
+        <activity android:name=".screen.stickyheader.StickyHeaderActivity" />
 
     </application>
 
