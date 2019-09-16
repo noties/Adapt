@@ -13,11 +13,14 @@ import java.util.List;
  * Class to allow nested RecyclerView. Please note that each unique group must have a dedicated subclass
  * in order to have a unique view-type.
  * <p>
- * Please note that this item automatically takes care
+ * Please note that this item automatically takes care of pooling views - if parent of this
+ * item is RecyclerView, then its RecyclerView.RecyclerViewPool will be shared with this item.
+ * <p>
+ * since 2.3.0 implements {@link HasChildrenItems}
  *
  * @since 2.2.0
  */
-public abstract class ItemGroup extends Item<ItemGroup.Holder> {
+public abstract class ItemGroup extends Item<ItemGroup.Holder> implements HasChildrenItems {
 
     // should we allow mutation, how to trigger notification then?
     private List<Item> children;
@@ -27,6 +30,7 @@ public abstract class ItemGroup extends Item<ItemGroup.Holder> {
         this.children = children;
     }
 
+    @Override
     @NonNull
     public List<Item> getChildren() {
         return children;
@@ -38,6 +42,7 @@ public abstract class ItemGroup extends Item<ItemGroup.Holder> {
      *
      * @param children a new set of children for this group
      */
+    @Override
     public void setChildren(@NonNull List<Item> children) {
         this.children = children;
     }
@@ -93,8 +98,17 @@ public abstract class ItemGroup extends Item<ItemGroup.Holder> {
     }
 
     protected void processState(@NonNull Holder holder) {
-        NestedRecyclerState
-                .process(id(), holder.recyclerView);
+
+        final RecyclerView recyclerView = holder.recyclerView;
+
+        // sometimes a view with recycler is displayed with previous state saved
+        final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            layoutManager.scrollToPosition(0);
+        }
+
+        ViewState
+                .process(id(), recyclerView);
     }
 
     protected static class Holder extends Item.Holder {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0-SNAPSHOT
+* Add `ItemViewGroup` for a group of items with the usage of `AdaptViewGroup`
+* Add `ViewState` utility to save/restore view state (deprecated `NestedRecyclerState`)
+* Add `@CheckResult` for `Holder.requireView` methods
+* Add `HasChildrenItems` common interface for a group item (`ItemGroup` and `ItemViewGroup`)
+
 ## 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support
 * create `ItemLayoutWrapper` for easier wrapping of an `Item` inside a different layout

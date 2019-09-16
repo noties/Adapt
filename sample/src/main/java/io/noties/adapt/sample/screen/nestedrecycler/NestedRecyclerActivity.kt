@@ -11,9 +11,11 @@ import io.noties.adapt.DiffUtilDataSetChanged
 import io.noties.adapt.Item
 import io.noties.adapt.ItemGroup
 import io.noties.adapt.ItemLayoutWrapper
+import io.noties.adapt.ViewState
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.screen.BaseSampleActivity
+import io.noties.debug.Debug
 
 class NestedRecyclerActivity : BaseSampleActivity() {
 
@@ -35,6 +37,11 @@ class NestedRecyclerActivity : BaseSampleActivity() {
         adapt.setItems(generator.shuffle(adapt.currentItems))
     }
 
+    // temp
+    companion object {
+        var items: List<Item<*>>? = null
+    }
+
     private val adapt = Adapt.create(DiffUtilDataSetChanged.create())
     private val generator = ItemGenerator()
 
@@ -47,7 +54,36 @@ class NestedRecyclerActivity : BaseSampleActivity() {
 
         recycler.adapter = adapt
 
-        addMoreItems()
+        if (savedInstanceState != null) {
+            val viewState = savedInstanceState.getBundle("view-state");
+            Debug.i(", restore: %s, viewState: %s",
+                    ViewState.onRestoreInstanceState(recycler, viewState), viewState)
+            adapt.setItems(items)
+        } else {
+            addMoreItems()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        // hm, until view is detached, its state won't be processed and saved...
+        // so, we can obtain current views from recyclerView and process then manually, but...
+        //  we must have adapt id to save them...
+
+        val recycler = findViewById<RecyclerView>(R.id.recycler_view)
+
+        for (i in 0 until recycler.childCount) {
+            val view = recycler.getChildAt(i)
+            val holder = recycler.findContainingViewHolder(view) ?: continue
+            val id = adapt.getItemId(holder.adapterPosition)
+            ViewState.save(id, view)
+        }
+
+        val viewState = ViewState.onSaveInstanceState(recycler)
+        Debug.i("viewState: %s", viewState)
+        outState?.putBundle("view-state", viewState)
+        items = adapt.currentItems
     }
 }
 

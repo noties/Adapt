@@ -14,7 +14,9 @@ import java.util.Map;
 /**
  * @see #process(long, RecyclerView)
  * @since 2.2.0
+ * @deprecated 2.3.0-SNAPSHOT
  */
+@Deprecated
 public abstract class NestedRecyclerState {
 
     /**

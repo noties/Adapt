@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
  * Other methods {@link #createHolder(LayoutInflater, ViewGroup)}, {@link #render(Holder)},
  * {@link #recyclerDecoration(RecyclerView)} are calling
  * original item. Ids are shared (the same for original and wrapped (this) items).
+ * This item can be used when layout of original item is not changed.
  * <p>
  * Since 2.2.0 implements {@link HasWrappedItem}
  *
  * @see OnClickWrapper
+ * @see ItemLayoutWrapper
  * @since 2.0.0
  */
 public class ItemWrapper<H extends Item.Holder>

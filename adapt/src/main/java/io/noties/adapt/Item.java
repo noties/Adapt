@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,11 +74,13 @@ public abstract class Item<H extends Item.Holder> {
         }
 
         @NonNull
+        @CheckResult
         protected <V extends View> V requireView(@IdRes int id) {
             return requireView(itemView, id);
         }
 
         @NonNull
+        @CheckResult
         protected <V extends View> V requireView(@NonNull View view, @IdRes int id) {
             return ViewUtils.requireView(view, id);
         }
