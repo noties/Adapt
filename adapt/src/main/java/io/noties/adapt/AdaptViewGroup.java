@@ -80,6 +80,12 @@ public abstract class AdaptViewGroup {
     /**
      * @since 2.3.0-SNAPSHOT
      */
+    @Nullable
+    public abstract Item findItemForView(@NonNull View view);
+
+    /**
+     * @since 2.3.0-SNAPSHOT
+     */
     public static class ChangeHandlerDef implements ChangeHandler {
 
         @Override
@@ -182,6 +188,12 @@ public abstract class AdaptViewGroup {
             }
 
             return items;
+        }
+
+        @Nullable
+        @Override
+        public Item findItemForView(@NonNull View view) {
+            return (Item) view.getTag(R.id.adapt_internal_item);
         }
 
         @Override
