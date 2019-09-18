@@ -27,7 +27,6 @@ public abstract class AdaptViewGroup {
         AdaptViewGroup build();
     }
 
-
     @NonNull
     public static AdaptViewGroup create(@NonNull ViewGroup group) {
         return builder(group).build();

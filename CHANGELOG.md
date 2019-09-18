@@ -5,6 +5,7 @@
 * Add `ViewState` utility to save/restore view state (deprecated `NestedRecyclerState`)
 * Add `@CheckResult` for `Holder.requireView` methods
 * Add `HasChildrenItems` common interface for a group item (`ItemGroup` and `ItemViewGroup`)
+* Add `Adapt#onSaveInstanceState` and `Adapt#onRestoreInstanceState` for easier state saving/restoration
 
 ## 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support

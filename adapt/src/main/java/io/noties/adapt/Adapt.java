@@ -1,7 +1,10 @@
 package io.noties.adapt;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.CheckResult;
@@ -87,6 +90,8 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
         return new Adapt(dataSetChangeHandler);
     }
 
+    private static final String STATE_KEY_RECYCLER = "adapt.state.RecyclerView";
+    private static final String STATE_KEY_VIEW_STATE = "adapt.state.ViewState";
 
     private final DataSetChangeHandler dataSetChangeHandler;
 
@@ -125,8 +130,83 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
         this.recyclerView = null;
         this.inflater = null;
+    }
 
-        // we also could remove all decorations here
+    /**
+     * Save RecyclerView state of attached/currently-visible children. To save state of all
+     * children (including already detached) additionally use {@link ViewState#process(long, View)} inside
+     * your {@link Item#render(Item.Holder)} method.
+     *
+     * @param bundle to save state to
+     * @param key    key to use for state representation inside passed Bundle
+     * @return flag indicating if state saving was successful
+     * @see #onRestoreInstanceState(Bundle, String)
+     * @since 2.3.0-SNAPSHOT
+     */
+    public boolean onSaveInstanceState(@NonNull Bundle bundle, @NonNull String key) {
+        // we have here: recycler-view state (that we use)
+        // we have state of children
+
+        // if we are not attached -> nothing we can do
+        final RecyclerView recyclerView = this.recyclerView;
+        if (recyclerView == null) {
+            return false;
+        }
+
+        // as ViewState saves state when view is detached -> we must iterate over current views and
+        // save them explicitly
+
+        View view;
+        RecyclerView.ViewHolder holder;
+
+        for (int i = 0, count = recyclerView.getChildCount(); i < count; i++) {
+            view = recyclerView.getChildAt(i);
+            holder = recyclerView.findContainingViewHolder(view);
+            if (holder != null) {
+                ViewState.save(getItemId(holder.getAdapterPosition()), view);
+            }
+        }
+
+        final SparseArray<Parcelable> recyclerState = new SparseArray<>(1);
+        recyclerView.saveHierarchyState(recyclerState);
+
+        final Bundle state = new Bundle();
+        state.putSparseParcelableArray(STATE_KEY_RECYCLER, recyclerState);
+        state.putBundle(STATE_KEY_VIEW_STATE, ViewState.onSaveInstanceState(recyclerView));
+
+        bundle.putBundle(key, state);
+
+        return true;
+    }
+
+    /**
+     * @param bundle to restore state from or null
+     * @param key    that was used to save state by {@link #onSaveInstanceState(Bundle, String)} call
+     * @return flag indicating if state restoration did happen (bundle is not null and internal
+     * state is present inside bundle)
+     * @see #onSaveInstanceState(Bundle, String)
+     * @since 2.3.0-SNAPSHOT
+     */
+    public boolean onRestoreInstanceState(@Nullable Bundle bundle, @NonNull String key) {
+
+        final RecyclerView recyclerView = this.recyclerView;
+        final Bundle state = bundle != null
+                ? bundle.getBundle(key)
+                : null;
+
+        if (recyclerView == null
+                || state == null) {
+            return false;
+        }
+
+        final SparseArray<Parcelable> recyclerState = state.getSparseParcelableArray(STATE_KEY_RECYCLER);
+        if (recyclerState != null) {
+            recyclerView.restoreHierarchyState(recyclerState);
+        }
+
+        ViewState.onRestoreInstanceState(recyclerView, state.getBundle(STATE_KEY_VIEW_STATE));
+
+        return true;
     }
 
     @Override
@@ -210,7 +290,6 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
      * @see ItemViewTypeFactory
      * @since 2.0.0
      */
-    @SuppressWarnings("WeakerAccess")
     public void setItems(
             @Nullable List<Item> items,
             @Nullable ItemViewTypeFactory itemViewTypeFactory) {
