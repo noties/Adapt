@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import static io.noties.adapt.ListUtils.safeList;
 
 /**
  * Class to allow nested RecyclerView. Please note that each unique group must have a dedicated subclass
@@ -33,7 +36,7 @@ public abstract class ItemGroup extends Item<ItemGroup.Holder> implements HasChi
     @Override
     @NonNull
     public List<Item> getChildren() {
-        return children;
+        return safeList(children);
     }
 
     /**
@@ -43,7 +46,7 @@ public abstract class ItemGroup extends Item<ItemGroup.Holder> implements HasChi
      * @param children a new set of children for this group
      */
     @Override
-    public void setChildren(@NonNull List<Item> children) {
+    public void setChildren(@Nullable List<Item> children) {
         this.children = children;
     }
 

@@ -1,6 +1,7 @@
 package io.noties.adapt;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface HasChildrenItems {
      * Update underlying children items. Please note that this method does not trigger
      * an update notification.
      */
-    void setChildren(@NonNull List<Item> children);
+    void setChildren(@Nullable List<Item> children);
 }

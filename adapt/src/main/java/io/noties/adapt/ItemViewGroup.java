@@ -4,8 +4,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
+
+import static io.noties.adapt.ListUtils.safeList;
 
 /**
  * @since 2.3.0-SNAPSHOT
@@ -13,7 +16,6 @@ import java.util.List;
 public abstract class ItemViewGroup extends Item<ItemViewGroup.Holder>
         implements HasChildrenItems {
 
-    // todo: common interface to set/get children
     private List<Item> children;
 
     protected ItemViewGroup(long id, @NonNull List<Item> children) {
@@ -24,11 +26,11 @@ public abstract class ItemViewGroup extends Item<ItemViewGroup.Holder>
     @Override
     @NonNull
     public List<Item> getChildren() {
-        return children;
+        return safeList(children);
     }
 
     @Override
-    public void setChildren(@NonNull List<Item> children) {
+    public void setChildren(@Nullable List<Item> children) {
         this.children = children;
     }
 

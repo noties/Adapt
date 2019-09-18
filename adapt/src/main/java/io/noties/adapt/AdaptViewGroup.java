@@ -222,7 +222,7 @@ public abstract class AdaptViewGroup {
 
             if (holder == null) {
                 throw AdaptException.create("Internal error, attached view has no Holder saved, " +
-                        "view: " + view);
+                        "index: %d, item: %s, view: %s", index, item, view);
             }
 
             //noinspection unchecked

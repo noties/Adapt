@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static io.noties.adapt.ListUtils.safeList;
+
 public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     /**
@@ -302,7 +304,7 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
 
     @NonNull
     public List<Item> getCurrentItems() {
-        return Collections.unmodifiableList(safeList(items));
+        return safeList(items);
     }
 
     /**
@@ -534,13 +536,6 @@ public class Adapt extends RecyclerView.Adapter<Item.Holder> {
         return set.isEmpty()
                 ? null
                 : set;
-    }
-
-    @NonNull
-    private static <T> List<T> safeList(@Nullable List<T> list) {
-        return list != null
-                ? list
-                : Collections.<T>emptyList();
     }
 
     @SuppressWarnings("WeakerAccess")
