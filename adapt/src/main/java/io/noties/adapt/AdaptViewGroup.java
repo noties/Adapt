@@ -198,6 +198,14 @@ public abstract class AdaptViewGroup {
         public void insertAt(int index, @NonNull Item item) {
             final Item.Holder holder = item.createHolder(layoutInflater, group);
             final View view = holder.itemView;
+
+            // @since 2.3.0-SNAPSHOT validate that returned view has no parent
+            if (view.getParent() != null) {
+                throw AdaptException.create("Returned view already has parent. Make sure that " +
+                        "you do not attach view manually or call `inflater.inflate(resId, parent)` or " +
+                        "`inflater.inflate(resId, parent, true)` when inflating view. Item: %s", item);
+            }
+
             view.setTag(R.id.adapt_internal_holder, holder);
             changeHandler.insertAt(group, view, index);
         }

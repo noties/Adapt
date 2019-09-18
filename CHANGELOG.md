@@ -7,6 +7,7 @@
 * Add `HasChildrenItems` common interface for a group item (`ItemGroup` and `ItemViewGroup`)
 * Add `Adapt#onSaveInstanceState` and `Adapt#onRestoreInstanceState` for easier state saving/restoration
 * Add `AdaptViewGroup.ChangeHandler` with `ChangeHandlerDef` and `TransitionChangeHandler` implementations
+* `AdaptViewGroup` checks if Item returns a View already attached to a parent
 
 ## 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support
