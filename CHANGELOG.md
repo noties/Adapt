@@ -6,6 +6,7 @@
 * Add `@CheckResult` for `Holder.requireView` methods
 * Add `HasChildrenItems` common interface for a group item (`ItemGroup` and `ItemViewGroup`)
 * Add `Adapt#onSaveInstanceState` and `Adapt#onRestoreInstanceState` for easier state saving/restoration
+* Add `AdaptViewGroup.ChangeHandler` with `ChangeHandlerDef` and `TransitionChangeHandler` implementations
 
 ## 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support

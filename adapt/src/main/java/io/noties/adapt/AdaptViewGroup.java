@@ -23,8 +23,36 @@ public abstract class AdaptViewGroup {
         @NonNull
         Builder adaptViewGroupDiff(@NonNull AdaptViewGroupDiff adaptViewGroupDiff);
 
+        /**
+         * @param changeHandler to handle layout changes
+         * @since 2.3.0-SNAPSHOT
+         */
+        @NonNull
+        Builder changeHandler(@NonNull ChangeHandler changeHandler);
+
         @NonNull
         AdaptViewGroup build();
+    }
+
+    /**
+     * @see Builder#changeHandler(ChangeHandler)
+     * @see ChangeHandlerDef
+     * @see TransitionChangeHandler
+     * @since 2.3.0-SNAPSHOT
+     */
+    public interface ChangeHandler {
+
+        void begin(@NonNull ViewGroup group);
+
+        void removeAll(@NonNull ViewGroup group);
+
+        void removeAt(@NonNull ViewGroup group, int position);
+
+        void move(@NonNull ViewGroup group, int from, int to);
+
+        void insertAt(@NonNull ViewGroup group, @NonNull View view, int position);
+
+        void end(@NonNull ViewGroup group);
     }
 
     @NonNull
@@ -49,20 +77,60 @@ public abstract class AdaptViewGroup {
     @NonNull
     public abstract List<Item> getCurrentItems();
 
+    /**
+     * @since 2.3.0-SNAPSHOT
+     */
+    public static class ChangeHandlerDef implements ChangeHandler {
+
+        @Override
+        public void begin(@NonNull ViewGroup group) {
+            // no op
+        }
+
+        @Override
+        public void removeAll(@NonNull ViewGroup group) {
+            group.removeAllViews();
+        }
+
+        @Override
+        public void removeAt(@NonNull ViewGroup group, int position) {
+            group.removeViewAt(position);
+        }
+
+        @Override
+        public void move(@NonNull ViewGroup group, int from, int to) {
+            final View child = group.getChildAt(from);
+            group.removeViewAt(from);
+            group.addView(child, to);
+        }
+
+        @Override
+        public void insertAt(@NonNull ViewGroup group, @NonNull View view, int position) {
+            group.addView(view, position);
+        }
+
+        @Override
+        public void end(@NonNull ViewGroup group) {
+            // no op
+        }
+    }
 
     static class Impl extends AdaptViewGroup implements AdaptViewGroupDiff.Parent {
 
         private final ViewGroup group;
         private final LayoutInflater layoutInflater;
         private final AdaptViewGroupDiff diff;
+        private final ChangeHandler changeHandler;
 
         Impl(
                 @NonNull ViewGroup group,
                 @NonNull LayoutInflater layoutInflater,
-                @NonNull AdaptViewGroupDiff adaptViewGroupDiff) {
+                @NonNull AdaptViewGroupDiff adaptViewGroupDiff,
+                @NonNull ChangeHandler changeHandler) {
             this.group = group;
             this.layoutInflater = layoutInflater;
             this.diff = adaptViewGroupDiff;
+            this.changeHandler = changeHandler;
         }
 
         @NonNull
@@ -74,14 +142,21 @@ public abstract class AdaptViewGroup {
         @Override
         public void setItems(@Nullable List<Item> items) {
 
-            if (items == null
-                    || items.isEmpty()) {
-                // no need to validate what we have at this point -> nothing should be displayed
-                group.removeAllViews();
-                return;
-            }
+            changeHandler.begin(group);
+            try {
 
-            diff.diff(this, getCurrentItems(), items);
+                if (items == null
+                        || items.isEmpty()) {
+                    // no need to validate what we have at this point -> nothing should be displayed
+                    changeHandler.removeAll(group);
+                    return;
+                }
+
+                diff.diff(this, getCurrentItems(), items);
+
+            } finally {
+                changeHandler.end(group);
+            }
         }
 
         @NonNull
@@ -111,14 +186,12 @@ public abstract class AdaptViewGroup {
 
         @Override
         public void removeAt(int index) {
-            group.removeViewAt(index);
+            changeHandler.removeAt(group, index);
         }
 
         @Override
         public void move(int from, int to) {
-            final View child = group.getChildAt(from);
-            group.removeViewAt(from);
-            group.addView(child, to);
+            changeHandler.move(group, from, to);
         }
 
         @Override
@@ -126,7 +199,7 @@ public abstract class AdaptViewGroup {
             final Item.Holder holder = item.createHolder(layoutInflater, group);
             final View view = holder.itemView;
             view.setTag(R.id.adapt_internal_holder, holder);
-            group.addView(view, index);
+            changeHandler.insertAt(group, view, index);
         }
 
         @Override
@@ -157,6 +230,7 @@ public abstract class AdaptViewGroup {
 
         private LayoutInflater layoutInflater;
         private AdaptViewGroupDiff adaptViewGroupDiff;
+        private ChangeHandler changeHandler;
 
         BuilderImpl(@NonNull ViewGroup group) {
             this.group = group;
@@ -178,6 +252,13 @@ public abstract class AdaptViewGroup {
 
         @NonNull
         @Override
+        public Builder changeHandler(@NonNull ChangeHandler changeHandler) {
+            this.changeHandler = changeHandler;
+            return this;
+        }
+
+        @NonNull
+        @Override
         public AdaptViewGroup build() {
 
             final LayoutInflater inflater = this.layoutInflater != null
@@ -188,7 +269,13 @@ public abstract class AdaptViewGroup {
                     ? this.adaptViewGroupDiff
                     : AdaptViewGroupDiff.create();
 
-            return new Impl(group, inflater, adaptViewGroupDiff);
+            final ChangeHandler changeHandler = this.changeHandler != null
+                    ? this.changeHandler
+                    : new ChangeHandlerDef();
+
+            return new Impl(group, inflater, adaptViewGroupDiff, changeHandler);
         }
     }
+
+
 }

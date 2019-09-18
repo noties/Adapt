@@ -1,9 +1,9 @@
 package io.noties.adapt.sample.screen.group
 
 import android.os.Bundle
-import android.transition.TransitionManager
 import io.noties.adapt.AdaptViewGroup
 import io.noties.adapt.OnClickWrapper
+import io.noties.adapt.TransitionChangeHandler
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.screen.BaseSampleActivity
@@ -26,16 +26,20 @@ class AdaptViewGroupActivity : BaseSampleActivity() {
             addAll(items)
         }
 
-        // trigger auto transition
-        TransitionManager.beginDelayedTransition(group.viewGroup())
+//        // trigger auto transition
+        // @since 2.3.0 there is the TransitionChangeHandler utility class,
+        // but it's still possible to just use this:
+//        TransitionManager.beginDelayedTransition(group.viewGroup())
 
         group.setItems(items)
     }
 
     override fun shuffleItems() {
 
-        // trigger auto transition
-        TransitionManager.beginDelayedTransition(group.viewGroup())
+//        // trigger auto transition
+        // @since 2.3.0 there is the TransitionChangeHandler utility class,
+        // but it's still possible to just use this:
+//        TransitionManager.beginDelayedTransition(group.viewGroup())
 
         group.setItems(generator.shuffle(group.currentItems))
     }
@@ -47,7 +51,9 @@ class AdaptViewGroupActivity : BaseSampleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        group = AdaptViewGroup.create(findViewById(R.id.group))
+        group = AdaptViewGroup.builder(findViewById(R.id.group))
+                .changeHandler(TransitionChangeHandler())
+                .build()
 
         addMoreItems()
     }
