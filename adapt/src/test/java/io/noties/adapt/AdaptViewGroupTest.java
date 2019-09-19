@@ -3,8 +3,7 @@ package io.noties.adapt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
+import android.view.ViewParent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.robolectric.annotation.Config;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +24,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -36,6 +33,9 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class AdaptViewGroupTest {
+
+    private static final int ID_ITEM = R.id.adapt_internal_item;
+    private static final int ID_HOLDER = R.id.adapt_internal_holder;
 
     private AdaptViewGroup group;
 
@@ -58,8 +58,11 @@ public class AdaptViewGroupTest {
     @Test
     public void init_removes_all_children_from_group() {
         // any count > 0 should do
+        final ViewGroup viewGroup = mock(ViewGroup.class);
         when(viewGroup.getChildCount()).thenReturn(1);
-        AdaptViewGroup.create(viewGroup);
+        AdaptViewGroup.builder(viewGroup)
+                .layoutInflater(mock(LayoutInflater.class))
+                .build();
         verify(viewGroup, times(1)).getChildCount();
         verify(viewGroup, times(1)).removeAllViews();
     }
@@ -70,34 +73,84 @@ public class AdaptViewGroupTest {
     }
 
     @Test
-    public void get_current_items_side_effects() {
-        // if there are views that have no holder/item attached to a view, this view is removed
+    public void get_current_items_throws_if_not_associated() {
+        // if there are views that were added manually (not through setItems), then
+        // getCurrentItems will thrown an exception
 
-        final AtomicInteger count = new AtomicInteger(2);
+        when(viewGroup.getChildCount()).thenReturn(3);
 
-        // return an answer (we track count internally)
-        doAnswer(new Answer() {
+        when(viewGroup.getChildAt(eq(0))).thenAnswer(new Answer<View>() {
             @Override
-            public Object answer(InvocationOnMock invocation) {
-                return count.get();
+            public View answer(InvocationOnMock invocation) throws Throwable {
+                final View view = mock(View.class);
+                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
+                return view;
             }
-        }).when(viewGroup).getChildCount();
-
-        // return mocked view
-        when(viewGroup.getChildAt(anyInt())).thenReturn(mock(View.class));
-
-        // decrement our count variable
-        doAnswer(new Answer() {
+        });
+        when(viewGroup.getChildAt(eq(1))).thenReturn(mock(View.class));
+        when(viewGroup.getChildAt(eq(2))).thenAnswer(new Answer<View>() {
             @Override
-            public Object answer(InvocationOnMock invocation) {
-                count.decrementAndGet();
-                return null;
+            public View answer(InvocationOnMock invocation) throws Throwable {
+                final View view = mock(View.class);
+                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
+                return view;
             }
-        }).when(viewGroup).removeViewAt(anyInt());
+        });
 
-        assertEquals(0, group.getCurrentItems().size());
+        try {
+            group.getCurrentItems();
+            fail();
+        } catch (AdaptException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("View at position(1) doesn't have Item associated"));
+        }
+    }
 
-        verify(viewGroup, times(2)).removeViewAt(anyInt());
+    @Test
+    public void notify_item_changed_throws_if_not_associated() {
+
+        when(viewGroup.getChildCount()).thenReturn(3);
+
+        when(viewGroup.getChildAt(eq(0))).thenAnswer(new Answer<View>() {
+            @Override
+            public View answer(InvocationOnMock invocation) throws Throwable {
+                final View view = mock(View.class);
+                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
+                return view;
+            }
+        });
+        when(viewGroup.getChildAt(eq(1))).thenReturn(mock(View.class));
+        when(viewGroup.getChildAt(eq(2))).thenAnswer(new Answer<View>() {
+            @Override
+            public View answer(InvocationOnMock invocation) throws Throwable {
+                final View view = mock(View.class);
+                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
+                return view;
+            }
+        });
+
+        try {
+            group.notifyItemChanged(new AbstractItem(1L));
+            fail();
+        } catch (AdaptException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("View at position(1) doesn't have Item associated"));
+        }
+    }
+
+    @Test
+    public void notify_item_changed_not_found() {
+
+        final View view = mock(View.class);
+        when(view.getTag(eq(ID_ITEM))).thenReturn(new AbstractItem(1L));
+
+        when(viewGroup.getChildCount()).thenReturn(1);
+        when(viewGroup.getChildAt(eq(0))).thenReturn(view);
+
+        try {
+            group.notifyItemChanged(mock(Item.class));
+            fail();
+        } catch (AdaptException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("Item is not associated with this AdaptViewGroup"));
+        }
     }
 
     @Test
@@ -125,7 +178,7 @@ public class AdaptViewGroupTest {
 
         group.setItems(Collections.<Item>emptyList());
 
-        verify(viewGroup, times(1)).removeAllViews();
+        verify(changeHandler, times(1)).removeAll(eq(viewGroup));
 
         // diff must not be called
         verify(diff, never()).diff(
@@ -140,7 +193,7 @@ public class AdaptViewGroupTest {
 
         group.setItems(null);
 
-        verify(viewGroup, times(1)).removeAllViews();
+        verify(changeHandler, times(1)).removeAll(eq(viewGroup));
 
         // diff must not be called
         verify(diff, never()).diff(
@@ -161,13 +214,39 @@ public class AdaptViewGroupTest {
     }
 
     @Test
+    public void parent_insert_at_view_already_attached() {
+
+        final Item item = mock(Item.class);
+        final View view = mock(View.class);
+        when(view.getParent()).thenReturn(mock(ViewParent.class));
+        final Item.Holder holder = new Item.Holder(view);
+        when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).thenReturn(holder);
+
+        try {
+            ((AdaptViewGroupDiff.Parent) group).insertAt(0, item);
+            fail();
+        } catch (AdaptException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("Returned view already has parent"));
+        }
+    }
+
+    @Test
     public void parent_callbacks_remove_at() {
 
         final AdaptViewGroupDiff.Parent parent = (AdaptViewGroupDiff.Parent) group;
 
         parent.removeAt(0);
 
-        verify(viewGroup, times(1)).removeViewAt(eq(0));
+        verify(changeHandler, times(1)).removeAt(eq(viewGroup), eq(0));
+    }
+
+    @Test
+    public void find_item_for_view() {
+        final View view = mock(View.class);
+        final Item item = mock(Item.class);
+        when(view.getTag(eq(ID_ITEM))).thenReturn(item);
+
+        assertEquals(item, group.findItemForView(view));
     }
 
     @Test
@@ -180,9 +259,7 @@ public class AdaptViewGroupTest {
 
         parent.move(1, 7);
 
-        verify(viewGroup, times(1)).getChildAt(eq(1));
-        verify(viewGroup, times(1)).removeViewAt(eq(1));
-        verify(viewGroup, times(1)).addView(eq(view), eq(7));
+        verify(changeHandler, times(1)).move(eq(viewGroup), eq(1), eq(7));
     }
 
     @Test
@@ -202,9 +279,9 @@ public class AdaptViewGroupTest {
                 .createHolder(any(LayoutInflater.class), eq(viewGroup));
 
         verify(view, times(1))
-                .setTag(eq(R.id.adapt_internal_holder), eq(holder));
+                .setTag(eq(ID_HOLDER), eq(holder));
 
-        verify(viewGroup, times(1)).addView(eq(view), eq(666));
+        verify(changeHandler, times(1)).insertAt(eq(viewGroup), eq(view), eq(666));
     }
 
     @Test
@@ -239,39 +316,7 @@ public class AdaptViewGroupTest {
 
         //noinspection unchecked
         verify(item, times(1)).render(eq(holder));
-        verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));
+        verify(view, times(1)).setTag(eq(ID_ITEM), eq(item));
     }
 
-    private static class AbstractItem extends Item {
-
-        AbstractItem(long id) {
-            super(id);
-        }
-
-        @NonNull
-        @Override
-        public Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-            return null;
-        }
-
-        @Override
-        public void render(@NonNull Holder holder) {
-
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            AbstractItem that = (AbstractItem) o;
-
-            return id == that.id;
-        }
-
-        @Override
-        public int hashCode() {
-            return (int) (id ^ (id >>> 32));
-        }
-    }
 }

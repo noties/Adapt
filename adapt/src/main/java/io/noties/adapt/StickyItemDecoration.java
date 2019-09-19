@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * fills all the spans of GridLayoutManager (matches width).
  * <p>
  * Sticky view will always have width equal to RecyclerView width (minus horizontal padding).
+ * <p>
+ * Please note that only a single item can eb sticky inside a recycler-view
  *
  * @since 2.2.0
  */
