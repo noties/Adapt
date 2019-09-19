@@ -84,6 +84,15 @@ public abstract class AdaptViewGroup {
     public abstract Item findItemForView(@NonNull View view);
 
     /**
+     * Re-render specified item. Please note that {@link ChangeHandler} won\'t be involved.
+     * Specified {@code item} can be a newly created one, but it must share the same id
+     * with an item that is contained in current items.
+     *
+     * @since 2.3.0-SNAPSHOT
+     */
+    public abstract void notifyItemChanged(@NonNull Item item);
+
+    /**
      * @since 2.3.0-SNAPSHOT
      */
     public static class ChangeHandlerDef implements ChangeHandler {
@@ -122,6 +131,9 @@ public abstract class AdaptViewGroup {
     }
 
     static class Impl extends AdaptViewGroup implements AdaptViewGroupDiff.Parent {
+
+        private static final int ID_ITEM = R.id.adapt_internal_item;
+        private static final int ID_HOLDER = R.id.adapt_internal_holder;
 
         private final ViewGroup group;
         private final LayoutInflater layoutInflater;
@@ -178,7 +190,7 @@ public abstract class AdaptViewGroup {
             // also important to always ask for childCount (we are removing views and this variable can change)
             for (int i = 0; i < group.getChildCount(); /*no increment*/) {
                 view = group.getChildAt(i);
-                item = (Item) view.getTag(R.id.adapt_internal_item);
+                item = (Item) view.getTag(ID_ITEM);
                 if (item == null) {
                     group.removeViewAt(i);
                 } else {
@@ -193,7 +205,29 @@ public abstract class AdaptViewGroup {
         @Nullable
         @Override
         public Item findItemForView(@NonNull View view) {
-            return (Item) view.getTag(R.id.adapt_internal_item);
+            return (Item) view.getTag(ID_ITEM);
+        }
+
+        @Override
+        public void notifyItemChanged(@NonNull Item item) {
+
+            final long id = item.id();
+
+            int index = -1;
+
+            for (int i = 0, count = group.getChildCount(); i < count; i++) {
+                // when item might be null for a child view? when group has views and no setItems called...
+                if (id == ((Item) group.getChildAt(i).getTag(ID_ITEM)).id()) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1) {
+                throw AdaptException.create("Item is not associated with this AdaptViewGroup, item: %s", item);
+            }
+
+            render(index, item);
         }
 
         @Override
@@ -208,6 +242,7 @@ public abstract class AdaptViewGroup {
 
         @Override
         public void insertAt(int index, @NonNull Item item) {
+
             final Item.Holder holder = item.createHolder(layoutInflater, group);
             final View view = holder.itemView;
 
@@ -218,7 +253,8 @@ public abstract class AdaptViewGroup {
                         "`inflater.inflate(resId, parent, true)` when inflating view. Item: %s", item);
             }
 
-            view.setTag(R.id.adapt_internal_holder, holder);
+            view.setTag(ID_HOLDER, holder);
+
             changeHandler.insertAt(group, view, index);
         }
 
@@ -230,7 +266,7 @@ public abstract class AdaptViewGroup {
             // check that types match?
 
             final View view = group.getChildAt(index);
-            final Item.Holder holder = (Item.Holder) view.getTag(R.id.adapt_internal_holder);
+            final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
 
             if (holder == null) {
                 throw AdaptException.create("Internal error, attached view has no Holder saved, " +
@@ -240,7 +276,7 @@ public abstract class AdaptViewGroup {
             //noinspection unchecked
             item.render(holder);
 
-            view.setTag(R.id.adapt_internal_item, item);
+            view.setTag(ID_ITEM, item);
         }
     }
 
