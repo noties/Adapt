@@ -4,11 +4,20 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Adapt
+import io.noties.adapt.Item
+import io.noties.adapt.ItemWrapper
+import io.noties.adapt.StickyItemDecoration
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.screen.BaseSampleActivity
 
 class AdaptLinearRecyclerActivity : BaseSampleActivity() {
+
+    class StickyWrapperItem<H : Item.Holder>(item: Item<H>) : ItemWrapper<H>(item) {
+        override fun recyclerDecoration(recyclerView: RecyclerView): RecyclerView.ItemDecoration? {
+            return StickyItemDecoration.create(recyclerView, this)
+        }
+    }
 
     override fun layoutResId() = R.layout.activity_recycler
 
@@ -18,6 +27,17 @@ class AdaptLinearRecyclerActivity : BaseSampleActivity() {
         val items = adapt.currentItems.toMutableList().apply {
             val list = generator.generate(3)
                     .map { LinearWrapper(it) }
+            // we can add more wrappers here, for example introduce sticky decoration
+            // for triangle
+            // NB all decor wrappers must go AFTER layout wrappers
+//                    .map {
+//                        if (it.item() is TriangleItem) {
+//                            StickyWrapperItem(it)
+//                        } else {
+//                            it as Item<*>
+//                        }
+//                    }
+
             addAll(list)
         }
         adapt.setItems(items)

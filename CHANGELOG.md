@@ -9,6 +9,8 @@
 * Add `AdaptViewGroup.ChangeHandler` with `ChangeHandlerDef` and `TransitionChangeHandler` implementations
 * Add `AdaptViewGroup#findItemForView` method
 * `AdaptViewGroup` checks if Item returns a View already attached to a parent
+* `StickyItemDecoration`: use view-type from supplied item (for wrapped items), allow exact size of 
+header (instead of assuming that height is `wrap_content`)
 
 ## 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support

@@ -23,22 +23,32 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
         Transition provide(@NonNull ViewGroup group);
     }
 
+    @NonNull
+    public static TransitionChangeHandler create() {
+        return create(new AdaptViewGroup.ChangeHandlerDef(), null);
+    }
+
+    @NonNull
+    public static TransitionChangeHandler create(@NonNull AdaptViewGroup.ChangeHandler parent) {
+        return create(parent, null);
+    }
+
+    @NonNull
+    public static TransitionChangeHandler create(@Nullable TransitionProvider transitionProvider) {
+        return create(new AdaptViewGroup.ChangeHandlerDef(), transitionProvider);
+    }
+
+    @NonNull
+    public static TransitionChangeHandler create(
+            @NonNull AdaptViewGroup.ChangeHandler parent,
+            @Nullable TransitionProvider transitionProvider) {
+        return new TransitionChangeHandler(parent, transitionProvider);
+    }
+
     private final AdaptViewGroup.ChangeHandler parent;
     private final TransitionProvider transitionProvider;
 
-    public TransitionChangeHandler() {
-        this(new AdaptViewGroup.ChangeHandlerDef(), null);
-    }
-
-    public TransitionChangeHandler(@NonNull AdaptViewGroup.ChangeHandler parent) {
-        this(parent, null);
-    }
-
-    public TransitionChangeHandler(@Nullable TransitionProvider transitionProvider) {
-        this(new AdaptViewGroup.ChangeHandlerDef(), transitionProvider);
-    }
-
-    public TransitionChangeHandler(
+    protected TransitionChangeHandler(
             @NonNull AdaptViewGroup.ChangeHandler parent,
             @Nullable TransitionProvider transitionProvider) {
         this.parent = parent;

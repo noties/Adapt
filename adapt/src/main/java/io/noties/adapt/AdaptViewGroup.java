@@ -42,6 +42,9 @@ public abstract class AdaptViewGroup {
      */
     public interface ChangeHandler {
 
+        /**
+         * Will be called before processing items (diffing)
+         */
         void begin(@NonNull ViewGroup group);
 
         void removeAll(@NonNull ViewGroup group);
@@ -52,6 +55,9 @@ public abstract class AdaptViewGroup {
 
         void insertAt(@NonNull ViewGroup group, @NonNull View view, int position);
 
+        /**
+         * Will be called after all diff events are dispatched.
+         */
         void end(@NonNull ViewGroup group);
     }
 
@@ -149,6 +155,12 @@ public abstract class AdaptViewGroup {
             this.layoutInflater = layoutInflater;
             this.diff = adaptViewGroupDiff;
             this.changeHandler = changeHandler;
+
+            // @since 2.3.0-SNAPSHOT
+            if (group.getChildCount() > 0) {
+                // views must be applied by items only
+                group.removeAllViews();
+            }
         }
 
         @NonNull
@@ -183,20 +195,16 @@ public abstract class AdaptViewGroup {
 
             final List<Item> items = new ArrayList<>(group.getChildCount());
 
-            View view;
             Item item;
 
-            // important to NOT increment index variable (we are removing views)
-            // also important to always ask for childCount (we are removing views and this variable can change)
-            for (int i = 0; i < group.getChildCount(); /*no increment*/) {
-                view = group.getChildAt(i);
-                item = (Item) view.getTag(ID_ITEM);
+            // @since 2.3.0-SNAPSHOT instead of silently mutating views collection (if there is no item)
+            // we now throw an exception
+            for (int i = 0, count = group.getChildCount(); i < count; i++) {
+                item = (Item) group.getChildAt(i).getTag(ID_ITEM);
                 if (item == null) {
-                    group.removeViewAt(i);
-                } else {
-                    items.add(item);
-                    i += 1;
+                    throw viewHasNoItemAssociatedException(i, group.getChildAt(i));
                 }
+                items.add(item);
             }
 
             return items;
@@ -215,16 +223,23 @@ public abstract class AdaptViewGroup {
 
             int index = -1;
 
+            Item childItem;
+
             for (int i = 0, count = group.getChildCount(); i < count; i++) {
-                // when item might be null for a child view? when group has views and no setItems called...
-                if (id == ((Item) group.getChildAt(i).getTag(ID_ITEM)).id()) {
+                childItem = (Item) group.getChildAt(i).getTag(ID_ITEM);
+                if (childItem == null) {
+                    throw viewHasNoItemAssociatedException(i, group.getChildAt(i));
+                }
+
+                if (id == childItem.id()) {
                     index = i;
                     break;
                 }
             }
 
             if (index == -1) {
-                throw AdaptException.create("Item is not associated with this AdaptViewGroup, item: %s", item);
+                throw AdaptException.create("Item is not associated with this " +
+                        "AdaptViewGroup, item: %s", item);
             }
 
             render(index, item);
@@ -277,6 +292,13 @@ public abstract class AdaptViewGroup {
             item.render(holder);
 
             view.setTag(ID_ITEM, item);
+        }
+
+        private static AdaptException viewHasNoItemAssociatedException(int i, View view) {
+            return AdaptException.create("View at position(%d) doesn't have Item associated. " +
+                    "This can happen if you manually adding/removing views to/from ViewGroup. " +
+                    "All modifications must go through " +
+                    "AdaptViewGroup#setItem method only. View: %s", i, view);
         }
     }
 

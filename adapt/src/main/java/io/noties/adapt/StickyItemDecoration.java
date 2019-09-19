@@ -97,7 +97,7 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
                 "or use different #create factory method that allows manual placing of sticky view.");
     }
 
-    protected static final int MEASURE_SPEC_UNSPECIFIED =
+    private static final int MEASURE_SPEC_UNSPECIFIED =
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
     private final AdaptView<I> adaptView;
@@ -105,7 +105,9 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
 
     protected StickyItemDecoration(@NonNull AdaptView<I> adaptView) {
         this.adaptView = adaptView;
-        this.stickyViewType = Item.generatedViewType(adaptView.getCurrentItem().getClass());
+        // @since 2.3.0-SNAPSHOT it's important to use item viewType
+        // (instead of asking for a generated one)
+        this.stickyViewType = adaptView.getCurrentItem().viewType();
         hideStickyView();
     }
 
@@ -281,12 +283,27 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
 
     @NonNull
     protected View prepareStickyView(@NonNull AdaptView<I> adaptView, @NonNull RecyclerView recyclerView) {
+
         final int left = recyclerView.getPaddingLeft();
         final int width = recyclerView.getWidth() - left - recyclerView.getPaddingRight();
         final View view = adaptView.view();
+
+        // @since 2.3.0-SNAPSHOT we check if view has exact height and use it
+        final int heightMeasureSpec;
+        final ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams == null
+                || layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            heightMeasureSpec = MEASURE_SPEC_UNSPECIFIED;
+        } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
+            // interesting case
+            heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(recyclerView.getHeight(), View.MeasureSpec.EXACTLY);
+        } else {
+            heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(layoutParams.height, View.MeasureSpec.EXACTLY);
+        }
+
         view.measure(
                 View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-                MEASURE_SPEC_UNSPECIFIED
+                heightMeasureSpec
         );
         view.layout(left, 0, left + view.getMeasuredWidth(), view.getMeasuredHeight());
         return view;

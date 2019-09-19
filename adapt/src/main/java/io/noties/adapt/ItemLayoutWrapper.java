@@ -1,6 +1,7 @@
 package io.noties.adapt;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
@@ -32,6 +33,18 @@ public class ItemLayoutWrapper<H extends Item.Holder>
     private final int layout;
     private final Item<H> item;
 
+    /**
+     * Please note that if this constructor is used, then subclasses must override {@link #createLayout(LayoutInflater, ViewGroup)}.
+     * If you know layout file before-hand, then {@link #ItemLayoutWrapper(int, Item)}
+     * constructor can be used.
+     *
+     * @see #createLayout(LayoutInflater, ViewGroup)
+     * @since 2.3.0-SNAPSHOT
+     */
+    public ItemLayoutWrapper(@NonNull Item<H> item) {
+        this(0, item);
+    }
+
     @SuppressWarnings("WeakerAccess")
     public ItemLayoutWrapper(@LayoutRes int layout, @NonNull Item<H> item) {
         super(item.id());
@@ -39,11 +52,39 @@ public class ItemLayoutWrapper<H extends Item.Holder>
         this.item = item;
     }
 
+    /**
+     * You do not need to override this method if you use {@link #ItemLayoutWrapper(int, Item)}
+     * constructor. Otherwise it is required to be overridden.
+     *
+     * @since 2.3.0-SNAPSHOT
+     */
+    @NonNull
+    protected ViewGroup createLayout(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (layout == 0) {
+            throw AdaptException.create("Override #createLayout method or specify layout XML " +
+                    "resource ID by using appropriate constructor, item: %s", item);
+        }
+        return (ViewGroup) inflater.inflate(layout, parent, false);
+    }
+
+    /**
+     * Append wrapped item view to layout. By default wrapped view is added directly to parent,
+     * but if created layout has different structure this method can used to place wrapped view
+     * in a special manner.
+     *
+     * @since 2.3.0-SNAPSHOT
+     */
+    protected void appendWrappedViewToLayout(@NonNull ViewGroup layout, @NonNull View wrappedView) {
+        layout.addView(wrappedView);
+    }
+
     @NonNull
     @Override
     public Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        final ViewGroup root = (ViewGroup) inflater.inflate(layout, parent, false);
-        return new Holder(root, item.createHolder(inflater, root));
+        final ViewGroup root = createLayout(inflater, parent);
+        final H holder = item.createHolder(inflater, root);
+        appendWrappedViewToLayout(root, holder.itemView);
+        return new Holder(root, holder);
     }
 
     @Override
@@ -69,21 +110,13 @@ public class ItemLayoutWrapper<H extends Item.Holder>
         return item;
     }
 
-    @SuppressWarnings("WeakerAccess")
-    protected static class Holder extends Item.Holder {
+    public static class Holder extends Item.Holder {
 
         protected final Item.Holder wrapped;
 
-        protected Holder(@NonNull ViewGroup itemView, @NonNull Item.Holder wrapped) {
+        protected Holder(@NonNull View itemView, @NonNull Item.Holder wrapped) {
             super(itemView);
             this.wrapped = wrapped;
-
-            appendWrappedView(itemView, wrapped);
-        }
-
-        protected void appendWrappedView(@NonNull ViewGroup group, @NonNull Item.Holder wrapped) {
-            // manually add wrapped item view
-            group.addView(wrapped.itemView);
         }
     }
 }

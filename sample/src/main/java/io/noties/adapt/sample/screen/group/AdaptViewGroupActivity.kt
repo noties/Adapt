@@ -52,7 +52,7 @@ class AdaptViewGroupActivity : BaseSampleActivity() {
         super.onCreate(savedInstanceState)
 
         group = AdaptViewGroup.builder(findViewById(R.id.group))
-                .changeHandler(TransitionChangeHandler())
+                .changeHandler(TransitionChangeHandler.create())
                 .build()
 
         addMoreItems()

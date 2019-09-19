@@ -37,18 +37,31 @@ import static org.mockito.Mockito.when;
 @Config(manifest = Config.NONE)
 public class AdaptViewGroupTest {
 
+    private AdaptViewGroup group;
+
     private ViewGroup viewGroup;
     private AdaptViewGroupDiff diff;
-    private AdaptViewGroup group;
+    private AdaptViewGroup.ChangeHandler changeHandler;
 
     @Before
     public void before() {
         viewGroup = mock(ViewGroup.class);
         diff = mock(AdaptViewGroupDiff.class);
+        changeHandler = mock(AdaptViewGroup.ChangeHandler.class);
         group = AdaptViewGroup.builder(viewGroup)
                 .adaptViewGroupDiff(diff)
                 .layoutInflater(mock(LayoutInflater.class))
+                .changeHandler(changeHandler)
                 .build();
+    }
+
+    @Test
+    public void init_removes_all_children_from_group() {
+        // any count > 0 should do
+        when(viewGroup.getChildCount()).thenReturn(1);
+        AdaptViewGroup.create(viewGroup);
+        verify(viewGroup, times(1)).getChildCount();
+        verify(viewGroup, times(1)).removeAllViews();
     }
 
     @Test
