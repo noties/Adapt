@@ -7,8 +7,7 @@ android {
     buildToolsVersion config['build-tools']
 
     defaultConfig {
-        applicationId 'io.noties.adapt.sample'
-        // only for sample
+        applicationId 'io.noties.adapt.sample.forms'
         minSdkVersion 21
         targetSdkVersion config['target-sdk']
         versionCode 1
@@ -21,7 +20,6 @@ dependencies {
     implementation project(':adapt')
 
     implementation 'io.noties:debug:5.1.0'
-    implementation 'com.google.android:flexbox:1.1.0'
 
     implementation deps['kotlin-stdlib']
 }

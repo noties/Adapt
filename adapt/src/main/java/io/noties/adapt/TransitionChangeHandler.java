@@ -91,6 +91,6 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     @Override
     public void end(@NonNull ViewGroup group) {
-        // no op
+        parent.end(group);
     }
 }
