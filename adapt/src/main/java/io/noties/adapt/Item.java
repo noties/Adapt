@@ -27,9 +27,8 @@ public abstract class Item<H extends Item.Holder> {
         return ViewTypeStore.viewType(type);
     }
 
-    public static final long NO_ID = RecyclerView.NO_ID;
-
-    private static final int NO_VIEW_TYPE = -1;
+    public static final long NO_ID = -1;
+    public static final int NO_VIEW_TYPE = -1;
 
     protected final long id;
 

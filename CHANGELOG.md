@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.3.0-SNAPSHOT
+# 2.3.0-SNAPSHOT
 * Add `ItemViewGroup` for a group of items with the usage of `AdaptViewGroup`
 * Add `ViewState` utility to save/restore view state (deprecated `NestedRecyclerState`)
 * Add `@CheckResult` for `Holder.requireView` methods
@@ -12,7 +12,7 @@
 * `StickyItemDecoration`: use view-type from supplied item (for wrapped items), allow exact size of 
 header (instead of assuming that height is `wrap_content`)
 
-## 2.2.0
+# 2.2.0
 * create `ItemGroup` for easier nested RecyclerView support
 * create `ItemLayoutWrapper` for easier wrapping of an `Item` inside a different layout
 * add `HasWrappedItem` interface (2 implementations - `ItemWrapper` and `ItemLayoutWrapper`)

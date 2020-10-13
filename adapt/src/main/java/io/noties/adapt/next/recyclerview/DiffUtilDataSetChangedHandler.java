@@ -1,0 +1,89 @@
+package io.noties.adapt.next.recyclerview;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import io.noties.adapt.next.Item;
+
+import static io.noties.adapt.next.recyclerview.AdaptRecyclerView.NO_ID;
+
+public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetChangeHandler {
+
+    @NonNull
+    public static DiffUtilDataSetChangedHandler create() {
+        return create(false);
+    }
+
+    @NonNull
+    public static DiffUtilDataSetChangedHandler create(boolean detectMoves) {
+        return new DiffUtilDataSetChangedHandler(detectMoves);
+    }
+
+    private final boolean detectMoves;
+
+    public DiffUtilDataSetChangedHandler(boolean detectMoves) {
+        this.detectMoves = detectMoves;
+    }
+
+    @Override
+    public void handleDataSetChange(
+            @NonNull List<Item<?>> oldList,
+            @NonNull List<Item<?>> newList,
+            @NonNull AdaptRecyclerView.DataSetChangeResultCallback callback
+    ) {
+        final DiffUtil.DiffResult result = diffResult(oldList, newList);
+        final RecyclerView.Adapter<?> adapter = callback.applyItemsChange(newList);
+        if (adapter != null) {
+            result.dispatchUpdatesTo(adapter);
+        }
+    }
+
+    @NonNull
+    public DiffUtil.DiffResult diffResult(
+            @NonNull final List<Item<?>> oldList,
+            @NonNull final List<Item<?>> newList) {
+        return DiffUtil.calculateDiff(new DiffUtil.Callback() {
+
+            @Override
+            public int getOldListSize() {
+                return oldList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+
+                // NO_ID has special case handling, if any of items has NO_ID than it's not the same
+                //  otherwise in case when both items have NO_ID they will be considered as same,
+                //  which is not true
+
+                final Item<?> oldItem = oldList.get(oldItemPosition);
+                final long oldId = oldItem.id();
+                if (oldId == NO_ID) return false;
+
+                final Item<?> newItem = newList.get(newItemPosition);
+                final long newId = newItem.id();
+                if (newId == NO_ID) return false;
+
+                if (oldItem == newItem) return true;
+                if (oldItem.getClass() != newItem.getClass()) return false;
+
+                return oldId == newId;
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldList.get(oldItemPosition)
+                        .equals(newList.get(newItemPosition));
+            }
+
+        }, detectMoves);
+    }
+}

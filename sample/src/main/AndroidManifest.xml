@@ -26,6 +26,10 @@
         <activity android:name=".screen.nestedrecyclersuper.NestedRecyclerSuperActivity" />
         <activity android:name=".screen.stickyheader.StickyHeaderActivity" />
 
+        <activity
+            android:name=".NextActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

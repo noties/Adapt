@@ -19,9 +19,12 @@ android {
 dependencies {
 
     implementation project(':adapt')
+    implementation deps['x-recycler-view']
 
     implementation 'io.noties:debug:5.1.0'
     implementation 'com.google.android:flexbox:1.1.0'
 
     implementation deps['kotlin-stdlib']
+
+    implementation 'com.github.akarnokd:ixjava:1.0.0'
 }

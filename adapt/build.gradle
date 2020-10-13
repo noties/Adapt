@@ -17,7 +17,7 @@ dependencies {
 
     deps.with {
         api it['x-annotations']
-        api it['x-recycler-view']
+        compileOnly it['x-recycler-view']
     }
 
     deps['test'].with {

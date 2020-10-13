@@ -10,4 +10,6 @@
     <!-- {@deprecated internal usage only} -->
     <item name="adapt_internal_nested_recycler_state_cache" type="id" />
 
+    <item name="adapt_internal_listview_delegate_holder_tag" type="id" />
+
 </resources>
