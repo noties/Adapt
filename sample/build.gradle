@@ -8,8 +8,7 @@ android {
 
     defaultConfig {
         applicationId 'io.noties.adapt.sample'
-        // only for sample
-        minSdkVersion 21
+        minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
@@ -18,13 +17,10 @@ android {
 
 dependencies {
 
+    implementation deps['kotlin-stdlib']
+
     implementation project(':adapt')
     implementation deps['x-recycler-view']
 
     implementation 'io.noties:debug:5.1.0'
-    implementation 'com.google.android:flexbox:1.1.0'
-
-    implementation deps['kotlin-stdlib']
-
-    implementation 'com.github.akarnokd:ixjava:1.0.0'
 }
