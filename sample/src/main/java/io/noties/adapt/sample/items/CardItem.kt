@@ -28,10 +28,4 @@ class CardItem(
         holder.letterView.text = letter
         holder.titleView.text = title
     }
-
-    override fun toString(): String {
-        return "CardItem(letter='$letter', color=$color, title='$title')"
-    }
-
-
 }

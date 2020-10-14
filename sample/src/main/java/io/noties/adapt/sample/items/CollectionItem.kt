@@ -40,10 +40,6 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
         ViewState.process(id(), holder.itemView())
     }
 
-    override fun toString(): String {
-        return "CollectionItem(id=${id()}, items=$items)"
-    }
-
     companion object {
         fun hash(items: List<Item<*>>): Long {
             val array = items.map(Item<*>::id)
