@@ -36,9 +36,7 @@ public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetC
     ) {
         final DiffUtil.DiffResult result = diffResult(oldList, newList);
         final RecyclerView.Adapter<?> adapter = callback.applyItemsChange(newList);
-        if (adapter != null) {
-            result.dispatchUpdatesTo(adapter);
-        }
+        result.dispatchUpdatesTo(adapter);
     }
 
     @NonNull

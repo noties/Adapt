@@ -36,4 +36,10 @@ class PlainItem(
         holder.letterView.text = letter
         holder.titleView.text = title
     }
+
+    override fun toString(): String {
+        return "PlainItem(letter='$letter', color=$color, title='$title')"
+    }
+
+
 }

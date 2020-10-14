@@ -15,7 +15,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
 
     class Holder(view: View) : Item.Holder(view) {
         val recyclerView: RecyclerView = requireView(R.id.recycler_view)
-        val adapt = AdaptRecyclerView.init(recyclerView)
+        lateinit var adapt: AdaptRecyclerView
     }
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder {
@@ -26,6 +26,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
             if (parent is RecyclerView) {
                 recyclerView.setRecycledViewPool(parent.recycledViewPool)
             }
+            adapt = AdaptRecyclerView.init(recyclerView)
         }
     }
 
@@ -39,6 +40,10 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
         ViewState.process(id(), holder.itemView())
     }
 
+    override fun toString(): String {
+        return "CollectionItem(id=${id()}, items=$items)"
+    }
+
     companion object {
         fun hash(items: List<Item<*>>): Long {
             val array = items.map(Item<*>::id)
@@ -49,4 +54,6 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
             return Objects.hash(array).toLong()
         }
     }
+
+
 }

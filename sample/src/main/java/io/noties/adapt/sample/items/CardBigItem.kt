@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
+import io.noties.debug.Debug
 import java.util.*
 
 class CardBigItem(
-    private val letter: String,
-    private val color: Int,
-    private val title: String
+    val letter: String,
+    val color: Int,
+    val title: String
 ) : Item<CardBigItem.Holder>(Objects.hash(CardBigItem::class, letter, color, title).toLong()) {
 
     class Holder(view: View) : Item.Holder(view) {
@@ -27,5 +28,17 @@ class CardBigItem(
         holder.letterView.setBackgroundColor(color)
         holder.letterView.text = letter
         holder.titleView.text = title
+
+        if (true) {
+            holder.itemView().setOnClickListener {
+                Debug.i("clicked: $letter, $title (${id()})")
+            }
+        }
     }
+
+    override fun toString(): String {
+        return "CardBigItem(letter='$letter', color=$color, title='$title')"
+    }
+
+
 }

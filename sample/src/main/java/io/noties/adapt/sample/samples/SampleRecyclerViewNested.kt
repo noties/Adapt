@@ -12,7 +12,6 @@ import io.noties.adapt.sample.Sample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CollectionItem
 import io.noties.adapt.sample.items.ControlItem
-import io.noties.debug.Debug
 
 class SampleRecyclerViewNested() : AbsSampleView() {
 
@@ -31,20 +30,16 @@ class SampleRecyclerViewNested() : AbsSampleView() {
             it.dataSetChangeHandler(DiffUtilDataSetChangedHandler.create(true))
         }
 
-        var current = 10000
-
         fun addNewItems(items: List<Item<*>>) {
             val list = adapt.items().toMutableList().apply {
-                addAll(items.map {
-                    if (it is CardBigItem) {
-                        val list = mutableListOf<Item<*>>(it)
-                        list.addAll(ItemGenerator.next(current))
-                        current += list.size - 1
-                        CollectionItem(list).also {
-                            Debug.i("${it.id()}: $list")
+                addAll(items.map { item ->
+                    if (item is CardBigItem) {
+                        val list = mutableListOf<Item<*>>(item).apply {
+                            addAll(ItemGenerator.next(0))
                         }
+                        CollectionItem(list)
                     } else {
-                        it
+                        item
                     }
                 })
             }

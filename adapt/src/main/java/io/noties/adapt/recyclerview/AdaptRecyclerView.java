@@ -2,7 +2,6 @@ package io.noties.adapt.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -22,7 +20,7 @@ import io.noties.adapt.util.ListUtils;
 public class AdaptRecyclerView implements Adapt {
 
     public interface DataSetChangeResultCallback {
-        @Nullable
+        @NonNull
         RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items);
     }
 
@@ -91,18 +89,10 @@ public class AdaptRecyclerView implements Adapt {
     // special storage to keep track of items and view-types
     private final Map<Integer, Item<?>> store = new HashMap<>(3);
 
-    // we listen for recyclerView to be detached
-    private final AtomicBoolean isDetached = new AtomicBoolean(false);
-
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
-        @Nullable
+        @NonNull
         @Override
         public RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items) {
-
-            // check if we are attached (in case if data set change handler is asynchronous)
-            if (isDetached.get()) {
-                return null;
-            }
 
             // release old items from referencing
             store.clear();
@@ -125,19 +115,6 @@ public class AdaptRecyclerView implements Adapt {
         this.adapter = new AdapterImpl(recyclerView.getContext());
 
         adapter.setHasStableIds(configuration.hasStableIds);
-
-        recyclerView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                isDetached.set(true);
-                recyclerView.removeOnAttachStateChangeListener(this);
-            }
-        });
     }
 
     @NonNull
@@ -196,20 +173,6 @@ public class AdaptRecyclerView implements Adapt {
             item.render(holder.holder());
         }
 
-        // diff util must provide a way to supply payloads, but we ignore partial update
-//        @Override
-//        public void onBindViewHolder(@NonNull ItemViewHolder holder, int position, @NonNull List<Object> payloads) {
-//            //noinspection rawtypes
-//            final Item item = items.get(position);
-//            if (item instanceof RecyclerViewItem) {
-//                // 2 rawtypes?
-//                //noinspection unchecked,rawtypes,rawtypes
-//                ((RecyclerViewItem) item).recyclerViewRender(holder, holder.holder(), payloads);
-//            } else {
-//                //noinspection unchecked
-//                item.render(holder.holder());
-//            }
-//        }
 
         @Override
         public int getItemCount() {

@@ -21,8 +21,6 @@ public class NotifyDataSetChangedHandler implements AdaptRecyclerView.DataSetCha
             @NonNull AdaptRecyclerView.DataSetChangeResultCallback callback
     ) {
         final RecyclerView.Adapter<?> adapter = callback.applyItemsChange(newList);
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        adapter.notifyDataSetChanged();
     }
 }
