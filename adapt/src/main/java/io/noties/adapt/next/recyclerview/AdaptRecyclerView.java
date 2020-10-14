@@ -1,7 +1,6 @@
 package io.noties.adapt.next.recyclerview;
 
 import android.content.Context;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.noties.adapt.next.Adapt;
 import io.noties.adapt.next.AdaptException;
@@ -45,27 +46,15 @@ public class AdaptRecyclerView implements Adapt {
 
     public static final long NO_ID = RecyclerView.NO_ID;
 
-//    @NonNull
-//    public static AdaptRecyclerView create(@NonNull RecyclerView recyclerView) {
-//        return new AdaptRecyclerView(recyclerView, new ConfigurationImpl());
-//    }
-//
-//    @NonNull
-//    public static AdaptRecyclerView create(@NonNull RecyclerView recyclerView, @NonNull Configurator configurator) {
-//        final ConfigurationImpl configuration = new ConfigurationImpl();
-//        configurator.configure(configuration);
-//        return new AdaptRecyclerView(recyclerView, configuration);
-//    }
-
     @NonNull
-    public static AdaptRecyclerView create(@NonNull RecyclerView recyclerView) {
+    public static AdaptRecyclerView init(@NonNull RecyclerView recyclerView) {
         final AdaptRecyclerView adaptRecyclerView = new AdaptRecyclerView(recyclerView, new ConfigurationImpl());
         recyclerView.setAdapter(adaptRecyclerView.adapter());
         return adaptRecyclerView;
     }
 
     @NonNull
-    public static AdaptRecyclerView create(@NonNull RecyclerView recyclerView, @NonNull Configurator configurator) {
+    public static AdaptRecyclerView init(@NonNull RecyclerView recyclerView, @NonNull Configurator configurator) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         final AdaptRecyclerView adaptRecyclerView = new AdaptRecyclerView(recyclerView, configuration);
@@ -98,7 +87,7 @@ public class AdaptRecyclerView implements Adapt {
     private final RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter;
 
     // special storage to keep track of items and view-types
-    private final SparseArray<Item<?>> store = new SparseArray<>();
+    private final Map<Integer, Item<?>> store = new HashMap<>(3);
 
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
         @Nullable
@@ -109,14 +98,11 @@ public class AdaptRecyclerView implements Adapt {
                 return null;
             }
 
-            // release old items from referencing (maybe change to hash map for better performance)
+            // release old items from referencing
             store.clear();
 
             for (Item<?> item : items) {
-                final int viewType = assignedViewType(item.getClass());
-                if (store.indexOfKey(viewType) < 0) {
-                    store.put(viewType, item);
-                }
+                store.put(assignedViewType(item.getClass()), item);
             }
 
             AdaptRecyclerView.this.items = items;
@@ -159,7 +145,12 @@ public class AdaptRecyclerView implements Adapt {
         );
     }
 
-    private class AdapterImpl extends RecyclerView.Adapter<ItemViewHolder> {
+    public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+        @NonNull
+        public abstract Item<? extends Item.Holder> getItem(int position);
+    }
+
+    private class AdapterImpl extends Adapter<ItemViewHolder> {
 
         private final LayoutInflater inflater;
 
@@ -179,9 +170,6 @@ public class AdaptRecyclerView implements Adapt {
 
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-//            // todo: it is not clear if we must still implement this method
-//            throw new RuntimeException("onBindViewHolder without payloads called");
-
             //noinspection rawtypes
             final Item item = items.get(position);
             //noinspection unchecked
@@ -216,6 +204,12 @@ public class AdaptRecyclerView implements Adapt {
         @Override
         public long getItemId(int position) {
             return items.get(position).id();
+        }
+
+        @NonNull
+        @Override
+        public Item<? extends Item.Holder> getItem(int position) {
+            return items.get(position);
         }
     }
 

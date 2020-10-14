@@ -65,12 +65,12 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     }
 
     @NonNull
-    public static AdaptViewGroup create(@NonNull ViewGroup viewGroup) {
+    public static AdaptViewGroup init(@NonNull ViewGroup viewGroup) {
         return new AdaptViewGroup(viewGroup, new ConfigurationImpl());
     }
 
     @NonNull
-    public static AdaptViewGroup create(@NonNull ViewGroup viewGroup, @NonNull Configurator configurator) {
+    public static AdaptViewGroup init(@NonNull ViewGroup viewGroup, @NonNull Configurator configurator) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         return new AdaptViewGroup(viewGroup, configuration);
@@ -129,7 +129,10 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
             );
 
         } finally {
+
             changeHandler.end(viewGroup);
+
+            this.items = items;
         }
     }
 

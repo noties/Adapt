@@ -62,23 +62,9 @@ public class AdaptListView implements Adapt {
 
     // TODO: no diff animations
 
-//    @SuppressWarnings("rawtypes")
-//    @NonNull
-//    public static AdaptListView create(@NonNull AdapterView adapterView) {
-//        return new AdaptListView(adapterView, new ConfigurationImpl());
-//    }
-//
-//    @SuppressWarnings("rawtypes")
-//    @NonNull
-//    public static AdaptListView create(@NonNull AdapterView adapterView, @NonNull Configurator configurator) {
-//        final ConfigurationImpl configuration = new ConfigurationImpl();
-//        configurator.configure(configuration);
-//        return new AdaptListView(adapterView, configuration);
-//    }
-
     @SuppressWarnings("rawtypes")
     @NonNull
-    public static AdaptListView create(@NonNull AdapterView adapterView) {
+    public static AdaptListView init(@NonNull AdapterView adapterView) {
         final AdaptListView adaptListView = new AdaptListView(adapterView, new ConfigurationImpl());
         //noinspection unchecked
         adapterView.setAdapter(adaptListView.adapter());
@@ -87,7 +73,7 @@ public class AdaptListView implements Adapt {
 
     @SuppressWarnings("rawtypes")
     @NonNull
-    public static AdaptListView create(@NonNull AdapterView adapterView, @NonNull Configurator configurator) {
+    public static AdaptListView init(@NonNull AdapterView adapterView, @NonNull Configurator configurator) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         final AdaptListView adaptListView = new AdaptListView(adapterView, configuration);
@@ -233,10 +219,10 @@ public class AdaptListView implements Adapt {
             if (convertView == null) {
                 holder = item.createHolder(inflater, parent);
                 view = holder.itemView();
-                view.setTag(R.id.adapt_internal_listview_delegate_holder_tag, holder);
+                view.setTag(R.id.adapt_internal_listview_holder_tag, holder);
             } else {
                 view = convertView;
-                holder = (Item.Holder) view.getTag(R.id.adapt_internal_listview_delegate_holder_tag);
+                holder = (Item.Holder) view.getTag(R.id.adapt_internal_listview_holder_tag);
             }
 
             //noinspection unchecked
