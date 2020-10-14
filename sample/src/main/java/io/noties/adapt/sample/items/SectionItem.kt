@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
-import java.util.*
 
 class SectionItem(val text: String) :
-    Item<SectionItem.Holder>(Objects.hash(SectionItem::class, text).toLong()) {
+    Item<SectionItem.Holder>(hash(SectionItem::class, text)) {
 
     class Holder(view: View) : Item.Holder(view) {
         val textView: TextView = requireView(R.id.text)

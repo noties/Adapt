@@ -8,9 +8,30 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 import io.noties.adapt.util.ViewUtils;
 
 public abstract class Item<H extends Item.Holder> {
+
+    protected static long hash(Object... args) {
+        return Objects.hash(args);
+    }
+
+    private final long id;
+
+    protected Item(long id) {
+        this.id = id;
+    }
+
+    public final long id() {
+        return id;
+    }
+
+    @NonNull
+    public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
+
+    public abstract void render(@NonNull H holder);
 
     public static class Holder {
         private final View itemView;
@@ -36,19 +57,4 @@ public abstract class Item<H extends Item.Holder> {
             return ViewUtils.requireView(view, id);
         }
     }
-
-    private final long id;
-
-    protected Item(long id) {
-        this.id = id;
-    }
-
-    public final long id() {
-        return id;
-    }
-
-    @NonNull
-    public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
-
-    public abstract void render(@NonNull H holder);
 }

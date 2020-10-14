@@ -7,13 +7,12 @@ import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.ui.CircleDrawable
-import java.util.*
 
 class PlainItem(
     private val letter: String,
     private val color: Int,
     private val title: String
-) : Item<PlainItem.Holder>(Objects.hash(PlainItem::class, letter, color, title).toLong()) {
+) : Item<PlainItem.Holder>(hash(PlainItem::class, letter, color, title)) {
 
     class Holder(view: View) : Item.Holder(view) {
         val letterView: TextView = requireView(R.id.letter_view)

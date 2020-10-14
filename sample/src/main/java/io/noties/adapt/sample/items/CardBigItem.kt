@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
-import java.util.*
 
 class CardBigItem(
     private val letter: String,
     private val color: Int,
     private val title: String
-) : Item<CardBigItem.Holder>(Objects.hash(CardBigItem::class, letter, color, title).toLong()) {
+) : Item<CardBigItem.Holder>(hash(CardBigItem::class, letter, color, title)) {
 
     class Holder(view: View) : Item.Holder(view) {
         val letterView: TextView = requireView(R.id.letter_view)

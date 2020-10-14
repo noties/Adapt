@@ -9,7 +9,6 @@ import io.noties.adapt.Item
 import io.noties.adapt.ViewState
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import java.util.*
 
 class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(hash(items)) {
 
@@ -47,7 +46,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
                 .toMutableList()
                 .apply { add(0, CollectionItem::class as Any) }
                 .toTypedArray()
-            return Objects.hash(array).toLong()
+            return hash(array)
         }
     }
 

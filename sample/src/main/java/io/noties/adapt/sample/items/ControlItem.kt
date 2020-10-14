@@ -12,7 +12,7 @@ class ControlItem(
     private val adapt: Adapt,
     private val onAdd: ((View) -> Unit)? = null,
     private val onShuffle: ((View) -> Unit)? = null
-) : Item<ControlItem.Holder>(42L) {
+) : Item<ControlItem.Holder>(hash(ControlItem::class)) {
 
     class Holder(view: View) : Item.Holder(view) {
         val add: View = requireView(R.id.add)
