@@ -8,7 +8,11 @@ import io.noties.adapt.Item
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 
-class ControlItem(private val adapt: Adapt) : Item<ControlItem.Holder>(42L) {
+class ControlItem(
+    private val adapt: Adapt,
+    private val onAdd: ((View) -> Unit)? = null,
+    private val onShuffle: ((View) -> Unit)? = null
+) : Item<ControlItem.Holder>(42L) {
 
     class Holder(view: View) : Item.Holder(view) {
         val add: View = requireView(R.id.add)
@@ -20,14 +24,14 @@ class ControlItem(private val adapt: Adapt) : Item<ControlItem.Holder>(42L) {
     }
 
     override fun render(holder: Holder) {
-        holder.add.setOnClickListener {
+        holder.add.setOnClickListener(onAdd ?: {
             adapt.setItems(adapt.items().toMutableList().apply {
                 addAll(ItemGenerator.next(size))
             })
-        }
+        })
 
-        holder.shuffle.setOnClickListener {
+        holder.shuffle.setOnClickListener(onShuffle ?: {
             adapt.setItems(adapt.items().shuffled())
-        }
+        })
     }
 }

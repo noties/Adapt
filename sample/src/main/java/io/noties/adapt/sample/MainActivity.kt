@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
-import io.noties.adapt.sample.samples.SampleListView
-import io.noties.adapt.sample.samples.SampleRecyclerView
-import io.noties.adapt.sample.samples.SampleViewGroup
+import io.noties.adapt.sample.samples.*
 
 class MainActivity : Activity() {
 
     private val samples: List<Sample> = listOf(
-        SampleRecyclerView().sample,
-        SampleListView().sample,
+        SampleViewGroupTransition().sample,
+        SampleRecyclerViewNested().sample,
+        SampleRecyclerViewGrid().sample,
+        SampleRecyclerViewDiff().sample,
+        SampleRecyclerViewSticky().sample,
         SampleViewGroup().sample,
+        SampleListView().sample,
+        SampleRecyclerView().sample,
     )
 
     private lateinit var viewAnimator: ViewAnimator
