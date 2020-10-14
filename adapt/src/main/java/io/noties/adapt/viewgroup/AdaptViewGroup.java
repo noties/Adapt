@@ -1,6 +1,5 @@
 package io.noties.adapt.viewgroup;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,7 +166,6 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     @SuppressWarnings("rawtypes")
     @Override
     public void insertAt(int index, @NonNull Item item) {
-        Log.e("AVG-insert", String.format("%d: %s", index, item));
         final Item.Holder holder = item.createHolder(configuration.inflater, viewGroup);
         final View view = holder.itemView();
         view.setTag(ID_HOLDER, holder);
@@ -177,7 +175,6 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     @SuppressWarnings("rawtypes")
     @Override
     public void render(int index, @NonNull Item item) {
-        Log.e("AVG-render", String.format("%d: %s", index, item));
         final View view = viewGroup.getChildAt(index);
         final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
         if (holder == null) {

@@ -1,7 +1,5 @@
 package io.noties.adapt.viewgroup;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -65,8 +63,6 @@ public abstract class AdaptViewGroupDiff {
 
                 item = current.get(i);
                 index = indexOf(list, item);
-
-                Log.e("VG_DIFF", String.format("%d: %s", index, item));
 
                 // item is present in both lists
                 if (index >= 0) {

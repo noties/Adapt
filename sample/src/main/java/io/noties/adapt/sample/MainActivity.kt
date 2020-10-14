@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
+import io.noties.adapt.sample.samples.SampleListView
 import io.noties.adapt.sample.samples.SampleRecyclerView
 import io.noties.adapt.sample.samples.SampleViewGroup
 
@@ -12,7 +13,8 @@ class MainActivity : Activity() {
 
     private val samples: List<Sample> = listOf(
         SampleRecyclerView().sample,
-        SampleViewGroup().sample
+        SampleListView().sample,
+        SampleViewGroup().sample,
     )
 
     private lateinit var viewAnimator: ViewAnimator

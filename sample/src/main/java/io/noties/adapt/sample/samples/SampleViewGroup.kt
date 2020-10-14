@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
-import io.noties.adapt.sample.SampleViewList
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
 class SampleViewGroup : AbsSampleView() {
@@ -20,7 +19,7 @@ class SampleViewGroup : AbsSampleView() {
     override fun render(view: View) {
         val viewGroup = view.findViewById<ViewGroup>(R.id.view_group)
         val adapt = AdaptViewGroup.init(viewGroup)
-        adapt.setItems(listOf(SampleViewList.SampleItem(sample)))
+        adapt.setItems(initialItems(adapt))
     }
 
 }

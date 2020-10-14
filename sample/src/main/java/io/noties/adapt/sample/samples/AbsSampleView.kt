@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import io.noties.adapt.Adapt
+import io.noties.adapt.Item
+import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.items.ControlItem
 
 abstract class AbsSampleView : SampleView {
 
@@ -25,6 +29,7 @@ abstract class AbsSampleView : SampleView {
             view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 override fun onViewAttachedToWindow(v: View?) {
                     view.removeOnAttachStateChangeListener(this)
+                    ItemGenerator.reset()
                     render(sampleView)
                 }
 
@@ -49,6 +54,11 @@ abstract class AbsSampleView : SampleView {
     abstract val sample: Sample
     abstract val layoutResId: Int
     abstract fun render(view: View)
+
+    protected fun initialItems(adapt: Adapt): List<Item<*>> =
+        ItemGenerator.next(0).toMutableList().apply {
+            add(ControlItem(adapt))
+        }
 
     companion object {
         @Suppress("DEPRECATION")
