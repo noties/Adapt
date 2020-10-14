@@ -1,5 +1,6 @@
 package io.noties.adapt.viewgroup;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,10 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import io.noties.adapt.R;
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
 public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
@@ -166,15 +167,17 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     @SuppressWarnings("rawtypes")
     @Override
     public void insertAt(int index, @NonNull Item item) {
+        Log.e("AVG-insert", String.format("%d: %s", index, item));
         final Item.Holder holder = item.createHolder(configuration.inflater, viewGroup);
         final View view = holder.itemView();
-        view.setTag(ID_HOLDER);
+        view.setTag(ID_HOLDER, holder);
         configuration.changeHandler.insertAt(viewGroup, view, index);
     }
 
     @SuppressWarnings("rawtypes")
     @Override
     public void render(int index, @NonNull Item item) {
+        Log.e("AVG-render", String.format("%d: %s", index, item));
         final View view = viewGroup.getChildAt(index);
         final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
         if (holder == null) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="app_bar_container" type="id" />
+    <item name="app_bar_title" type="id" />
+    <item name="app_bar_back" type="id" />
+</resources>

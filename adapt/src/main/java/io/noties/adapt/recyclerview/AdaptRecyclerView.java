@@ -2,6 +2,7 @@ package io.noties.adapt.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -84,17 +86,21 @@ public class AdaptRecyclerView implements Adapt {
 
     private final RecyclerView recyclerView;
     private final ConfigurationImpl configuration;
-    private final RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter;
+    private final Adapter<? extends RecyclerView.ViewHolder> adapter;
 
     // special storage to keep track of items and view-types
     private final Map<Integer, Item<?>> store = new HashMap<>(3);
+
+    // we listen for recyclerView to be detached
+    private final AtomicBoolean isDetached = new AtomicBoolean(false);
 
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
         @Nullable
         @Override
         public RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items) {
+
             // check if we are attached (in case if data set change handler is asynchronous)
-            if (!recyclerView.isAttachedToWindow()) {
+            if (isDetached.get()) {
                 return null;
             }
 
@@ -106,18 +112,32 @@ public class AdaptRecyclerView implements Adapt {
             }
 
             AdaptRecyclerView.this.items = items;
+
             return adapter();
         }
     };
 
     private List<Item<? extends Item.Holder>> items;
 
-    AdaptRecyclerView(@NonNull RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
+    AdaptRecyclerView(@NonNull final RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
         this.recyclerView = recyclerView;
         this.configuration = configuration;
         this.adapter = new AdapterImpl(recyclerView.getContext());
 
         adapter.setHasStableIds(configuration.hasStableIds);
+
+        recyclerView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                isDetached.set(true);
+                recyclerView.removeOnAttachStateChangeListener(this);
+            }
+        });
     }
 
     @NonNull
@@ -126,7 +146,7 @@ public class AdaptRecyclerView implements Adapt {
     }
 
     @NonNull
-    public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter() {
+    public Adapter<? extends RecyclerView.ViewHolder> adapter() {
         return adapter;
     }
 
