@@ -27,7 +27,7 @@ public abstract class ViewState {
      */
     public static void process(final long id, @NonNull final View view) {
 
-        // todo: validate the NO_ID (and do not save in that case)
+        // TODO: the NO_ID, should it be handled here?
 
         final ViewParent parent = view.getParent();
         if (parent != null) {

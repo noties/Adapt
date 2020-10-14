@@ -1,4 +1,4 @@
-package io.noties.adapt.next.viewgroup;
+package io.noties.adapt.viewgroup;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +10,10 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import io.noties.adapt.R;
-import io.noties.adapt.next.Adapt;
-import io.noties.adapt.next.AdaptException;
-import io.noties.adapt.next.Item;
-import io.noties.adapt.next.utils.ListUtils;
+import io.noties.adapt.Adapt;
+import io.noties.adapt.AdaptException;
+import io.noties.adapt.Item;
+import io.noties.adapt.util.ListUtils;
 
 public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 

@@ -1,4 +1,4 @@
-package io.noties.adapt.next.viewgroup;
+package io.noties.adapt.viewgroup;
 
 import android.os.Build;
 import android.transition.Transition;
@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
-import io.noties.adapt.AdaptViewGroup;
 
 /**
  * @see AdaptViewGroup.ChangeHandler

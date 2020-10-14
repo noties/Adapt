@@ -1,4 +1,4 @@
-package io.noties.adapt.next.recyclerview;
+package io.noties.adapt.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.noties.adapt.next.Adapt;
-import io.noties.adapt.next.AdaptException;
-import io.noties.adapt.next.Item;
-import io.noties.adapt.next.utils.ListUtils;
+import io.noties.adapt.Adapt;
+import io.noties.adapt.AdaptException;
+import io.noties.adapt.Item;
+import io.noties.adapt.util.ListUtils;
 
 public class AdaptRecyclerView implements Adapt {
 

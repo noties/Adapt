@@ -1,11 +1,11 @@
-package io.noties.adapt.next.viewgroup;
+package io.noties.adapt.viewgroup;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.noties.adapt.next.Item;
+import io.noties.adapt.Item;
 
 /**
  * @since 2.0.0

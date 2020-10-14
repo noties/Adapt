@@ -1,17 +1,16 @@
-package io.noties.adapt;
+package io.noties.adapt.recyclerview;
 
 import android.graphics.Canvas;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ScrollingView;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import io.noties.adapt.Item;
+import io.noties.adapt.view.AdaptView;
 
 /**
  * RecyclerView.ItemDecoration that <em>stick</em> an {@link Item} to the top of a
@@ -26,90 +25,92 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * @since 2.2.0
  */
-public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecoration {
+public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
-    /**
-     * Factory method to create {@link StickyItemDecoration}. Passed {@code item} can be a <em>mocked</em>
-     * one (can have invalid data) - it is just used to create layout only (no render will be called on that item).
-     * Please note that {@code recyclerView} must be wrapped inside a FrameLayout in order to add sticky view.
-     * If you want to provide custom placing of {@link AdaptView} use {@link #create(AdaptView)} or {@link #create(ViewGroup, Item)}.
-     *
-     * @see #create(ViewGroup, Item)
-     * @see #create(AdaptView)
-     */
-    @NonNull
-    public static <I extends Item> StickyItemDecoration<I> create(
-            @NonNull RecyclerView recyclerView,
-            @NonNull I item) {
-        final FrameLayout frameLayout = parentFrameLayout(recyclerView);
-        return create(frameLayout, item);
-    }
+//    /**
+//     * Factory method to create {@link StickyItemDecoration}. Passed {@code item} can be a <em>mocked</em>
+//     * one (can have invalid data) - it is just used to create layout only (no render will be called on that item).
+//     * Please note that {@code recyclerView} must be wrapped inside a FrameLayout in order to add sticky view.
+//     * If you want to provide custom placing of {@link AdaptView} use {@link #create(AdaptView)} or {@link #create(ViewGroup, Item)}.
+//     *
+//     * @see #create(ViewGroup, Item)
+//     * @see #create(AdaptView)
+//     */
+//    @NonNull
+//    public static <I extends Item<? extends Item.Holder>> StickyItemDecoration create(
+//            @NonNull RecyclerView recyclerView,
+//            @NonNull I item) {
+//        final FrameLayout frameLayout = parentFrameLayout(recyclerView);
+//        return create(frameLayout, item);
+//    }
 
-    /**
-     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout as
-     * parent of RecyclerView. Created {@link AdaptView} will be directly added to specified {@code parent}.
-     *
-     * @see #create(RecyclerView, Item)
-     * @see #create(AdaptView)
-     */
+    //    /**
+//     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout as
+//     * parent of RecyclerView. Created {@link AdaptView} will be directly added to specified {@code parent}.
+//     *
+//     * @see #create(RecyclerView, Item)
+//     * @see #create(AdaptView)
+//     */
     @NonNull
-    public static <I extends Item> StickyItemDecoration<I> create(
+    public static <I extends Item<? extends Item.Holder>> StickyItemDecoration create(
             @NonNull ViewGroup parent,
             @NonNull I item) {
-        final AdaptView<I> adaptView = AdaptView.append(parent, item);
-        return create(adaptView);
+        final AdaptView<I> adaptView = AdaptView.init(parent, item);
+        return new StickyItemDecoration(adaptView);
     }
 
-    /**
-     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout
-     * as parent of RecyclerView, but it expects that {@link AdaptView} is already correctly
-     * placed in layout.
-     *
-     * @see #create(RecyclerView, Item)
-     * @see #create(ViewGroup, Item)
-     */
-    @NonNull
-    public static <I extends Item> StickyItemDecoration<I> create(@NonNull AdaptView<I> adaptView) {
-        return new StickyItemDecoration<>(adaptView);
-    }
+//    /**
+//     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout
+//     * as parent of RecyclerView, but it expects that {@link AdaptView} is already correctly
+//     * placed in layout.
+//     *
+//     * @see #create(RecyclerView, Item)
+//     * @see #create(ViewGroup, Item)
+//     */
+//    @NonNull
+//    public static <I extends Item> StickyItemDecoration create(@NonNull AdaptView<I> adaptView) {
+//        return new StickyItemDecoration(adaptView);
+//    }
 
-    // let's make it explicitly FrameLayout
-    @NonNull
-    private static FrameLayout parentFrameLayout(@NonNull RecyclerView recyclerView) {
-
-        final ViewParent parent = recyclerView.getParent();
-
-        // please note... that, for example, ScrollView is a sibling of FrameLayout
-        //      and we must filter those...
-
-        final boolean isFrame = parent instanceof FrameLayout;
-
-        // so, ScrollView, HorizontalScrollView (they kinda weird to see here, who would
-        // want to do so)? Also... there are NestedScrollViews...
-        final boolean isScroll = isFrame && (parent instanceof ScrollView
-                || parent instanceof HorizontalScrollView
-                || parent instanceof ScrollingView);
-
-        if (isFrame && !isScroll) {
-            return (FrameLayout) parent;
-        }
-
-        throw AdaptException.create("RecyclerView must be placed inside FrameLayout " +
-                "in order to add sticky view. Consider wrapping RecyclerView inside FrameLayout " +
-                "or use different #create factory method that allows manual placing of sticky view.");
-    }
+//    // let's make it explicitly FrameLayout
+//    @NonNull
+//    private static FrameLayout parentFrameLayout(@NonNull RecyclerView recyclerView) {
+//
+//        final ViewParent parent = recyclerView.getParent();
+//
+//        // please note... that, for example, ScrollView is a sibling of FrameLayout
+//        //      and we must filter those...
+//
+//        final boolean isFrame = parent instanceof FrameLayout;
+//
+//        // so, ScrollView, HorizontalScrollView (they kinda weird to see here, who would
+//        // want to do so)? Also... there are NestedScrollViews...
+//        final boolean isScroll = isFrame && (parent instanceof ScrollView
+//                || parent instanceof HorizontalScrollView
+//                || parent instanceof ScrollingView);
+//
+//        if (isFrame && !isScroll) {
+//            return (FrameLayout) parent;
+//        }
+//
+//        throw AdaptException.create("RecyclerView must be placed inside FrameLayout " +
+//                "in order to add sticky view. Consider wrapping RecyclerView inside FrameLayout " +
+//                "or use different #create factory method that allows manual placing of a sticky view.");
+//    }
 
     private static final int MEASURE_SPEC_UNSPECIFIED =
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
-    private final AdaptView<I> adaptView;
+    @SuppressWarnings("rawtypes")
+    private final AdaptView adaptView;
     private final int stickyViewType;
 
-    protected StickyItemDecoration(@NonNull AdaptView<I> adaptView) {
+    @SuppressWarnings("rawtypes")
+    protected StickyItemDecoration(@NonNull AdaptView adaptView) {
         this.adaptView = adaptView;
         // @since 2.3.0-SNAPSHOT it's important to use item viewType
         // (instead of asking for a generated one)
-        this.stickyViewType = adaptView.getCurrentItem().viewType();
+        this.stickyViewType = AdaptRecyclerView.assignedViewType(adaptView.item().getClass());
         hideStickyView();
     }
 
@@ -153,21 +154,18 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
             return;
         }
 
-        final RecyclerView.Adapter adapter = parent.getAdapter();
-        if (!(adapter instanceof Adapt)) {
+        final AdaptRecyclerView.Adapter<?> adapter = adapter(parent);
+        if (adapter == null) {
             hideStickyView();
             return;
         }
 
-        final Adapt adapt = (Adapt) adapter;
-
         int position = holder.getAdapterPosition();
-        I item = null;
+        Item<?> item = null;
 
         while (position >= 0) {
-            if (stickyViewType == adapt.getItemViewType(position)) {
-                //noinspection unchecked
-                item = (I) adapt.getItem(position);
+            if (stickyViewType == adapter.getItemViewType(position)) {
+                item = adapter.getItem(position);
                 break;
             }
             position -= 1;
@@ -181,10 +179,10 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
         position += 1;
 
         int nextStickyViewTop = 0;
-        final int adapterCount = adapt.getItemCount();
+        final int adapterCount = adapter.getItemCount();
 
         while (position < adapterCount) {
-            if (stickyViewType == adapt.getItemViewType(position)) {
+            if (stickyViewType == adapter.getItemViewType(position)) {
                 final RecyclerView.ViewHolder viewHolder = parent.findViewHolderForAdapterPosition(position);
                 nextStickyViewTop = viewHolder != null
                         ? viewHolder.itemView.getTop()
@@ -194,6 +192,7 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
             position += 1;
         }
 
+        //noinspection unchecked
         adaptView.setItem(item);
 
         final View view = prepareStickyView(adaptView, parent);
@@ -226,22 +225,20 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
             return;
         }
 
-        final RecyclerView.Adapter adapter = parent.getAdapter();
-        if (!(adapter instanceof Adapt)) {
+        final AdaptRecyclerView.Adapter<?> adapter = adapter(parent);
+        if (adapter == null) {
             hideStickyView();
             return;
         }
 
-        final Adapt adapt = (Adapt) adapter;
-        final int adaptCount = adapt.getItemCount();
+        final int adaptCount = adapter.getItemCount();
 
-        I item = null;
+        Item<?> item = null;
 
         // okay, from this point we iterate forward to find next sticky item
         while (position < adaptCount) {
-            if (stickyViewType == adapt.getItemViewType(position)) {
-                //noinspection unchecked
-                item = (I) adapt.getItem(position);
+            if (stickyViewType == adapter.getItemViewType(position)) {
+                item = adapter.getItem(position);
                 break;
             }
             position += 1;
@@ -256,7 +253,7 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
 
         int previousStickyViewTop = 0;
         while (position >= 0) {
-            if (stickyViewType == adapt.getItemViewType(position)) {
+            if (stickyViewType == adapter.getItemViewType(position)) {
                 final RecyclerView.ViewHolder viewHolder = parent.findViewHolderForAdapterPosition(position);
                 previousStickyViewTop = viewHolder != null
                         ? viewHolder.itemView.getTop()
@@ -266,6 +263,7 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
             position -= 1;
         }
 
+        //noinspection unchecked
         adaptView.setItem(item);
 
         final View view = prepareStickyView(adaptView, parent);
@@ -284,7 +282,7 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
     }
 
     @NonNull
-    protected View prepareStickyView(@NonNull AdaptView<I> adaptView, @NonNull RecyclerView recyclerView) {
+    protected View prepareStickyView(@NonNull AdaptView<?> adaptView, @NonNull RecyclerView recyclerView) {
 
         final int left = recyclerView.getPaddingLeft();
         final int width = recyclerView.getWidth() - left - recyclerView.getPaddingRight();
@@ -318,5 +316,15 @@ public class StickyItemDecoration<I extends Item> extends RecyclerView.ItemDecor
 
     protected void hideStickyView() {
         adaptView.view().setAlpha(0F);
+    }
+
+    @Nullable
+    private static AdaptRecyclerView.Adapter<?> adapter(@NonNull RecyclerView recyclerView) {
+        final RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+        // takes care of null adapter also
+        if (!(adapter instanceof AdaptRecyclerView.Adapter)) {
+            return null;
+        }
+        return (AdaptRecyclerView.Adapter<?>) adapter;
     }
 }

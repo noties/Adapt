@@ -20,14 +20,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-import io.noties.adapt.next.Adapt;
-import io.noties.adapt.next.Item;
-import io.noties.adapt.next.ItemList;
-import io.noties.adapt.next.listview.AdaptListView;
-import io.noties.adapt.next.listview.ListViewItem;
-import io.noties.adapt.next.recyclerview.AdaptRecyclerView;
-import io.noties.adapt.next.recyclerview.AsyncDiffUtilDataSetChangedHandler;
-import io.noties.adapt.next.recyclerview.DiffUtilDataSetChangedHandler;
+import io.noties.adapt.Adapt;
+import io.noties.adapt.Item;
+import io.noties.adapt.ItemList;
+import io.noties.adapt.listview.AdaptListView;
+import io.noties.adapt.listview.ListViewItem;
+import io.noties.adapt.recyclerview.AdaptRecyclerView;
+import io.noties.adapt.recyclerview.AsyncDiffUtilDataSetChangedHandler;
+import io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler;
 
 public class NextActivity extends Activity {
     @Override

@@ -7,9 +7,6 @@
     <item name="adapt_internal_view_state_cache" type="id" />
     <item name="adapt_internal_view_state_attach_listener" type="id" />
 
-    <!-- {@deprecated internal usage only} -->
-    <item name="adapt_internal_nested_recycler_state_cache" type="id" />
-
     <item name="adapt_internal_listview_holder_tag" type="id" />
 
 </resources>

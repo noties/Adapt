@@ -1,4 +1,4 @@
-package io.noties.adapt.next.listview;
+package io.noties.adapt.listview;
 
 import android.widget.Adapter;
 import android.widget.ListAdapter;

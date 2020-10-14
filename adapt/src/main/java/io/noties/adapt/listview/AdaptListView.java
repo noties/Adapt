@@ -1,4 +1,4 @@
-package io.noties.adapt.next.listview;
+package io.noties.adapt.listview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Set;
 
 import io.noties.adapt.R;
-import io.noties.adapt.next.Adapt;
-import io.noties.adapt.next.AdaptException;
-import io.noties.adapt.next.Item;
-import io.noties.adapt.next.utils.ListUtils;
+import io.noties.adapt.Adapt;
+import io.noties.adapt.AdaptException;
+import io.noties.adapt.Item;
+import io.noties.adapt.util.ListUtils;
 
 // NB! The name can be AdaptAdapterView, but AdaptListView is used for better discoverability
 public class AdaptListView implements Adapt {

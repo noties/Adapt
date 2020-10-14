@@ -1,4 +1,4 @@
-package io.noties.adapt.next.view;
+package io.noties.adapt.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import io.noties.adapt.R;
-import io.noties.adapt.next.AdaptException;
-import io.noties.adapt.next.Item;
+import io.noties.adapt.AdaptException;
+import io.noties.adapt.Item;
 
 public class AdaptView<I extends Item<? extends Item.Holder>> {
 

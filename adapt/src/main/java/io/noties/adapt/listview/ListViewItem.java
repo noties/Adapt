@@ -1,4 +1,4 @@
-package io.noties.adapt.next.listview;
+package io.noties.adapt.listview;
 
 public interface ListViewItem {
     /**

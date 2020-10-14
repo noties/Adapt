@@ -1,4 +1,4 @@
-package io.noties.adapt.next.utils;
+package io.noties.adapt.util;
 
 import android.content.res.Resources;
 import android.view.View;
@@ -7,7 +7,7 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 
-import io.noties.adapt.next.AdaptException;
+import io.noties.adapt.AdaptException;
 
 
 public abstract class ViewUtils {

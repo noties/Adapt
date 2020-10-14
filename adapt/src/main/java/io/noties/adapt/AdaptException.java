@@ -5,21 +5,20 @@ import androidx.annotation.Nullable;
 
 import java.util.Locale;
 
-class AdaptException extends IllegalStateException {
+public class AdaptException extends IllegalStateException {
 
-    @SuppressWarnings("SameParameterValue")
     @NonNull
-    static AdaptException create(@NonNull Throwable cause, @NonNull String message, Object... args) {
+    public static AdaptException create(@NonNull Throwable cause, @NonNull String message, Object... args) {
         return new AdaptException(String.format(Locale.US, message, args), cause);
     }
 
     @NonNull
-    static AdaptException create(@NonNull String message) {
+    public static AdaptException create(@NonNull String message) {
         return new AdaptException(message);
     }
 
     @NonNull
-    static AdaptException create(@NonNull String message, Object... args) {
+    public static AdaptException create(@NonNull String message, Object... args) {
         return new AdaptException(String.format(Locale.US, message, args));
     }
 

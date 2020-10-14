@@ -1,4 +1,4 @@
-package io.noties.adapt.next;
+package io.noties.adapt;
 
 import androidx.annotation.NonNull;
 

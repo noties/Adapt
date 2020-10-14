@@ -1,4 +1,4 @@
-package io.noties.adapt.next.recyclerview;
+package io.noties.adapt.recyclerview;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.noties.adapt.next.Item;
+import io.noties.adapt.Item;
 
 public class AsyncDiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetChangeHandler {
 

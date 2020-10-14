@@ -1,11 +1,11 @@
-package io.noties.adapt.next.recyclerview;
+package io.noties.adapt.recyclerview;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import io.noties.adapt.next.Item;
+import io.noties.adapt.Item;
 
 public class NotifyDataSetChangedHandler implements AdaptRecyclerView.DataSetChangeHandler {
 
