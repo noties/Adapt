@@ -33,6 +33,11 @@ public class AdaptRecyclerView implements Adapt {
     }
 
     public interface Configuration {
+        /**
+         * by default {@code true}
+         *
+         * @param hasStableIds indicates if adapter has stable ids
+         */
         @NonNull
         Configuration hasStableIds(boolean hasStableIds);
 
@@ -198,7 +203,7 @@ public class AdaptRecyclerView implements Adapt {
 
     private static class ConfigurationImpl implements Configuration {
 
-        boolean hasStableIds = false;
+        boolean hasStableIds = true;
         DataSetChangeHandler dataSetChangeHandler = NotifyDataSetChangedHandler.create();
 
         @NonNull

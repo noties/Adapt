@@ -18,16 +18,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.noties.adapt.R;
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
 // NB! The name can be AdaptAdapterView, but AdaptListView is used for better discoverability
 public class AdaptListView implements Adapt {
 
     public interface Configuration {
+
+        interface EnabledProvider<I extends Item<? extends Item.Holder>> {
+            boolean isEnabled(@NonNull I item);
+        }
+
         /**
          * @see Adapter#hasStableIds()
          * By default {@code false}
@@ -37,13 +42,45 @@ public class AdaptListView implements Adapt {
 
         /**
          * NB, documentation mentions that disabled items are separators
-         * (they are also not clickable)
+         * (they are also not clickable).
          *
          * @see ListAdapter#areAllItemsEnabled()
-         * By default {@code true}
+         * By default {@code false}
          */
         @NonNull
         Configuration areAllItemsEnabled(boolean areAllItemsEnabled);
+
+        /**
+         * Includes item (adds to itemViewTypes) and reports as `isEnabled = false`
+         *
+         * @param type item to include
+         * @see #include(Class, boolean)
+         * @see #include(Class, EnabledProvider)
+         */
+        @NonNull
+        Configuration include(@NonNull Class<? extends Item<?>> type);
+
+        /**
+         * @param type      item to include
+         * @param isEnabled all items of this type will return from `isEnabled` method call (will be
+         *                  considered separator and won\'t have click listener attached)
+         * @see #include(Class)
+         * @see #include(Class, EnabledProvider)
+         */
+        @NonNull
+        Configuration include(@NonNull Class<? extends Item<?>> type, boolean isEnabled);
+
+        /**
+         * @param type     item to include
+         * @param provider to report `isEnabled` state
+         * @see #include(Class)
+         * @see #include(Class, boolean)
+         */
+        @NonNull
+        <I extends Item<? extends Item.Holder>> Configuration include(
+                @NonNull Class<? extends I> type,
+                @NonNull EnabledProvider<I> provider
+        );
     }
 
     public interface Configurator {
@@ -56,11 +93,6 @@ public class AdaptListView implements Adapt {
             throw new IllegalArgumentException("Spinner adapter view type count must be 1");
         }
      */
-
-    // options:
-    // * pre-calculated amount of view types (manually assign?)
-
-    // TODO: no diff animations
 
     @SuppressWarnings("rawtypes")
     @NonNull
@@ -87,8 +119,9 @@ public class AdaptListView implements Adapt {
     private final ConfigurationImpl configuration;
     private final AdapterImpl adapter;
 
-    @SuppressWarnings("rawtypes")
-    private final Map<Class<? extends Item>, Integer> viewTypes = new HashMap<>(3);
+    private final Map<Class<? extends Item<?>>, Integer> viewTypes = new HashMap<>(3);
+    private final Map<Class<? extends Item<?>>, Configuration.EnabledProvider<? extends Item<?>>> isEnabled;
+
     private int viewTypesCount = 0;
 
     private List<Item<?>> items;
@@ -98,6 +131,12 @@ public class AdaptListView implements Adapt {
         this.adapterView = adapterView;
         this.configuration = configuration;
         this.adapter = new AdapterImpl(adapterView.getContext());
+
+        this.isEnabled = new HashMap<>(configuration.isEnabled);
+
+        for (Map.Entry<Class<? extends Item<?>>, Configuration.EnabledProvider<? extends Item<?>>> entry : isEnabled.entrySet()) {
+            viewTypes.put(entry.getKey(), viewTypesCount++);
+        }
     }
 
     @NonNull
@@ -120,7 +159,6 @@ public class AdaptListView implements Adapt {
     public void setItems(@Nullable List<Item<? extends Item.Holder>> items) {
         // we must calculate _total_ view item types, if amount changed (we see new items, we must invalidate listView,
         //  by setting adapter again)
-        // TODO: defensive copy here?
         this.items = items;
 
         // but only if not viewTypesCount = 1 (default value) ?
@@ -134,7 +172,6 @@ public class AdaptListView implements Adapt {
     }
 
     // return if adapter has new view types and thus must be invalidated
-    // TODO: allow to pre-populate factory
     private boolean assignViewTypes(@Nullable List<Item<? extends Item.Holder>> items) {
         if (ListUtils.isEmpty(items)) {
             return false;
@@ -142,8 +179,7 @@ public class AdaptListView implements Adapt {
 
         boolean hasNew = false;
 
-        //noinspection rawtypes
-        for (Class<? extends Item> type : prepareItemTypes(items)) {
+        for (Class<? extends Item<?>> type : prepareItemTypes(items)) {
             final Integer viewType = viewTypes.get(type);
             if (viewType == null) {
                 // not found
@@ -157,12 +193,12 @@ public class AdaptListView implements Adapt {
         return hasNew;
     }
 
-    @SuppressWarnings("rawtypes")
     @NonNull
-    private static Set<Class<? extends Item>> prepareItemTypes(@NonNull List<Item<? extends Item.Holder>> items) {
-        final Set<Class<? extends Item>> set = new HashSet<>(3);
+    private static Set<Class<? extends Item<?>>> prepareItemTypes(@NonNull List<Item<? extends Item.Holder>> items) {
+        final Set<Class<? extends Item<?>>> set = new HashSet<>(3);
         for (Item<?> item : items) {
-            set.add(item.getClass());
+            //noinspection unchecked
+            set.add((Class<? extends Item<?>>) item.getClass());
         }
         return set;
     }
@@ -243,27 +279,27 @@ public class AdaptListView implements Adapt {
 
         @Override
         public boolean isEnabled(int position) {
-            // TODO: check if we need to validate that option, maybe it is called anyway
+
             if (configuration.areAllItemsEnabled) {
                 return true;
             }
 
-            //noinspection rawtypes
-            final Item item = items.get(position);
+            final Item<?> item = items.get(position);
 
-            if (!(item instanceof ListViewItem)) {
-                // if not -> then default true
-                return true;
-            }
-
-            return ((ListViewItem) item).listViewIsEnabled();
+            final Configuration.EnabledProvider<? extends Item<?>> provider = isEnabled.get(item.getClass());
+            //noinspection unchecked,rawtypes
+            return provider != null
+                    && ((Configuration.EnabledProvider) provider).isEnabled(item);
         }
     }
 
     private static class ConfigurationImpl implements Configuration {
 
         boolean hasStableIds = false;
-        boolean areAllItemsEnabled = true;
+        boolean areAllItemsEnabled = false;
+
+        final Map<Class<? extends Item<?>>, EnabledProvider<? extends Item<?>>> isEnabled
+                = new HashMap<>(3);
 
         @NonNull
         @Override
@@ -277,6 +313,39 @@ public class AdaptListView implements Adapt {
         public Configuration areAllItemsEnabled(boolean areAllItemsEnabled) {
             this.areAllItemsEnabled = areAllItemsEnabled;
             return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration include(@NonNull Class<? extends Item<?>> type) {
+            include(type, false);
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration include(@NonNull Class<? extends Item<?>> type, boolean isEnabled) {
+            //noinspection unchecked
+            this.isEnabled.put(type, isEnabled ? EnabledProviderTrue.I : null);
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public <I extends Item<? extends Item.Holder>> Configuration include(@NonNull Class<? extends I> type, @NonNull EnabledProvider<I> provider) {
+            isEnabled.put(type, provider);
+            return this;
+        }
+
+        @SuppressWarnings("rawtypes")
+        private static class EnabledProviderTrue implements EnabledProvider {
+
+            static final EnabledProviderTrue I = new EnabledProviderTrue();
+
+            @Override
+            public boolean isEnabled(@NonNull Item item) {
+                return true;
+            }
         }
     }
 }

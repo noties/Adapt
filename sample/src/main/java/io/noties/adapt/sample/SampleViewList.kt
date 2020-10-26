@@ -18,7 +18,9 @@ class SampleViewList(
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.view_list, parent, false).apply {
                 val listView: ListView = findViewById(R.id.list_view)
-                val adapt = AdaptListView.init(listView)
+                val adapt = AdaptListView.init(listView) {
+                    it.areAllItemsEnabled(true)
+                }
                 adapt.setItems(samples.map(::SampleItem))
                 listView.setOnItemClickListener { _, _, position, _ ->
                     onSampleClicked(samples[position])
