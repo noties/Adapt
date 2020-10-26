@@ -1,4 +1,4 @@
-package io.noties.adapt;
+package io.noties.adapt.viewgroup;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -18,7 +18,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import io.noties.adapt.AdaptViewGroupDiff.Parent;
+import io.noties.adapt.Item;
+import io.noties.adapt.viewgroup.AdaptViewGroupDiff.Parent;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -47,14 +48,19 @@ public class AdaptViewGroupDiffTest {
         // if both lists are empty, nothing should happen
 
         final Parent parent = mock(Parent.class);
-        impl.diff(parent, Collections.<Item>emptyList(), Collections.<Item>emptyList());
+        impl.diff(
+                parent,
+                Collections.<Item<?>>emptyList(),
+                Collections.<Item<?>>emptyList());
 
         // failing condition
 //        verify(parent, times(100)).removeAt(anyInt());
 
         verify(parent, never()).removeAt(anyInt());
         verify(parent, never()).move(anyInt(), anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
+        //noinspection unchecked
         verify(parent, never()).render(anyInt(), any(Item.class));
     }
 
@@ -67,27 +73,32 @@ public class AdaptViewGroupDiffTest {
         final int size = list.size();
 
         final Parent parent = mock(Parent.class);
-        doAnswer(new Answer() {
+        doAnswer(new Answer<Object>() {
             @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+            public Object answer(InvocationOnMock invocation) {
                 list.remove((int) invocation.getArgument(0));
                 return null;
             }
         }).when(parent).removeAt(anyInt());
 
-        final List<Item> previous = new ArrayList<>(size);
+        final List<Item<?>> previous = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             previous.add(mock(Item.class));
         }
 
-        impl.diff(parent, previous, Collections.<Item>emptyList());
+        impl.diff(
+                parent,
+                previous,
+                Collections.<Item<?>>emptyList());
 
         // failing condition
 //        verify(parent, times(100)).move(anyInt(), anyInt());
 
         // validate non-executed methods
         verify(parent, never()).move(anyInt(), anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
+        //noinspection unchecked
         verify(parent, never()).render(anyInt(), any(Item.class));
 
         verify(parent, times(size)).removeAt(anyInt());
@@ -99,7 +110,7 @@ public class AdaptViewGroupDiffTest {
     public void all_the_same() {
         // both lists contain same elements
 
-        final List<Item> previous = new ArrayList<>();
+        final List<Item<?>> previous = new ArrayList<>();
         previous.add(new MockItem(1) {
         });
         previous.add(new MockItem(2) {
@@ -107,7 +118,7 @@ public class AdaptViewGroupDiffTest {
         previous.add(new MockItem(3) {
         });
 
-        final List<Item> current = new ArrayList<>(previous);
+        final List<Item<?>> current = new ArrayList<>(previous);
 
         final Parent parent = mock(Parent.class);
 
@@ -118,9 +129,11 @@ public class AdaptViewGroupDiffTest {
 
         verify(parent, never()).removeAt(anyInt());
         verify(parent, never()).move(anyInt(), anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
 
         // render method must still be called for each item
+        //noinspection unchecked
         verify(parent, times(previous.size())).render(anyInt(), any(Item.class));
     }
 
@@ -128,11 +141,12 @@ public class AdaptViewGroupDiffTest {
     public void swap_items_2_elements() {
         // 2 elements change places, should be one operation of move
 
-        final List<Item> previous = Arrays.asList(
-                (Item) new MockItem(1),
-                new MockItem(2));
+        final List<Item<?>> previous = new ArrayList<Item<?>>() {{
+            add(new MockItem(1));
+            add(new MockItem(2));
+        }};
 
-        final List<Item> current = Arrays.asList(previous.get(1), previous.get(0));
+        final List<Item<?>> current = Arrays.asList(previous.get(1), previous.get(0));
 
         final Parent parent = mock(Parent.class);
 
@@ -142,11 +156,13 @@ public class AdaptViewGroupDiffTest {
 //        verify(parent, times(100)).removeAt(anyInt());
 
         verify(parent, never()).removeAt(anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
 
         verify(parent, times(1)).move(eq(1), eq(0));
 
         // render called for both
+        //noinspection unchecked
         verify(parent, times(current.size())).render(anyInt(), any(Item.class));
     }
 
@@ -155,12 +171,12 @@ public class AdaptViewGroupDiffTest {
         // both lists contain same items, but current list has last item as first -> single move op
 
         final int size = 5;
-        final List<Item> previous = new ArrayList<>(size);
+        final List<Item<?>> previous = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             previous.add(new MockItem(i + 1));
         }
 
-        final List<Item> current = new ArrayList<>(size);
+        final List<Item<?>> current = new ArrayList<>(size);
         current.addAll(previous.subList(0, size - 1));
         current.add(0, previous.get(size - 1));
 
@@ -175,10 +191,12 @@ public class AdaptViewGroupDiffTest {
 //        verify(parent, times(100)).removeAt(anyInt());
 
         verify(parent, never()).removeAt(anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
 
         verify(parent, times(1)).move(eq(size - 1), eq(0));
 
+        //noinspection unchecked
         verify(parent, times(size)).render(anyInt(), any(Item.class));
     }
 
@@ -187,20 +205,20 @@ public class AdaptViewGroupDiffTest {
         // old: [square, triangle, circle],
         // new: [triangle, square, circle]
 
-        final List<Item> previous = Arrays.asList(
-                (Item) new MockItem(1) {
-                },
-                new MockItem(2) {
-                },
-                new MockItem(3) {
-                }
-        );
+        final List<Item<?>> previous = new ArrayList<Item<?>>() {{
+            add(new MockItem(1) {
+            });
+            add(new MockItem(2) {
+            });
+            add(new MockItem(3) {
+            });
+        }};
 
-        final List<Item> current = Arrays.asList(
-                previous.get(1),
-                previous.get(0),
-                previous.get(2)
-        );
+        final List<Item<?>> current = new ArrayList<Item<?>>() {{
+            add(previous.get(1));
+            add(previous.get(0));
+            add(previous.get(2));
+        }};
 
         final Parent parent = mock(Parent.class);
 
@@ -210,6 +228,7 @@ public class AdaptViewGroupDiffTest {
         verify(parent, times(1)).move(anyInt(), anyInt());
 
         verify(parent, never()).removeAt(anyInt());
+        //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
 
 //        verifyNoMoreInteractions(parent);
@@ -219,10 +238,10 @@ public class AdaptViewGroupDiffTest {
     public void same_id_different_types_same_position() {
         // items share the same id, but actually of different types -> old removed, new inserted
 
-        final List<Item> previous = Collections.singletonList((Item) new MockItem(1));
+        final List<Item<?>> previous = Collections.<Item<?>>singletonList(new MockItem(1));
 
         // anonymous inner class will have different type
-        final List<Item> current = Collections.singletonList((Item) new MockItem(1) {
+        final List<Item<?>> current = Collections.<Item<?>>singletonList(new MockItem(1) {
         });
 
         assertEquals(previous.get(0).id(), current.get(0).id());
@@ -246,12 +265,16 @@ public class AdaptViewGroupDiffTest {
     public void same_id_different_types_different_position() {
         // items share the same id, but actually of different types -> old removed, new inserted
 
-        final List<Item> previous = Arrays.asList((Item) new MockItem(1), new MockItem(2));
+        final List<Item<?>> previous = new ArrayList<Item<?>>() {{
+            add(new MockItem(1));
+            add(new MockItem(2));
+        }};
 
-        final List<Item> current = Arrays.asList(
-                (Item) new MockItem(2) {
-                },
-                new MockItem(1));
+        final List<Item<?>> current = new ArrayList<Item<?>>() {{
+            add(new MockItem(2) {
+            });
+            add(new MockItem(1));
+        }};
 
         // ids are the same, but actual equals is false
         assertEquals(previous.get(1).id(), current.get(0).id());
@@ -273,6 +296,7 @@ public class AdaptViewGroupDiffTest {
         verify(parent, never()).move(anyInt(), anyInt());
     }
 
+    @SuppressWarnings("rawtypes")
     private static class MockItem extends Item {
 
         MockItem(long id) {

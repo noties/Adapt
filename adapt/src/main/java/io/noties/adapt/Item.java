@@ -36,7 +36,7 @@ public abstract class Item<H extends Item.Holder> {
     public static class Holder {
         private final View itemView;
 
-        protected Holder(@NonNull View itemView) {
+        public Holder(@NonNull View itemView) {
             this.itemView = itemView;
         }
 

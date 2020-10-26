@@ -5,9 +5,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-class AbstractItem extends Item {
+public class AbstractItem extends Item<Item.Holder> {
 
-    AbstractItem(long id) {
+    public AbstractItem(long id) {
         super(id);
     }
 
@@ -29,11 +29,11 @@ class AbstractItem extends Item {
 
         AbstractItem that = (AbstractItem) o;
 
-        return id == that.id;
+        return id() == that.id();
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (id() ^ (id() >>> 32));
     }
 }

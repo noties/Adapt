@@ -153,6 +153,15 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         return null;
     }
 
+    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+        final View view = findViewFor(item);
+        if (view == null) {
+            throw AdaptException.create("Item is not attached to AdaptViewGroup: %s", item);
+        }
+        final int index = viewGroup.indexOfChild(view);
+        render(index, item);
+    }
+
     @Override
     public void removeAt(int index) {
         configuration.changeHandler.removeAt(viewGroup, index);
