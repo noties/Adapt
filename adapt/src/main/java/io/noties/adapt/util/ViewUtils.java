@@ -19,21 +19,27 @@ public abstract class ViewUtils {
         final View v = view.findViewById(id);
 
         if (v == null) {
-            final String message = "View with id: `%s` not found in specified layout: %s";
-            try {
-                final Resources resources = view.getResources();
-                final String idResourceName = resources != null
-                        ? resources.getResourceName(id)
-                        : null;
-                throw AdaptException.create(message, idResourceName, view);
-            } catch (Resources.NotFoundException e) {
-                // throw AdaptException with NotFound exception as the cause
-                throw AdaptException.create(e, message, "null", view);
-            }
+            throw notFoundException(view, id);
         }
 
         //noinspection unchecked
         return (V) v;
+    }
+
+    @NonNull
+    @CheckResult
+    public static AdaptException notFoundException(@NonNull View view, @IdRes int id) {
+        final String message = "View with id: `%s` not found in specified layout: %s";
+        try {
+            final Resources resources = view.getResources();
+            final String idResourceName = resources != null
+                    ? resources.getResourceName(id)
+                    : null;
+            throw AdaptException.create(message, idResourceName, view);
+        } catch (Resources.NotFoundException e) {
+            // throw AdaptException with NotFound exception as the cause
+            throw AdaptException.create(e, message, "null", view);
+        }
     }
 
     private ViewUtils() {

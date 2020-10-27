@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -45,16 +46,16 @@ public abstract class Item<H extends Item.Holder> {
             return itemView;
         }
 
-        @NonNull
+        @Nullable
         @CheckResult
-        protected <V extends View> V requireView(@IdRes int id) {
-            return requireView(itemView, id);
+        public <V extends View> V findView(@IdRes int id) {
+            return itemView.findViewById(id);
         }
 
         @NonNull
         @CheckResult
-        protected <V extends View> V requireView(@NonNull View view, @IdRes int id) {
-            return ViewUtils.requireView(view, id);
+        public <V extends View> V requireView(@IdRes int id) {
+            return ViewUtils.requireView(itemView, id);
         }
     }
 }
