@@ -29,6 +29,10 @@ dependencies {
 
 if (project.hasProperty('release')) {
     apply from: config['push-aar-gradle']
+
+    tasks.withType(Javadoc) {
+        enabled = false
+    }
 }
 
 afterEvaluate {
