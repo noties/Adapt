@@ -1,7 +1,7 @@
 package ru.noties.adapt.sample.core.item;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 import ru.noties.adapt.sample.core.ShapeType;
 

@@ -1,9 +1,10 @@
 package ru.noties.adapt.sample.java.view;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import ru.noties.adapt.Holder;
 import ru.noties.adapt.ItemView;

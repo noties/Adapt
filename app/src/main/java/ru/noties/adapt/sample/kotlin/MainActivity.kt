@@ -3,10 +3,10 @@ package ru.noties.adapt.sample.kotlin
 import android.app.Activity
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.noties.adapt.Adapt
 import ru.noties.adapt.DynamicItemView
 import ru.noties.adapt.OnClickViewProcessor
@@ -31,19 +31,19 @@ class MainActivity : Activity() {
 
         adapt = Adapt.builder(Item::class.java)
 //                .include(SectionItem::class.java, SectionView2())
-                .include(
-                        SectionItem::class.java,
-                        DynamicItemView.create<SectionItem>(R.layout.view_section) { holder, item ->
-                            holder.on<TextView>(R.id.text, { it.text = item.name() })
-                        }
-                )
-                .include(ShapeItem::class.java, ShapeView())
-                .include(
-                        AppendItem::class.java,
-                        AppendView(),
-                        OnClickViewProcessor.create({ _, _ -> append() })
-                )
-                .build()
+            .include(
+                SectionItem::class.java,
+                DynamicItemView.create<SectionItem>(R.layout.view_section) { holder, item ->
+                    holder.on<TextView>(R.id.text, { it.text = item.name() })
+                }
+            )
+            .include(ShapeItem::class.java, ShapeView())
+            .include(
+                AppendItem::class.java,
+                AppendView(),
+                OnClickViewProcessor.create({ _, _ -> append() })
+            )
+            .build()
 
         initRecyclerView()
 
@@ -71,7 +71,12 @@ class MainActivity : Activity() {
         recyclerView.layoutManager = manager
 
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
                 outRect.set(padding, padding, padding, padding)
             }
         })

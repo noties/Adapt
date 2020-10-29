@@ -1,6 +1,6 @@
 package ru.noties.adapt.sample.core;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Random;
 

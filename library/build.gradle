@@ -16,8 +16,8 @@ android {
 dependencies {
 
     deps.with {
-        api it['support-annotations']
-        api it['recycler-view']
+        api it['x-annotations']
+        api it['x-recycler-view']
     }
 
     deps['test'].with {
