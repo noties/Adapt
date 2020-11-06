@@ -10,6 +10,7 @@ import io.noties.adapt.sample.samples.*
 class MainActivity : Activity() {
 
     private val samples: List<Sample> = listOf(
+        SampleAlertDialog().sample,
         SampleListViewSomeEnabled().sample,
         SampleListViewAllEnabled().sample,
         SampleViewGroupTransition().sample,

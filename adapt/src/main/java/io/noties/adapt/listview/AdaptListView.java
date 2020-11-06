@@ -97,7 +97,11 @@ public class AdaptListView implements Adapt {
     @SuppressWarnings("rawtypes")
     @NonNull
     public static AdaptListView init(@NonNull AdapterView adapterView) {
-        final AdaptListView adaptListView = new AdaptListView(adapterView, new ConfigurationImpl());
+        final AdaptListView adaptListView = new AdaptListView(
+                adapterView.getContext(),
+                adapterView,
+                new ConfigurationImpl()
+        );
         //noinspection unchecked
         adapterView.setAdapter(adaptListView.adapter());
         return adaptListView;
@@ -108,13 +112,39 @@ public class AdaptListView implements Adapt {
     public static AdaptListView init(@NonNull AdapterView adapterView, @NonNull Configurator configurator) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
-        final AdaptListView adaptListView = new AdaptListView(adapterView, configuration);
+        final AdaptListView adaptListView = new AdaptListView(
+                adapterView.getContext(),
+                adapterView,
+                configuration
+        );
         //noinspection unchecked
         adapterView.setAdapter(adaptListView.adapter());
         return adaptListView;
     }
 
+    /**
+     * A special factory method to create AdaptListView to be used when there is no information
+     * about containing AdapterView (for example when used in an {@code AlertDialog}
+     *
+     * <strong>NB</strong> if there are multiple item views then items
+     * must be explicitly registered via one of the {@code Configuration.include} methods:
+     * <ul>
+     *     <li>{@link Configuration#include(Class)}</li>
+     *     <li>{@link Configuration#include(Class, Configuration.EnabledProvider)}</li>
+     *     <li>{@link Configuration#include(Class, boolean)}</li>
+     * </ul>
+     */
+    @NonNull
+    public static AdaptListView create(
+            @NonNull Context context,
+            @NonNull Configurator configurator) {
+        final ConfigurationImpl configuration = new ConfigurationImpl();
+        configurator.configure(configuration);
+        return new AdaptListView(context, null, configuration);
+    }
+
     @SuppressWarnings("rawtypes")
+    @Nullable
     private final AdapterView adapterView;
     private final ConfigurationImpl configuration;
     private final AdapterImpl adapter;
@@ -127,10 +157,14 @@ public class AdaptListView implements Adapt {
     private List<Item<?>> items;
 
     @SuppressWarnings("rawtypes")
-    AdaptListView(@NonNull AdapterView adapterView, @NonNull ConfigurationImpl configuration) {
+    AdaptListView(
+            @NonNull Context context,
+            @Nullable AdapterView adapterView,
+            @NonNull ConfigurationImpl configuration
+    ) {
         this.adapterView = adapterView;
         this.configuration = configuration;
-        this.adapter = new AdapterImpl(adapterView.getContext());
+        this.adapter = new AdapterImpl(context);
 
         this.isEnabled = new HashMap<>(configuration.isEnabled);
 
@@ -139,7 +173,7 @@ public class AdaptListView implements Adapt {
         }
     }
 
-    @NonNull
+    @Nullable
     public AdapterView<?> adapterView() {
         return adapterView;
     }
@@ -164,6 +198,12 @@ public class AdaptListView implements Adapt {
         // but only if not viewTypesCount = 1 (default value) ?
         if (assignViewTypes(items)
                 && viewTypesCount > 1) {
+
+            if (adapterView == null) {
+                throw AdaptException.create("Register all item views explicitly when " +
+                        "creating AdaptListView in a detached from AdapterView way");
+            }
+
             //noinspection unchecked
             adapterView.setAdapter(adapter);
         } else {
