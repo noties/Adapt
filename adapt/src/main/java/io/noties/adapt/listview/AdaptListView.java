@@ -211,6 +211,12 @@ public class AdaptListView implements Adapt {
         }
     }
 
+    @Override
+    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+        // ListView cannot? update individual item
+        adapter.notifyDataSetChanged();
+    }
+
     // return if adapter has new view types and thus must be invalidated
     private boolean assignViewTypes(@Nullable List<Item<? extends Item.Holder>> items) {
         if (ListUtils.isEmpty(items)) {

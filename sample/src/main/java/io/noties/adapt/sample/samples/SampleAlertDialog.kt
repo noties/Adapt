@@ -42,6 +42,11 @@ class SampleAlertDialog : AbsSampleView() {
                 adapt1.setItems(items)
                 adapt2.setItems(items)
             }
+
+            override fun notifyItemChanged(item: Item<out Item.Holder>) {
+                adapt1.notifyItemChanged(item)
+                adapt2.notifyItemChanged(item)
+            }
         }
 
         adapt.setItems(initialItems(adapt))

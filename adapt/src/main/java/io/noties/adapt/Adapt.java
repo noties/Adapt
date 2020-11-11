@@ -11,4 +11,6 @@ public interface Adapt {
     List<Item<? extends Item.Holder>> items();
 
     void setItems(@Nullable List<Item<? extends Item.Holder>> items);
+
+    void notifyItemChanged(@NonNull Item<? extends Item.Holder> item);
 }

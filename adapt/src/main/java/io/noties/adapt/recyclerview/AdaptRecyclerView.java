@@ -158,6 +158,15 @@ public class AdaptRecyclerView implements Adapt {
         );
     }
 
+    @Override
+    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+        final int index = ListUtils.freeze(items).indexOf(item);
+        if (index < 0) {
+            throw AdaptException.create("Item is not attached to AdaptRecyclerView: %s", item);
+        }
+        adapter.notifyItemChanged(index);
+    }
+
     public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
         @NonNull
         public abstract Item<? extends Item.Holder> getItem(int position);

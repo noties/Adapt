@@ -153,6 +153,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         return null;
     }
 
+    @Override
     public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
         final View view = findViewFor(item);
         if (view == null) {
