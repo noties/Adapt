@@ -1,6 +1,5 @@
 package io.noties.adapt.recyclerview;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -67,6 +66,18 @@ public class AdaptRecyclerView implements Adapt {
         return adaptRecyclerView;
     }
 
+    @NonNull
+    public static AdaptRecyclerView create() {
+        return new AdaptRecyclerView(null, new ConfigurationImpl());
+    }
+
+    @NonNull
+    public static AdaptRecyclerView create(@NonNull Configurator configurator) {
+        final ConfigurationImpl configuration = new ConfigurationImpl();
+        configurator.configure(configuration);
+        return new AdaptRecyclerView(null, configuration);
+    }
+
     @SuppressWarnings("rawtypes")
     public static int assignedViewType(@NonNull Class<? extends Item> type) {
         return type.getName().hashCode();
@@ -114,15 +125,15 @@ public class AdaptRecyclerView implements Adapt {
 
     private List<Item<? extends Item.Holder>> items;
 
-    AdaptRecyclerView(@NonNull final RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
+    AdaptRecyclerView(@Nullable final RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
         this.recyclerView = recyclerView;
         this.configuration = configuration;
-        this.adapter = new AdapterImpl(recyclerView.getContext());
+        this.adapter = new AdapterImpl();
 
         adapter.setHasStableIds(configuration.hasStableIds);
     }
 
-    @NonNull
+    @Nullable
     public RecyclerView recyclerView() {
         return recyclerView;
     }
@@ -154,11 +165,7 @@ public class AdaptRecyclerView implements Adapt {
 
     private class AdapterImpl extends Adapter<ItemViewHolder> {
 
-        private final LayoutInflater inflater;
-
-        AdapterImpl(@NonNull Context context) {
-            this.inflater = LayoutInflater.from(context);
-        }
+        private LayoutInflater inflater;
 
         @NonNull
         @Override
@@ -167,6 +174,12 @@ public class AdaptRecyclerView implements Adapt {
             if (firstItem == null) {
                 throw AdaptException.create("Unexpected viewType: %d", viewType);
             }
+
+            LayoutInflater inflater = this.inflater;
+            if (inflater == null) {
+                this.inflater = inflater = LayoutInflater.from(parent.getContext());
+            }
+
             return new ItemViewHolder(firstItem.createHolder(inflater, parent));
         }
 
