@@ -212,6 +212,11 @@ public class AdaptListView implements Adapt {
     }
 
     @Override
+    public void notifyAllItemsChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
         // ListView cannot? update individual item
         adapter.notifyDataSetChanged();

@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -15,23 +14,20 @@ import java.util.Map;
 
 import io.noties.adapt.util.ViewUtils;
 
-public abstract class InflatedItem extends Item<InflatedItem.Holder> {
+public abstract class ItemView extends Item<ItemView.Holder> {
 
-    public final int layoutResId;
-
-    protected InflatedItem(long id, @LayoutRes int layoutResId) {
+    protected ItemView(long id) {
         super(id);
-        this.layoutResId = layoutResId;
     }
+
+    @NonNull
+    public abstract View createView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
     @NonNull
     @Override
     public Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return new Holder(inflater.inflate(layoutResId, parent, false));
+        return new Holder(createView(inflater, parent));
     }
-
-    @Override
-    public abstract void render(@NonNull Holder holder);
 
     /**
      * Holder that caches result of {@link #findView(int)} and {@link #requireView(int)}
@@ -48,29 +44,25 @@ public abstract class InflatedItem extends Item<InflatedItem.Holder> {
         @Override
         public <V extends View> V findView(@IdRes int id) {
 
-            // if key is not present -> first lookup
-            // if key is present:
-            //  if value is null -> not found
-            //  if value is not null
-            //      if get == null -> detached/recycled -> throw?
-            //      else -> return
+            final Integer key = id;
+
+            final WeakReference<View> reference = cache.get(key);
+            final View cachedView = reference != null
+                    ? reference.get()
+                    : null;
 
             final View view;
 
-            final Integer key = id;
+            if (cachedView == null) {
+                final View newView = super.findView(id);
+                // cache
+                if (newView != null) {
+                    cache.put(key, new WeakReference<View>(newView));
+                }
 
-            if (cache.containsKey(key)) {
-                final WeakReference<View> reference = cache.get(key);
-                view = reference != null
-                        ? reference.get()
-                        : null;
+                view = newView;
             } else {
-                view = super.findView(id);
-                final WeakReference<View> reference = view != null
-                        ? new WeakReference<View>(view)
-                        : null;
-
-                cache.put(key, reference);
+                view = cachedView;
             }
 
             //noinspection unchecked

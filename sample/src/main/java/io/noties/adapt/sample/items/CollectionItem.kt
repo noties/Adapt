@@ -22,6 +22,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
         return Holder(view).apply {
             recyclerView.layoutManager =
                 LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+            // if not used inside a recyclerView it is still possible to use the same pool
             if (parent is RecyclerView) {
                 recyclerView.setRecycledViewPool(parent.recycledViewPool)
             }

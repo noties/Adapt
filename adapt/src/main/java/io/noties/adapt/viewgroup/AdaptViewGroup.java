@@ -136,6 +136,11 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         }
     }
 
+    @Override
+    public void notifyAllItemsChanged() {
+        setItems(items);
+    }
+
     @Nullable
     public Item<? extends Item.Holder> findItemFor(@NonNull View view) {
         //noinspection unchecked,rawtypes
@@ -156,11 +161,10 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     @Override
     public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
         final View view = findViewFor(item);
-        if (view == null) {
-            throw AdaptException.create("Item is not attached to AdaptViewGroup: %s", item);
+        if (view != null) {
+            final int index = viewGroup.indexOfChild(view);
+            render(index, item);
         }
-        final int index = viewGroup.indexOfChild(view);
-        render(index, item);
     }
 
     @Override

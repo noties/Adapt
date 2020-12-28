@@ -25,6 +25,8 @@ import io.noties.adapt.view.AdaptView;
  *
  * @since 2.2.0
  */
+// TODO: notify item changed when sticky is hidden and regular item is used in layout (search field)
+// TODO: can it be that with fast scroll to top sticky view is displayed?
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
 //    /**

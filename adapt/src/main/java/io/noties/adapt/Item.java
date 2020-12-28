@@ -13,7 +13,12 @@ import java.util.Objects;
 
 import io.noties.adapt.util.ViewUtils;
 
+// TODO: adapt instance (bound/unbound)
 public abstract class Item<H extends Item.Holder> {
+
+    // there is no restriction of using only signed integers for ids, so it is
+    //  strange for RecyclerView to use -1 as an indication of NO VALUE
+    public static final long NO_ID = 0;
 
     protected static long hash(Object... args) {
         return Objects.hash(args);
