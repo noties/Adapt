@@ -23,7 +23,7 @@ class PlainItem(
         return Holder(inflater.inflate(R.layout.item_plain, parent, false))
     }
 
-    override fun render(holder: Holder) {
+    override fun bind(holder: Holder) {
 
         val drawable: CircleDrawable = (holder.letterView.background as? CircleDrawable) ?: {
             CircleDrawable(color).apply {

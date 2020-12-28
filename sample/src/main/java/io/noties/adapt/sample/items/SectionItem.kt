@@ -18,7 +18,7 @@ class SectionItem(val text: String) :
         return Holder(inflater.inflate(R.layout.item_section, parent, false))
     }
 
-    override fun render(holder: Holder) {
+    override fun bind(holder: Holder) {
         holder.textView.text = text
     }
 }

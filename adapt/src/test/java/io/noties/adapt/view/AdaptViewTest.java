@@ -88,7 +88,7 @@ public class AdaptViewTest {
                 }
 
                 @Override
-                public void render(@NonNull Holder holder) {
+                public void bind(@NonNull Holder holder) {
 
                 }
             });
@@ -110,7 +110,7 @@ public class AdaptViewTest {
 
         adaptView.setItem(item);
 
-        verify(item, times(1)).render(eq(holder));
+        verify(item, times(1)).bind(eq(holder));
         verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));
     }
 
@@ -130,7 +130,7 @@ public class AdaptViewTest {
 //        verify(item, times(1)).createHolder(any(LayoutInflater.class), eq(group));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_holder), eq(holder));
 //        verify(group, times(1)).addView(eq(view));
-//        verify(item, times(1)).render(eq(holder));
+//        verify(item, times(1)).bind(eq(holder));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));
 //    }
 
@@ -148,7 +148,7 @@ public class AdaptViewTest {
 //
 //        verify(holderProvider, times(1)).provide(eq(view));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_holder), eq(holder));
-//        verify(item, times(1)).render(eq(holder));
+//        verify(item, times(1)).bind(eq(holder));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));
 //    }
 //
@@ -168,7 +168,7 @@ public class AdaptViewTest {
 //
 //        verify(holderProvider, times(1)).provide(eq(view));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_holder), eq(holder));
-//        verify(item, times(1)).render(eq(holder));
+//        verify(item, times(1)).bind(eq(holder));
 //        verify(view, times(1)).setTag(eq(R.id.adapt_internal_item), eq(item));
 //    }
 }

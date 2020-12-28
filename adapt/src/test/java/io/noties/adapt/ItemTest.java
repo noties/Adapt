@@ -74,7 +74,7 @@
 //        }
 //
 //        @Override
-//        public void render(@NonNull Holder holder) {
+//        public void bind(@NonNull Holder holder) {
 //
 //        }
 //    }

@@ -196,7 +196,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
                     "index: %d, item: %s, view: %s", index, item, view);
         }
         //noinspection unchecked
-        item.render(holder);
+        item.bind(holder);
         view.setTag(ID_ITEM, item);
     }
 

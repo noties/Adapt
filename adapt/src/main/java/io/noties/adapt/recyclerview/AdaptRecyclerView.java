@@ -202,7 +202,7 @@ public class AdaptRecyclerView implements Adapt {
             //noinspection rawtypes
             final Item item = items.get(position);
             //noinspection unchecked
-            item.render(holder.holder());
+            item.bind(holder.holder());
         }
 
 

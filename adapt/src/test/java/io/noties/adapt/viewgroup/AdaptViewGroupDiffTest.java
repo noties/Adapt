@@ -132,7 +132,7 @@ public class AdaptViewGroupDiffTest {
         //noinspection unchecked
         verify(parent, never()).insertAt(anyInt(), any(Item.class));
 
-        // render method must still be called for each item
+        // bind method must still be called for each item
         //noinspection unchecked
         verify(parent, times(previous.size())).render(anyInt(), any(Item.class));
     }
@@ -161,7 +161,7 @@ public class AdaptViewGroupDiffTest {
 
         verify(parent, times(1)).move(eq(1), eq(0));
 
-        // render called for both
+        // bind called for both
         //noinspection unchecked
         verify(parent, times(current.size())).render(anyInt(), any(Item.class));
     }
@@ -310,7 +310,7 @@ public class AdaptViewGroupDiffTest {
         }
 
         @Override
-        public void render(@NonNull Holder holder) {
+        public void bind(@NonNull Holder holder) {
             throw new RuntimeException();
         }
     }

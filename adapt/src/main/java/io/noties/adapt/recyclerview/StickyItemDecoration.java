@@ -31,7 +31,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
 //    /**
 //     * Factory method to create {@link StickyItemDecoration}. Passed {@code item} can be a <em>mocked</em>
-//     * one (can have invalid data) - it is just used to create layout only (no render will be called on that item).
+//     * one (can have invalid data) - it is just used to create layout only (no bind will be called on that item).
 //     * Please note that {@code recyclerView} must be wrapped inside a FrameLayout in order to add sticky view.
 //     * If you want to provide custom placing of {@link AdaptView} use {@link #create(AdaptView)} or {@link #create(ViewGroup, Item)}.
 //     *

@@ -21,7 +21,7 @@ public abstract class ViewState {
 
     /**
      * Method to save/restore view state. Must be called for each _child_ view inside a container
-     * Call this in your {@link Item#render(Item.Holder)} method. Please note that this method
+     * Call this in your {@link Item#bind(Item.Holder)} method. Please note that this method
      * will save state of a view only after it is detached from a parent. If you need to save
      * state explicitly use {@link #save(long, View)}.
      */
@@ -31,8 +31,8 @@ public abstract class ViewState {
 
         final ViewParent parent = view.getParent();
         if (parent != null) {
-            // in most cases and during developing, I've noticed that in `render` recycler doesn't have
-            // a parent yet, but it is initialized after render is finished. Anyway, in order to not
+            // in most cases and during developing, I've noticed that in `bind` recycler doesn't have
+            // a parent yet, but it is initialized after bind is finished. Anyway, in order to not
             // miss this case, we will process state here also
             final Cache cache = Cache.of(parent);
             cache.restore(id, view);

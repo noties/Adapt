@@ -335,7 +335,7 @@ public class AdaptViewGroupTest {
 
         parent.render(777, item);
 
-        verify(item, times(1)).render(eq(holder));
+        verify(item, times(1)).bind(eq(holder));
         verify(view, times(1)).setTag(eq(ID_ITEM), eq(item));
     }
 

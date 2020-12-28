@@ -37,7 +37,7 @@ public abstract class Item<H extends Item.Holder> {
     @NonNull
     public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
-    public abstract void render(@NonNull H holder);
+    public abstract void bind(@NonNull H holder);
 
     public static class Holder {
         private final View itemView;

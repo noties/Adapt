@@ -23,7 +23,7 @@ class ControlItem(
         return Holder(inflater.inflate(R.layout.item_control, parent, false))
     }
 
-    override fun render(holder: Holder) {
+    override fun bind(holder: Holder) {
         holder.add.setOnClickListener(onAdd ?: {
             adapt.setItems(adapt.items().toMutableList().apply {
                 addAll(ItemGenerator.next(size))

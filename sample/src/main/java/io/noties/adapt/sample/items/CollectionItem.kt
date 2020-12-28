@@ -30,7 +30,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
         }
     }
 
-    override fun render(holder: Holder) {
+    override fun bind(holder: Holder) {
         holder.adapt.setItems(items)
 
         // state can persist between recycled stages, so it is required to reset state for

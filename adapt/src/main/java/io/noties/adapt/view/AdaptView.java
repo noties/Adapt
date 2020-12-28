@@ -35,7 +35,7 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         view.setTag(ID_HOLDER, holder);
         parent.addView(view);
         //noinspection unchecked,rawtypes,
-        ((Item) item).render(holder);
+        ((Item) item).bind(holder);
         view.setTag(ID_ITEM, item);
         return new AdaptView<>(view);
     }
@@ -77,13 +77,13 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         }
 
         //noinspection unchecked,rawtypes,
-        ((Item) item).render(holder);
+        ((Item) item).bind(holder);
 
         // save item information
         view.setTag(ID_ITEM, item);
     }
 
-    // re-render
+    // re-bind
     public void invalidate() {
         setItem(item());
     }

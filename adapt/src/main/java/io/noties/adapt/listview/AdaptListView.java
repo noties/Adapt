@@ -313,7 +313,7 @@ public class AdaptListView implements Adapt {
             }
 
             //noinspection unchecked
-            item.render(holder);
+            item.bind(holder);
 
             return view;
         }

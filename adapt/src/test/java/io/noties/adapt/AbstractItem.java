@@ -18,7 +18,7 @@ public class AbstractItem extends Item<Item.Holder> {
     }
 
     @Override
-    public void render(@NonNull Holder holder) {
+    public void bind(@NonNull Holder holder) {
 
     }
 

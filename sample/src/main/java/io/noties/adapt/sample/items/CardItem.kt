@@ -22,7 +22,7 @@ class CardItem(
         return Holder(inflater.inflate(R.layout.item_card, parent, false))
     }
 
-    override fun render(holder: Holder) {
+    override fun bind(holder: Holder) {
         holder.letterView.setBackgroundColor(color)
         holder.letterView.text = letter
         holder.titleView.text = title

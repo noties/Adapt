@@ -40,7 +40,7 @@ class SampleViewList(
             return Holder(inflater.inflate(R.layout.item_sample, parent, false))
         }
 
-        override fun render(holder: Holder) {
+        override fun bind(holder: Holder) {
             holder.name.text = sample.name
             holder.description.text = sample.description
 
