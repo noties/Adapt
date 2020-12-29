@@ -6,12 +6,12 @@ import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 
-class SampleListView : AbsSampleView() {
+class ListViewSample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "ListView",
         text("Usage inside <tt><b>ListView</b></tt>"),
-        ::SampleListView
+        ::ListViewSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_list_view

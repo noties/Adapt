@@ -12,7 +12,7 @@ import androidx.annotation.RequiresApi;
 
 /**
  * @see AdaptViewGroup.ChangeHandler
- * @see AdaptViewGroup.ChangeHandlerDef
+ * @see ViewGroupChangeHandler
  * @since 2.3.0-SNAPSHOT
  */
 @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -25,7 +25,7 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     @NonNull
     public static TransitionChangeHandler create() {
-        return create(new AdaptViewGroup.ChangeHandlerDef(), null);
+        return create(new ViewGroupChangeHandler(), null);
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     @NonNull
     public static TransitionChangeHandler create(@Nullable TransitionProvider transitionProvider) {
-        return create(new AdaptViewGroup.ChangeHandlerDef(), transitionProvider);
+        return create(new ViewGroupChangeHandler(), transitionProvider);
     }
 
     @NonNull

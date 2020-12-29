@@ -8,11 +8,11 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 import io.noties.adapt.sample.items.ControlItem
 
-class SampleRecyclerViewGrid : AbsSampleView() {
+class RecyclerViewGridSample : AbsSampleView() {
     override val sample: Sample = Sample(
         "Grid",
         text("<b><tt>RecyclerView</tt></b> with <tt>GridLayoutManager</tt>"),
-        ::SampleRecyclerViewGrid
+        ::RecyclerViewGridSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view

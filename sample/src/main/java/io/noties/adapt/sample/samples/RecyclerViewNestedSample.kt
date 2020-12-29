@@ -13,12 +13,12 @@ import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CollectionItem
 import io.noties.adapt.sample.items.ControlItem
 
-class SampleRecyclerViewNested() : AbsSampleView() {
+class RecyclerViewNestedSample() : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "Nested Recycler",
         text("Item contains nested <tt><b>RecyclerView</b></tt>, shared <tt>RecyclerViewPool</tt>"),
-        ::SampleRecyclerViewNested
+        ::RecyclerViewNestedSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view

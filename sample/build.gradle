@@ -17,10 +17,12 @@ android {
 
 dependencies {
 
-    implementation deps['kotlin-stdlib']
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
     implementation project(':adapt')
     implementation deps['x-recycler-view']
+
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     implementation 'io.noties:debug:5.1.0'
 }

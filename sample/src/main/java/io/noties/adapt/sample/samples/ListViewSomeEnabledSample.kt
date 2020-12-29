@@ -10,12 +10,12 @@ import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
 import io.noties.debug.Debug
 
-class SampleListViewSomeEnabled : AbsSampleView() {
+class ListViewSomeEnabledSample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "ListView some enabled",
         text("Some Item are enabled (are considered to be separators)"),
-        ::SampleListViewSomeEnabled
+        ::ListViewSomeEnabledSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_list_view

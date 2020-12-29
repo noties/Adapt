@@ -6,12 +6,12 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
-class SampleViewGroup : AbsSampleView() {
+class ViewGroupSample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "ViewGroup",
         text("Usage of Adapt inside <tt><b>ViewGroup</b></tt> (<tt>LinearLayout</tt> wrapped inside <tt>ScrollView</tt>)"),
-        ::SampleViewGroup
+        ::ViewGroupSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_view_group

@@ -10,17 +10,18 @@ import io.noties.adapt.sample.samples.*
 class MainActivity : Activity() {
 
     private val samples: List<Sample> = listOf(
-        SampleAlertDialog().sample,
-        SampleListViewSomeEnabled().sample,
-        SampleListViewAllEnabled().sample,
-        SampleViewGroupTransition().sample,
-        SampleRecyclerViewNested().sample,
-        SampleRecyclerViewGrid().sample,
-        SampleRecyclerViewDiff().sample,
-        SampleRecyclerViewSticky().sample,
-        SampleViewGroup().sample,
-        SampleListView().sample,
-        SampleRecyclerView().sample,
+        ViewPager2Sample().sample,
+        AlertDialogSample().sample,
+        ListViewSomeEnabledSample().sample,
+        ListViewAllEnabledSample().sample,
+        ViewGroupTransitionSample().sample,
+        RecyclerViewNestedSample().sample,
+        RecyclerViewGridSample().sample,
+        RecyclerViewDiffSample().sample,
+        RecyclerViewStickySample().sample,
+        ViewGroupSample().sample,
+        ListViewSample().sample,
+        RecyclerViewSample().sample,
     )
 
     private lateinit var viewAnimator: ViewAnimator

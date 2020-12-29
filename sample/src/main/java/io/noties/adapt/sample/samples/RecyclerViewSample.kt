@@ -7,12 +7,12 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 
-class SampleRecyclerView : AbsSampleView() {
+class RecyclerViewSample : AbsSampleView() {
 
     override val sample = Sample(
         "RecyclerView",
         text("Usage of multiple items inside <tt><b>RecyclerView</b></tt>"),
-        ::SampleRecyclerView
+        ::RecyclerViewSample
     )
 
     override val layoutResId = R.layout.view_sample_recycler_view

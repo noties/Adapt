@@ -9,12 +9,12 @@ import io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 
-class SampleRecyclerViewDiff : AbsSampleView() {
+class RecyclerViewDiffSample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "DiffUtil",
         text("<b>DiffUtil</b> with the <b><tt>RecyclerView</tt></b>"),
-        ::SampleRecyclerViewDiff
+        ::RecyclerViewDiffSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view

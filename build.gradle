@@ -54,8 +54,7 @@ ext {
 
     deps = [
             'x-annotations'  : 'androidx.annotation:annotation:1.1.0',
-            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.0.0',
-            'kotlin-stdlib'  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.0.0'
     ]
 
     deps['test'] = [

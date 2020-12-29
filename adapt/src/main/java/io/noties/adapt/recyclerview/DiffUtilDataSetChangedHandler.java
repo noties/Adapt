@@ -58,9 +58,8 @@ public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetC
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
 
-                // NO_ID has special case handling, if any of items has NO_ID than it's not the same
-                //  otherwise in case when both items have NO_ID they will be considered as same,
-                //  which is not true
+                // NO_ID has special case handling, if any of items has NO_ID
+                //  then it's not the same as other
 
                 final Item<?> oldItem = oldList.get(oldItemPosition);
                 final long oldId = oldItem.id();
@@ -70,8 +69,9 @@ public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetC
                 final long newId = newItem.id();
                 if (newId == NO_ID) return false;
 
-                if (oldItem == newItem) return true;
+                // check class before id
                 if (oldItem.getClass() != newItem.getClass()) return false;
+                if (oldItem == newItem) return true;
 
                 return oldId == newId;
             }

@@ -7,12 +7,12 @@ import io.noties.adapt.sample.Sample
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
-class SampleViewGroupTransition: AbsSampleView() {
+class ViewGroupTransitionSample: AbsSampleView() {
 
     override val sample: Sample = Sample(
         "ViewGroup Transition",
         text("Changes inside <tt><b>ViewGroup</b></tt> are animated by automatic <tt>Transition</tt>"),
-        ::SampleViewGroupTransition
+        ::ViewGroupTransitionSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_view_group

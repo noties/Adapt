@@ -13,12 +13,12 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
 import java.util.*
 
-class SampleRecyclerViewSticky : AbsSampleView() {
+class RecyclerViewStickySample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "Sticky",
         text("<b>Sticky</b> item decoration in <tt><b>RecyclerView</b></tt>"),
-        ::SampleRecyclerViewSticky
+        ::RecyclerViewStickySample
     )
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view_sticky

@@ -14,11 +14,11 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.debug.Debug
 
-class SampleAlertDialog : AbsSampleView() {
+class AlertDialogSample : AbsSampleView() {
     override val sample: Sample = Sample(
         "AlertDialog",
         text("Use Adapt with an `AlertDialog`"),
-        ::SampleAlertDialog
+        ::AlertDialogSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_list_view

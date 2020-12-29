@@ -27,7 +27,6 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
         /**
          * @param changeHandler to handle layout changes
-         * @since 2.3.0-SNAPSHOT
          */
         @NonNull
         Configuration changeHandler(@NonNull ChangeHandler changeHandler);
@@ -39,9 +38,8 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     /**
      * @see Configuration#changeHandler(ChangeHandler)
-     * @see ChangeHandlerDef
+     * @see ViewGroupChangeHandler
      * @see TransitionChangeHandler
-     * @since 2.3.0-SNAPSHOT
      */
     public interface ChangeHandler {
 
@@ -200,49 +198,11 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         view.setTag(ID_ITEM, item);
     }
 
-    /**
-     * @since 2.3.0-SNAPSHOT
-     */
-    public static class ChangeHandlerDef implements ChangeHandler {
-
-        @Override
-        public void begin(@NonNull ViewGroup group) {
-            // no op
-        }
-
-        @Override
-        public void removeAll(@NonNull ViewGroup group) {
-            group.removeAllViews();
-        }
-
-        @Override
-        public void removeAt(@NonNull ViewGroup group, int position) {
-            group.removeViewAt(position);
-        }
-
-        @Override
-        public void move(@NonNull ViewGroup group, int from, int to) {
-            final View child = group.getChildAt(from);
-            group.removeViewAt(from);
-            group.addView(child, to);
-        }
-
-        @Override
-        public void insertAt(@NonNull ViewGroup group, @NonNull View view, int position) {
-            group.addView(view, position);
-        }
-
-        @Override
-        public void end(@NonNull ViewGroup group) {
-            // no op
-        }
-    }
-
     private static class ConfigurationImpl implements Configuration {
 
         private LayoutInflater inflater;
         private AdaptViewGroupDiff adaptViewGroupDiff = AdaptViewGroupDiff.create();
-        private ChangeHandler changeHandler = new ChangeHandlerDef();
+        private ChangeHandler changeHandler = new ViewGroupChangeHandler();
 
         @NonNull
         @Override

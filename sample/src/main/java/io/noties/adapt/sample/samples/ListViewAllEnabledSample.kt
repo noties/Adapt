@@ -6,12 +6,12 @@ import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.Sample
 
-class SampleListViewAllEnabled : AbsSampleView() {
+class ListViewAllEnabledSample : AbsSampleView() {
 
     override val sample: Sample = Sample(
         "ListView all enabled",
         text("All items enabled via special configuration option (affects native ListView divider)"),
-        ::SampleListViewAllEnabled
+        ::ListViewAllEnabledSample
     )
 
     override val layoutResId: Int = R.layout.view_sample_list_view
