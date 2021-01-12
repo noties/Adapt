@@ -15,6 +15,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 
+import static io.noties.adapt.util.ExceptionUtil.assertContains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -218,22 +220,5 @@ public class AdaptViewGroupTest {
 
         verify(item, times(1)).bind(eq(holder));
         verify(view, times(1)).setTag(eq(ID_ITEM), eq(item));
-    }
-
-    private static void assertContains(@NonNull Throwable t, @NonNull String message) {
-        final String actual;
-        {
-            final String m = t.getMessage();
-            if (m == null) {
-                actual = "";
-            } else {
-                actual = m;
-            }
-        }
-        if (!actual.contains(message)) {
-            fail("`" + message + "` is not contained in: `" + actual + "`");
-        } else {
-            assertTrue(true);
-        }
     }
 }

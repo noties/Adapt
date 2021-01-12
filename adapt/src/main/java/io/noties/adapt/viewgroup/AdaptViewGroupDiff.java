@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 
 /**
@@ -73,6 +74,14 @@ public abstract class AdaptViewGroupDiff {
                         // remove item (otherwise we will duplicate the same item)
                         list.remove(index);
 
+                        if (i >= list.size()) {
+                            // when we have a duplicate it is first removed (previous occurrence)
+                            //  and then add operation fail due to the different size of the list (other than expected)
+                            // TODO: should it mention equal ids?
+                            throw AdaptException.create("A duplicate item is found at indices " +
+                                    "%d and %d, item: %s, items: %s", index, i, item, current);
+                        }
+
                         // add it at new position
                         list.add(i, item);
 
@@ -108,6 +117,7 @@ public abstract class AdaptViewGroupDiff {
                 return i;
             }
         }
+
         return -1;
     }
 

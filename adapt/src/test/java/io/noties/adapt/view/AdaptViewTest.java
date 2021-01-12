@@ -33,12 +33,12 @@ import static org.mockito.Mockito.when;
 public class AdaptViewTest {
 
     private View view;
-    private AdaptView adaptView;
+    private AdaptView<Item<?>> adaptView;
 
     @Before
     public void before() {
         view = mock(View.class);
-        adaptView = new AdaptView(view);
+        adaptView = new AdaptView<>(view);
     }
 
     @Test

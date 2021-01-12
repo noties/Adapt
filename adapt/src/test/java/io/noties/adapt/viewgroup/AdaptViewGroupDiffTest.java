@@ -18,9 +18,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.viewgroup.AdaptViewGroupDiff.Parent;
 
+import static io.noties.adapt.util.ExceptionUtil.assertContains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -296,6 +298,33 @@ public class AdaptViewGroupDiffTest {
         verify(parent, never()).move(anyInt(), anyInt());
     }
 
+    @Test
+    public void duplicate_items_throws() {
+        final Item<?> item = new MockItem(1L);
+        final List<Item<?>> items = Arrays.asList(item, item);
+        try {
+            impl.diff(mock(Parent.class), Collections.<Item<?>>emptyList(), items);
+        } catch (AdaptException e) {
+            // A duplicate item is found at indices
+            assertContains(e, "A duplicate item is found at indices");
+        }
+    }
+
+    @Test
+    public void no_id_initial() {
+        // previous is empty, no ids are kept as-is (all added)
+        final Item<?> first = new MockItem(Item.NO_ID);
+        final Item<?> second = new MockItem(Item.NO_ID);
+        final List<Item<?>> items = Arrays.asList(first, second);
+
+        final Parent parent = mock(Parent.class);
+
+        impl.diff(parent, Collections.<Item<?>>emptyList(), items);
+
+        verify(parent, times(1)).insertAt(0, items.get(0));
+        verify(parent, times(1)).insertAt(1, items.get(1));
+    }
+
     @SuppressWarnings("rawtypes")
     private static class MockItem extends Item {
 
@@ -312,6 +341,12 @@ public class AdaptViewGroupDiffTest {
         @Override
         public void bind(@NonNull Holder holder) {
             throw new RuntimeException();
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return "Mock(" + id() + ")";
         }
     }
 }
