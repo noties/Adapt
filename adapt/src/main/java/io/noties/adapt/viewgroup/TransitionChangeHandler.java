@@ -13,7 +13,6 @@ import androidx.annotation.RequiresApi;
 /**
  * @see AdaptViewGroup.ChangeHandler
  * @see ViewGroupChangeHandler
- * @since 2.3.0-SNAPSHOT
  */
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {

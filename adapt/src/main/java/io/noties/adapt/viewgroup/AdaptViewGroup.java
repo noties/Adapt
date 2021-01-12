@@ -15,6 +15,8 @@ import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
+// NB! this class assumes that ViewGroup is not modified from outside (no views are added or removed
+//  by other means)
 public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     public interface Configuration {
@@ -91,7 +93,8 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
             configuration.inflater = LayoutInflater.from(viewGroup.getContext());
         }
 
-        // we could also clear viewGroup if there are children
+        // clear viewGroup if there are children at this point?
+        // ensure that no views are added/removed via custom ChangeHandler?
     }
 
     @NonNull
@@ -180,6 +183,9 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     public void insertAt(int index, @NonNull Item item) {
         final Item.Holder holder = item.createHolder(configuration.inflater, viewGroup);
         final View view = holder.itemView();
+        if (view.getParent() != null) {
+            throw AdaptException.create("Returned view already has a parent, index: %d, item: %s", index, item);
+        }
         view.setTag(ID_HOLDER, holder);
         configuration.changeHandler.insertAt(viewGroup, view, index);
     }

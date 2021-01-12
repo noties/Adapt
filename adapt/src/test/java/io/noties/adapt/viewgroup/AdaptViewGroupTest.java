@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.noties.adapt.AbstractItem;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
@@ -67,124 +64,8 @@ public class AdaptViewGroupTest {
     }
 
     @Test
-    public void init_removes_all_children_from_group() {
-        // any count > 0 should do
-        final ViewGroup viewGroup = mock(ViewGroup.class);
-        when(viewGroup.getChildCount()).thenReturn(1);
-        AdaptViewGroup.init(viewGroup, new AdaptViewGroup.Configurator() {
-            @Override
-            public void configure(@NonNull AdaptViewGroup.Configuration configuration) {
-                configuration.layoutInflater(mock(LayoutInflater.class));
-            }
-        });
-        verify(viewGroup, times(1)).getChildCount();
-        verify(viewGroup, times(1)).removeAllViews();
-    }
-
-    @Test
     public void empty_current_items() {
         assertEquals(0, group.items().size());
-    }
-
-    @Test
-    public void get_current_items_throws_if_not_associated() {
-        // if there are views that were added manually (not through setItems), then
-        // getCurrentItems will thrown an exception
-
-        when(viewGroup.getChildCount()).thenReturn(3);
-
-        when(viewGroup.getChildAt(eq(0))).thenAnswer(new Answer<View>() {
-            @Override
-            public View answer(InvocationOnMock invocation) {
-                final View view = mock(View.class);
-                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
-                return view;
-            }
-        });
-        when(viewGroup.getChildAt(eq(1))).thenReturn(mock(View.class));
-        when(viewGroup.getChildAt(eq(2))).thenAnswer(new Answer<View>() {
-            @Override
-            public View answer(InvocationOnMock invocation) {
-                final View view = mock(View.class);
-                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
-                return view;
-            }
-        });
-
-        try {
-            group.items();
-            fail();
-        } catch (AdaptException e) {
-            assertContains(e, "View at position(1) doesn't have Item associated");
-        }
-    }
-
-    @Test
-    public void notify_item_changed_throws_if_not_associated() {
-
-        when(viewGroup.getChildCount()).thenReturn(3);
-
-        when(viewGroup.getChildAt(eq(0))).thenAnswer(new Answer<View>() {
-            @Override
-            public View answer(InvocationOnMock invocation) {
-                final View view = mock(View.class);
-                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
-                return view;
-            }
-        });
-        when(viewGroup.getChildAt(eq(1))).thenReturn(mock(View.class));
-        when(viewGroup.getChildAt(eq(2))).thenAnswer(new Answer<View>() {
-            @Override
-            public View answer(InvocationOnMock invocation) {
-                final View view = mock(View.class);
-                when(view.getTag(eq(ID_ITEM))).thenReturn(mock(Item.class));
-                return view;
-            }
-        });
-
-        try {
-            group.notifyItemChanged(new AbstractItem(1L));
-            fail();
-        } catch (AdaptException e) {
-            assertContains(e, "View at position(1) doesn't have Item associated");
-        }
-    }
-
-    @Test
-    public void notify_item_changed_not_found() {
-
-        final View view = mock(View.class);
-        when(view.getTag(eq(ID_ITEM))).thenReturn(new AbstractItem(1L));
-
-        when(viewGroup.getChildCount()).thenReturn(1);
-        when(viewGroup.getChildAt(eq(0))).thenReturn(view);
-
-        try {
-            group.notifyItemChanged(mock(Item.class));
-            fail();
-        } catch (AdaptException e) {
-            assertContains(e, "Item is not associated with this AdaptViewGroup");
-        }
-    }
-
-    @Test
-    public void get_current_items() {
-
-        final List<Item<?>> items = new ArrayList<Item<?>>() {{
-            add(new AbstractItem(1));
-            add(new AbstractItem(3));
-            add(new AbstractItem(2));
-        }};
-
-        when(viewGroup.getChildCount()).thenReturn(items.size());
-
-        for (int i = 0; i < items.size(); i++) {
-            final View view = mock(View.class);
-            when(view.getTag(eq(R.id.adapt_internal_item))).thenReturn(items.get(i));
-            when(viewGroup.getChildAt(eq(i))).thenReturn(view);
-        }
-
-        assertEquals(items, group.items());
     }
 
     @Test
@@ -245,7 +126,7 @@ public class AdaptViewGroupTest {
             ((AdaptViewGroupDiff.Parent) group).insertAt(0, item);
             fail();
         } catch (AdaptException e) {
-            assertContains(e, "Returned view already has parent");
+            assertContains(e, "Returned view already has a parent");
         }
     }
 
@@ -349,6 +230,10 @@ public class AdaptViewGroupTest {
                 actual = m;
             }
         }
-        assertTrue(actual, actual.contains(message));
+        if (!actual.contains(message)) {
+            fail("`" + message + "` is not contained in: `" + actual + "`");
+        } else {
+            assertTrue(true);
+        }
     }
 }

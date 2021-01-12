@@ -8,7 +8,7 @@ import java.util.List;
 
 import io.noties.adapt.Item;
 
-import static io.noties.adapt.recyclerview.AdaptRecyclerView.NO_ID;
+import static io.noties.adapt.Item.NO_ID;
 
 public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetChangeHandler {
 

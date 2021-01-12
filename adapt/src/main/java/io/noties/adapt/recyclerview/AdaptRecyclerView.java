@@ -48,8 +48,6 @@ public class AdaptRecyclerView implements Adapt {
         void configure(@NonNull Configuration configuration);
     }
 
-    public static final long NO_ID = RecyclerView.NO_ID;
-
     @NonNull
     public static AdaptRecyclerView init(@NonNull RecyclerView recyclerView) {
         final AdaptRecyclerView adaptRecyclerView = new AdaptRecyclerView(recyclerView, new ConfigurationImpl());

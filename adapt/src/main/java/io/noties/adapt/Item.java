@@ -15,10 +15,10 @@ import io.noties.adapt.util.ViewUtils;
 
 public abstract class Item<H extends Item.Holder> {
 
-    // there is no restriction of using only signed integers for ids, so it is
-    //  strange for RecyclerView to use -1 as an indication of NO VALUE
-    // TODO: use some value here (obtain from recycler if available?)
-    public static final long NO_ID = 0;
+    // `-1` is used for compatibility with the RecyclerView. Actual value from RecyclerView is not
+    //  used due to the compileOnly `androidx.recyclerview` dependency (might not be available at runtime).
+    // NB! this value must be synchronized with RecyclerView in case it changes
+    public static final long NO_ID = -1;
 
     protected static long hash(Object... args) {
         return Objects.hash(args);

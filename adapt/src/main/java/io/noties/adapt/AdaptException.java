@@ -33,12 +33,13 @@ public class AdaptException extends IllegalStateException {
     @NonNull
     private static String appendVersion(@Nullable String input) {
 
-        final String version = "[v" + BuildConfig.VERSION_NAME + "]";
         if (input == null
                 || input.length() == 0) {
-            return version;
+            return PREFIX;
         }
 
-        return version + " " + input;
+        return PREFIX + " " + input;
     }
+
+    private static final String PREFIX = "[v" + BuildConfig.VERSION_NAME + "]";
 }

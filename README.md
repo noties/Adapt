@@ -1,6 +1,6 @@
 # Adapt
 
-`Adapt` &mdash; `RecyclerView.Adapter`, only shorter. Same view in `RecyclerView` or any `ViewGroup`.
+`Adapt` &mdash; `RecyclerView.Adapter`, only shorter. Same view in `RecyclerView`, `ListView` or any other `ViewGroup`.
 Define a modular item. Extremely easy to start with modular components.
 
 ## Install
@@ -15,7 +15,7 @@ implementation "io.noties:adapt:${adaptVersion}"
 
 
 ## Pros
-* Interchangeable items between RecyclerView and different ViewGroups (same item is used without modification)
+* Interchangeable items between RecyclerView, ListView and different ViewGroups (same item is used without modification)
 * Ability to preview item in Layout Preview
 * Modular design is enforced, creating re-usable view components
 
