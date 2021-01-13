@@ -325,6 +325,28 @@ public class AdaptViewGroupDiffTest {
         verify(parent, times(1)).insertAt(1, items.get(1));
     }
 
+    @Test
+    public void no_id() {
+        final List<Item<?>> previous = new ArrayList<Item<?>>() {{
+            add(new MockItem(Item.NO_ID));
+            add(new MockItem(Item.NO_ID));
+        }};
+        final List<Item<?>> current = new ArrayList<Item<?>>() {{
+            add(new MockItem(Item.NO_ID));
+            add(new MockItem(Item.NO_ID));
+        }};
+
+        final Parent parent = mock(Parent.class);
+
+        impl.diff(parent, previous, current);
+
+        verify(parent, times(1)).removeAt(1);
+        verify(parent, times(1)).removeAt(0);
+
+        verify(parent, times(1)).insertAt(0, current.get(0));
+        verify(parent, times(1)).insertAt(1, current.get(1));
+    }
+
     @SuppressWarnings("rawtypes")
     private static class MockItem extends Item {
 

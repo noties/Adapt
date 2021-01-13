@@ -77,7 +77,6 @@ public abstract class AdaptViewGroupDiff {
                         if (i >= list.size()) {
                             // when we have a duplicate it is first removed (previous occurrence)
                             //  and then add operation fail due to the different size of the list (other than expected)
-                            // TODO: should it mention equal ids?
                             throw AdaptException.create("A duplicate item is found at indices " +
                                     "%d and %d, item: %s, items: %s", index, i, item, current);
                         }
@@ -104,6 +103,11 @@ public abstract class AdaptViewGroupDiff {
     }
 
     private static int indexOf(@NonNull List<Item<? extends Item.Holder>> list, @NonNull Item item) {
+
+        // treat NO_ID as absence (item is removed and re-added)
+        if (item.id() == Item.NO_ID) {
+            return -1;
+        }
 
         final Class<? extends Item> type = item.getClass();
         final long id = item.id();

@@ -17,6 +17,8 @@ import io.noties.adapt.util.ListUtils;
 
 // NB! this class assumes that ViewGroup is not modified from outside (no views are added or removed
 //  by other means)
+// NB! using items with NO_ID is not efficient, as with each update (setItems), items with NO_ID are
+//  always removed and then added
 public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     public interface Configuration {
