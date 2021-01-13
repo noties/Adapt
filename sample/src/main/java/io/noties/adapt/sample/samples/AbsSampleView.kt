@@ -51,6 +51,7 @@ abstract class AbsSampleView : SampleView {
         return view
     }
 
+    // TODO: why instance method?
     abstract val sample: Sample
     abstract val layoutResId: Int
     abstract fun render(view: View)

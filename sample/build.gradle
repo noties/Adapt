@@ -13,12 +13,16 @@ android {
         versionCode 1
         versionName version
     }
+
+    lintOptions {
+        fatal 'StopShip'
+    }
 }
 
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    
+
     implementation project(':adapt')
     implementation deps['x-recycler-view']
 

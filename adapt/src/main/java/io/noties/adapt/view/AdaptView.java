@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import io.noties.adapt.R;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.R;
 
 public class AdaptView<I extends Item<? extends Item.Holder>> {
 
@@ -37,6 +37,27 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         //noinspection unchecked,rawtypes,
         ((Item) item).bind(holder);
         view.setTag(ID_ITEM, item);
+        return new AdaptView<>(view);
+    }
+
+    public interface HolderProvider<H extends Item.Holder> {
+        @NonNull
+        H provide(@NonNull View view);
+    }
+
+    @NonNull
+    public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> bind(
+            @NonNull View view,
+            @NonNull I item,
+            @NonNull HolderProvider<H> provider
+    ) {
+        final H holder = provider.provide(view);
+        view.setTag(ID_HOLDER, holder);
+
+        //noinspection unchecked,rawtypes,
+        ((Item) item).bind(holder);
+        view.setTag(ID_ITEM, item);
+
         return new AdaptView<>(view);
     }
 
@@ -83,8 +104,7 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         view.setTag(ID_ITEM, item);
     }
 
-    // re-bind
-    public void invalidate() {
+    public void notifyChanged() {
         setItem(item());
     }
 }
