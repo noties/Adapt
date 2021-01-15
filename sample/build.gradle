@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
 
@@ -17,6 +18,18 @@ android {
     lintOptions {
         fatal 'StopShip'
     }
+
+    sourceSets {
+        main {
+            java.srcDirs += '../sample-utils/annotation'
+        }
+    }
+}
+
+kapt {
+    arguments {
+        arg('io.noties.adapt.samples_file', "${projectDir}/samples.json".toString())
+    }
 }
 
 dependencies {
@@ -29,4 +42,6 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     implementation 'io.noties:debug:5.1.0'
+
+    kapt project(':sample-utils:processor')
 }

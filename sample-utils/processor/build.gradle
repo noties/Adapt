@@ -1,0 +1,13 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main.java.srcDirs += '../annotation'
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.6'
+}

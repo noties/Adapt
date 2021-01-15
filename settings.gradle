@@ -1,3 +1,4 @@
 rootProject.name = 'AdaptParent'
 include ':adapt'
 include ':sample'
+include ':sample-utils:processor'
