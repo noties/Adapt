@@ -6,6 +6,9 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
 import io.noties.adapt.sample.samples.*
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.InputStreamReader
 
 class MainActivity : Activity() {
 
@@ -63,4 +66,13 @@ class MainActivity : Activity() {
         }
         return child >= 1
     }
+
+    private fun readSamples(): List<Sample> {
+        assets.open("samples.json")
+            .reader()
+            .use(InputStreamReader::readText)
+            .let(::JSONArray)
+    }
+
+
 }

@@ -29,7 +29,7 @@ class SampleViewList(
     }
 
     class SampleItem(private val sample: Sample) :
-        Item<SampleItem.Holder>(sample.name.hashCode().toLong()) {
+        Item<SampleItem.Holder>(hash(sample.name)) {
 
         class Holder(view: View) : Item.Holder(view) {
             val name: TextView = requireView(R.id.name)
