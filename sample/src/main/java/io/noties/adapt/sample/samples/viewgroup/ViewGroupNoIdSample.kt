@@ -1,17 +1,14 @@
 package io.noties.adapt.sample.samples.viewgroup
 
 import android.view.View
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.AbsSampleView
 
 @AdaptSample(
+    "20210122143249",
     "NO_ID in ViewGroup",
 )
-class ViewGroupNoIdSample : AbsSampleView() {
-
-    override val sample: Sample
-        get() = TODO("Not yet implemented")
+class ViewGroupNoIdSample : SampleView() {
 
     override val layoutResId: Int
         get() = TODO("Not yet implemented")

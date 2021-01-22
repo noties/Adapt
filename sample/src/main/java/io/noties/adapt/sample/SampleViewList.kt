@@ -12,9 +12,9 @@ import io.noties.adapt.listview.AdaptListView
 class SampleViewList(
     private val samples: List<Sample>,
     private val onSampleClicked: (Sample) -> Unit
-) : SampleView {
+) {
 
-    override fun view(parent: ViewGroup): View {
+    fun view(parent: ViewGroup): View {
         return LayoutInflater.from(parent.context)
             .inflate(R.layout.view_list, parent, false).apply {
                 val listView: ListView = findViewById(R.id.list_view)

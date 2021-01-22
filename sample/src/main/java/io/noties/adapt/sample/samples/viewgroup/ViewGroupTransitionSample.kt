@@ -1,19 +1,20 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.viewgroup
 
 import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
-class ViewGroupTransitionSample: AbsSampleView() {
-
-    override val sample: Sample = Sample(
-        "ViewGroup Transition",
-        text("Changes inside <tt><b>ViewGroup</b></tt> are animated by automatic <tt>Transition</tt>"),
-        ::ViewGroupTransitionSample
-    )
+@AdaptSample(
+    id = "20210122143311",
+    title = "ViewGroup Transition",
+    description = "Changes inside <tt><b>ViewGroup</b></tt> are animated by automatic <tt>Transition</tt>",
+    tags = ["viewgroup", "transition"]
+)
+class ViewGroupTransitionSample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_view_group
 

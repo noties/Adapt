@@ -1,22 +1,23 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.listview
 
 import android.view.View
 import android.widget.ListView
 import io.noties.adapt.Adapt
 import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
 import io.noties.debug.Debug
 
-class ListViewSomeEnabledSample : AbsSampleView() {
-
-    override val sample: Sample = Sample(
-        "ListView some enabled",
-        text("Some Item are enabled (are considered to be separators)"),
-        ::ListViewSomeEnabledSample
-    )
+@AdaptSample(
+    id = "20210122143242",
+    title = "ListView some enabled",
+    description = "Some Item are enabled (are considered to be separators)",
+    tags = ["listview"]
+)
+class ListViewSomeEnabledSample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_list_view
 

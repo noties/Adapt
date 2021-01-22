@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.noties.adapt.sample.annotation.AdaptSample
 import java.io.File
-import java.time.LocalDate
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Messager
 import javax.annotation.processing.ProcessingEnvironment
@@ -51,7 +50,7 @@ class AdaptSampleProcessor : AbstractProcessor() {
 
             val samples = annotatedSampleTypes(p1)
                 .map(::createSample)
-                .sortedWith(sampleComparator)
+                .sortedByDescending { it.id }
 
             samples.forEach {
                 messager.printMessage(Diagnostic.Kind.NOTE, "$it\n.\n")
@@ -85,8 +84,7 @@ class AdaptSampleProcessor : AbstractProcessor() {
         val type = element.qualifiedName.toString()
         return AdaptSampleHolder(
             type,
-            this.samples.firstOrNull { it.javaClassName == type }?.dateAdded
-                ?: LocalDate.now().toString(),
+            annotation.id,
             annotation.title,
             annotation.description,
             annotation.tags.toSet().sorted()
@@ -108,14 +106,4 @@ class AdaptSampleProcessor : AbstractProcessor() {
 
         file.writeText(json)
     }
-
-    val sampleComparator: Comparator<AdaptSampleHolder>
-        get() = Comparator<AdaptSampleHolder> { l, r ->
-            val dates = r.dateAdded.compareTo(l.dateAdded)
-            if (dates != 0) {
-                dates
-            } else {
-                l.javaClassName.compareTo(r.javaClassName)
-            }
-        }
 }

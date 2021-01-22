@@ -1,19 +1,20 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 
-class RecyclerViewSample : AbsSampleView() {
-
-    override val sample = Sample(
-        "RecyclerView",
-        text("Usage of multiple items inside <tt><b>RecyclerView</b></tt>"),
-        ::RecyclerViewSample
-    )
+@AdaptSample(
+    id = "20210122143200",
+    title = "RecyclerView",
+    description = "Usage of multiple items inside <tt><b>RecyclerView</b></tt>",
+    tags = ["recyclerview"]
+)
+class RecyclerViewSample : SampleView() {
 
     override val layoutResId = R.layout.view_sample_recycler_view
 

@@ -41,6 +41,7 @@ class CollectionItem(val items: List<Item<*>>) : Item<CollectionItem.Holder>(has
     }
 
     companion object {
+        @Suppress("USELESS_CAST")
         fun hash(items: List<Item<*>>): Long {
             val array = items.map(Item<*>::id)
                 .map { it as Any }

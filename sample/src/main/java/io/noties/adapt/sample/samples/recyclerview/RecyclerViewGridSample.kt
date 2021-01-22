@@ -1,19 +1,21 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 
-class RecyclerViewGridSample : AbsSampleView() {
-    override val sample: Sample = Sample(
-        "Grid",
-        text("<b><tt>RecyclerView</tt></b> with <tt>GridLayoutManager</tt>"),
-        ::RecyclerViewGridSample
-    )
+@AdaptSample(
+    id = "20210122143147",
+    title = "Grid",
+    description = "<b><tt>RecyclerView</tt></b> with <tt>GridLayoutManager</tt>",
+    tags = ["recyclerview", "grid"]
+)
+class RecyclerViewGridSample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 

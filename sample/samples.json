@@ -1,9 +1,121 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionSample",
+    "id": "20210122143311",
+    "title": "ViewGroup Transition",
+    "description": "Changes inside \u003ctt\u003e\u003cb\u003eViewGroup\u003c/b\u003e\u003c/tt\u003e are animated by automatic \u003ctt\u003eTransition\u003c/tt\u003e",
+    "tags": [
+      "transition",
+      "viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupSample",
+    "id": "20210122143305",
+    "title": "ViewGroup",
+    "description": "Usage of Adapt inside \u003ctt\u003e\u003cb\u003eViewGroup\u003c/b\u003e\u003c/tt\u003e (\u003ctt\u003eLinearLayout\u003c/tt\u003e wrapped inside \u003ctt\u003eScrollView\u003c/tt\u003e)",
+    "tags": [
+      "viewgroup"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupNoIdSample",
-    "dateAdded": "2021-01-15",
+    "id": "20210122143249",
     "title": "NO_ID in ViewGroup",
     "description": "",
     "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSomeEnabledSample",
+    "id": "20210122143242",
+    "title": "ListView some enabled",
+    "description": "Some Item are enabled (are considered to be separators)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSample",
+    "id": "20210122143237",
+    "title": "ListView",
+    "description": "Usage inside \u003ctt\u003e\u003cb\u003eListView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewAllEnabledSample",
+    "id": "20210122143232",
+    "title": "ListView all enabled",
+    "description": "All items enabled via special configuration option (affects native ListView divider)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogSample",
+    "id": "20210122143224",
+    "title": "AlertDialog",
+    "description": "Use Adapt with \u003ctt\u003eAlertDialog\u003c/tt\u003e",
+    "tags": [
+      "alertdialog",
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample",
+    "id": "20210122143214",
+    "title": "ViewPager2",
+    "description": "AdaptRecyclerView adapter used in ViewPager2\n\u003cb\u003eNB!\u003c/b\u003e fails due to missing \u003ctt\u003ematch_parent\u003c/tt\u003e",
+    "tags": [
+      "recyclerview",
+      "viewpager2"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickySample",
+    "id": "20210122143205",
+    "title": "Sticky",
+    "description": "\u003cb\u003eSticky\u003c/b\u003e item decoration in \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewSample",
+    "id": "20210122143200",
+    "title": "RecyclerView",
+    "description": "Usage of multiple items inside \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewNestedSample",
+    "id": "20210122143154",
+    "title": "Nested Recycler",
+    "description": "Item contains nested \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e, shared \u003ctt\u003eRecyclerViewPool\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridSample",
+    "id": "20210122143147",
+    "title": "Grid",
+    "description": "\u003cb\u003e\u003ctt\u003eRecyclerView\u003c/tt\u003e\u003c/b\u003e with \u003ctt\u003eGridLayoutManager\u003c/tt\u003e",
+    "tags": [
+      "grid",
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDiffSample",
+    "id": "20210122143122",
+    "title": "DiffUtil",
+    "description": "\u003cb\u003eDiffUtil\u003c/b\u003e with the \u003cb\u003e\u003ctt\u003eRecyclerView\u003c/tt\u003e\u003c/b\u003e",
+    "tags": [
+      "recyclerview"
+    ]
   }
 ]

@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.listview
 
 import android.app.AlertDialog
 import android.view.View
@@ -7,19 +7,21 @@ import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.debug.Debug
 
-class AlertDialogSample : AbsSampleView() {
-    override val sample: Sample = Sample(
-        "AlertDialog",
-        text("Use Adapt with an `AlertDialog`"),
-        ::AlertDialogSample
-    )
+@AdaptSample(
+    id = "20210122143224",
+    title = "AlertDialog",
+    description = "Use Adapt with <tt>AlertDialog</tt>",
+    tags = ["alertdialog", "listview"]
+)
+class AlertDialogSample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_list_view
 

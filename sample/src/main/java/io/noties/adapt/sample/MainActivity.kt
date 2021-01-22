@@ -5,27 +5,24 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
-import io.noties.adapt.sample.samples.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.InputStreamReader
+import io.noties.adapt.sample.util.SampleUtil
 
 class MainActivity : Activity() {
 
-    private val samples: List<Sample> = listOf(
-        ViewPager2Sample().sample,
-        AlertDialogSample().sample,
-        ListViewSomeEnabledSample().sample,
-        ListViewAllEnabledSample().sample,
-        ViewGroupTransitionSample().sample,
-        RecyclerViewNestedSample().sample,
-        RecyclerViewGridSample().sample,
-        RecyclerViewDiffSample().sample,
-        RecyclerViewStickySample().sample,
-        ViewGroupSample().sample,
-        ListViewSample().sample,
-        RecyclerViewSample().sample,
-    )
+//    private val samples: List<Sample> = listOf(
+//        ViewPager2Sample().sample,
+//        AlertDialogSample().sample,
+//        ListViewSomeEnabledSample().sample,
+//        ListViewAllEnabledSample().sample,
+//        ViewGroupTransitionSample().sample,
+//        RecyclerViewNestedSample().sample,
+//        RecyclerViewGridSample().sample,
+//        RecyclerViewDiffSample().sample,
+//        RecyclerViewStickySample().sample,
+//        ViewGroupSample().sample,
+//        ListViewSample().sample,
+//        RecyclerViewSample().sample,
+//    )
 
     private lateinit var viewAnimator: ViewAnimator
 
@@ -35,9 +32,9 @@ class MainActivity : Activity() {
 
         viewAnimator = findViewById(R.id.view_animator)
 
-        val sampleViewList = SampleViewList(samples) { sample ->
-            val sampleView = sample.provider()
-            viewAnimator.showNext(sampleView.view(viewAnimator))
+        val sampleViewList = SampleViewList(SampleUtil.readSamples(this)) { sample ->
+            val sampleView = SampleUtil.createView(sample)
+            viewAnimator.showNext(sampleView.view(sample, viewAnimator))
         }
 
         viewAnimator.addView(sampleViewList.view(viewAnimator))
@@ -66,13 +63,4 @@ class MainActivity : Activity() {
         }
         return child >= 1
     }
-
-    private fun readSamples(): List<Sample> {
-        assets.open("samples.json")
-            .reader()
-            .use(InputStreamReader::readText)
-            .let(::JSONArray)
-    }
-
-
 }

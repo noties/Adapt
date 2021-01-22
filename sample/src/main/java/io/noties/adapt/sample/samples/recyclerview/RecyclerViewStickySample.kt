@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.recyclerview
 
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +8,19 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.StickyItemDecoration
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
 import java.util.*
 
-class RecyclerViewStickySample : AbsSampleView() {
-
-    override val sample: Sample = Sample(
-        "Sticky",
-        text("<b>Sticky</b> item decoration in <tt><b>RecyclerView</b></tt>"),
-        ::RecyclerViewStickySample
-    )
+@AdaptSample(
+    id = "20210122143205",
+    title = "Sticky",
+    description = "<b>Sticky</b> item decoration in <tt><b>RecyclerView</b></tt>",
+    tags = ["recyclerview"]
+)
+class RecyclerViewStickySample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view_sticky
 

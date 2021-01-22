@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,18 +8,19 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.Sample
+import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CollectionItem
 import io.noties.adapt.sample.items.ControlItem
 
-class RecyclerViewNestedSample() : AbsSampleView() {
-
-    override val sample: Sample = Sample(
-        "Nested Recycler",
-        text("Item contains nested <tt><b>RecyclerView</b></tt>, shared <tt>RecyclerViewPool</tt>"),
-        ::RecyclerViewNestedSample
-    )
+@AdaptSample(
+    id = "20210122143154",
+    title = "Nested Recycler",
+    description = "Item contains nested <tt><b>RecyclerView</b></tt>, shared <tt>RecyclerViewPool</tt>",
+    tags = ["recyclerview"]
+)
+class RecyclerViewNestedSample() : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 
