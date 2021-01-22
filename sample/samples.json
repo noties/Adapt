@@ -22,7 +22,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupNoIdSample",
     "id": "20210122143249",
     "title": "NO_ID in ViewGroup",
-    "description": "",
+    "description": "Indicates that an Item without ID (\u003ctt\u003eNO_ID\u003c/tt\u003e) is recreated with each update",
     "tags": []
   },
   {
