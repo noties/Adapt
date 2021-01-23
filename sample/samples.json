@@ -1,5 +1,17 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.MirroredSample",
+    "id": "20210122221658",
+    "title": "Mirrored in ViewPager2",
+    "description": "\u003ctt\u003eListView\u003c/tt\u003e, \u003ctt\u003eRecyclerView\u003c/td\u003e and \u003ctt\u003eLinearLayout inside ScrollView\u003c/tt\u003e are initialized to duplicate content (same items)",
+    "tags": [
+      "listview",
+      "recyclerview",
+      "viewgroup",
+      "viewpager2"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionSample",
     "id": "20210122143311",
     "title": "ViewGroup Transition",

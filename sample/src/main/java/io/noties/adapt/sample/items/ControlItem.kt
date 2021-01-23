@@ -9,9 +9,8 @@ import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 
 class ControlItem(
-    private val adapt: Adapt,
-    private val onAdd: ((View) -> Unit)? = null,
-    private val onShuffle: ((View) -> Unit)? = null
+    private val onAdd: () -> Unit,
+    private val onShuffle: () -> Unit
 ) : Item<ControlItem.Holder>(hash(ControlItem::class)) {
 
     class Holder(view: View) : Item.Holder(view) {
@@ -24,14 +23,33 @@ class ControlItem(
     }
 
     override fun bind(holder: Holder) {
-        holder.add.setOnClickListener(onAdd ?: {
-            adapt.setItems(adapt.items().toMutableList().apply {
-                addAll(ItemGenerator.next(size))
-            })
-        })
+        holder.add.setOnClickListener {
+            onAdd()
+        }
 
-        holder.shuffle.setOnClickListener(onShuffle ?: {
-            adapt.setItems(adapt.items().shuffled())
-        })
+        holder.shuffle.setOnClickListener {
+            onShuffle()
+        }
+    }
+
+    companion object {
+
+        fun init(adapt: Adapt): ControlItem {
+
+            fun onAdd() = adapt.setItems(addedItems(adapt.items()))
+            fun onShuffle() = adapt.setItems(shuffledItems(adapt.items()))
+
+            return ControlItem(::onAdd, ::onShuffle)
+        }
+
+        fun init(onAdd: () -> Unit, onShuffle: () -> Unit): ControlItem =
+            ControlItem(onAdd, onShuffle)
+
+        fun addedItems(items: List<Item<*>>): List<Item<*>> = items.toMutableList().apply {
+            addAll(ItemGenerator.next(size))
+        }
+
+        fun shuffledItems(items: List<Item<*>>): List<Item<*>> = items.shuffled()
+
     }
 }

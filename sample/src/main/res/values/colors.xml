@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#3083DC</color>
-    <color name="colorPrimaryDark">#00022E</color>
-    <color name="colorAccent">#06D6A0</color>
+    <color name="primary">#00414b</color>
+    <color name="primaryDark">#00414b</color>
+    <color name="accent">#00a8d1</color>
 
     <color name="white">#fff</color>
+    <color name="transparent">#00000000</color>
+    <color name="orange">#fd8f3b</color>
+
+    <color name="page_indicator_container">#CC000000</color>
+    <color name="page_indicator_selected">#40ffffff</color>
 
 </resources>

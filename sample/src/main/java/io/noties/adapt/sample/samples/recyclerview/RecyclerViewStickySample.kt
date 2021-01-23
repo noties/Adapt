@@ -41,7 +41,6 @@ class RecyclerViewStickySample : SampleView() {
         val items = ItemGenerator.next(0).toMutableList().apply {
             add(
                 ControlItem(
-                    adapt,
                     {
                         val items = adapt.items().toMutableList().apply {
                             val s = size
@@ -49,7 +48,8 @@ class RecyclerViewStickySample : SampleView() {
                             addAll(ItemGenerator.next(s))
                         }
                         adapt.setItems(items)
-                    }
+                    },
+                    { adapt.setItems(ControlItem.shuffledItems(adapt.items())) }
                 )
             )
         }

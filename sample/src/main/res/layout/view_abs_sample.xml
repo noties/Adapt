@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
-            android:background="@color/colorPrimary"
+            android:background="@color/primary"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="horizontal">

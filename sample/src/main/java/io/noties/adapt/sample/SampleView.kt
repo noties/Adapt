@@ -56,8 +56,16 @@ abstract class SampleView {
 
     abstract fun render(view: View)
 
-    protected fun initialItems(adapt: Adapt): List<Item<*>> =
+    protected fun initialItems(adapt: Adapt): List<Item<*>> = initialItems {
+        ControlItem.init(adapt)
+    }
+
+    protected fun initialItems(onAdded: () -> Unit, onShuffled: () -> Unit) = initialItems {
+        ControlItem.init(onAdded, onShuffled)
+    }
+
+    protected fun initialItems(provider: () -> ControlItem): List<Item<*>> =
         ItemGenerator.next(0).toMutableList().apply {
-            add(ControlItem(adapt))
+            add(provider())
         }
 }

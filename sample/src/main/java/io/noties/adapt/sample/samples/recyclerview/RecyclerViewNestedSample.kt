@@ -49,8 +49,8 @@ class RecyclerViewNestedSample() : SampleView() {
 
         val generated = ItemGenerator.next(0).toMutableList().apply {
             add(ControlItem(
-                adapt,
-                { addNewItems(ItemGenerator.next(adapt.items().size)) }
+                { addNewItems(ItemGenerator.next(adapt.items().size)) },
+                { adapt.setItems(ControlItem.shuffledItems(adapt.items())) }
             ))
         }
         adapt.setItems(generated)

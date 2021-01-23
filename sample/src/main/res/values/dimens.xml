@@ -2,6 +2,7 @@
 <resources>
     <dimen name="app_bar_height">56dip</dimen>
 
+    <dimen name="_4">4dip</dimen>
     <dimen name="_8">8dip</dimen>
     <dimen name="_16">16dip</dimen>
 
