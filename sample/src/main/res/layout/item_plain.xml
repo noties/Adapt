@@ -18,7 +18,7 @@
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
-        tools:background="@color/colorPrimaryDark"
+        tools:background="@color/primaryDark"
         tools:text="1" />
 
     <View

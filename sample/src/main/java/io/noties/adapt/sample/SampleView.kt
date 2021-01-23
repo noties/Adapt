@@ -20,7 +20,7 @@ abstract class SampleView {
         this._sample = sample
 
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.view_abs_sample, parent, false)
+        val view = inflater.inflate(R.layout.view_sample, parent, false)
 
         fun processSampleView(view: View) {
             val container = view.findViewById<ViewGroup>(R.id.container)

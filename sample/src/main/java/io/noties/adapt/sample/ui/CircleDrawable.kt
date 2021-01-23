@@ -7,8 +7,8 @@ import kotlin.properties.Delegates
 
 class CircleDrawable(color: Int) : Drawable() {
 
-    var color: Int by Delegates.observable(color) { _, _, _ ->
-        paint.color = color
+    var color: Int by Delegates.observable(color) { _, _, value ->
+        paint.color = value
         invalidateSelf()
     }
 
@@ -20,6 +20,10 @@ class CircleDrawable(color: Int) : Drawable() {
     private var radius: Float = 0F
     private var top: Float = 0F
     private var left: Float = 0F
+
+    init {
+        paint.color = color
+    }
 
     override fun onBoundsChange(bounds: Rect) {
         super.onBoundsChange(bounds)

@@ -25,11 +25,10 @@ class PlainItem(
 
     override fun bind(holder: Holder) {
 
-        val drawable: CircleDrawable = (holder.letterView.background as? CircleDrawable) ?: {
-            CircleDrawable(color).apply {
+        val drawable: CircleDrawable =
+            (holder.letterView.background as? CircleDrawable) ?: CircleDrawable(color).apply {
                 holder.letterView.background = this
             }
-        }()
         drawable.color = color
 
         holder.letterView.text = letter

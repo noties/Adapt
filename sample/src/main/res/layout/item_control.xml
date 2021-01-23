@@ -14,7 +14,7 @@
         android:backgroundTint="@color/primaryDark"
         android:drawableStart="@drawable/ic_add_circle_24_accent"
         android:text="Add"
-        android:textColor="@color/accent"
+        android:textColor="@color/orange"
         tools:ignore="HardcodedText" />
 
     <View
@@ -26,10 +26,10 @@
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:backgroundTint="@color/accent"
+        android:backgroundTint="@color/primaryDark"
         android:drawableStart="@drawable/ic_shuffle_24_white"
         android:text="Shuffle"
-        android:textColor="@color/primaryDark"
+        android:textColor="@color/accent"
         tools:ignore="HardcodedText" />
 
 </LinearLayout>
