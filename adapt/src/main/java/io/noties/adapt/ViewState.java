@@ -14,9 +14,6 @@ import androidx.annotation.VisibleForTesting;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @since 2.3.0-SNAPSHOT
- */
 public abstract class ViewState {
 
     /**
@@ -26,8 +23,6 @@ public abstract class ViewState {
      * state explicitly use {@link #save(long, View)}.
      */
     public static void process(final long id, @NonNull final View view) {
-
-        // TODO: the NO_ID, should it be handled here?
 
         final ViewParent parent = view.getParent();
         if (parent != null) {

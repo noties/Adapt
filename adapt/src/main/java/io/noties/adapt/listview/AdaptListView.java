@@ -144,7 +144,12 @@ public class AdaptListView implements Adapt {
         return new AdaptListView(context, null, configuration);
     }
 
-    // TODO: document this method (Spinner)
+    /**
+     * Special factory method that creates {@code AdaptListView} with single {@code viewType}.
+     * Can be used with Android {@code android.widget.Spinner} or {@code AlertDialog}
+     *
+     * @see #create(Context, Configurator)
+     */
     @NonNull
     public static AdaptListView createSingleViewType(@NonNull Context context) {
         return new AdaptListView(context, null, new ConfigurationImpl());
