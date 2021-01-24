@@ -6,11 +6,15 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.Item;
 import io.noties.adapt.viewgroup.AdaptViewGroup;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 
 public class Preview_CardItem extends LinearLayout {
 
@@ -20,9 +24,36 @@ public class Preview_CardItem extends LinearLayout {
         setOrientation(VERTICAL);
 
         final List<Item<?>> list = new ArrayList<>();
+
         list.add(new CardItem("A", Color.RED, "The very first one"));
         list.add(new CardItem("B", Color.GREEN, "And then again"));
-        list.add(new CardItem("C", Color.BLUE, "So, what?"));
+        list.add(new CardItem("C", Color.BLUE, "So, what? So, what? Sooooooooooooooooooooooooooooooo, what?"));
+
+        list.add(new CardBigItem("BC", Color.MAGENTA, "Hey hey"));
+
+        list.add(new PlainItem("Z", Color.DKGRAY, "Zzzzzzz"));
+
+        list.add(new SectionItem(new Date().toString()));
+        list.add(new ControlItem(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return null;
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return null;
+            }
+        }));
+
+        list.add(new PageIndicatorItem("Whatever", false, new Function1<PageIndicatorItem, Unit>() {
+            @Override
+            public Unit invoke(PageIndicatorItem pageIndicatorItem) {
+                return null;
+            }
+        }));
+
+        list.add(new CardBigItem("YO", Color.BLACK, "Yep"));
 
         final Adapt adapt = AdaptViewGroup.init(this);
         adapt.setItems(list);

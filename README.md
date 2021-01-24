@@ -16,8 +16,9 @@ implementation "io.noties:adapt:${adaptVersion}"
 
 ## Pros
 * Interchangeable items between RecyclerView, ListView and different ViewGroups (same item is used without modification)
-* Ability to preview item in Layout Preview
+* Render individual item as a regular Android widget view
 * Modular design is enforced, creating re-usable view components
+* Ability to preview item in Layout Preview
 
 ## Cons
 * Targeted at relatively small lists (under 1000?)

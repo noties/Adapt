@@ -3,14 +3,16 @@ package io.noties.adapt.sample.ui
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import kotlin.math.min
-import kotlin.properties.Delegates
 
 class CircleDrawable(color: Int) : Drawable() {
 
-    var color: Int by Delegates.observable(color) { _, _, value ->
-        paint.color = value
-        invalidateSelf()
-    }
+    // layout preview cannot deal with delegates
+    var color: Int
+        get() = paint.color
+        set(value) {
+            paint.color = value
+            invalidateSelf()
+        }
 
     private val rectF = RectF()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
