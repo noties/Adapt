@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.SpinnerSample",
+    "id": "20210123235615",
+    "title": "Spinner",
+    "description": "Usage with \u003ctt\u003eSpinner\u003c/tt\u003e, (single view type only, Spinner requirement)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.MirroredSample",
     "id": "20210122221658",
     "title": "Mirrored in ViewPager2",

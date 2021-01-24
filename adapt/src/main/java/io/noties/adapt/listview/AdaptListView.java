@@ -124,7 +124,7 @@ public class AdaptListView implements Adapt {
 
     /**
      * A special factory method to create AdaptListView to be used when there is no information
-     * about containing AdapterView (for example when used in an {@code AlertDialog}
+     * about containing AdapterView (for example when used in an {@code AlertDialog} or a {@code Spinner}
      *
      * <strong>NB</strong> if there are multiple item views then items
      * must be explicitly registered via one of the {@code Configuration.include} methods:
@@ -137,10 +137,17 @@ public class AdaptListView implements Adapt {
     @NonNull
     public static AdaptListView create(
             @NonNull Context context,
-            @NonNull Configurator configurator) {
+            @NonNull Configurator configurator
+    ) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         return new AdaptListView(context, null, configuration);
+    }
+
+    // TODO: document this method (Spinner)
+    @NonNull
+    public static AdaptListView createSingleViewType(@NonNull Context context) {
+        return new AdaptListView(context, null, new ConfigurationImpl());
     }
 
     @SuppressWarnings("rawtypes")
