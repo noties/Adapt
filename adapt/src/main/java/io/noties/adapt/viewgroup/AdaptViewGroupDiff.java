@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
@@ -77,8 +78,9 @@ public abstract class AdaptViewGroupDiff {
                         if (i >= list.size()) {
                             // when we have a duplicate it is first removed (previous occurrence)
                             //  and then add operation fail due to the different size of the list (other than expected)
-                            throw AdaptException.create("A duplicate item is found at indices " +
-                                    "%d and %d, item: %s, items: %s", index, i, item, current);
+                            throw AdaptException.create(String.format(Locale.ROOT,
+                                    "A duplicate item is found at indices " +
+                                            "%d and %d, item: %s, items: %s", index, i, item, current));
                         }
 
                         // add it at new position

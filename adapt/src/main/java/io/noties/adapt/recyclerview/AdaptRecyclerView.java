@@ -184,7 +184,7 @@ public class AdaptRecyclerView implements Adapt {
         public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final Item<?> firstItem = store.get(viewType);
             if (firstItem == null) {
-                throw AdaptException.create("Unexpected viewType: %d", viewType);
+                throw AdaptException.create("Unexpected viewType: " + viewType);
             }
 
             LayoutInflater inflater = this.inflater;

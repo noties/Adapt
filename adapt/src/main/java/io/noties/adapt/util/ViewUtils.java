@@ -7,6 +7,8 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
+
 import io.noties.adapt.AdaptException;
 
 
@@ -35,10 +37,10 @@ public abstract class ViewUtils {
             final String idResourceName = resources != null
                     ? resources.getResourceName(id)
                     : null;
-            throw AdaptException.create(message, idResourceName, view);
+            throw AdaptException.create(String.format(Locale.ROOT, message, idResourceName, view));
         } catch (Resources.NotFoundException e) {
             // throw AdaptException with NotFound exception as the cause
-            throw AdaptException.create(e, message, "null", view);
+            throw AdaptException.create(e, String.format(Locale.ROOT, message, "null", view));
         }
     }
 

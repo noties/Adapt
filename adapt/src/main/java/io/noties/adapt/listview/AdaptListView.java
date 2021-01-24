@@ -295,7 +295,7 @@ public class AdaptListView implements Adapt {
             final Class<? extends Item> type = items.get(position).getClass();
             final Integer viewType = viewTypes.get(type);
             if (viewType == null) {
-                throw AdaptException.create("Unexpected view type: %s", type.getName());
+                throw AdaptException.create("Unexpected view type: " + type.getName());
             }
             return viewType;
         }

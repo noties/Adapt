@@ -20,11 +20,11 @@ import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
 @AdaptSample(
-    "20210122221658",
-    "Mirrored in ViewPager2",
-    "<tt>ListView</tt>, <tt>RecyclerView</td> and " +
+    id = "20210122221658",
+    title = "Mirrored in ViewPager2",
+    description = "<tt>ListView</tt>, <tt>RecyclerView</td> and " +
             "<tt>LinearLayout inside ScrollView</tt> are initialized to duplicate content (same items)",
-    ["recyclerview", "listview", "viewgroup", "viewpager2"]
+    tags = ["recyclerview", "listview", "viewgroup", "viewpager2"]
 )
 class MirroredSample : SampleView() {
 

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -186,7 +187,8 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         final Item.Holder holder = item.createHolder(configuration.inflater, viewGroup);
         final View view = holder.itemView();
         if (view.getParent() != null) {
-            throw AdaptException.create("Returned view already has a parent, index: %d, item: %s", index, item);
+            throw AdaptException.create(String.format(Locale.ROOT,
+                    "Returned view already has a parent, index: %d, item: %s", index, item));
         }
         view.setTag(ID_HOLDER, holder);
         configuration.changeHandler.insertAt(viewGroup, view, index);
@@ -198,8 +200,9 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         final View view = viewGroup.getChildAt(index);
         final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
         if (holder == null) {
-            throw AdaptException.create("Internal error, attached view has no Holder saved, " +
-                    "index: %d, item: %s, view: %s", index, item, view);
+            throw AdaptException.create(String.format(Locale.ROOT,
+                    "Internal error, attached view has no Holder saved, " +
+                            "index: %d, item: %s, view: %s", index, item, view));
         }
         //noinspection unchecked
         item.bind(holder);

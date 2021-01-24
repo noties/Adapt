@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import java.util.Locale;
+
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
@@ -83,7 +85,7 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
             // unexpected internal error, no item is specified (we cannot create an AdaptView without
             // item)
             throw AdaptException.create("Unexpected state, there is no item bound, " +
-                    "view: %s", view);
+                    "view: " + view);
         }
         return (I) item;
     }
@@ -93,8 +95,10 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
         if (holder == null) {
             // it's required to have holder at this point, internal error
-            throw AdaptException.create("Unexpected state, there is no Holder associated " +
-                    "with this view, supplied item: %s, view: %s", item, view);
+            throw AdaptException.create(String.format(
+                    Locale.ROOT,
+                    "Unexpected state, there is no Holder associated " +
+                            "with this view, supplied item: %s, view: %s", item, view));
         }
 
         //noinspection unchecked,rawtypes,
