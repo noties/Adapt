@@ -34,6 +34,10 @@ public abstract class Item<H extends Item.Holder> {
         return id;
     }
 
+    /**
+     * Think of this method as it is a static method, all instance specific handling should be done
+     * in the {@link #bind(Holder)} method instead.
+     */
     @NonNull
     public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 

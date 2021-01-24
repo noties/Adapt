@@ -19,39 +19,24 @@ import io.noties.adapt.view.AdaptView;
  * all widget accessibility features are available. Can be used with GridLayoutManager if sticky view
  * fills all the spans of GridLayoutManager (matches width).
  * <p>
- * Sticky view will always have width equal to RecyclerView width (minus horizontal padding).
+ * NB! RecyclerView must a <strong>direct child of a {@code FrameLayout}</strong>
+ * with preferably equal dimensions
  * <p>
- * Please note that only a single item can eb sticky inside a recycler-view
+ * NB! Sticky view will always have width equal to RecyclerView width (minus horizontal padding).
+ * <p>
+ * NB! a single item only can be sticky inside a RecyclerView.
+ * <p>
+ * NB! RecyclerView should not have {@code padding} set - it can be applied
+ * to direct parent {@code FrameLayout}. But {@code clipToPadding=false} and {@code clipChildren=false}
+ * attributes would be ignored.
  *
  * @since 2.2.0
  */
-// TODO: do not measure with each draw call, use size changed listener (or layout) and persist a flag if view has changed
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
-//    /**
-//     * Factory method to create {@link StickyItemDecoration}. Passed {@code item} can be a <em>mocked</em>
-//     * one (can have invalid data) - it is just used to create layout only (no bind will be called on that item).
-//     * Please note that {@code recyclerView} must be wrapped inside a FrameLayout in order to add sticky view.
-//     * If you want to provide custom placing of {@link AdaptView} use {@link #create(AdaptView)} or {@link #create(ViewGroup, Item)}.
-//     *
-//     * @see #create(ViewGroup, Item)
-//     * @see #create(AdaptView)
-//     */
-//    @NonNull
-//    public static <I extends Item<? extends Item.Holder>> StickyItemDecoration create(
-//            @NonNull RecyclerView recyclerView,
-//            @NonNull I item) {
-//        final FrameLayout frameLayout = parentFrameLayout(recyclerView);
-//        return create(frameLayout, item);
-//    }
-
-    //    /**
-//     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout as
-//     * parent of RecyclerView. Created {@link AdaptView} will be directly added to specified {@code parent}.
-//     *
-//     * @see #create(RecyclerView, Item)
-//     * @see #create(AdaptView)
-//     */
+    // direct parent, can check here
+    //  also, can be not equal, so maybe padding or margin on parent
+    // allow specifying the container? no, bad
     @NonNull
     public static <I extends Item<? extends Item.Holder>> StickyItemDecoration create(
             @NonNull ViewGroup parent,
@@ -59,45 +44,6 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
         final AdaptView<I> adaptView = AdaptView.init(parent, item);
         return new StickyItemDecoration(adaptView);
     }
-
-//    /**
-//     * Unlike {@link #create(RecyclerView, Item)} this method does not require FrameLayout
-//     * as parent of RecyclerView, but it expects that {@link AdaptView} is already correctly
-//     * placed in layout.
-//     *
-//     * @see #create(RecyclerView, Item)
-//     * @see #create(ViewGroup, Item)
-//     */
-//    @NonNull
-//    public static <I extends Item> StickyItemDecoration create(@NonNull AdaptView<I> adaptView) {
-//        return new StickyItemDecoration(adaptView);
-//    }
-
-//    // let's make it explicitly FrameLayout
-//    @NonNull
-//    private static FrameLayout parentFrameLayout(@NonNull RecyclerView recyclerView) {
-//
-//        final ViewParent parent = recyclerView.getParent();
-//
-//        // please note... that, for example, ScrollView is a sibling of FrameLayout
-//        //      and we must filter those...
-//
-//        final boolean isFrame = parent instanceof FrameLayout;
-//
-//        // so, ScrollView, HorizontalScrollView (they kinda weird to see here, who would
-//        // want to do so)? Also... there are NestedScrollViews...
-//        final boolean isScroll = isFrame && (parent instanceof ScrollView
-//                || parent instanceof HorizontalScrollView
-//                || parent instanceof ScrollingView);
-//
-//        if (isFrame && !isScroll) {
-//            return (FrameLayout) parent;
-//        }
-//
-//        throw AdaptException.create("RecyclerView must be placed inside FrameLayout " +
-//                "in order to add sticky view. Consider wrapping RecyclerView inside FrameLayout " +
-//                "or use different #create factory method that allows manual placing of a sticky view.");
-//    }
 
     private static final int MEASURE_SPEC_UNSPECIFIED =
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -184,6 +130,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
         while (position < adapterCount) {
             if (stickyViewType == adapter.getItemViewType(position)) {
+                // we also could use view dimensions from view in RecyclerView (left,top,width,height and do not
+                //  measure explicitly - it allow grid with different spans count)
                 final RecyclerView.ViewHolder viewHolder = parent.findViewHolderForAdapterPosition(position);
                 nextStickyViewTop = viewHolder != null
                         ? viewHolder.itemView.getTop()
@@ -203,10 +151,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
         final float y;
         if (nextStickyViewTop > 0 && nextStickyViewTop < height) {
             y = -(height - nextStickyViewTop);
-            processStickyView(view, (float) nextStickyViewTop / height);
         } else {
             y = 0F;
-            processStickyView(view, 1F);
         }
         view.setTranslationY(y);
     }
@@ -274,10 +220,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
         final int y;
         if (previousStickyViewTop > 0 && previousStickyViewTop < height) {
             y = -(height - previousStickyViewTop);
-            processStickyView(view, (float) previousStickyViewTop / height);
         } else {
             y = 0;
-            processStickyView(view, 1F);
         }
         view.setTranslationY(y);
     }
@@ -285,9 +229,16 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     @NonNull
     protected View prepareStickyView(@NonNull AdaptView<?> adaptView, @NonNull RecyclerView recyclerView) {
 
+        final View view = adaptView.view();
+
+        // we rely on item to properly set itself, so measure/layout would not be required
+        //  if view has not changed
+        if (!view.isLayoutRequested()) {
+            return view;
+        }
+
         final int left = recyclerView.getPaddingLeft();
         final int width = recyclerView.getWidth() - left - recyclerView.getPaddingRight();
-        final View view = adaptView.view();
 
         // @since 2.3.0-SNAPSHOT we check if view has exact height and use it
         final int heightMeasureSpec;
@@ -296,23 +247,27 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
                 || layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
             heightMeasureSpec = MEASURE_SPEC_UNSPECIFIED;
         } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-            // interesting case
+            // interesting case, can this even happen at all? can we scroll at all with this?
             heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(recyclerView.getHeight(), View.MeasureSpec.EXACTLY);
         } else {
             heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(layoutParams.height, View.MeasureSpec.EXACTLY);
         }
 
+        // what if view has specific width, why marching width of the recyclerView
+        //  also, recyclerView can have clipChildren = false (padding would be ignored)
         view.measure(
                 View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
                 heightMeasureSpec
         );
-        view.layout(left, 0, left + view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        view.layout(
+                left,
+                0,
+                left + view.getMeasuredWidth(),
+                view.getMeasuredHeight()
+        );
+
         return view;
-    }
-
-    // 1F - is fully sticky, 0F - completely not
-    protected void processStickyView(@NonNull View view, float ratio) {
-
     }
 
     protected void hideStickyView() {

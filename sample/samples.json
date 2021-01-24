@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample",
+    "id": "20210124212119",
+    "title": "Sticky GRID",
+    "description": "\u003ctt\u003eStickyItemDecoration\u003c/tt\u003e with \u003ctt\u003eGridLayoutManager\u003c/tt\u003e",
+    "tags": [
+      "grid",
+      "recyclerview"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.listview.SpinnerSample",
     "id": "20210123235615",
     "title": "Spinner",
