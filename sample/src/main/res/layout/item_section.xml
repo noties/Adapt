@@ -10,4 +10,5 @@
     android:paddingRight="@dimen/_16"
     android:paddingBottom="@dimen/_8"
     android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="@color/primaryDark"
     tools:text="This is text" />
