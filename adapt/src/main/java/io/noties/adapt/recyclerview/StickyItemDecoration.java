@@ -1,14 +1,19 @@
 package io.noties.adapt.recyclerview;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.view.AdaptView;
 
@@ -19,47 +24,87 @@ import io.noties.adapt.view.AdaptView;
  * all widget accessibility features are available. Can be used with GridLayoutManager if sticky view
  * fills all the spans of GridLayoutManager (matches width).
  * <p>
- * NB! RecyclerView must a <strong>direct child of a {@code FrameLayout}</strong>
- * with preferably equal dimensions
+ * NB! {@code RecyclerView} must a direct child of a {@code FrameLayout}
  * <p>
- * NB! Sticky view will always have width equal to RecyclerView width (minus horizontal padding).
- * <p>
- * NB! a single item only can be sticky inside a RecyclerView.
- * <p>
- * NB! RecyclerView should not have {@code padding} set - it can be applied
- * to direct parent {@code FrameLayout}. But {@code clipToPadding=false} and {@code clipChildren=false}
- * attributes would be ignored.
+ * NB! do not use {@code margins} for {@code RecyclerView} as sticky view will be positioned
+ * incorrectly, instead consider using margins on direct parent {@code FrameLayout} or padding
+ * on {@code RecyclerView} itself combined with {@code clipToPadding=false} if vertical padding is present (top or bottom)
  *
  * @since 2.2.0
  */
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
-    // direct parent, can check here
-    //  also, can be not equal, so maybe padding or margin on parent
-    // allow specifying the container? no, bad
     @NonNull
-    public static <I extends Item<? extends Item.Holder>> StickyItemDecoration create(
-            @NonNull ViewGroup parent,
-            @NonNull I item) {
-        final AdaptView<I> adaptView = AdaptView.init(parent, item);
-        return new StickyItemDecoration(adaptView);
+    public static StickyItemDecoration create(
+            @NonNull RecyclerView recyclerView,
+            @NonNull Item<?> item
+    ) {
+        final ViewGroup parent = processRecyclerView(recyclerView);
+        return new StickyItemDecoration(AdaptView.init(parent, item));
+    }
+
+    @NonNull
+    private static ViewGroup processRecyclerView(@NonNull RecyclerView recyclerView) {
+
+        final ViewParent parent = recyclerView.getParent();
+        if (parent == null) {
+            throw AdaptException.create("RecyclerView must be attached to a FrameLayout parent");
+        }
+
+        if (!(parent instanceof FrameLayout)) {
+            throw AdaptException.create("RecyclerView parent must be FrameLayout, now: " + parent);
+        }
+
+        final FrameLayout layout = (FrameLayout) parent;
+        if (layout.getPaddingLeft() != 0
+                || layout.getPaddingTop() != 0
+                || layout.getPaddingRight() != 0
+                || layout.getPaddingBottom() != 0) {
+            // issue a warning to use margins
+            Log.w("Adapt", "StickyItemDecoration, FrameLayout parent uses padding, " +
+                    "use margins instead");
+        }
+
+        if (!recyclerView.getClipToPadding()) {
+            if (recyclerView.getPaddingTop() != 0
+                    || recyclerView.getPaddingBottom() != 0) {
+                Log.w("Adapt", "StickyItemDecoration, RecyclerView uses vertical " +
+                        "padding without `clipToPadding=false`");
+            }
+        }
+
+        return layout;
     }
 
     private static final int MEASURE_SPEC_UNSPECIFIED =
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
-    @SuppressWarnings("rawtypes")
-    private final AdaptView adaptView;
+    private final AdaptView<?> adaptView;
     private final int stickyViewType;
 
-    @SuppressWarnings("rawtypes")
-    protected StickyItemDecoration(@NonNull AdaptView adaptView) {
+    // flag that is used to invalidate sticky view
+    //  as it is inside a different than RecyclerView parent, then parent might measure/layout it
+    //  independently, so we must listen fro such an event, so we can invalidate sticky view accordingly
+    private boolean adaptViewInvalidated;
+
+    StickyItemDecoration(@NonNull AdaptView<?> adaptView) {
         this.adaptView = adaptView;
-        // @since 2.3.0-SNAPSHOT it's important to use item viewType
-        // (instead of asking for a generated one)
         this.stickyViewType = AdaptRecyclerView.assignedViewType(adaptView.item().getClass());
-        hideStickyView();
+
+        prepareAdaptView(adaptView);
     }
+
+    private void prepareAdaptView(@NonNull AdaptView<?> adaptView) {
+        hideStickyView();
+
+        adaptView.view().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                adaptViewInvalidated = true;
+            }
+        });
+    }
+
 
     @Override
     public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -141,10 +186,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             position += 1;
         }
 
-        //noinspection unchecked
-        adaptView.setItem(item);
-
-        final View view = prepareStickyView(adaptView, parent);
+        final View view = stickyView(item, parent);
         view.setAlpha(1F);
 
         final int height = view.getMeasuredHeight();
@@ -210,14 +252,12 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             position -= 1;
         }
 
-        //noinspection unchecked
-        adaptView.setItem(item);
-
-        final View view = prepareStickyView(adaptView, parent);
+        final View view = stickyView(item, parent);
         view.setAlpha(1F);
 
         final int height = view.getHeight();
         final int y;
+
         if (previousStickyViewTop > 0 && previousStickyViewTop < height) {
             y = -(height - previousStickyViewTop);
         } else {
@@ -227,15 +267,40 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @NonNull
-    protected View prepareStickyView(@NonNull AdaptView<?> adaptView, @NonNull RecyclerView recyclerView) {
+    private View stickyView(
+            @NonNull Item<?> item,
+            @NonNull RecyclerView recyclerView
+    ) {
+
+        final AdaptView<?> adaptView = this.adaptView;
 
         final View view = adaptView.view();
+        final Item<?> previousStickyItem = adaptView.item();
 
-        // we rely on item to properly set itself, so measure/layout would not be required
-        //  if view has not changed
-        if (!view.isLayoutRequested()) {
-            return view;
+        // if adaptView has been through layout pass outside of this decorator, then request layout
+        // if NO_ID, then request layout
+        // if ids are different, then request layout
+
+        final long id = item.id();
+
+        if (adaptViewInvalidated
+                || id == Item.NO_ID
+                || id != previousStickyItem.id()) {
+
+            //noinspection unchecked,rawtypes
+            ((AdaptView) adaptView).setItem(item);
+
+            requestStickyLayout(view, recyclerView);
+
+            // flip this flag in any case
+            adaptViewInvalidated = false;
         }
+
+        return view;
+    }
+
+
+    private static void requestStickyLayout(@NonNull View view, @NonNull RecyclerView recyclerView) {
 
         final int left = recyclerView.getPaddingLeft();
         final int width = recyclerView.getWidth() - left - recyclerView.getPaddingRight();
@@ -266,12 +331,15 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
                 left + view.getMeasuredWidth(),
                 view.getMeasuredHeight()
         );
-
-        return view;
     }
 
     protected void hideStickyView() {
-        adaptView.view().setAlpha(0F);
+        final View view = adaptView != null
+                ? adaptView.view()
+                : null;
+        if (view != null) {
+            view.setAlpha(0F);
+        }
     }
 
     @Nullable

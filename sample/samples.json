@@ -1,5 +1,12 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyReverseLayoutSample",
+    "id": "20210126223631",
+    "title": "Sticky (reverse)",
+    "description": "\u003ctt\u003ereverseLayout\u003c/tt\u003e in RecyclerView with \u003ctt\u003eLinearLayoutManager\u003c/tt\u003e",
+    "tags": []
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample",
     "id": "20210124212119",
     "title": "Sticky GRID",

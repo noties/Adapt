@@ -9,21 +9,6 @@ import io.noties.adapt.sample.util.SampleUtil
 
 class MainActivity : Activity() {
 
-//    private val samples: List<Sample> = listOf(
-//        ViewPager2Sample().sample,
-//        AlertDialogSample().sample,
-//        ListViewSomeEnabledSample().sample,
-//        ListViewAllEnabledSample().sample,
-//        ViewGroupTransitionSample().sample,
-//        RecyclerViewNestedSample().sample,
-//        RecyclerViewGridSample().sample,
-//        RecyclerViewDiffSample().sample,
-//        RecyclerViewStickySample().sample,
-//        ViewGroupSample().sample,
-//        ListViewSample().sample,
-//        RecyclerViewSample().sample,
-//    )
-
     private lateinit var viewAnimator: ViewAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +17,27 @@ class MainActivity : Activity() {
 
         viewAnimator = findViewById(R.id.view_animator)
 
-        val sampleViewList = SampleViewList(SampleUtil.readSamples(this)) { sample ->
-            val sampleView = SampleUtil.createView(sample)
-            viewAnimator.showNext(sampleView.view(sample, viewAnimator))
-        }
+        val samples = SampleUtil.readSamples(this)
+        val sampleViewList = SampleViewList(samples, ::showSample)
 
         viewAnimator.addView(sampleViewList.view(viewAnimator))
+
+        if (savedInstanceState == null) {
+            val aid = intent.getStringExtra(LAUNCH_SAMPLE_ID_EXTRA_KEY)
+                .takeIf { !it.isNullOrBlank() }
+            if (aid != null) {
+                val sample = samples.firstOrNull { aid == it.id }
+                    ?: error("Sample with id `$aid` is not found")
+                showSample(sample)
+            }
+        }
     }
+
+    private fun showSample(sample: Sample) {
+        val sampleView = SampleUtil.createView(sample)
+        viewAnimator.showNext(sampleView.view(sample, viewAnimator))
+    }
+
 
     override fun onBackPressed() {
         if (!viewAnimator.goBack()) {
@@ -62,5 +61,11 @@ class MainActivity : Activity() {
             postDelayed({ removeViewAt(child) }, outAnimation.duration)
         }
         return child >= 1
+    }
+
+    companion object {
+        // can be used to directly launch sample from IDE,
+        //  provide `--es "aid" "${ID_OF_SAMPLE}"` as `Launch Flags` for Activity
+        const val LAUNCH_SAMPLE_ID_EXTRA_KEY = "aid"
     }
 }
