@@ -1,7 +1,13 @@
 # Adapt
 
-`Adapt` &mdash; `RecyclerView.Adapter`, only shorter. Same view in `RecyclerView`, `ListView` or any other `ViewGroup`.
+`Adapt` &mdash; `RecyclerView.Adapter` only shorter, `ListView.Adapter` and  only shorter 
+Same view in `RecyclerView`, `ListView` or any other `ViewGroup`.
 Define a modular item. Extremely easy to start with modular components.
+
+Reusable view components between `RecyclerView`(+`ViewPager2`<sup>*</sup>), `android.widget.AdapterView<?>`(`ListView`, 
+`GridView`, `StackView`, `Spinner`, `AdapterViewFlipper`, +`AlertDialog`), 
+and regular `ViewGroup` (`LinearLayout` inside a `ScrollView`) without
+modification and out-of-box.
 
 ## Install
 

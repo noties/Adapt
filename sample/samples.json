@@ -1,5 +1,32 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.GridViewSample",
+    "id": "20210126234155",
+    "title": "GridView",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.StackViewSample",
+    "id": "20210126233614",
+    "title": "StackView",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AdapterViewFlipperSample",
+    "id": "20210126232916",
+    "title": "AdapterViewFlipper",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyReverseLayoutSample",
     "id": "20210126223631",
     "title": "Sticky (reverse)",
@@ -104,7 +131,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample",
     "id": "20210122143214",
     "title": "ViewPager2",
-    "description": "AdaptRecyclerView adapter used in ViewPager2\n\u003cb\u003eNB!\u003c/b\u003e fails due to missing \u003ctt\u003ematch_parent\u003c/tt\u003e",
+    "description": "AdaptRecyclerView adapter used in ViewPager2\n\u003cb\u003eNB!\u003c/b\u003e fails due to missing \u003ctt\u003ematch_parent\u003c/tt\u003e see \u003ctt\u003eMirroredSample\u003c/tt\u003e instead",
     "tags": [
       "recyclerview",
       "viewpager2"

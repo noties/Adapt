@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ public abstract class ItemView extends Item<ItemView.Holder> {
 
         @Nullable
         @Override
+        @CheckResult
         public <V extends View> V findView(@IdRes int id) {
 
             final Integer key = id;
@@ -71,6 +73,7 @@ public abstract class ItemView extends Item<ItemView.Holder> {
 
         @NonNull
         @Override
+        @CheckResult
         public <V extends View> V requireView(@IdRes int id) {
             final View view = findView(id);
             if (view == null) {

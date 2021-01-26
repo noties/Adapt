@@ -11,7 +11,8 @@ import io.noties.adapt.sample.annotation.AdaptSample
 @AdaptSample(
     id = "20210122143214",
     title = "ViewPager2",
-    description = "AdaptRecyclerView adapter used in ViewPager2\n<b>NB!</b> fails due to missing <tt>match_parent</tt>",
+    description = "AdaptRecyclerView adapter used in ViewPager2\n<b>NB!</b> fails due to " +
+            "missing <tt>match_parent</tt> see <tt>MirroredSample</tt> instead",
     tags = ["recyclerview", "viewpager2"]
 )
 class ViewPager2Sample : SampleView() {
