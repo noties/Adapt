@@ -24,4 +24,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="This is the description of this sample item" />
 
+    <TextView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dip"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text=" listview  recyclerview " />
+
 </LinearLayout>

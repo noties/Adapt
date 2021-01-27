@@ -1,6 +1,9 @@
 package io.noties.adapt.sample
 
-import android.text.TextUtils
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +37,7 @@ class SampleViewList(
         class Holder(view: View) : Item.Holder(view) {
             val name: TextView = requireView(R.id.name)
             val description: TextView = requireView(R.id.description)
+            val tags: TextView = requireView(R.id.tags)
         }
 
         override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder {
@@ -42,10 +46,28 @@ class SampleViewList(
 
         override fun bind(holder: Holder) {
             holder.name.text = sample.name
-            holder.description.text = sample.description
+            holder.description.textOrGone(sample.description)
+            holder.tags.textOrGone(tags)
+        }
 
-            holder.description.visibility =
-                if (TextUtils.isEmpty(sample.description)) View.GONE else View.VISIBLE
+        private val tags: CharSequence
+            get() {
+                return sample.tags.joinTo(SpannableStringBuilder(), separator = " ") { tag ->
+                    SpannableString(" $tag ").apply {
+                        val color = tag.hashCode()
+                        setSpan(
+                            BackgroundColorSpan(color),
+                            0,
+                            length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                }
+            }
+
+        private fun TextView.textOrGone(text: CharSequence?) {
+            this.text = text
+            this.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         }
     }
 }

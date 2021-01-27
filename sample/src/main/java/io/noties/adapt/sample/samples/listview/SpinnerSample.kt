@@ -24,7 +24,15 @@ class SpinnerSample : SampleView() {
         // Unfortunately spinner allows only one item view
 
         val spinner: Spinner = view.findViewById(R.id.spinner)
-        val adapt = AdaptListView.createSingleViewType(view.context)
+
+        // `createSingleViewType` can be used for list with single item and which is disabled
+        //  which does not make _mich_ sense for Spinner (as item won't be clickable)
+//        val adapt = AdaptListView.createSingleViewType(view.context)
+
+        val adapt = AdaptListView.create(view.context) {
+            it.include(PlainItem::class.java, true)
+        }
+
         spinner.adapter = adapt.adapter()
 
         val items = (0 until 100)

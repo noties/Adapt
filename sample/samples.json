@@ -31,7 +31,9 @@
     "id": "20210126223631",
     "title": "Sticky (reverse)",
     "description": "\u003ctt\u003ereverseLayout\u003c/tt\u003e in RecyclerView with \u003ctt\u003eLinearLayoutManager\u003c/tt\u003e",
-    "tags": []
+    "tags": [
+      "recyclerview"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample",
@@ -88,7 +90,9 @@
     "id": "20210122143249",
     "title": "NO_ID in ViewGroup",
     "description": "Indicates that an Item without ID (\u003ctt\u003eNO_ID\u003c/tt\u003e) is recreated with each update",
-    "tags": []
+    "tags": [
+      "viewgroup"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSomeEnabledSample",

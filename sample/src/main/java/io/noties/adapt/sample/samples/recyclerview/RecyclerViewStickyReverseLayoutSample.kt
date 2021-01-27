@@ -9,7 +9,8 @@ import io.noties.adapt.sample.annotation.AdaptSample
 @AdaptSample(
     id = "20210126223631",
     title = "Sticky (reverse)",
-    description = "<tt>reverseLayout</tt> in RecyclerView with <tt>LinearLayoutManager</tt>"
+    description = "<tt>reverseLayout</tt> in RecyclerView with <tt>LinearLayoutManager</tt>",
+    tags = ["recyclerview"]
 )
 class RecyclerViewStickyReverseLayoutSample : RecyclerViewStickySample() {
     override fun render(view: View) {
