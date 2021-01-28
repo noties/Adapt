@@ -35,7 +35,7 @@ public class AdaptListView implements Adapt {
 
         /**
          * @see Adapter#hasStableIds()
-         * By default {@code false}
+         * By default {@code true}
          */
         @NonNull
         Configuration hasStableIds(boolean hasStableIds);
@@ -358,7 +358,7 @@ public class AdaptListView implements Adapt {
 
     private static class ConfigurationImpl implements Configuration {
 
-        boolean hasStableIds = false;
+        boolean hasStableIds = true;
         boolean areAllItemsEnabled = false;
 
         final Map<Class<? extends Item<?>>, EnabledProvider<? extends Item<?>>> isEnabled

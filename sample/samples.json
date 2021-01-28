@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.ViewSample",
+    "id": "20210127234203",
+    "title": "AdaptView",
+    "description": "Usage of \u003ctt\u003eItem\u003c/tt\u003e directly with \u003ctt\u003eAdaptView\u003c/tt\u003e",
+    "tags": [
+      "view"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.listview.GridViewSample",
     "id": "20210126234155",
     "title": "GridView",

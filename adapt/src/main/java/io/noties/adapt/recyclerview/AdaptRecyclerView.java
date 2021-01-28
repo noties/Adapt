@@ -40,6 +40,12 @@ public class AdaptRecyclerView implements Adapt {
         @NonNull
         Configuration hasStableIds(boolean hasStableIds);
 
+        /**
+         * by default {@link NotifyDataSetChangedHandler}
+         *
+         * @see NotifyDataSetChangedHandler
+         * @see DiffUtilDataSetChangedHandler
+         */
         @NonNull
         Configuration dataSetChangeHandler(@NonNull DataSetChangeHandler dataSetChangeHandler);
     }

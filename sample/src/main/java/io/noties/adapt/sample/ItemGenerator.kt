@@ -10,23 +10,13 @@ object ItemGenerator {
     private const val seed = 21L
     private var random = Random(seed)
     private val colors = arrayOf(
-        0xFFD32F2F,
-        0xFFC2185B,
-        0xFF7B1FA2,
-        0xFF512DA8,
-        0xFF303F9F,
-        0xFF1976D2,
-        0xFF0288D1,
-        0xFF0097A7,
-        0xFF00796B,
-        0xFF388E3C,
-        0xFF689F38,
-        0xFFAFB42B,
-        0xFFFBC02D,
-        0xFFFFA000,
-        0xFFF57C00,
-        0xFFE64A19,
-        0xFF5D4037,
+        0xFF5cb578,
+        0xFFf9f871,
+        0xFFf2a3c0,
+        0xFF526b92,
+        0xFF413550,
+        0xFF863557,
+        0xFF92705a
     )
     private val types = Type.values()
 
