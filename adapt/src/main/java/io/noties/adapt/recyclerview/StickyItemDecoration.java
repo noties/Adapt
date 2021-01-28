@@ -29,8 +29,6 @@ import io.noties.adapt.view.AdaptView;
  * NB! do not use {@code margins} for {@code RecyclerView} as sticky view will be positioned
  * incorrectly, instead consider using margins on direct parent {@code FrameLayout} or padding
  * on {@code RecyclerView} itself combined with {@code clipToPadding=false} if vertical padding is present (top or bottom)
- *
- * @since 2.2.0
  */
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -79,7 +77,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     private static final int MEASURE_SPEC_UNSPECIFIED =
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 
-    private final AdaptView<?> adaptView;
+    private final AdaptView adaptView;
     private final int stickyViewType;
 
     // flag that is used to invalidate sticky view
@@ -87,14 +85,16 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     //  independently, so we must listen fro such an event, so we can invalidate sticky view accordingly
     private boolean adaptViewInvalidated;
 
-    StickyItemDecoration(@NonNull AdaptView<?> adaptView) {
+    // For the future, multiple viewtypes can be sticky, even dynamically with a callback interface,
+    //  as AdaptView is no longer typed and allows multiple item types
+    StickyItemDecoration(@NonNull AdaptView adaptView) {
         this.adaptView = adaptView;
         this.stickyViewType = AdaptRecyclerView.assignedViewType(adaptView.item().getClass());
 
         prepareAdaptView(adaptView);
     }
 
-    private void prepareAdaptView(@NonNull AdaptView<?> adaptView) {
+    private void prepareAdaptView(@NonNull AdaptView adaptView) {
         hideStickyView();
 
         adaptView.view().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -272,9 +272,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             @NonNull RecyclerView recyclerView
     ) {
 
-        final AdaptView<?> adaptView = this.adaptView;
+        final AdaptView adaptView = this.adaptView;
 
-        final View view = adaptView.view();
         final Item<?> previousStickyItem = adaptView.item();
 
         // if adaptView has been through layout pass outside of this decorator, then request layout
@@ -287,16 +286,15 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
                 || id == Item.NO_ID
                 || id != previousStickyItem.id()) {
 
-            //noinspection unchecked,rawtypes
-            ((AdaptView) adaptView).setItem(item);
+            adaptView.setItem(item);
 
-            requestStickyLayout(view, recyclerView);
+            requestStickyLayout(adaptView.view(), recyclerView);
 
             // flip this flag in any case
             adaptViewInvalidated = false;
         }
 
-        return view;
+        return adaptView.view();
     }
 
 

@@ -12,12 +12,12 @@ import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 
-public class AdaptView<I extends Item<? extends Item.Holder>> {
+public class AdaptView {
 
     @NonNull
-    public static <I extends Item<? extends Item.Holder>> AdaptView<I> init(
+    public static AdaptView init(
             @NonNull ViewGroup parent,
-            @NonNull I item
+            @NonNull Item<?> item
     ) {
         return init(
                 LayoutInflater.from(parent.getContext()),
@@ -27,10 +27,10 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
     }
 
     @NonNull
-    public static <I extends Item<? extends Item.Holder>> AdaptView<I> init(
+    public static AdaptView init(
             @NonNull LayoutInflater inflater,
             @NonNull ViewGroup parent,
-            @NonNull I item
+            @NonNull Item<?> item
     ) {
         final Item.Holder holder = item.createHolder(inflater, parent);
         final View view = holder.itemView();
@@ -39,70 +39,66 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
         //noinspection unchecked,rawtypes,
         ((Item) item).bind(holder);
         view.setTag(ID_ITEM, item);
-        return new AdaptView<>(view);
-    }
-
-    public interface HolderProvider<H extends Item.Holder> {
-        @NonNull
-        H provide(@NonNull View view);
-    }
-
-    @NonNull
-    public static <H extends Item.Holder, I extends Item<H>> AdaptView<I> bind(
-            @NonNull View view,
-            @NonNull I item,
-            @NonNull HolderProvider<H> provider
-    ) {
-        final H holder = provider.provide(view);
-        view.setTag(ID_HOLDER, holder);
-
-        //noinspection unchecked,rawtypes,
-        ((Item) item).bind(holder);
-        view.setTag(ID_ITEM, item);
-
-        return new AdaptView<>(view);
+        return new AdaptView(inflater, parent, view);
     }
 
     private static final int ID_HOLDER = R.id.adapt_internal_holder;
     private static final int ID_ITEM = R.id.adapt_internal_item;
 
-    private final View view;
+    private final LayoutInflater inflater;
+    private final ViewGroup viewGroup;
 
-    AdaptView(@NonNull View view) {
+    private View view;
+
+    AdaptView(
+            @NonNull LayoutInflater inflater,
+            @NonNull ViewGroup viewGroup,
+            @NonNull View view
+    ) {
+        this.inflater = inflater;
+        this.viewGroup = viewGroup;
         this.view = view;
     }
 
+    @NonNull
+    public LayoutInflater inflater() {
+        return inflater;
+    }
+
+    @NonNull
+    public ViewGroup viewGroup() {
+        return viewGroup;
+    }
+
+    /**
+     * As multiple types can be bound, returned view might be different between different items
+     */
     @NonNull
     public View view() {
         return view;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @NonNull
-    public I item() {
-        final Item item = (Item) view.getTag(ID_ITEM);
+    public Item<?> item() {
+        final Item<?> item = (Item<?>) view.getTag(ID_ITEM);
         if (item == null) {
             // unexpected internal error, no item is specified (we cannot create an AdaptView without
             // item)
             throw AdaptException.create("Unexpected state, there is no item bound, " +
                     "view: " + view);
         }
-        return (I) item;
+        return item;
     }
 
-    public void setItem(@NonNull I item) {
+    public void setItem(@NonNull Item<?> item) {
 
         final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
-        if (holder == null) {
-            // it's required to have holder at this point, internal error
-            throw AdaptException.create(String.format(
-                    Locale.ROOT,
-                    "Unexpected state, there is no Holder associated " +
-                            "with this view, supplied item: %s, view: %s", item, view));
-        }
 
-        //noinspection unchecked,rawtypes,
-        ((Item) item).bind(holder);
+        if (holder == null
+                || !bind(item, holder)) {
+            // create new
+            createHolder(item);
+        }
 
         // save item information
         view.setTag(ID_ITEM, item);
@@ -110,5 +106,35 @@ public class AdaptView<I extends Item<? extends Item.Holder>> {
 
     public void notifyChanged() {
         setItem(item());
+    }
+
+    private boolean bind(@NonNull Item<?> item, @NonNull Item.Holder holder) {
+        try {
+            //noinspection unchecked,rawtypes
+            ((Item) item).bind(holder);
+        } catch (ClassCastException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private void createHolder(@NonNull Item<?> item) {
+
+        final int index = viewGroup.indexOfChild(view);
+        if (index < 0) {
+            throw AdaptException.create(String.format(Locale.ROOT,
+                    "View is not attached to parent, view: %s, parent: %s", view, viewGroup));
+        }
+
+        final Item.Holder holder = item.createHolder(inflater, viewGroup);
+
+        viewGroup.removeViewAt(index);
+        viewGroup.addView(holder.itemView(), index);
+
+        //noinspection unchecked,rawtypes
+        ((Item) item).bind(holder);
+
+        view = holder.itemView();
+        view.setTag(ID_HOLDER, holder);
     }
 }

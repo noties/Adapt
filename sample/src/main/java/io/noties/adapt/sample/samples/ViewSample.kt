@@ -25,8 +25,15 @@ class ViewSample : SampleView() {
         val item = ItemGenerator.next(0).first()
         val adaptView = AdaptView.init(container, item)
 
-        adaptView.view().setOnClickListener {
-            adaptView.setItem(ItemGenerator.next(1).first())
+        fun bind() {
+            adaptView.view().setOnClickListener {
+
+                adaptView.setItem(ItemGenerator.next(0).first())
+                // internal view to which we did set onClickListener is not changed
+                //  and we need new listener set
+                bind()
+            }
         }
+        bind()
     }
 }
