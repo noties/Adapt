@@ -19,14 +19,14 @@
   * `GridView`
   * `StackView`
   * `AdapterViewFlipper`<sup>***</sup>
-  * `AlertDialog`<sup>****</sup> (special)
+  * `AlertDialog`<sup>****</sup>
 * `ViewGroup`
   * `LinearLayout`
   * there are no restrictions on actual `ViewGroup` from `Adapt`, `ViewGroup` 
     just need to layout a list of given views
 
 
-<em><sup>\*</sup> &mdash; `Item` must have `match_parent` as width and height</em><br />
+<em><sup>\*</sup> &mdash; `Item` in `ViewPager2` must have `match_parent` as width and height</em><br />
 <em><sup>\*\*</sup> &mdash; `Spinner` supports only a single view type, `Adapt` cannot overcome this</em><br />
 <em><sup>\*\*\*</sup> &mdash; wait, wat?</em><br />
 <em><sup>\*\*\*\*</sup> &mdash; `AlertDailog` accepts a `ListAdapter`</em><br />
@@ -221,9 +221,9 @@ val adapt = AdaptViewGroup.init(container) {
 }
 ```
 
-**NB!** A list of `Item`s supplied to `AdaptViewGroup` must have unique ids for the same type (cannot
-have multiple items of the same type with the same ids). `Item.NO_ID` can be used, but this would
-result in `Item`'s view being created each time anew. So if possible consider having unique ids even
+**NB!** A list of `Item`s supplied to `AdaptViewGroup` must have unique ids for the same 
+type (multiple items of the same typ cannot have duplicate ids). `Item.NO_ID` can be used, but this would
+result in `Item`'s view being created each time anew. So, if possible, consider having unique ids even
 for supplementary items.
 
 Note that `TransitionChangeHandler` allows to run transition animations of items change almost effortlessly.
