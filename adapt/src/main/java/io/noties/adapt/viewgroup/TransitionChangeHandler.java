@@ -17,79 +17,156 @@ import androidx.annotation.RequiresApi;
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
+    /**
+     * Determines which {@code ViewGroup} is used to <em>begin</em> transition
+     *
+     * @see ParentViewGroupProvider
+     */
+    public interface ViewGroupProvider {
+        /**
+         * @return null to use supplied {@code group}
+         */
+        @Nullable
+        ViewGroup provide(@NonNull ViewGroup group);
+    }
+
+    /**
+     * Create {@code Transition} for given {@code ViewGroup}. Can be different from
+     * <em>real</em> {@code ViewGroup} parent (which {@link AdaptViewGroup} is initialized with)
+     * when {@link ViewGroupChangeHandler} returns different {@code ViewGroup}
+     */
     public interface TransitionProvider {
         @Nullable
         Transition provide(@NonNull ViewGroup group);
     }
 
+    public interface Configuration {
+
+        @NonNull
+        Configuration changeHandler(@NonNull AdaptViewGroup.ChangeHandler changeHandler);
+
+        @NonNull
+        Configuration transitionProvider(@NonNull TransitionProvider transitionProvider);
+
+        @NonNull
+        Configuration viewGroupProvider(@NonNull ViewGroupProvider viewGroupProvider);
+    }
+
+    public interface Configurator {
+        void configure(@NonNull Configuration configuration);
+    }
+
     @NonNull
     public static TransitionChangeHandler create() {
-        return create(new ViewGroupChangeHandler(), null);
+        return new TransitionChangeHandler(new ConfigurationImpl());
     }
 
     @NonNull
-    public static TransitionChangeHandler create(@NonNull AdaptViewGroup.ChangeHandler parent) {
-        return create(parent, null);
+    public static TransitionChangeHandler create(@NonNull Configurator configurator) {
+        final ConfigurationImpl configuration = new ConfigurationImpl();
+        configurator.configure(configuration);
+        return new TransitionChangeHandler(configuration);
     }
 
     @NonNull
-    public static TransitionChangeHandler create(@Nullable TransitionProvider transitionProvider) {
-        return create(new ViewGroupChangeHandler(), transitionProvider);
-    }
+    private final AdaptViewGroup.ChangeHandler changeHandler;
 
-    @NonNull
-    public static TransitionChangeHandler create(
-            @NonNull AdaptViewGroup.ChangeHandler parent,
-            @Nullable TransitionProvider transitionProvider) {
-        return new TransitionChangeHandler(parent, transitionProvider);
-    }
+    @Nullable
+    private final ViewGroupProvider viewGroupProvider;
 
-    private final AdaptViewGroup.ChangeHandler parent;
+    @Nullable
     private final TransitionProvider transitionProvider;
 
-    protected TransitionChangeHandler(
-            @NonNull AdaptViewGroup.ChangeHandler parent,
-            @Nullable TransitionProvider transitionProvider) {
-        this.parent = parent;
-        this.transitionProvider = transitionProvider;
+
+    protected TransitionChangeHandler(ConfigurationImpl configuration) {
+        this.changeHandler = configuration.changeHandler;
+        this.viewGroupProvider = configuration.viewGroupProvider;
+        this.transitionProvider = configuration.transitionProvider;
     }
 
     @Override
     public void begin(@NonNull ViewGroup group) {
 
-        final Transition transition = transitionProvider != null
-                ? transitionProvider.provide(group)
-                : null;
+        final ViewGroup parent = viewGroup(group);
+        final Transition transition = transition(parent);
 
         if (transition != null) {
-            TransitionManager.beginDelayedTransition(group, transition);
+            TransitionManager.beginDelayedTransition(parent, transition);
         } else {
-            TransitionManager.beginDelayedTransition(group);
+            TransitionManager.beginDelayedTransition(parent);
         }
+
+        // Note that original ViewGroup is delivered to wrapped ChangeHandler
+        changeHandler.begin(group);
     }
 
     @Override
     public void removeAll(@NonNull ViewGroup group) {
-        parent.removeAll(group);
+        changeHandler.removeAll(group);
     }
 
     @Override
     public void removeAt(@NonNull ViewGroup group, int position) {
-        parent.removeAt(group, position);
+        changeHandler.removeAt(group, position);
     }
 
     @Override
     public void move(@NonNull ViewGroup group, int from, int to) {
-        parent.move(group, from, to);
+        changeHandler.move(group, from, to);
     }
 
     @Override
     public void insertAt(@NonNull ViewGroup group, @NonNull View view, int position) {
-        parent.insertAt(group, view, position);
+        changeHandler.insertAt(group, view, position);
     }
 
     @Override
     public void end(@NonNull ViewGroup group) {
-        parent.end(group);
+        changeHandler.end(group);
+    }
+
+    @NonNull
+    private ViewGroup viewGroup(@NonNull ViewGroup group) {
+        final ViewGroup parent = viewGroupProvider != null
+                ? viewGroupProvider.provide(group)
+                : null;
+        return parent != null
+                ? parent
+                : group;
+    }
+
+    @Nullable
+    private Transition transition(@NonNull ViewGroup group) {
+        return transitionProvider != null
+                ? transitionProvider.provide(group)
+                : null;
+    }
+
+    private static class ConfigurationImpl implements Configuration {
+
+        AdaptViewGroup.ChangeHandler changeHandler = new ViewGroupChangeHandler();
+        TransitionProvider transitionProvider;
+        ViewGroupProvider viewGroupProvider;
+
+        @NonNull
+        @Override
+        public Configuration changeHandler(@NonNull AdaptViewGroup.ChangeHandler changeHandler) {
+            this.changeHandler = changeHandler;
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration transitionProvider(@NonNull TransitionProvider transitionProvider) {
+            this.transitionProvider = transitionProvider;
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration viewGroupProvider(@NonNull ViewGroupProvider viewGroupProvider) {
+            this.viewGroupProvider = viewGroupProvider;
+            return this;
+        }
     }
 }

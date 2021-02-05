@@ -1,5 +1,12 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionViewGroupSample",
+    "id": "20210205204648",
+    "title": "TransitionChangeHandler and ViewGroupProvider",
+    "description": "Begin transition in a different \u003ctt\u003eViewGroup\u003c/tt\u003e (not the one is used to initialize Adapt) with the \u003ctt\u003eViewGroupProvider\u003c/tt\u003e",
+    "tags": []
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.ViewSample",
     "id": "20210127234203",
     "title": "AdaptView",
