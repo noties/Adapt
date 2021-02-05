@@ -35,10 +35,15 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     @NonNull
     public static StickyItemDecoration create(
             @NonNull RecyclerView recyclerView,
-            @NonNull Item<?> item
+            @NonNull final Item<?> item
     ) {
         final ViewGroup parent = processRecyclerView(recyclerView);
-        return new StickyItemDecoration(AdaptView.init(parent, item));
+        return new StickyItemDecoration(AdaptView.init(parent, new AdaptView.Configurator() {
+            @Override
+            public void configure(@NonNull AdaptView.Configuration configuration) {
+                configuration.item(item);
+            }
+        }));
     }
 
     @NonNull
@@ -50,7 +55,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         if (!(parent instanceof FrameLayout)) {
-            throw AdaptException.create("RecyclerView parent must be FrameLayout, now: " + parent);
+            throw AdaptException.create("RecyclerView parent must be FrameLayout, actual: " + parent);
         }
 
         final FrameLayout layout = (FrameLayout) parent;

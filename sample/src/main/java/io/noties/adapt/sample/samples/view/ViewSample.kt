@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples
+package io.noties.adapt.sample.samples.view
 
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,9 @@ class ViewSample : SampleView() {
 
         // adaptView must contain Item of the same type only
         val item = ItemGenerator.next(0).first()
-        val adaptView = AdaptView.init(container, item)
+        val adaptView = AdaptView.init(container) {
+            it.item(item)
+        }
 
         fun bind() {
             adaptView.view().setOnClickListener {

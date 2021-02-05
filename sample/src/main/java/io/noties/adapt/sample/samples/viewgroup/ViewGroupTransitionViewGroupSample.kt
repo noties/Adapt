@@ -11,9 +11,11 @@ import io.noties.adapt.viewgroup.TransitionChangeHandler
 
 @AdaptSample(
     id = "20210205204648",
-    title = "TransitionChangeHandler and ViewGroupProvider",
-    description = "Begin transition in a different <tt>ViewGroup</tt> (not the one is used " +
-            "to initialize Adapt) with the <tt>ViewGroupProvider</tt>"
+    title = "ViewGroupProvider",
+    description = "Begin transition in <tt>TransitionChangeHandler</tt> in a different " +
+            "<tt>ViewGroup</tt> (not the one is used " +
+            "to initialize Adapt) with the <tt>ViewGroupProvider</tt>",
+    tags = ["viewgroup", "transition"]
 )
 class ViewGroupTransitionViewGroupSample : SampleView() {
 
