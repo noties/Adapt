@@ -20,6 +20,7 @@ import java.util.Set;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
+import io.noties.adapt.AdaptStore;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
@@ -29,7 +30,7 @@ public class AdaptListView implements Adapt {
 
     public interface Configuration {
 
-        interface EnabledProvider<I extends Item<? extends Item.Holder>> {
+        interface EnabledProvider<I extends Item<?>> {
             boolean isEnabled(@NonNull I item);
         }
 
@@ -77,9 +78,9 @@ public class AdaptListView implements Adapt {
          * @see #include(Class, boolean)
          */
         @NonNull
-        <I extends Item<? extends Item.Holder>> Configuration include(
+        <I extends Item<?>> Configuration include(
                 @NonNull Class<? extends I> type,
-                @NonNull EnabledProvider<I> provider
+                @NonNull EnabledProvider<? super I> provider
         );
     }
 
@@ -197,15 +198,20 @@ public class AdaptListView implements Adapt {
 
     @NonNull
     @Override
-    public List<Item<? extends Item.Holder>> items() {
+    public List<Item<?>> items() {
         return ListUtils.freeze(items);
     }
 
     @Override
-    public void setItems(@Nullable List<Item<? extends Item.Holder>> items) {
+    public void setItems(@Nullable List<Item<?>> items) {
         // we must calculate _total_ view item types, if amount changed (we see new items, we must invalidate listView,
         //  by setting adapter again)
         this.items = items;
+
+        final AdapterView<?> view = adapterView;
+        if (view != null) {
+            AdaptStore.assign(view, this);
+        }
 
         // but only if not viewTypesCount = 1 (default value) ?
         if (assignViewTypes(items)
@@ -229,13 +235,13 @@ public class AdaptListView implements Adapt {
     }
 
     @Override
-    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+    public void notifyItemChanged(@NonNull Item<?> item) {
         // ListView cannot? update individual item
         adapter.notifyDataSetChanged();
     }
 
     // return if adapter has new view types and thus must be invalidated
-    private boolean assignViewTypes(@Nullable List<Item<? extends Item.Holder>> items) {
+    private boolean assignViewTypes(@Nullable List<Item<?>> items) {
         if (ListUtils.isEmpty(items)) {
             return false;
         }
@@ -257,7 +263,7 @@ public class AdaptListView implements Adapt {
     }
 
     @NonNull
-    private static Set<Class<? extends Item<?>>> prepareItemTypes(@NonNull List<Item<? extends Item.Holder>> items) {
+    private static Set<Class<? extends Item<?>>> prepareItemTypes(@NonNull List<Item<?>> items) {
         final Set<Class<? extends Item<?>>> set = new HashSet<>(3);
         for (Item<?> item : items) {
             //noinspection unchecked
@@ -395,7 +401,7 @@ public class AdaptListView implements Adapt {
 
         @NonNull
         @Override
-        public <I extends Item<? extends Item.Holder>> Configuration include(@NonNull Class<? extends I> type, @NonNull EnabledProvider<I> provider) {
+        public <I extends Item<?>> Configuration include(@NonNull Class<? extends I> type, @NonNull EnabledProvider<? super I> provider) {
             isEnabled.put(type, provider);
             return this;
         }
