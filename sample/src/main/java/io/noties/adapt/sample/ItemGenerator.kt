@@ -6,6 +6,7 @@ import io.noties.adapt.sample.items.CardItem
 import io.noties.adapt.sample.items.PlainItem
 import kotlin.random.Random
 
+// TODO: create tags collection and assign colors manually
 object ItemGenerator {
     private const val seed = 21L
     private var random = Random(seed)

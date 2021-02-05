@@ -84,6 +84,7 @@ public class AdaptRecyclerView implements Adapt {
         return new AdaptRecyclerView(null, configuration);
     }
 
+    // TODO: change to have a uniform viewType (for wrapping)
     @SuppressWarnings("rawtypes")
     public static int assignedViewType(@NonNull Class<? extends Item> type) {
         return type.getName().hashCode();
@@ -156,12 +157,12 @@ public class AdaptRecyclerView implements Adapt {
 
     @NonNull
     @Override
-    public List<Item<? extends Item.Holder>> items() {
+    public List<Item<?>> items() {
         return ListUtils.freeze(items);
     }
 
     @Override
-    public void setItems(@Nullable List<Item<? extends Item.Holder>> items) {
+    public void setItems(@Nullable List<Item<?>> items) {
         configuration.dataSetChangeHandler.handleDataSetChange(
                 ListUtils.freeze(this.items),
                 ListUtils.freeze(items),
@@ -176,7 +177,7 @@ public class AdaptRecyclerView implements Adapt {
     }
 
     @Override
-    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+    public void notifyItemChanged(@NonNull Item<?> item) {
         final int index = ListUtils.freeze(items).indexOf(item);
         if (index >= 0) {
             adapter.notifyItemChanged(index);
@@ -185,7 +186,7 @@ public class AdaptRecyclerView implements Adapt {
 
     public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
         @NonNull
-        public abstract Item<? extends Item.Holder> getItem(int position);
+        public abstract Item<?> getItem(int position);
     }
 
     private class AdapterImpl extends Adapter<ItemViewHolder> {
@@ -234,7 +235,7 @@ public class AdaptRecyclerView implements Adapt {
 
         @NonNull
         @Override
-        public Item<? extends Item.Holder> getItem(int position) {
+        public Item<?> getItem(int position) {
             return items.get(position);
         }
     }

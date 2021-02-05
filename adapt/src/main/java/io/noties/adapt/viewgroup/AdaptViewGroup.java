@@ -108,12 +108,12 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     @NonNull
     @Override
-    public List<Item<? extends Item.Holder>> items() {
+    public List<Item<?>> items() {
         return ListUtils.freeze(items);
     }
 
     @Override
-    public void setItems(@Nullable List<Item<? extends Item.Holder>> items) {
+    public void setItems(@Nullable List<Item<?>> items) {
 
         final ChangeHandler changeHandler = configuration.changeHandler;
 
@@ -149,13 +149,13 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     }
 
     @Nullable
-    public Item<? extends Item.Holder> findItemFor(@NonNull View view) {
-        //noinspection unchecked,rawtypes
+    public Item<?> findItemFor(@NonNull View view) {
+        //noinspection rawtypes,
         return (Item) view.getTag(ID_ITEM);
     }
 
     @Nullable
-    public View findViewFor(@NonNull Item<? extends Item.Holder> item) {
+    public View findViewFor(@NonNull Item<?> item) {
         for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             final View view = viewGroup.getChildAt(i);
             if (item == view.getTag(ID_ITEM)) {
@@ -166,7 +166,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     }
 
     @Override
-    public void notifyItemChanged(@NonNull Item<? extends Item.Holder> item) {
+    public void notifyItemChanged(@NonNull Item<?> item) {
         final View view = findViewFor(item);
         if (view != null) {
             final int index = viewGroup.indexOfChild(view);
