@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
-import io.noties.adapt.AdaptStore;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
@@ -76,8 +75,6 @@ public class AdaptView implements Adapt {
             view.setTag(ID_ITEM, item);
 
             viewGroup.addView(view);
-
-            AdaptStore.assign(view, this);
 
             //noinspection unchecked,rawtypes
             ((Item) item).bind(holder);
@@ -153,8 +150,6 @@ public class AdaptView implements Adapt {
 
         view = replaceView(holder.itemView());
         view.setTag(ID_HOLDER, holder);
-
-        AdaptStore.assign(view, this);
 
         //noinspection unchecked,rawtypes
         ((Item) item).bind(holder);

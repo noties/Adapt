@@ -1,7 +1,6 @@
 package io.noties.adapt.recyclerview;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
-import io.noties.adapt.AdaptStore;
 import io.noties.adapt.Item;
 import io.noties.adapt.util.ListUtils;
 
@@ -125,11 +123,6 @@ public class AdaptRecyclerView implements Adapt {
             }
 
             AdaptRecyclerView.this.items = items;
-
-            final View view = recyclerView;
-            if (view != null) {
-                AdaptStore.assign(view, AdaptRecyclerView.this);
-            }
 
             return adapter();
         }

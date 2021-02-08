@@ -12,7 +12,6 @@ import java.util.Locale;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
-import io.noties.adapt.AdaptStore;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
@@ -116,8 +115,6 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     public void setItems(@Nullable List<Item<?>> items) {
 
         final ChangeHandler changeHandler = configuration.changeHandler;
-
-        AdaptStore.assign(viewGroup, this);
 
         changeHandler.begin(viewGroup);
         try {

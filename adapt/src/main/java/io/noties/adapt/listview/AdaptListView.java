@@ -20,7 +20,6 @@ import java.util.Set;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
-import io.noties.adapt.AdaptStore;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
@@ -207,11 +206,6 @@ public class AdaptListView implements Adapt {
         // we must calculate _total_ view item types, if amount changed (we see new items, we must invalidate listView,
         //  by setting adapter again)
         this.items = items;
-
-        final AdapterView<?> view = adapterView;
-        if (view != null) {
-            AdaptStore.assign(view, this);
-        }
 
         // but only if not viewTypesCount = 1 (default value) ?
         if (assignViewTypes(items)

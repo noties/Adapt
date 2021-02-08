@@ -51,6 +51,7 @@ public abstract class Item<H extends Item.Holder> {
         }
 
         @NonNull
+        @CheckResult
         public View itemView() {
             return itemView;
         }

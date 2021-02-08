@@ -1,14 +1,15 @@
 package io.noties.adapt;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
-// TODO: check all implementation signatures (remove the `? extends Item.Holder`)
 public interface Adapt {
 
     @NonNull
+    @CheckResult
     List<Item<?>> items();
 
     void setItems(@Nullable List<Item<?>> items);
