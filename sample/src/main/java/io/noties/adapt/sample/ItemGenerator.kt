@@ -1,5 +1,6 @@
 package io.noties.adapt.sample
 
+import androidx.annotation.ColorInt
 import io.noties.adapt.Item
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
@@ -31,6 +32,11 @@ object ItemGenerator {
             .map { current + it }
             .map(this::nextItem)
     }
+
+    @ColorInt
+    fun nextColor(): Int = random.nextInt(0, colors.size)
+        .let(colors::get)
+        .toInt()
 
     private fun nextItem(i: Int): Item<*> {
         val type = types[random.nextInt(types.size)]

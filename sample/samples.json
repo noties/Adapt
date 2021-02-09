@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupWrappedSample",
+    "id": "20210209021444",
+    "title": "ViewGroup and ItemWrapper",
+    "description": "Display wrapped items in a \u003ctt\u003eViewGroup\u003c/tt\u003e",
+    "tags": [
+      "viewgroup",
+      "wrapper"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionViewGroupSample",
     "id": "20210205204648",
     "title": "ViewGroupProvider",

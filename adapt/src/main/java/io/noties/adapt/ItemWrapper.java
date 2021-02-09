@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
  *
  * <strong>NB</strong> by default equals/hashCode methods redirect to wrapped item. Be sure to check
  * for the {@link #viewType()} before calling equals or provide own implementation
+ *
+ * <strong>NB</strong> if your wrapper has a variable associated, for example certains padding
+ * passed via constructor, then execute _binding_ in {@link #bind(Holder)} method. If wrapper is
+ * <em>static/immutable</em> then it can process in the also {@link #createHolder(LayoutInflater, ViewGroup)}
  */
 public abstract class ItemWrapper extends Item<Item.Holder> {
 
