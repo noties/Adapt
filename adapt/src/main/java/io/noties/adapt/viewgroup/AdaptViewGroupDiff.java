@@ -111,14 +111,14 @@ public abstract class AdaptViewGroupDiff {
             return -1;
         }
 
-        final Class<? extends Item> type = item.getClass();
+        final int viewType = item.viewType();
         final long id = item.id();
 
         Item other;
 
         for (int i = 0, size = list.size(); i < size; i++) {
             other = list.get(i);
-            if (type == other.getClass()
+            if (viewType == other.viewType()
                     && id == other.id()) {
                 return i;
             }

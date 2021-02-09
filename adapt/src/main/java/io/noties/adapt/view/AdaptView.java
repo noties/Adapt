@@ -208,8 +208,7 @@ public class AdaptView implements Adapt {
             return;
         }
 
-        // TODO: check class now, but after use proper itemViewType (to wrap)
-        if (current.getClass().equals(item.getClass())
+        if (current.viewType() == item.viewType()
                 && current.id() == item.id()) {
             notifyChanged();
         }

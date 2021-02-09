@@ -13,14 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.ItemViewTypes;
+import io.noties.adapt.ItemWrapper;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
@@ -51,7 +52,12 @@ public class AdaptListView implements Adapt {
         Configuration areAllItemsEnabled(boolean areAllItemsEnabled);
 
         /**
-         * Includes item (adds to itemViewTypes) and reports as `isEnabled = false`
+         * Includes item (adds to itemViewTypes) and reports as `isEnabled = false`. Please specify
+         * <em>unwrapped</em> (or root) item class
+         *
+         * <strong>NB</strong> including an {@link ItemWrapper} won\'t achieve desired effect
+         * here, as each combination of wrappers results in a different view type. Specify
+         * here <strong>only regular items</strong>
          *
          * @param type item to include
          * @see #include(Class, boolean)
@@ -133,6 +139,9 @@ public class AdaptListView implements Adapt {
      *     <li>{@link Configuration#include(Class, Configuration.EnabledProvider)}</li>
      *     <li>{@link Configuration#include(Class, boolean)}</li>
      * </ul>
+     *
+     * <strong>NB</strong> resulting {@link AdaptListView} won\'t be able to handle items wrapped
+     * with {@link ItemWrapper}s
      */
     @NonNull
     public static AdaptListView create(
@@ -161,7 +170,7 @@ public class AdaptListView implements Adapt {
     private final ConfigurationImpl configuration;
     private final AdapterImpl adapter;
 
-    private final Map<Class<? extends Item<?>>, Integer> viewTypes = new HashMap<>(3);
+    private final Map<Integer, Integer> viewTypes = new HashMap<>(3);
     private final Map<Class<? extends Item<?>>, Configuration.EnabledProvider<? extends Item<?>>> isEnabled;
 
     private int viewTypesCount = 0;
@@ -181,7 +190,7 @@ public class AdaptListView implements Adapt {
         this.isEnabled = new HashMap<>(configuration.isEnabled);
 
         for (Map.Entry<Class<? extends Item<?>>, Configuration.EnabledProvider<? extends Item<?>>> entry : isEnabled.entrySet()) {
-            viewTypes.put(entry.getKey(), viewTypesCount++);
+            viewTypes.put(ItemViewTypes.expectedViewTypeIfNotWrapped(entry.getKey()), viewTypesCount++);
         }
     }
 
@@ -213,7 +222,8 @@ public class AdaptListView implements Adapt {
 
             if (adapterView == null) {
                 throw AdaptException.create("Register all item views explicitly when " +
-                        "creating AdaptListView in a detached from AdapterView way");
+                        "creating AdaptListView in a detached from AdapterView way (for ex. AlertDialog)." +
+                        "Note that ItemWrappers are not supported in such use-case");
             }
 
             //noinspection unchecked
@@ -242,28 +252,19 @@ public class AdaptListView implements Adapt {
 
         boolean hasNew = false;
 
-        for (Class<? extends Item<?>> type : prepareItemTypes(items)) {
-            final Integer viewType = viewTypes.get(type);
-            if (viewType == null) {
-                // not found
-                hasNew = true;
+        int viewType;
+        Integer listViewType;
 
-                // generate new (take current count and increment it)
-                viewTypes.put(type, viewTypesCount++);
+        for (Item<?> item : items) {
+            viewType = item.viewType();
+            listViewType = viewTypes.get(viewType);
+            if (listViewType == null) {
+                hasNew = true;
+                viewTypes.put(viewType, viewTypesCount++);
             }
         }
 
         return hasNew;
-    }
-
-    @NonNull
-    private static Set<Class<? extends Item<?>>> prepareItemTypes(@NonNull List<Item<?>> items) {
-        final Set<Class<? extends Item<?>>> set = new HashSet<>(3);
-        for (Item<?> item : items) {
-            //noinspection unchecked
-            set.add((Class<? extends Item<?>>) item.getClass());
-        }
-        return set;
     }
 
     private class AdapterImpl extends BaseAdapter implements AdaptListViewAdapter {
@@ -291,11 +292,11 @@ public class AdaptListView implements Adapt {
 
         @Override
         public int getItemViewType(int position) {
-            //noinspection rawtypes
-            final Class<? extends Item> type = items.get(position).getClass();
-            final Integer viewType = viewTypes.get(type);
+            final Item<?> item = items.get(position);
+            final Integer viewType = viewTypes.get(item.viewType());
             if (viewType == null) {
-                throw AdaptException.create("Unexpected view type: " + type.getName());
+                throw AdaptException.create(String.format(Locale.ROOT, "Unexpected item " +
+                        "at position: %d, item: %s (no view type is associated)", position, item));
             }
             return viewType;
         }
@@ -347,7 +348,7 @@ public class AdaptListView implements Adapt {
                 return true;
             }
 
-            final Item<?> item = items.get(position);
+            final Item<?> item = ItemWrapper.unwrap(items.get(position));
 
             final Configuration.EnabledProvider<? extends Item<?>> provider = isEnabled.get(item.getClass());
             //noinspection unchecked,rawtypes

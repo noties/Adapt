@@ -25,6 +25,7 @@ public abstract class Item<H extends Item.Holder> {
     }
 
     private final long id;
+    private int viewType = 0;
 
     protected Item(long id) {
         this.id = id;
@@ -32,6 +33,14 @@ public abstract class Item<H extends Item.Holder> {
 
     public final long id() {
         return id;
+    }
+
+    public final int viewType() {
+        int viewType = this.viewType;
+        if (viewType == 0) {
+            viewType = this.viewType = ItemViewTypes.viewType(this);
+        }
+        return viewType;
     }
 
     /**

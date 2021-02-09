@@ -26,7 +26,7 @@ class SpinnerSample : SampleView() {
         val spinner: Spinner = view.findViewById(R.id.spinner)
 
         // `createSingleViewType` can be used for list with single item and which is disabled
-        //  which does not make _mich_ sense for Spinner (as item won't be clickable)
+        //  which does not make _much_ sense for Spinner (as item won't be clickable)
 //        val adapt = AdaptListView.createSingleViewType(view.context)
 
         val adapt = AdaptListView.create(view.context) {

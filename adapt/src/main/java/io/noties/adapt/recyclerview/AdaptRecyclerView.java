@@ -82,12 +82,6 @@ public class AdaptRecyclerView implements Adapt {
         return new AdaptRecyclerView(null, configuration);
     }
 
-    // TODO: change to have a uniform viewType (for wrapping)
-    @SuppressWarnings("rawtypes")
-    public static int assignedViewType(@NonNull Class<? extends Item> type) {
-        return type.getName().hashCode();
-    }
-
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final Item.Holder holder;
@@ -119,7 +113,7 @@ public class AdaptRecyclerView implements Adapt {
             store.clear();
 
             for (Item<?> item : items) {
-                store.put(assignedViewType(item.getClass()), item);
+                store.put(item.viewType(), item);
             }
 
             AdaptRecyclerView.this.items = items;
@@ -218,7 +212,7 @@ public class AdaptRecyclerView implements Adapt {
 
         @Override
         public int getItemViewType(int position) {
-            return assignedViewType(items.get(position).getClass());
+            return items.get(position).viewType();
         }
 
         @Override

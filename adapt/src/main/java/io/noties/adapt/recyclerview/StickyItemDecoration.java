@@ -94,7 +94,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     //  as AdaptView is no longer typed and allows multiple item types
     StickyItemDecoration(@NonNull AdaptView adaptView) {
         this.adaptView = adaptView;
-        this.stickyViewType = AdaptRecyclerView.assignedViewType(adaptView.item().getClass());
+        // TODO: nullability check? isn't it required to be not null?
+        this.stickyViewType = adaptView.item().viewType();
 
         prepareAdaptView(adaptView);
     }
