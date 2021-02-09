@@ -70,7 +70,7 @@ public class DiffUtilDataSetChangedHandler implements AdaptRecyclerView.DataSetC
                 if (newId == NO_ID) return false;
 
                 // check class before id
-                if (oldItem.getClass() != newItem.getClass()) return false;
+                if (oldItem.viewType() != newItem.viewType()) return false;
                 if (oldItem == newItem) return true;
 
                 return oldId == newId;

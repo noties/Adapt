@@ -7,8 +7,19 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 
-// 2 kind of wrappers, that return own holder and wrapped one
+/**
+ * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView} (add padding,
+ * special layout properties). Shares the same {@code id} as wrapped Item.
+ *
+ * <strong>NB</strong> by default equals/hashCode methods redirect to wrapped item. Be sure to check
+ * for the {@link #viewType()} before calling equals or provide own implementation
+ */
 public abstract class ItemWrapper extends Item<Item.Holder> {
+
+    public interface Provider {
+        @NonNull
+        Item<?> provide();
+    }
 
     @NonNull
     public static Item<?> unwrap(@NonNull Item<?> item) {
@@ -18,11 +29,19 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
         return item;
     }
 
+    public static boolean isWrapped(@NonNull Item<?> item) {
+        return item instanceof ItemWrapper;
+    }
+
     private final Item<?> item;
 
     public ItemWrapper(@NonNull Item<?> item) {
         super(item.id());
         this.item = item;
+    }
+
+    public ItemWrapper(@NonNull Provider provider) {
+        this(provider.provide());
     }
 
     @NonNull
@@ -43,5 +62,18 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     public void bind(@NonNull Item.Holder holder) {
         //noinspection unchecked,rawtypes
         ((Item) item).bind(holder);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        //noinspection rawtypes
+        return unwrap(item).equals(unwrap((Item) o));
+    }
+
+    @Override
+    public int hashCode() {
+        return unwrap(item).hashCode();
     }
 }
