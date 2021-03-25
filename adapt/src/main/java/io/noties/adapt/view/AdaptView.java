@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -14,12 +15,13 @@ import java.util.Locale;
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.ItemViewTypes;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
-// TODO: bind to existing view in layout
 public class AdaptView implements Adapt {
 
+    @SuppressWarnings("UnusedReturnValue")
     public interface Configuration {
 
         @NonNull
@@ -34,19 +36,21 @@ public class AdaptView implements Adapt {
     }
 
     @NonNull
+    @CheckResult
     public static AdaptView init(@NonNull ViewGroup viewGroup) {
         return new AdaptView(viewGroup, new ConfigurationImpl());
     }
 
     @NonNull
+    @CheckResult
     public static AdaptView init(@NonNull ViewGroup viewGroup, @NonNull Configurator configurator) {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         return new AdaptView(viewGroup, configuration);
     }
 
-    private static final int ID_HOLDER = R.id.adapt_internal_holder;
-    private static final int ID_ITEM = R.id.adapt_internal_item;
+    static final int ID_HOLDER = R.id.adapt_internal_holder;
+    static final int ID_ITEM = R.id.adapt_internal_item;
 
     private final ViewGroup viewGroup;
     private final LayoutInflater layoutInflater;
@@ -88,11 +92,13 @@ public class AdaptView implements Adapt {
     }
 
     @NonNull
+    @CheckResult
     public LayoutInflater inflater() {
         return layoutInflater;
     }
 
     @NonNull
+    @CheckResult
     public ViewGroup viewGroup() {
         return viewGroup;
     }
@@ -101,28 +107,39 @@ public class AdaptView implements Adapt {
      * As multiple types can be bound, returned view might be different between different items
      */
     @NonNull
+    @CheckResult
     public View view() {
         return view;
     }
 
     @Nullable
+    @CheckResult
     public Item<?> item() {
         return (Item<?>) view.getTag(ID_ITEM);
     }
 
     public void setItem(@Nullable Item<?> item) {
 
+        final Item<?> currentItem = item();
+
         if (item == null) {
-            // just put mocked view
-            view = replaceView(new View(viewGroup.getContext()));
+            // if we have no item at this point, then there is no need to create a new mocked view
+            if (currentItem != null) {
+                // just put mocked view
+                view = replaceView(new View(viewGroup.getContext()));
+            }
         } else {
 
-            final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
-
-            if (holder == null
-                    || !bind(item, holder)) {
-                // create new
+            // if previous is null, or viewTypes are different, then create a new holder/view
+            if (currentItem == null
+                    || ItemViewTypes.viewType(currentItem) != ItemViewTypes.viewType(item)) {
+                // create new holder/view
                 createHolder(item);
+            } else {
+                // items have the same itemViewType, proceed with the same holder/view
+                final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
+                //noinspection unchecked,rawtypes
+                ((Item) item).bind(holder);
             }
 
             // save item information
@@ -132,16 +149,6 @@ public class AdaptView implements Adapt {
 
     public void notifyChanged() {
         setItem(item());
-    }
-
-    private boolean bind(@NonNull Item<?> item, @NonNull Item.Holder holder) {
-        try {
-            //noinspection unchecked,rawtypes
-            ((Item) item).bind(holder);
-        } catch (ClassCastException e) {
-            return false;
-        }
-        return true;
     }
 
     private void createHolder(@NonNull Item<?> item) {
@@ -156,6 +163,7 @@ public class AdaptView implements Adapt {
     }
 
     @NonNull
+    @CheckResult
     private View replaceView(@NonNull View view) {
         final int index = indexOfViewInGroup();
         viewGroup.removeViewAt(index);
@@ -175,6 +183,7 @@ public class AdaptView implements Adapt {
 
     @NonNull
     @Override
+    @CheckResult
     public List<Item<?>> items() {
         return Collections.<Item<?>>singletonList(item());
     }

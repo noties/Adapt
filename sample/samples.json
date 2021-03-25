@@ -164,7 +164,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample",
     "id": "20210122143214",
     "title": "ViewPager2",
-    "description": "AdaptRecyclerView adapter used in ViewPager2\n\u003cb\u003eNB!\u003c/b\u003e fails due to missing \u003ctt\u003ematch_parent\u003c/tt\u003e see \u003ctt\u003eMirroredSample\u003c/tt\u003e instead",
+    "description": "AdaptRecyclerView adapter used in ViewPager2 with special \u003ctt\u003eItemWrapper\u003c/tt\u003e that modifies existing items to \u003ctt\u003ematch_parent\u003c/tt\u003e them",
     "tags": [
       "recyclerview",
       "viewpager2"
