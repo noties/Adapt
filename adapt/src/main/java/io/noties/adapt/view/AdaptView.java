@@ -163,7 +163,7 @@ public class AdaptView implements Adapt {
         return view;
     }
 
-    // Checks for proper index adn throws in case of an error
+    // Checks for proper index and throws in case of an error
     private int indexOfViewInGroup() {
         final int index = viewGroup.indexOfChild(view);
         if (index < 0) {

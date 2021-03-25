@@ -90,6 +90,10 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
         final ViewGroup parent = viewGroup(group);
         final Transition transition = transition(parent);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            TransitionManager.endTransitions(parent);
+        }
+
         if (transition != null) {
             TransitionManager.beginDelayedTransition(parent, transition);
         } else {

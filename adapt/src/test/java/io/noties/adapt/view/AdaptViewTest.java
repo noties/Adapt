@@ -4,11 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
@@ -17,6 +18,7 @@ import io.noties.adapt.R;
 import static io.noties.adapt.util.ExceptionUtil.assertContains;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -24,7 +26,6 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
 public class AdaptViewTest {
 
     private View view;
@@ -33,7 +34,15 @@ public class AdaptViewTest {
     @Before
     public void before() {
         view = mock(View.class);
-        adaptView = new AdaptView(mock(LayoutInflater.class), mock(ViewGroup.class), view);
+        adaptView = AdaptView.init(
+                mock(ViewGroup.class, RETURNS_MOCKS),
+                new AdaptView.Configurator() {
+                    @Override
+                    public void configure(@NonNull AdaptView.Configuration configuration) {
+                        configuration.layoutInflater(mock(LayoutInflater.class));
+                    }
+                }
+        );
     }
 
     @Test

@@ -12,12 +12,11 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 
-// TODO: fix this, currently fails as items are not using `match_parent`
 @AdaptSample(
     id = "20210122143214",
     title = "ViewPager2",
-    description = "AdaptRecyclerView adapter used in ViewPager2\n<b>NB!</b> fails due to " +
-            "missing <tt>match_parent</tt> see <tt>MirroredSample</tt> instead",
+    description = "AdaptRecyclerView adapter used in ViewPager2 with special " +
+            "<tt>ItemWrapper</tt> that modifies existing items to <tt>match_parent</tt> them",
     tags = ["recyclerview", "viewpager2"]
 )
 class ViewPager2Sample : SampleView() {
