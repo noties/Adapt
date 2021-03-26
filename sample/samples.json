@@ -1,5 +1,39 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogHasWrappedSample",
+    "id": "20210326220725",
+    "title": "AlertDialog with Wrapped",
+    "description": "Explicitly register an \u003ctt\u003eItem\u003c/tt\u003e wrapped with \u003ctt\u003eItemWrapper\u003c/tt\u003e when displayed in a \u003ctt\u003eAlertDialog\u003c/tt\u003e",
+    "tags": [
+      "alertdialog",
+      "key",
+      "listview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewWrappedEnabledSample",
+    "id": "20210326214950",
+    "title": "Wrapped in ListView",
+    "description": "Explicitly register \u003ctt\u003eItemWrapper\u003c/tt\u003e in a \u003ctt\u003eListView\u003c/tt\u003e with a \u003ctt\u003eKey\u003c/tt\u003e",
+    "tags": [
+      "key",
+      "listview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewWrappedDecorationsSample",
+    "id": "20210326211532",
+    "title": "Decoration on ItemWrapper",
+    "description": "Add distinct \u003ctt\u003eItemDecoration\u003c/tt\u003es to the same \u003ctt\u003eItem\u003c/tt\u003e type wrapped in different \u003ctt\u003eItemWrapper\u003c/tt\u003es in \u003ctt\u003eRecyclerView\u003c/tt\u003e",
+    "tags": [
+      "key",
+      "recyclerview",
+      "wrapper"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupWrappedSample",
     "id": "20210209021444",
     "title": "ViewGroup and ItemWrapper",

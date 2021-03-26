@@ -19,7 +19,6 @@ import java.util.List;
 
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
-import io.noties.adapt.ItemViewTypes;
 import io.noties.adapt.util.ExceptionUtil;
 
 import static io.noties.adapt.view.AdaptView.ID_HOLDER;
@@ -37,6 +36,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+// TODO: same item/ one wrapped must not be considered the same
 @RunWith(RobolectricTestRunner.class)
 public class AdaptViewTest {
 
@@ -352,7 +352,7 @@ public class AdaptViewTest {
         final MockItem<OtherItem> otherMock = mockItem(OtherItem.class);
 
         // ensure viewTypes are different
-        Assert.assertNotEquals(ItemViewTypes.viewType(item), ItemViewTypes.viewType(otherMock.item));
+        Assert.assertNotEquals(item.viewType(), otherMock.item.viewType());
 
         final int index = 4;
         when(group.indexOfChild(eq(mock.itemView))).thenReturn(index);

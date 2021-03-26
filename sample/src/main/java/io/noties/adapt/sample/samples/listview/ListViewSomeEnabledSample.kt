@@ -28,10 +28,9 @@ class ListViewSomeEnabledSample : SampleView() {
             it.areAllItemsEnabled(false)
             // all items of this type will be enabled
             it.include(CardItem::class.java, true)
-            it.include(CardBigItem::class.java) { item ->
-                // enabled only if id is even (else disable)
-                item.id() % 2L == 0L
-            }
+            // and these are disabled (default, can be omitted unless explicit
+            //  registration is required, for ex. in an AleryDialog)
+            it.include(CardBigItem::class.java, false)
         }
 
         listView.setOnItemClickListener { _, _, position, id ->

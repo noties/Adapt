@@ -3,7 +3,7 @@ package io.noties.adapt.sample.samples.recyclerview
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.noties.adapt.ItemViewTypes
+import io.noties.adapt.Item
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.StickyItemDecoration
 import io.noties.adapt.sample.ItemGenerator
@@ -38,8 +38,9 @@ class RecyclerViewStickyGridSample : SampleView() {
             GridLayoutManager(view.context, spanCount).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 
-                    val sectionViewType =
-                        ItemViewTypes.expectedViewTypeIfNotWrapped(SectionItem::class.java)
+                    val sectionViewType = Item.Key
+                        .single(SectionItem::class.java)
+                        .viewType()
 
                     override fun getSpanSize(position: Int): Int {
                         return if (sectionViewType == recyclerView.adapter?.getItemViewType(position)) {

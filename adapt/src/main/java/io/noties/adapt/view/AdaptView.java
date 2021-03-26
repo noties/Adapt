@@ -15,7 +15,6 @@ import java.util.Locale;
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
-import io.noties.adapt.ItemViewTypes;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
@@ -132,7 +131,7 @@ public class AdaptView implements Adapt {
 
             // if previous is null, or viewTypes are different, then create a new holder/view
             if (currentItem == null
-                    || ItemViewTypes.viewType(currentItem) != ItemViewTypes.viewType(item)) {
+                    || currentItem.viewType() != item.viewType()) {
                 // create new holder/view
                 createHolder(item);
             } else {

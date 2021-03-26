@@ -2,14 +2,12 @@
 
 `Adapt` &mdash; `RecyclerView.Adapter` only shorter.
 
-
 `Adapt` is a UI library to create decoupled widget components. They can be
-  used in a `RecyclerView`, `ListView` or inside a regular `LinearLayout` interchangeably, 
+  used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
   no code involved.
 
-
-`Adapt` components, which are called `Item`s, can be displayed in those parent widgets: 
- 
+One `Item` to rule them all. `Adapt` components, which are called `Item`s, 
+can be displayed **without modification** in those parent widgets: 
  
 * `RecyclerView`
   * `ViewPager2`<sup>*</sup>
@@ -22,8 +20,7 @@
   * `AlertDialog`<sup>****</sup>
 * `ViewGroup`
   * `LinearLayout`
-  * there are no restrictions on actual `ViewGroup` from `Adapt`, `ViewGroup` 
-    just need to layout a list of given views
+  * there are no restrictions on actual `ViewGroup`, it can be any `ViewGroup`
 
 
 <em><sup>\*</sup> &mdash; `Item` in `ViewPager2` must have `match_parent` as width and height</em><br />
@@ -164,12 +161,6 @@ val adapt = AdaptListView.init(listView) {
 
     // includes specified Item and isEnabled
     it.include(Item::class.java, true)
-
-    // includes specified item, isEnabled is retrieved via provided EnabledProvider each time
-    //  isEnabled is requested by holding AdapterView
-    it.include(Item::class.java) { item ->
-        item.id() % 2L == 0L
-    }
 }
 ```
 
@@ -222,13 +213,9 @@ val adapt = AdaptViewGroup.init(container) {
 ```
 
 **NB!** A list of `Item`s supplied to `AdaptViewGroup` must have unique ids for the same 
-type (multiple items of the same typ cannot have duplicate ids). `Item.NO_ID` can be used, but this would
+type (multiple items of the same type cannot have duplicate ids). `Item.NO_ID` can be used, but this would
 result in `Item`'s view being created each time anew. So, if possible, consider having unique ids even
 for supplementary items.
-
-Note that `TransitionChangeHandler` allows to run transition animations of items change almost effortlessly.
-Unfortunately, but not surprisingly, Android transitions do not support cancellation. So it is possible
-to have multiple transitions running when changing items frequently.
 
 ### Item
 

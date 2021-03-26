@@ -3,7 +3,7 @@ package io.noties.adapt.sample.samples.recyclerview
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.noties.adapt.ItemViewTypes
+import io.noties.adapt.Item
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
@@ -29,8 +29,9 @@ class RecyclerViewGridSample : SampleView() {
 
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 
-            private val controlViewType =
-                ItemViewTypes.expectedViewTypeIfNotWrapped(ControlItem::class.java)
+            private val controlViewType = Item.Key
+                .single(ControlItem::class.java)
+                .viewType()
 
             override fun getSpanSize(position: Int): Int {
                 if (controlViewType == adapter.getItemViewType(position)) {
