@@ -4,7 +4,7 @@
 
 `Adapt` is a UI library to create decoupled widget components. They can be
   used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
-  no code involved.
+  no code involved. XML layout preview enabled.
 
 One `Item` to rule them all. `Adapt` components, which are called `Item`s, 
 can be displayed **without modification** in those parent widgets: 
@@ -24,12 +24,13 @@ can be displayed **without modification** in those parent widgets:
 
 
 <em><sup>\*</sup> &mdash; `Item` in `ViewPager2` must have `match_parent` as width and height</em><br />
-<em><sup>\*\*</sup> &mdash; `Spinner` supports only a single view type, `Adapt` cannot overcome this</em><br />
+<em><sup>\*\*</sup> &mdash; `Spinner` supports only a single view type</em><br />
 <em><sup>\*\*\*</sup> &mdash; wait, wat?</em><br />
 <em><sup>\*\*\*\*</sup> &mdash; `AlertDailog` accepts a `ListAdapter`</em><br />
 
 
 ![gif](./art/preview.gif)
+![XML layout-preview](./art/layout_preview.png)
 
 
 ## Install

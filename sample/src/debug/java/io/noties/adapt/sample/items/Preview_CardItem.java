@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.Item;
+import io.noties.adapt.sample.ItemGenerator;
 import io.noties.adapt.viewgroup.AdaptViewGroup;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -24,10 +25,11 @@ public class Preview_CardItem extends LinearLayout {
         setOrientation(VERTICAL);
 
         final List<Item<?>> list = new ArrayList<>();
+        final ItemGenerator generator = ItemGenerator.INSTANCE;
 
-        list.add(new CardItem("A", Color.RED, "The very first one"));
-        list.add(new CardItem("B", Color.GREEN, "And then again"));
-        list.add(new CardItem("C", Color.BLUE, "So, what? So, what? Sooooooooooooooooooooooooooooooo, what?"));
+        list.add(new CardItem("A", Color.RED, "Item A"));
+        list.add(new CardItem("-B", Color.GREEN, "Item -B"));
+        list.add(new CardItem("😜", Color.BLUE, "Long long long long long long long long long long long long long long long"));
 
         list.add(new CardBigItem("BC", Color.MAGENTA, "Hey hey"));
 
