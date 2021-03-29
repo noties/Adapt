@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Objects;
+
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.view.AdaptView;
@@ -94,8 +96,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     //  as AdaptView is no longer typed and allows multiple item types
     StickyItemDecoration(@NonNull AdaptView adaptView) {
         this.adaptView = adaptView;
-        // TODO: nullability check? isn't it required to be not null?
-        this.stickyViewType = adaptView.item().viewType();
+        this.stickyViewType = Objects.requireNonNull(adaptView.item()).viewType();
 
         prepareAdaptView(adaptView);
     }
@@ -290,7 +291,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
         if (adaptViewInvalidated
                 || id == Item.NO_ID
-                || id != previousStickyItem.id()) {
+                || id != Objects.requireNonNull(previousStickyItem).id()) {
 
             adaptView.setItem(item);
 

@@ -29,6 +29,7 @@ class RecyclerViewDiffSample : SampleView() {
         val adapt = AdaptRecyclerView.init(recyclerView) {
             it.dataSetChangeHandler(DiffUtilDataSetChangedHandler.create(true))
         }
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

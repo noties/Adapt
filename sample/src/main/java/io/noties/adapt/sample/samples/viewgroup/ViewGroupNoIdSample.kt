@@ -2,9 +2,11 @@ package io.noties.adapt.sample.samples.viewgroup
 
 import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.NoIdItem
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
@@ -22,6 +24,13 @@ class ViewGroupNoIdSample : SampleView() {
     override fun render(view: View) {
         val viewGroup = view.findViewById<ViewGroup>(R.id.view_group)
         val adapt = AdaptViewGroup.init(viewGroup)
-        adapt.setItems(initialItems(adapt).toMutableList().apply { add(NoIdItem()) })
+
+        val items = ItemGenerator.next(0)
+            .toMutableList()
+            .apply {
+                add(ControlItem.init(adapt))
+                add(NoIdItem())
+            }
+        adapt.setItems(items)
     }
 }

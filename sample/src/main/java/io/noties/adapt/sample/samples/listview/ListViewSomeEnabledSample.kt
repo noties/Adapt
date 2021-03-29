@@ -37,6 +37,6 @@ class ListViewSomeEnabledSample : SampleView() {
             Debug.i("item: %s, id: %d", adapt.items()[position], id)
         }
 
-        adapt.setItems(initialItems(adapt))
+        initSampleItems(adapt)
     }
 }

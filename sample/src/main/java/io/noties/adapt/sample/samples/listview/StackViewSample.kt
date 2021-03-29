@@ -12,13 +12,14 @@ import io.noties.adapt.sample.annotation.AdaptSample
     title = "StackView",
     tags = ["listview"]
 )
-class StackViewSample: SampleView() {
+class StackViewSample : SampleView() {
     override val layoutResId: Int
         get() = R.layout.view_sample_stack_view
 
     override fun render(view: View) {
         val stackView: StackView = view.findViewById(R.id.stack_view)
         val adapt = AdaptListView.init(stackView)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

@@ -19,7 +19,8 @@ class AdapterViewFlipperSample : SampleView() {
     override fun render(view: View) {
         val flipper: AdapterViewFlipper = view.findViewById(R.id.adapter_view_flipper)
         val adapt = AdaptListView.init(flipper)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
 
         flipper.flipInterval = 1000
         flipper.startFlipping()

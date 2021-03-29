@@ -12,4 +12,6 @@
     <color name="page_indicator_container">#CC000000</color>
     <color name="page_indicator_selected">#40ffffff</color>
 
+    <color name="divider">#ccc</color>
+
 </resources>

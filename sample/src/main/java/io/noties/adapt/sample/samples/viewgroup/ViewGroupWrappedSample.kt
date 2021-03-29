@@ -32,6 +32,7 @@ class ViewGroupWrappedSample : SampleView() {
         fun onAdded() {
             // replace first unwrapped item with Padding, then Background, then add more
             val items = adapt.items().toMutableList()
+            // itemWrapper is used to find an item that IS NOT WRAPPED
             val noPadding = items.firstOrNull { it !is ItemWrapper }
             if (noPadding == null) {
                 val noColor = items.firstOrNull { it !is ColorBackgroundWrapper }
@@ -53,11 +54,12 @@ class ViewGroupWrappedSample : SampleView() {
             }
         }
 
-        fun onShuffled() {
-            adapt.setItems(ControlItem.shuffledItems(adapt.items()))
-        }
+        val items = ItemGenerator.next(0)
+            .toMutableList()
+            .also {
+                it.add(ControlItem(::onAdded, ControlItem.shuffle(adapt)))
+            }
 
-        val items = initialItems(::onAdded, ::onShuffled)
         adapt.setItems(items)
     }
 }

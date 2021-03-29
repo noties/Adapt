@@ -28,6 +28,7 @@ class ViewGroupTransitionViewGroupSample : SampleView() {
                 configuration.viewGroupProvider(ParentViewGroupProvider())
             })
         }
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

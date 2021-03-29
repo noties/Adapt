@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDividerWrapperSample",
+    "id": "20210329212452",
+    "title": "Recycler divider item wrapper",
+    "description": "Sample usage of \u003ctt\u003eItemWrapper\u003c/tt\u003e to add dividers to items inside a \u003ctt\u003eRecyclerView\u003c/tt\u003e",
+    "tags": [
+      "recyclerview",
+      "wrapper"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogHasWrappedSample",
     "id": "20210326220725",
     "title": "AlertDialog with Wrapped",

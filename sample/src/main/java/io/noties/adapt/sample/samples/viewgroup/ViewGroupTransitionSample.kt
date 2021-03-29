@@ -23,6 +23,7 @@ class ViewGroupTransitionSample : SampleView() {
         val adapt = AdaptViewGroup.init(viewGroup) {
             it.changeHandler(TransitionChangeHandler.create())
         }
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

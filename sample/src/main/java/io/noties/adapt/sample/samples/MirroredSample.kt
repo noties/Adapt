@@ -11,6 +11,7 @@ import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.recyclerview.AdaptRecyclerView
+import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -56,7 +57,9 @@ class MirroredSample : SampleView() {
         fun onAdd() = updateItems(ControlItem::addedItems)
         fun onShuffle() = updateItems(ControlItem::shuffledItems)
 
-        commonItems.addAll(initialItems(::onAdd, ::onShuffle))
+        commonItems.addAll(ItemGenerator.next(0).toMutableList().apply {
+            add(ControlItem(::onAdd, ::onShuffle))
+        })
 
         viewPager.adapter = pageAdapt.adapter()
 

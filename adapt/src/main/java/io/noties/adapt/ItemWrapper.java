@@ -39,9 +39,6 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
 
     private final Item<?> item;
 
-    // cache the result of unwrap operation
-    private Item<?> cachedRoot;
-
     public ItemWrapper(@NonNull Item<?> item) {
         super(item.id());
         this.item = item;
@@ -72,24 +69,10 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        //noinspection rawtypes
-        return unwrappedRoot().equals(unwrap((Item) o));
-    }
-
-    @Override
-    public int hashCode() {
-        return unwrappedRoot().hashCode();
-    }
-
     @NonNull
-    private Item<?> unwrappedRoot() {
-        Item<?> root = cachedRoot;
-        if (root == null) {
-            root = cachedRoot = unwrap(item);
-        }
-        return root;
+    public String toString() {
+        return "ItemWrapper(" +
+                "item=" + item +
+                ')';
     }
 }

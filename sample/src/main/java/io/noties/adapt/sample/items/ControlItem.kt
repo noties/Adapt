@@ -51,5 +51,10 @@ class ControlItem(
 
         fun shuffledItems(items: List<Item<*>>): List<Item<*>> = items.shuffled()
 
+        fun shuffle(adapt: Adapt): () -> Unit {
+            return {
+                shuffledItems(adapt.items()).also(adapt::setItems)
+            }
+        }
     }
 }

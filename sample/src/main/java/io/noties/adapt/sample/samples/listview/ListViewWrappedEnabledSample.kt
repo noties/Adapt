@@ -8,7 +8,6 @@ import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 
@@ -36,25 +35,23 @@ class ListViewWrappedEnabledSample : SampleView() {
             it.include(key, true)
         }
 
-        fun onAdd() = ControlItem.addedItems(adapt.items())
-            .toMutableList()
-            .also {
-                it.add(ColorBackgroundWrapper(0x200000FF) {
-                    PlainItem(
-                        "$counter",
-                        Color.BLACK,
-                        "Wrapped $counter"
-                    )
-                })
+        initSampleItems(
+            adapt,
+            onAddingNewItems = { items ->
+                items
+                    .toMutableList()
+                    .also {
+                        it.add(ColorBackgroundWrapper(0x200000FF) {
+                            PlainItem(
+                                "$counter",
+                                Color.BLACK,
+                                "Wrapped $counter"
+                            )
+                        })
 
-                // go negative
-                counter -= 1
+                        counter -= 1
+                    }
             }
-            .also(adapt::setItems)
-
-        fun onShuffle() = ControlItem.shuffledItems(adapt.items())
-            .also(adapt::setItems)
-
-        adapt.setItems(initialItems(::onAdd, ::onShuffle))
+        )
     }
 }

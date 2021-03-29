@@ -20,7 +20,8 @@ class ViewGroupSample : SampleView() {
     override fun render(view: View) {
         val viewGroup = view.findViewById<ViewGroup>(R.id.view_group)
         val adapt = AdaptViewGroup.init(viewGroup)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 
 }

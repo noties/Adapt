@@ -44,19 +44,18 @@ class AlertDialogHasWrappedSample : SampleView() {
             it.include(key)
         }
 
-        fun onAdd() = ControlItem.addedItems(adapt.items())
-            .toMutableList()
-            .also {
-                it.add(ColorBackgroundWrapper(0x20FF00FF) {
-                    PlainItem("💪", Color.MAGENTA, "WRAPPED at ${Date()}")
-                })
+        initSampleItems(
+            adapt,
+            onAddingNewItems = { items ->
+                items
+                    .toMutableList()
+                    .also {
+                        it.add(ColorBackgroundWrapper(0x20FF00FF) {
+                            PlainItem("💪", Color.MAGENTA, "WRAPPED at ${Date()}")
+                        })
+                    }
             }
-            .also(adapt::setItems)
-
-        fun onShuffle() = ControlItem.shuffledItems(adapt.items())
-            .also(adapt::setItems)
-
-        adapt.setItems(initialItems(::onAdd, ::onShuffle))
+        )
 
         AlertDialog.Builder(view.context)
             .setAdapter(adapt.adapter()) { _, which ->

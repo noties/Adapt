@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-public abstract class ItemView extends Item<CachedHolder> {
+public abstract class ItemView extends Item<CachingHolder> {
 
     protected ItemView(long id) {
         super(id);
@@ -17,7 +17,7 @@ public abstract class ItemView extends Item<CachedHolder> {
 
     @NonNull
     @Override
-    public CachedHolder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return new CachedHolder(createView(inflater, parent));
+    public CachingHolder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        return new CachingHolder(createView(inflater, parent));
     }
 }

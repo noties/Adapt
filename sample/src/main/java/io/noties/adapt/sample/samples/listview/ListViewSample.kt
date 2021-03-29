@@ -20,7 +20,8 @@ class ListViewSample : SampleView() {
     override fun render(view: View) {
         val listView: ListView = view.findViewById(R.id.list_view)
         val adapt = AdaptListView.init(listView)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 
 }

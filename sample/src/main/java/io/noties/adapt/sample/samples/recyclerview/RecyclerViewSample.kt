@@ -23,6 +23,7 @@ class RecyclerViewSample : SampleView() {
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         val adapt = AdaptRecyclerView.init(recyclerView)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

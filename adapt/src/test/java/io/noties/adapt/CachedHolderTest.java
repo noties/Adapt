@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class CachedHolderTest {
 
     private View view;
-    private CachedHolder holder;
+    private CachingHolder holder;
     private Map<Integer, WeakReference<View>> cache;
 
     @Before
@@ -36,7 +36,7 @@ public class CachedHolderTest {
         //noinspection unchecked
         cache = mock(Map.class);
 
-        holder = new CachedHolder(view, cache);
+        holder = new CachingHolder(view, cache);
     }
 
     @Test

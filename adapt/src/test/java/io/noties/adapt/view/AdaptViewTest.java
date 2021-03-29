@@ -19,6 +19,7 @@ import java.util.List;
 
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
+import io.noties.adapt.ItemWrapper;
 import io.noties.adapt.util.ExceptionUtil;
 
 import static io.noties.adapt.view.AdaptView.ID_HOLDER;
@@ -36,7 +37,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-// TODO: same item/ one wrapped must not be considered the same
 @RunWith(RobolectricTestRunner.class)
 public class AdaptViewTest {
 
@@ -246,6 +246,38 @@ public class AdaptViewTest {
         } catch (AdaptException e) {
             ExceptionUtil.assertContains(e, "AdaptView can hold at most one item");
         }
+    }
+
+    @Test
+    public void setItem_sameTypeButWrapped_notTheSame() {
+        // same item type but wrapped must be considered a new item and new view must be created
+
+        final class Wrapped extends ItemWrapper {
+            Wrapped(@NonNull Item<?> item) {
+                super(item);
+            }
+        }
+
+        final MockItem<Item<Item.Holder>> current = mockItem();
+
+        final AdaptView adaptView = adaptView(new AdaptView.Configurator() {
+            @Override
+            public void configure(@NonNull AdaptView.Configuration configuration) {
+                configuration.item(current.item);
+            }
+        });
+
+        final int index = 87;
+        when(group.indexOfChild(eq(current.itemView))).thenReturn(index);
+
+        final MockItem<Item<Item.Holder>> item = mockItem();
+        final Item<?> wrapped = new Wrapped(item.item);
+
+        adaptView.setItem(wrapped);
+
+        verify(group, times(1)).indexOfChild(eq(current.itemView));
+        verify(group, times(1)).removeViewAt(eq(index));
+        verify(group, times(1)).addView(eq(item.itemView), eq(index));
     }
 
     @NonNull

@@ -10,7 +10,6 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.items.ControlItem
 
 @AdaptSample(
     id = "20210122143214",
@@ -29,15 +28,16 @@ class ViewPager2Sample : SampleView() {
         val adapt = AdaptRecyclerView.create()
         viewPager.adapter = adapt.adapter()
 
-        fun onAdd() = ControlItem.addedItems(adapt.items())
-            .map { MatchParentWrapper(it) }
-            .run { adapt.setItems(this) }
-
-        fun onShuffle() = ControlItem.shuffledItems(adapt.items())
-            .map { MatchParentWrapper(it) }
-            .run { adapt.setItems(this) }
-
-        adapt.setItems(initialItems(::onAdd, ::onShuffle).map { MatchParentWrapper { it } })
+        initSampleItems(
+            adapt,
+            processItem = {
+                if (it !is MatchParentWrapper) {
+                    MatchParentWrapper(it)
+                } else {
+                    it
+                }
+            }
+        )
     }
 
     class MatchParentWrapper(item: Item<*>) : ItemWrapper(item) {

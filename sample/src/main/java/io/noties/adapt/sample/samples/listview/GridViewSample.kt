@@ -19,6 +19,7 @@ class GridViewSample : SampleView() {
     override fun render(view: View) {
         val gridView: GridView = view.findViewById(R.id.grid_view)
         val adapt = AdaptListView.init(gridView)
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }

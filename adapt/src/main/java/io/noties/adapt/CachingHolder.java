@@ -17,16 +17,16 @@ import io.noties.adapt.util.ViewUtils;
 /**
  * Holder that caches result of {@link #findView(int)} and {@link #requireView(int)}
  */
-public class CachedHolder extends Item.Holder {
+public class CachingHolder extends Item.Holder {
 
     private final Map<Integer, WeakReference<View>> cache;
 
-    public CachedHolder(@NonNull View itemView) {
+    public CachingHolder(@NonNull View itemView) {
         this(itemView, new HashMap<Integer, WeakReference<View>>(3));
     }
 
     @VisibleForTesting
-    CachedHolder(@NonNull View itemView, @NonNull Map<Integer, WeakReference<View>> cacheImpl) {
+    CachingHolder(@NonNull View itemView, @NonNull Map<Integer, WeakReference<View>> cacheImpl) {
         super(itemView);
         this.cache = cacheImpl;
     }

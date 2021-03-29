@@ -13,7 +13,6 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.debug.Debug
 
@@ -60,25 +59,24 @@ class RecyclerViewWrappedDecorationsSample : SampleView() {
 
         val adapt = AdaptRecyclerView.init(recyclerView)
 
-        fun onAdd() = ControlItem.addedItems(adapt.items())
-            .withIndex()
-            .map {
-                if (it.value is PlainItem) {
-                    if (it.index % 2 == 0) {
-                        EvenItem(it.value)
-                    } else {
-                        OddItem(it.value)
+        initSampleItems(
+            adapt,
+            onAddingNewItems = { items ->
+                items
+                    .withIndex()
+                    .map {
+                        if (it.value is PlainItem) {
+                            if (it.index % 2 == 0) {
+                                EvenItem(it.value)
+                            } else {
+                                OddItem(it.value)
+                            }
+                        } else {
+                            it.value
+                        }
                     }
-                } else {
-                    it.value
-                }
             }
-            .also(adapt::setItems)
-
-        fun onShuffle() = ControlItem.shuffledItems(adapt.items())
-            .also(adapt::setItems)
-
-        adapt.setItems(initialItems(::onAdd, ::onShuffle))
+        )
     }
 
     class EvenItem(item: Item<*>) : ItemWrapper(item)

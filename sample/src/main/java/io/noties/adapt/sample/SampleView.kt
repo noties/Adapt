@@ -56,16 +56,44 @@ abstract class SampleView {
 
     abstract fun render(view: View)
 
-    protected fun initialItems(adapt: Adapt): List<Item<*>> = initialItems {
-        ControlItem.init(adapt)
-    }
 
-    protected fun initialItems(onAdded: () -> Unit, onShuffled: () -> Unit) = initialItems {
-        ControlItem.init(onAdded, onShuffled)
-    }
+    companion object {
 
-    protected fun initialItems(provider: () -> ControlItem): List<Item<*>> =
-        ItemGenerator.next(0).toMutableList().apply {
-            add(provider())
+        fun initSampleItems(
+            adapt: Adapt,
+            processItem: (Item<*>) -> Item<*> = { it },
+            onAddingNewItems: (items: List<Item<*>>) -> List<Item<*>> = { it },
+            onShuffle: () -> Unit = {
+                adapt.setItems(adapt.items().shuffled())
+            }
+        ) {
+            val initialItems = ItemGenerator.next(0)
+                .toMutableList()
+                .run {
+                    add(
+                        ControlItem(
+                            {
+                                val items = adapt.items()
+
+                                val newItems = ItemGenerator.next(items.size)
+                                    .map(processItem)
+                                    .let {
+                                        items.toMutableList().apply {
+                                            addAll(it)
+                                        }
+                                    }
+
+                                adapt.setItems(onAddingNewItems(newItems))
+
+                            },
+                            onShuffle
+                        )
+                    )
+                    this.map(processItem)
+                        .toMutableList()
+                }
+
+            adapt.setItems(onAddingNewItems(initialItems))
         }
+    }
 }

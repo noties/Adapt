@@ -56,7 +56,7 @@ class AlertDialogSample : SampleView() {
             }
         }
 
-        adapt.setItems(initialItems(adapt))
+        initSampleItems(adapt)
 
         AlertDialog.Builder(view.context)
             .setAdapter(adapt2.adapter()) { _, position ->

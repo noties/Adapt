@@ -41,6 +41,6 @@ class RecyclerViewGridSample : SampleView() {
             }
         }
 
-        adapt.setItems(initialItems(adapt))
+        initSampleItems(adapt)
     }
 }

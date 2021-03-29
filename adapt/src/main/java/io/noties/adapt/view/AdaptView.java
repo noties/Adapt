@@ -87,6 +87,7 @@ public class AdaptView implements Adapt {
             view = new View(viewGroup.getContext());
             viewGroup.addView(view);
         }
+
         this.view = view;
     }
 

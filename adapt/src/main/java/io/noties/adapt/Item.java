@@ -34,10 +34,15 @@ public abstract class Item<H extends Item.Holder> {
         this.id = id;
     }
 
+    @CheckResult
     public final long id() {
         return id;
     }
 
+    /**
+     * Generated view type must not be 0 (zero)
+     */
+    @CheckResult
     public final int viewType() {
         int viewType = this.viewType;
         if (viewType == 0) {
@@ -51,6 +56,7 @@ public abstract class Item<H extends Item.Holder> {
      * in the {@link #bind(Holder)} method instead.
      */
     @NonNull
+    @CheckResult
     public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
     public abstract void bind(@NonNull H holder);

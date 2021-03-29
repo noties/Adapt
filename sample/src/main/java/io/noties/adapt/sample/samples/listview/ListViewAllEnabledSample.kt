@@ -22,6 +22,7 @@ class ListViewAllEnabledSample : SampleView() {
         val adapt = AdaptListView.init(listView) {
             it.areAllItemsEnabled(true)
         }
-        adapt.setItems(initialItems(adapt))
+
+        initSampleItems(adapt)
     }
 }
