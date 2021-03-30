@@ -7,10 +7,16 @@ import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import io.noties.adapt.CachingHolder
 import io.noties.adapt.Item
-import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.ItemLayout
+import io.noties.adapt.recyclerview.AdaptRecyclerView
+import io.noties.adapt.sample.ui.DividerOverlay
+import io.noties.adapt.sample.ui.SearchBar
+import io.noties.adapt.sample.util.normalized
 
 class SampleViewList(
     private val samples: List<Sample>,
@@ -18,20 +24,53 @@ class SampleViewList(
 ) {
 
     fun view(parent: ViewGroup): View {
-        return LayoutInflater.from(parent.context)
+        val context = parent.context
+        return LayoutInflater.from(context)
             .inflate(R.layout.view_list, parent, false).apply {
-                val listView: ListView = findViewById(R.id.list_view)
-                val adapt = AdaptListView.init(listView) {
-                    it.areAllItemsEnabled(true)
+
+                val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
+                recyclerView.also {
+                    it.layoutManager = LinearLayoutManager(context)
                 }
-                adapt.setItems(samples.map(::SampleItem))
-                listView.setOnItemClickListener { _, _, position, _ ->
-                    onSampleClicked(samples[position])
+
+                val adapt = AdaptRecyclerView.init(recyclerView)
+                val initialItems = samples.map {
+                    SampleItem(it, onSampleClicked)
+                }
+                adapt.setItems(initialItems)
+
+                val searchBar: SearchBar = findViewById(R.id.search_bar)
+                searchBar.onTextChangedListener = { search ->
+                    val items = if (search == null) {
+                        initialItems
+                    } else {
+                        val text = search.normalized()
+                        initialItems
+                            .filter { filter(text, it) }
+                            .let {
+                                if (it.isEmpty()) {
+                                    listOf(EmptyItem())
+                                } else {
+                                    it
+                                }
+                            }
+                    }
+                    adapt.setItems(items)
                 }
             }
     }
 
-    class SampleItem(private val sample: Sample) :
+    private fun filter(text: String, item: SampleItem): Boolean {
+        val sample = item.sample
+        return sample.name.normalized().contains(text)
+                || true == sample.description?.toString()?.normalized()?.contains(text)
+                || sample.tags.count { it.normalized().contains(text) } > 0
+    }
+
+    class SampleItem(
+        val sample: Sample,
+        private val onSampleClicked: (Sample) -> Unit
+    ) :
         Item<SampleItem.Holder>(hash(sample.name)) {
 
         class Holder(view: View) : Item.Holder(view) {
@@ -48,6 +87,12 @@ class SampleViewList(
             holder.name.text = sample.name
             holder.description.textOrGone(sample.description)
             holder.tags.textOrGone(tags)
+
+            DividerOverlay.init(holder.itemView())
+
+            holder.itemView().setOnClickListener {
+                onSampleClicked(sample)
+            }
         }
 
         private val tags: CharSequence
@@ -69,5 +114,9 @@ class SampleViewList(
             this.text = text
             this.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         }
+    }
+
+    class EmptyItem : ItemLayout(99L, R.layout.widget_empty) {
+        override fun bind(holder: CachingHolder) = Unit
     }
 }

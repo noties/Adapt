@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Adapt</string>
+
+    <string name="search_placeholder">Search</string>
+    <string name="search_clear_label">Clear</string>
+    <string name="search_cancel_label">Cancel</string>
+    <string name="search_nothing_found">Nothing found</string>
 </resources>

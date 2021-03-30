@@ -12,6 +12,9 @@
     <color name="page_indicator_container">#CC000000</color>
     <color name="page_indicator_selected">#40ffffff</color>
 
-    <color name="divider">#ccc</color>
+    <color name="divider">#15000000</color>
+
+    <color name="search_bar_background">#15000000</color>
+    <color name="search_bar_text_secondary">#40000000</color>
 
 </resources>
