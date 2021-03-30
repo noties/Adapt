@@ -1,3 +1,5 @@
+<img src="./art/logo_social.png" width="90%" alt="logo" />
+
 # Adapt
 
 `Adapt` &mdash; `RecyclerView.Adapter` only shorter.
