@@ -1,7 +1,5 @@
 * ItemContainer
-* Logo for README
 * SearchBar
-* Padding to app icon (add icon to main app-bar)
 * README, wrapper data
 * explicit tags, define colors for each
 

@@ -6,9 +6,9 @@
 
 `Adapt` is a UI library to create decoupled widget components. They can be
   used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
-  no code involved. XML layout preview enabled.
+  no code involved. One `Item` to rule them all. XML layout preview enabled.
 
-One `Item` to rule them all. `Adapt` components, which are called `Item`s, 
+`Adapt` components, which are called `Item`s, 
 can be displayed **without modification** in those parent widgets: 
  
 * `RecyclerView`
@@ -32,6 +32,8 @@ can be displayed **without modification** in those parent widgets:
 
 
 ![gif](./art/preview.gif)
+
+
 ![XML layout-preview](./art/layout_preview.png)
 
 
