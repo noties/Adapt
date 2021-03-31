@@ -32,8 +32,6 @@ can be displayed **without modification** in those parent widgets:
 
 
 ![gif](./art/preview.gif)
-
-
 ![XML layout-preview](./art/layout_preview.png)
 
 
@@ -67,7 +65,7 @@ class PageIndicatorItem(
     val onClick: (PageIndicatorItem) -> Unit
 ) : ItemLayout(hash(title), R.layout.item_page_indicator) {
     
-    override fun bind(holder: Holder) {
+    override fun bind(holder: CachedHolder) {
         // obtain required view (cached internally by the holder)
         val titleView: TextView = holder.requireView(R.id.title)
         // bind data
@@ -144,7 +142,7 @@ viewPager2.adapter = adapt.adapter()
 ```
 
 There is also `StickyItemDecoration` that allows creating _sticky_ items (aka section items).
-Refer to the sample application and javadoc of the class.
+Refer to the sample application for sample usage.
 
 ### ListView
 
@@ -247,5 +245,121 @@ class SectionItem(val text: String) :
 
 ### View
 
+`AdaptView` can be used to display a single `Item` in your current layout. 
+
 ```kotlin
+val container: ViewGroup = findViewById(R.id.view_group)
+val adaptView: AdaptView = AdaptView.init(container)
+
+adaptView.setItem(SectionItem("Section 1"))
+```
+
+### Wrapper
+
+Sometimes an `Item` needs a minor modification depending on layout, like displaying a divider
+or having specific background. To achieve that in a _composable_ way (prefer composition over modification)
+an `ItemWrapper` can be used:
+
+```kotlin
+class PaddingWrapper(val padding: Int, item: Item<*>) : ItemWrapper(item) {
+    override fun bind(holder: Holder) {
+        super.bind(holder)
+        holder.itemView()
+            .setPadding(padding, padding, padding, padding)
+    }
+}
+```
+
+Important thing to note here - if `ItemWrapper` creates a modification based on a _variable_
+then it should apply its modification in `bind(Holder)` method. For example if your list
+contains `PaddingWrapper(12), PaddingWrapper(4)` (actual `padding` variable is different), 
+then `bind(Holder)` must be used. If, on the other hand, `PaddingWrapper` would always apply the same
+value (some constant value), then `createHolder(LayoutInflater,ViewGroup)` can be used instead.
+
+`ItemWrapper` allows wrapping other `ItemWrapper`, for example:
+
+```kotlin
+class MarginWrapper(val margin: Int, item: Item<*>) : ItemWrapper(item) {
+    override fun bind(holder: Holder) {
+        super.bind(holder)
+        val lp = holder.itemView().layoutParams as ViewGroup.MarginLayoutParams
+        lp.setMargins(margin, margin, margin, margin)
+        holder.itemView().layoutParams = lp
+    }
+}
+```
+
+```kotlin
+val mp = MarginWrapper(12, PaddingWrapper(24, TextItem("Margin / Padding")))
+val pm = PaddingWrapper(8, MarginWrapper(100, TextItem("Padding / Margin")))
+
+assert(mp.viewType() != pm.viewType())
+```
+
+Each `ItemWrapper` changes `viewType` of resulting `Item`. This functionality is
+encapsulated by the `Item.Key` class:
+
+```kotlin
+val key = Item.Key.builder()
+    .wrapped(MarginWrapper::class.java)
+    .wrapped(PaddingWrapper::class.java)
+    .build(TextItem::class.java)
+```
+
+`Item.Key` should be used when an explicit item registration is required, for example
+when used with the `AlertDialog` (or item in `ListView` should be _enabled_):
+
+```kotlin
+val adapt = AdaptListView.create(context) {
+
+    // simple TextItem
+    it.include(TextItem::class.java)
+
+    // TextItem wrapped in `PaddingWrapper`
+    val pt = Item.Key.builder()
+        .wrapped(PaddingWrapper::class.java)
+        .build(TextItem::class.java)
+    it.include(pt)
+
+    // TextItem wrapped in `MarginWrapper`
+    val mt = Item.Key.builder()
+        .wrapped(MarginWrapper::class.java)
+        .build(TextItem::class.java)
+    it.include(mt)
+}
+
+val items = listOf(
+    TextItem("Text"),
+    PaddingWrapper(12, TextItem("Padding / Text")),
+    MarginWrapper(96, TextItem("Margin / Text"))
+)
+
+adapt.setItems(items)
+
+AlertDialog.Builder(context)
+    .setAdapter(adapt.adapter()) { _, _ ->
+        
+    }
+    .show()
+```
+
+Please note that explicit registration is required in only some cases of `ListView/AdapterView`.
+
+
+## License
+
+```
+  Copyright 2021 Dimitry Ivanov (legal@noties.io)
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 ```

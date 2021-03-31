@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,30 +76,6 @@ public class ItemWrapperTest {
         final Wrap wrap = new Wrap(item);
         wrap.bind(mock(Item.Holder.class));
         verify(item, times(1)).bind(any(Item.Holder.class));
-    }
-
-    @Test
-    public void hashCode_callsWrapped() {
-        final Root root = new Root(0L) {
-            @Override
-            public int hashCode() {
-                return 666;
-            }
-        };
-        final Wrap wrap = new Wrap(root);
-        Assert.assertEquals(666, wrap.hashCode());
-    }
-
-    @Test
-    public void equals_callsWrapped() {
-        final Root root = new Root(12L) {
-            @Override
-            public boolean equals(@Nullable Object obj) {
-                return super.equals(obj);
-            }
-        };
-        final Wrap wrap = new Wrap(root);
-        Assert.assertEquals(root, wrap);
     }
 
     private static class Wrap extends ItemWrapper {

@@ -1,6 +1,4 @@
 * ItemContainer
-* SearchBar
-* README, wrapper data
 * explicit tags, define colors for each
 
 * Ability to obtain `Adapt` instance directly from an `Item`
