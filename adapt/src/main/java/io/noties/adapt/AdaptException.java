@@ -3,24 +3,16 @@ package io.noties.adapt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.Locale;
+public class AdaptException extends IllegalStateException {
 
-class AdaptException extends IllegalStateException {
-
-    @SuppressWarnings("SameParameterValue")
     @NonNull
-    static AdaptException create(@NonNull Throwable cause, @NonNull String message, Object... args) {
-        return new AdaptException(String.format(Locale.US, message, args), cause);
+    public static AdaptException create(@NonNull Throwable cause, @NonNull String message) {
+        return new AdaptException(message, cause);
     }
 
     @NonNull
-    static AdaptException create(@NonNull String message) {
+    public static AdaptException create(@NonNull String message) {
         return new AdaptException(message);
-    }
-
-    @NonNull
-    static AdaptException create(@NonNull String message, Object... args) {
-        return new AdaptException(String.format(Locale.US, message, args));
     }
 
     private AdaptException(@NonNull String s) {
@@ -34,12 +26,13 @@ class AdaptException extends IllegalStateException {
     @NonNull
     private static String appendVersion(@Nullable String input) {
 
-        final String version = "[v" + BuildConfig.VERSION_NAME + "]";
         if (input == null
                 || input.length() == 0) {
-            return version;
+            return PREFIX;
         }
 
-        return version + " " + input;
+        return PREFIX + " " + input;
     }
+
+    private static final String PREFIX = "[v" + BuildConfig.VERSION_NAME + "]";
 }

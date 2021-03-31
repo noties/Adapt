@@ -1,25 +1,60 @@
 package io.noties.adapt.sample
 
+import androidx.annotation.ColorInt
 import io.noties.adapt.Item
-import io.noties.adapt.sample.items.CircleItem
-import io.noties.adapt.sample.items.SquareItem
-import io.noties.adapt.sample.items.TriangleItem
-import java.util.concurrent.atomic.AtomicLong
+import io.noties.adapt.sample.items.CardBigItem
+import io.noties.adapt.sample.items.CardItem
+import io.noties.adapt.sample.items.PlainItem
+import kotlin.random.Random
 
-class ItemGenerator {
+// TODO: create tags collection and assign colors manually
+object ItemGenerator {
+    private const val seed = 21L
+    private var random = Random(seed)
+    private val colors = arrayOf(
+        0xFF5cb578,
+        0xFFf9f871,
+        0xFFf2a3c0,
+        0xFF526b92,
+        0xFF413550,
+        0xFF863557,
+        0xFF92705a
+    )
+    private val types = Type.values()
 
-    private val randomizer = SampleRandomizer()
-    private val idGenerator = AtomicLong()
+    fun reset() {
+        random = Random(seed)
+    }
 
-    fun generate(count: Int): List<Item<*>> {
-        return List(count) {
-            when (randomizer.nextShape()) {
-                Shape.CIRCLE -> CircleItem(idGenerator.incrementAndGet(), randomizer.nextColor())
-                Shape.SQUARE -> SquareItem(idGenerator.incrementAndGet(), randomizer.nextColor())
-                Shape.TRIANGLE -> TriangleItem(idGenerator.incrementAndGet(), randomizer.nextColor())
-            }
+    fun next(current: Int): List<Item<*>> {
+        val count = random.nextInt(1, 10)
+        return (0 until count)
+            .map { current + it }
+            .map(this::nextItem)
+    }
+
+    @ColorInt
+    fun nextColor(): Int = random.nextInt(0, colors.size)
+        .let(colors::get)
+        .toInt()
+
+    private fun nextItem(i: Int): Item<*> {
+        val type = types[random.nextInt(types.size)]
+        val letter: String = "${('A' + random.nextInt(26))}"
+        val color = colors[random.nextInt(colors.size)].toInt()
+
+        fun title(prefix: String) = "$prefix Item#$i"
+
+        return when (type) {
+            Type.PLAIN -> PlainItem(letter, color, title("Plain"))
+            Type.CARD -> CardItem(letter, color, title("Card"))
+            Type.BIG_CARD -> CardBigItem(letter, color, title("Big Card"))
         }
     }
 
-    fun shuffle(items: List<Item<*>>) = items.shuffled(randomizer.random)
+    private enum class Type {
+        PLAIN,
+        CARD,
+        BIG_CARD
+    }
 }

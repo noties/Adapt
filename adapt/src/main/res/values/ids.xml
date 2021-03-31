@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="adapt_internal" type="id" />
+
     <item name="adapt_internal_item" type="id" />
     <item name="adapt_internal_holder" type="id" />
-    <item name="adapt_internal_nested_recycler_state_cache" type="id" />
+
+    <item name="adapt_internal_view_state_cache" type="id" />
+    <item name="adapt_internal_view_state_attach_listener" type="id" />
+
+    <item name="adapt_internal_listview_holder_tag" type="id" />
 
 </resources>

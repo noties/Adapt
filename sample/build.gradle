@@ -1,16 +1,6 @@
-buildscript {
-    ext.kotlin_version = '1.3.50'
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
 
@@ -18,20 +8,40 @@ android {
     buildToolsVersion config['build-tools']
 
     defaultConfig {
-        applicationId "io.noties.adapt.sample"
-        // only for sample
-        minSdkVersion 21
+        applicationId 'io.noties.adapt.sample'
+        minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
+    }
+
+    lintOptions {
+        fatal 'StopShip'
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += '../sample-utils/annotation'
+        }
+    }
+}
+
+kapt {
+    arguments {
+        arg('io.noties.adapt.samples_file', "${projectDir}/samples.json".toString())
     }
 }
 
 dependencies {
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     implementation project(':adapt')
+    implementation deps['x-recycler-view']
+
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     implementation 'io.noties:debug:5.1.0'
-    implementation 'com.google.android:flexbox:1.1.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    kapt project(':sample-utils:processor')
 }

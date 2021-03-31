@@ -1,0 +1,263 @@
+[
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDividerWrapperSample",
+    "id": "20210329212452",
+    "title": "Recycler divider item wrapper",
+    "description": "Sample usage of \u003ctt\u003eItemWrapper\u003c/tt\u003e to add dividers to items inside a \u003ctt\u003eRecyclerView\u003c/tt\u003e",
+    "tags": [
+      "recyclerview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogHasWrappedSample",
+    "id": "20210326220725",
+    "title": "AlertDialog with Wrapped",
+    "description": "Explicitly register an \u003ctt\u003eItem\u003c/tt\u003e wrapped with \u003ctt\u003eItemWrapper\u003c/tt\u003e when displayed in a \u003ctt\u003eAlertDialog\u003c/tt\u003e",
+    "tags": [
+      "alertdialog",
+      "key",
+      "listview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewWrappedEnabledSample",
+    "id": "20210326214950",
+    "title": "Wrapped in ListView",
+    "description": "Explicitly register \u003ctt\u003eItemWrapper\u003c/tt\u003e in a \u003ctt\u003eListView\u003c/tt\u003e with a \u003ctt\u003eKey\u003c/tt\u003e",
+    "tags": [
+      "key",
+      "listview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewWrappedDecorationsSample",
+    "id": "20210326211532",
+    "title": "Decoration on ItemWrapper",
+    "description": "Add distinct \u003ctt\u003eItemDecoration\u003c/tt\u003es to the same \u003ctt\u003eItem\u003c/tt\u003e type wrapped in different \u003ctt\u003eItemWrapper\u003c/tt\u003es in \u003ctt\u003eRecyclerView\u003c/tt\u003e",
+    "tags": [
+      "key",
+      "recyclerview",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupWrappedSample",
+    "id": "20210209021444",
+    "title": "ViewGroup and ItemWrapper",
+    "description": "Display wrapped items in a \u003ctt\u003eViewGroup\u003c/tt\u003e",
+    "tags": [
+      "viewgroup",
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionViewGroupSample",
+    "id": "20210205204648",
+    "title": "ViewGroupProvider",
+    "description": "Begin transition in \u003ctt\u003eTransitionChangeHandler\u003c/tt\u003e in a different \u003ctt\u003eViewGroup\u003c/tt\u003e (not the one is used to initialize Adapt) with the \u003ctt\u003eViewGroupProvider\u003c/tt\u003e",
+    "tags": [
+      "transition",
+      "viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.view.ViewSample",
+    "id": "20210127234203",
+    "title": "AdaptView",
+    "description": "Usage of \u003ctt\u003eItem\u003c/tt\u003e directly with \u003ctt\u003eAdaptView\u003c/tt\u003e",
+    "tags": [
+      "view"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.GridViewSample",
+    "id": "20210126234155",
+    "title": "GridView",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.StackViewSample",
+    "id": "20210126233614",
+    "title": "StackView",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AdapterViewFlipperSample",
+    "id": "20210126232916",
+    "title": "AdapterViewFlipper",
+    "description": "",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyReverseLayoutSample",
+    "id": "20210126223631",
+    "title": "Sticky (reverse)",
+    "description": "\u003ctt\u003ereverseLayout\u003c/tt\u003e in RecyclerView with \u003ctt\u003eLinearLayoutManager\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample",
+    "id": "20210124212119",
+    "title": "Sticky GRID",
+    "description": "\u003ctt\u003eStickyItemDecoration\u003c/tt\u003e with \u003ctt\u003eGridLayoutManager\u003c/tt\u003e",
+    "tags": [
+      "grid",
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.SpinnerSample",
+    "id": "20210123235615",
+    "title": "Spinner",
+    "description": "Usage with \u003ctt\u003eSpinner\u003c/tt\u003e, (single view type only, Spinner requirement)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.MirroredSample",
+    "id": "20210122221658",
+    "title": "Mirrored in ViewPager2",
+    "description": "\u003ctt\u003eListView\u003c/tt\u003e, \u003ctt\u003eRecyclerView\u003c/td\u003e and \u003ctt\u003eLinearLayout inside ScrollView\u003c/tt\u003e are initialized to duplicate content (same items)",
+    "tags": [
+      "listview",
+      "recyclerview",
+      "viewgroup",
+      "viewpager2"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionSample",
+    "id": "20210122143311",
+    "title": "ViewGroup Transition",
+    "description": "Changes inside \u003ctt\u003e\u003cb\u003eViewGroup\u003c/b\u003e\u003c/tt\u003e are animated by automatic \u003ctt\u003eTransition\u003c/tt\u003e",
+    "tags": [
+      "transition",
+      "viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupSample",
+    "id": "20210122143305",
+    "title": "ViewGroup",
+    "description": "Usage of Adapt inside \u003ctt\u003e\u003cb\u003eViewGroup\u003c/b\u003e\u003c/tt\u003e (\u003ctt\u003eLinearLayout\u003c/tt\u003e wrapped inside \u003ctt\u003eScrollView\u003c/tt\u003e)",
+    "tags": [
+      "viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupNoIdSample",
+    "id": "20210122143249",
+    "title": "NO_ID in ViewGroup",
+    "description": "Indicates that an Item without ID (\u003ctt\u003eNO_ID\u003c/tt\u003e) is recreated with each update",
+    "tags": [
+      "viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSomeEnabledSample",
+    "id": "20210122143242",
+    "title": "ListView some enabled",
+    "description": "Some Item are enabled (are considered to be separators)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSample",
+    "id": "20210122143237",
+    "title": "ListView",
+    "description": "Usage inside \u003ctt\u003e\u003cb\u003eListView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewAllEnabledSample",
+    "id": "20210122143232",
+    "title": "ListView all enabled",
+    "description": "All items enabled via special configuration option (affects native ListView divider)",
+    "tags": [
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogSample",
+    "id": "20210122143224",
+    "title": "AlertDialog",
+    "description": "Use Adapt with \u003ctt\u003eAlertDialog\u003c/tt\u003e",
+    "tags": [
+      "alertdialog",
+      "listview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample",
+    "id": "20210122143214",
+    "title": "ViewPager2",
+    "description": "AdaptRecyclerView adapter used in ViewPager2 with special \u003ctt\u003eItemWrapper\u003c/tt\u003e that modifies existing items to \u003ctt\u003ematch_parent\u003c/tt\u003e them",
+    "tags": [
+      "recyclerview",
+      "viewpager2"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickySample",
+    "id": "20210122143205",
+    "title": "Sticky",
+    "description": "\u003cb\u003eSticky\u003c/b\u003e item decoration in \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewSample",
+    "id": "20210122143200",
+    "title": "RecyclerView",
+    "description": "Usage of multiple items inside \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewNestedSample",
+    "id": "20210122143154",
+    "title": "Nested Recycler",
+    "description": "Item contains nested \u003ctt\u003e\u003cb\u003eRecyclerView\u003c/b\u003e\u003c/tt\u003e, shared \u003ctt\u003eRecyclerViewPool\u003c/tt\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridSample",
+    "id": "20210122143147",
+    "title": "Grid",
+    "description": "\u003cb\u003e\u003ctt\u003eRecyclerView\u003c/tt\u003e\u003c/b\u003e with \u003ctt\u003eGridLayoutManager\u003c/tt\u003e",
+    "tags": [
+      "grid",
+      "recyclerview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDiffSample",
+    "id": "20210122143122",
+    "title": "DiffUtil",
+    "description": "\u003cb\u003eDiffUtil\u003c/b\u003e with the \u003cb\u003e\u003ctt\u003eRecyclerView\u003c/tt\u003e\u003c/b\u003e",
+    "tags": [
+      "recyclerview"
+    ]
+  }
+]

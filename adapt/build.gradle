@@ -11,27 +11,24 @@ android {
         versionCode 1
         versionName version
     }
+
+    testOptions.unitTests.includeAndroidResources = true
 }
 
 dependencies {
 
-    deps.with {
-        api it['x-annotations']
-        api it['x-recycler-view']
-    }
+    api 'androidx.annotation:annotation:1.1.0'
 
-    deps['test'].with {
-        testImplementation it['junit']
-        testImplementation it['mockito']
-        testImplementation it['robolectric']
-    }
+    compileOnly deps['x-recycler-view']
+
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.mockito:mockito-core:3.8.0'
+    testImplementation 'org.robolectric:robolectric:4.5.1'
 }
 
 if (project.hasProperty('release')) {
     apply from: config['push-aar-gradle']
 
-    // cannot find the problem with javadoc generation, but we anyway do not need a generated one
-    // as we do not plan to host it somewhere (sources in maven should do)
     tasks.withType(Javadoc) {
         enabled = false
     }

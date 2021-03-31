@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_16">
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@color/primaryDark"
+        android:drawableStart="@drawable/ic_add_circle_24_accent"
+        android:text="Add"
+        android:textColor="@color/orange"
+        tools:ignore="HardcodedText" />
+
+    <View
+        android:layout_width="@dimen/_16"
+        android:layout_height="0px" />
+
+    <Button
+        android:id="@+id/shuffle"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@color/primaryDark"
+        android:drawableStart="@drawable/ic_shuffle_24_white"
+        android:text="Shuffle"
+        android:textColor="@color/accent"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

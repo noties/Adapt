@@ -1,107 +1,148 @@
 package io.noties.adapt;
 
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
+import java.util.Objects;
+
+import io.noties.adapt.util.ViewUtils;
 
 public abstract class Item<H extends Item.Holder> {
 
-    /**
-     * Helper method to obtain automatically assigned itemViewType ({@link #viewType()}).
-     * If you override {@link #viewType()} to provide own value then do not use this method.
-     *
-     * @param type of Item to obtain value
-     * @return generated item-view-type
-     */
-    public static int generatedViewType(@NonNull Class<? extends Item> type) {
-        return ViewTypeStore.viewType(type);
+    // `-1` is used for compatibility with the RecyclerView. Actual value from RecyclerView is not
+    //  used due to the compileOnly `androidx.recyclerview` dependency (might not be available at runtime).
+    // NB! this value must be synchronized with RecyclerView in case it changes there
+    public static final long NO_ID = -1;
+
+    protected static long hash(Object... args) {
+        return Objects.hash(args);
     }
 
-    public static final long NO_ID = RecyclerView.NO_ID;
+    private final long id;
 
-    private static final int NO_VIEW_TYPE = -1;
-
-    protected final long id;
-
-    // cached value of viewType (once initialized will be saved)
-    private int viewType = NO_VIEW_TYPE;
+    // cache viewType, it must not change during application runtime
+    private int viewType = 0;
 
     protected Item(long id) {
         this.id = id;
     }
 
+    @CheckResult
     public final long id() {
         return id;
     }
 
-    @NonNull
-    public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
-
-    public abstract void render(@NonNull H holder);
-
-    public int viewType() {
+    /**
+     * Generated view type must not be 0 (zero)
+     */
+    @CheckResult
+    public final int viewType() {
         int viewType = this.viewType;
-        if (viewType == NO_VIEW_TYPE) {
-            viewType = this.viewType = generatedViewType(getClass());
+        if (viewType == 0) {
+            viewType = this.viewType = Item.Key.of(this).viewType();
         }
         return viewType;
     }
 
     /**
-     * Used only in RecyclerView context. Please note that returned ItemDecoration will still
-     * operate on the whole RecyclerView like it was added explicitly via \'recyclerView#addItemDecoration\'
+     * Think of this method as it is a static method, all instance specific handling should be done
+     * in the {@link #bind(Holder)} method instead.
      */
-    @Nullable
-    public RecyclerView.ItemDecoration recyclerDecoration(@NonNull RecyclerView recyclerView) {
-        return null;
-    }
+    @NonNull
+    @CheckResult
+    public abstract H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent);
 
-    @SuppressWarnings("WeakerAccess")
-    public static class Holder extends RecyclerView.ViewHolder {
+    public abstract void bind(@NonNull H holder);
+
+
+    public static class Holder {
+        private final View itemView;
 
         public Holder(@NonNull View itemView) {
-            super(itemView);
+            this.itemView = itemView;
         }
 
         @NonNull
-        protected <V extends View> V requireView(@IdRes int id) {
-            return requireView(itemView, id);
+        @CheckResult
+        public View itemView() {
+            return itemView;
+        }
+
+        @Nullable
+        @CheckResult
+        public <V extends View> V findView(@IdRes int id) {
+            return itemView.findViewById(id);
         }
 
         @NonNull
-        protected <V extends View> V requireView(@NonNull View view, @IdRes int id) {
-            return ViewUtils.requireView(view, id);
+        @CheckResult
+        public <V extends View> V requireView(@IdRes int id) {
+            return ViewUtils.requireView(itemView, id);
         }
     }
 
-    @VisibleForTesting
-    static class ViewTypeStore {
+    public static abstract class Key {
 
-        static final SparseIntArray CACHE = new SparseIntArray();
-        static final AtomicInteger GENERATOR = new AtomicInteger();
-
-        static int viewType(@NonNull Class<? extends Item> type) {
-            final int hash = type.hashCode();
-            int viewType = CACHE.get(hash, NO_VIEW_TYPE);
-            if (viewType == NO_VIEW_TYPE) {
-                synchronized (CACHE) {
-                    viewType = CACHE.get(hash, NO_VIEW_TYPE);
-                    if (viewType == NO_VIEW_TYPE) {
-                        viewType = GENERATOR.incrementAndGet();
-                        CACHE.put(hash, viewType);
-                    }
-                }
-            }
-            return viewType;
+        @NonNull
+        @CheckResult
+        public static Builder builder() {
+            return new ItemKeys.KeyImpl.BuilderImpl();
         }
+
+        @NonNull
+        @CheckResult
+        public static Key of(@NonNull Item<?> item) {
+            return ItemKeys.create(item);
+        }
+
+        /**
+         * Creates a Key for an {@link Item} without any wrappers
+         */
+        @NonNull
+        @CheckResult
+        public static Key single(@NonNull Class<? extends Item<?>> item) {
+            return builder().build(item);
+        }
+
+        public interface Builder {
+
+            @NonNull
+            @CheckResult
+            Builder wrapped(@NonNull Class<? extends ItemWrapper> by);
+
+            @NonNull
+            @CheckResult
+            Key build(@NonNull Class<? extends Item<?>> item);
+        }
+
+        @CheckResult
+        public abstract int viewType();
+
+        @NonNull
+        @CheckResult
+        public abstract List<Class<? extends Item<?>>> items();
+
+        @NonNull
+        @CheckResult
+        public abstract String toString();
+
+        @NonNull
+        @CheckResult
+        public abstract String toShortString();
+
+        @Override
+        @CheckResult
+        public abstract int hashCode();
+
+        @Override
+        @CheckResult
+        public abstract boolean equals(Object o);
     }
 }

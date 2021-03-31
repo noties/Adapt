@@ -1,76 +1,71 @@
 package io.noties.adapt.sample
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import io.noties.adapt.Adapt
-import io.noties.adapt.Item
-import io.noties.adapt.OnClickWrapper
-import io.noties.adapt.sample.screen.flex.AdaptFlexActivity
-import io.noties.adapt.sample.screen.grid.AdaptGridActivity
-import io.noties.adapt.sample.screen.group.AdaptViewGroupActivity
-import io.noties.adapt.sample.screen.linear.AdaptLinearRecyclerActivity
-import io.noties.adapt.sample.screen.nestedrecycler.NestedRecyclerActivity
-import io.noties.adapt.sample.screen.nestedrecyclersuper.NestedRecyclerSuperActivity
-import io.noties.adapt.sample.screen.stickyheader.StickyHeaderActivity
-import io.noties.adapt.sample.screen.view.AdaptViewActivity
-import io.noties.debug.AndroidLogDebugOutput
-import io.noties.debug.Debug
-
-enum class Screen(val activity: Class<out Activity>, val title: String, val description: String? = null) {
-    LINEAR(AdaptLinearRecyclerActivity::class.java, "Recycler", "Usage in RecyclerView with LinearLayoutManager"),
-    GRID(AdaptGridActivity::class.java, "Recycler Grid", "Usage in RecyclerView with GridLayoutManager"),
-    VIEW_GROUP(AdaptViewGroupActivity::class.java, "ViewGroup", "Usage in a ViewGroup"),
-    FLEX_VIEW_GROUP(AdaptFlexActivity::class.java, "FlexLayout", "Usage with a FlexLayout in a ViewGroup context"),
-    VIEW(AdaptViewActivity::class.java, "View", "Usage with a regular View (bind Item)"),
-    NESTED_RECYCLER(NestedRecyclerActivity::class.java, "Nested RecyclerView items", "Usage of nested RecyclerView in items"),
-    NESTED_RECYCLER_SUPER(NestedRecyclerSuperActivity::class.java, "Nested RecyclerView super (2 levels)", "Usage of deeply nested recycler views (2 levels deep)"),
-    STICKY_HEADER(StickyHeaderActivity::class.java, "Sticky Header", "Sample RecyclerView with sticky header")
-}
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.ViewAnimator
+import io.noties.adapt.sample.util.SampleUtil
 
 class MainActivity : Activity() {
 
-    companion object {
-        init {
-            Debug.init(AndroidLogDebugOutput(true))
-        }
-    }
+    private lateinit var viewAnimator: ViewAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val recycler = findViewById<RecyclerView>(R.id.recycler_view)
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.setHasFixedSize(true)
+        viewAnimator = findViewById(R.id.view_animator)
 
-        val adapt = Adapt.create()
-        recycler.adapter = adapt
-        adapt.setItems(items())
+        val samples = SampleUtil.readSamples(this)
+        val sampleViewList = SampleViewList(samples, ::showSample)
+
+        viewAnimator.addView(sampleViewList.view(viewAnimator))
+
+        if (savedInstanceState == null) {
+            val aid = intent.getStringExtra(LAUNCH_SAMPLE_ID_EXTRA_KEY)
+                .takeIf { !it.isNullOrBlank() }
+            if (aid != null) {
+                val sample = samples.firstOrNull { aid == it.id }
+                    ?: error("Sample with id `$aid` is not found")
+                showSample(sample)
+            }
+        }
     }
 
-    private fun items(): List<Item<*>> {
-
-        val randomizer = SampleRandomizer()
-
-        return Screen.values()
-                .map {
-                    OnClickWrapper(SampleItem(sample(randomizer, it))) { _, _ ->
-                        display(it.activity)
-                    }
-                }
+    private fun showSample(sample: Sample) {
+        val sampleView = SampleUtil.createView(sample)
+        viewAnimator.showNext(sampleView.view(sample, viewAnimator))
     }
 
-    private fun sample(randomizer: SampleRandomizer, screen: Screen) = Sample(
-            randomizer.nextColor(),
-            randomizer.nextShape(),
-            screen.title,
-            screen.description)
 
-    private fun display(activity: Class<out Activity>) {
-        startActivity(Intent(this, activity))
-        overridePendingTransition(R.anim.in_appear, R.anim.in_disappear)
+    override fun onBackPressed() {
+        if (!viewAnimator.goBack()) {
+            super.onBackPressed()
+        }
+    }
+
+    private fun ViewAnimator.showNext(view: View) {
+        inAnimation = AnimationUtils.loadAnimation(context, R.anim.forward_in)
+        outAnimation = AnimationUtils.loadAnimation(context, R.anim.forward_out)
+        addView(view)
+        displayedChild = 1
+    }
+
+    private fun ViewAnimator.goBack(): Boolean {
+        val child = displayedChild
+        if (child > 0) {
+            inAnimation = AnimationUtils.loadAnimation(context, R.anim.back_in)
+            outAnimation = AnimationUtils.loadAnimation(context, R.anim.back_out)
+            showPrevious()
+            postDelayed({ removeViewAt(child) }, outAnimation.duration)
+        }
+        return child >= 1
+    }
+
+    companion object {
+        // can be used to directly launch sample from IDE,
+        //  provide `--es "aid" "${ID_OF_SAMPLE}"` as `Launch Flags` for Activity
+        const val LAUNCH_SAMPLE_ID_EXTRA_KEY = "aid"
     }
 }

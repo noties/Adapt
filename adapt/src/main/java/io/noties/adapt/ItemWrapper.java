@@ -3,63 +3,76 @@ package io.noties.adapt;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Wrapper that allows enhancing existing {@link Item}. Please note that this wrapper
- * by default will use own \'recyclerViewType\' in order to distinguish from original (wrapped) item.
- * Other methods {@link #createHolder(LayoutInflater, ViewGroup)}, {@link #render(Holder)},
- * {@link #recyclerDecoration(RecyclerView)} are calling
- * original item. Ids are shared (the same for original and wrapped (this) items).
- * <p>
- * Since 2.2.0 implements {@link HasWrappedItem}
+ * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView} (add padding,
+ * special layout properties). Shares the same {@code id} as wrapped Item.
  *
- * @see OnClickWrapper
- * @since 2.0.0
+ * <strong>NB</strong> by default equals/hashCode methods redirect to wrapped item. Be sure to check
+ * for the {@link #viewType()} before calling equals or provide own implementation
+ *
+ * <strong>NB</strong> if your wrapper has a variable associated, for example certain padding
+ * passed via constructor, then execute _binding_ in {@link #bind(Holder)} method. If wrapper is
+ * <em>static/immutable</em> then it can process in the also {@link #createHolder(LayoutInflater, ViewGroup)}
  */
-public class ItemWrapper<H extends Item.Holder>
-        extends Item<H> implements HasWrappedItem<H> {
+public abstract class ItemWrapper extends Item<Item.Holder> {
 
-    private final Item<H> item;
+    public interface Provider {
+        @NonNull
+        Item<?> provide();
+    }
 
-    protected ItemWrapper(@NonNull Item<H> item) {
+    @NonNull
+    public static Item<?> unwrap(@NonNull Item<?> item) {
+        while (item instanceof ItemWrapper) {
+            item = ((ItemWrapper) item).item();
+        }
+        return item;
+    }
+
+    public static boolean isWrapped(@NonNull Item<?> item) {
+        return item instanceof ItemWrapper;
+    }
+
+    private final Item<?> item;
+
+    public ItemWrapper(@NonNull Item<?> item) {
         super(item.id());
         this.item = item;
     }
 
-    /**
-     * @since 2.2.0 this method comes from {@link HasWrappedItem} interface
-     */
+    public ItemWrapper(@NonNull Provider provider) {
+        this(provider.provide());
+    }
+
     @NonNull
-    @Override
-    public Item<H> item() {
+    @CheckResult
+    public final Item<?> item() {
         return item;
     }
 
     @NonNull
     @Override
-    public H createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    @CallSuper
+    public Item.Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         return item.createHolder(inflater, parent);
     }
 
     @Override
-    public void render(@NonNull H holder) {
-        item.render(holder);
+    @CallSuper
+    public void bind(@NonNull Item.Holder holder) {
+        //noinspection unchecked,rawtypes
+        ((Item) item).bind(holder);
     }
 
     @Override
-    public int viewType() {
-        // we will be using original viewType (if not all wrapped items will have the same viewType).
-        // Please note, that wrapper must not modify view of original item (which can lead to unexpected
-        // errors and bugs)
-        return item.viewType();
-    }
-
-    @Nullable
-    @Override
-    public RecyclerView.ItemDecoration recyclerDecoration(@NonNull RecyclerView recyclerView) {
-        return item.recyclerDecoration(recyclerView);
+    @NonNull
+    public String toString() {
+        return "ItemWrapper(" +
+                "item=" + item +
+                ')';
     }
 }

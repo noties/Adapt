@@ -4,8 +4,11 @@
     package="io.noties.adapt.sample">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,MissingApplicationIcon">
@@ -16,15 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".screen.grid.AdaptGridActivity" />
-        <activity android:name=".screen.group.AdaptViewGroupActivity" />
-        <activity android:name=".screen.flex.AdaptFlexActivity" />
-        <activity android:name=".screen.linear.AdaptLinearRecyclerActivity" />
-        <activity android:name=".screen.view.AdaptViewActivity" />
-        <activity android:name=".screen.nestedrecycler.NestedRecyclerActivity" />
-        <activity android:name=".screen.nestedrecyclersuper.NestedRecyclerSuperActivity" />
-        <activity android:name=".screen.stickyheader.StickyHeaderActivity" />
 
     </application>
 

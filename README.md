@@ -1,9 +1,39 @@
+<img src="./art/logo_social.png" width="90%" alt="logo" />
+
 # Adapt
 
-`RecyclerView.Adapter` only shorter. Abstraction to create re-usable components that can be used inside RecyclerView, ViewGroup or be bound to a View directly. 
+`Adapt` &mdash; `RecyclerView.Adapter` only shorter.
 
-![sample-gif](art/sample.gif)
-![sample-gif-220](art/sample-220.gif)
+`Adapt` is a UI library to create decoupled widget components. They can be
+  used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
+  no code involved. One `Item` to rule them all. XML layout preview enabled.
+
+`Adapt` components, which are called `Item`s, 
+can be displayed **without modification** in those parent widgets: 
+ 
+* `RecyclerView`
+  * `ViewPager2`<sup>*</sup>
+* `AdapterView`
+  * `ListView`
+  * `Spinner`<sup>**</sup>
+  * `GridView`
+  * `StackView`
+  * `AdapterViewFlipper`<sup>***</sup>
+  * `AlertDialog`<sup>****</sup>
+* `ViewGroup`
+  * `LinearLayout`
+  * there are no restrictions on actual `ViewGroup`, it can be any `ViewGroup`
+
+
+<em><sup>\*</sup> &mdash; `Item` in `ViewPager2` must have `match_parent` as width and height</em><br />
+<em><sup>\*\*</sup> &mdash; `Spinner` supports only a single view type</em><br />
+<em><sup>\*\*\*</sup> &mdash; wait, wat?</em><br />
+<em><sup>\*\*\*\*</sup> &mdash; `AlertDailog` accepts a `ListAdapter`</em><br />
+
+
+![gif](./art/preview.gif)
+![XML layout-preview](./art/layout_preview.png)
+
 
 ## Install
 
@@ -13,183 +43,313 @@
 implementation "io.noties:adapt:${adaptVersion}"
 ```
 
+### Pros
+* Interchangeable items between `RecyclerView`, `ListView` (all children of `android.widget.AdapterView`) 
+  and different `ViewGroup`s (same item is used without modification)
+* No prior usage registration - any instance of an `Item` can be displayed right away
+* Render individual item as a regular Android widget view (via `AdaptView`)
+* Modular design is enforced, leading to re-usable view components
+* Ability to preview item in Layout Preview (by using `AdaptViewGroup`), display 
+  available design components without launching on a device without leaving IDE
+
+### Cons
+* Targeted at relatively small lists, `Adapt` is not a direct replacement 
+  for a `RecyclerView.Adapter` containing huge/lazy lists
+
 ## Usage
 
-Create an instance of an `Item`:
-
 ```kotlin
-class ColorItem(
-        @ColorInt private val color: Int
-) : Item<ColorItem.Holder>(color.toLong()) {
-
-    override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder {
-        return Holder(inflater.inflate(R.layout.item_color, parent, false))
-    }
-
-    override fun render(holder: Holder) {
-        holder.image.setBackgroundColor(color)
-    }
-
-    class Holder(itemView: View) : Item.Holder(itemView) {
-        // `requireView` is a helper method to obtain view
-        val image = requireView<View>(R.id.image)
+class PageIndicatorItem(
+    val title: String,
+    var selected: Boolean,
+    val onClick: (PageIndicatorItem) -> Unit
+) : ItemLayout(hash(title), R.layout.item_page_indicator) {
+    
+    override fun bind(holder: CachedHolder) {
+        // obtain required view (cached internally by the holder)
+        val titleView: TextView = holder.requireView(R.id.title)
+        // bind data
+        titleView.text = title
+        holder.itemView().also {
+            it.setOnClickListener { onClick(this) }
+            it.activate(selected)
+        }
     }
 }
 ```
 
-* Item must have a Holder associated
-* Item must have a unique ID (which is set by super constructor)
-* Item must implement 2 methods: `createHolder` and `render`
-
-That's it. This item is now available to be used in a RecyclerView, any other ViewGroup or be bound directly to a View.
-
-## Usage in RecyclerView
-
-Create an instance of `Adapt`:
-```kotlin
-val adapt = Adapt.create();
-```
-
-Additionally you can specify which `DataSetChangeHandler` should be used. `Adapt` comes with 3 pre-defined implementations:
-* `NotifyDataSetChanged` (_used by default_)
-* `DiffUtilDataSetChanged`
-* `AsyncDiffUtilDataSetChanged`
+Apart from XML layout this is the complete `Item` that can be used with `Adapt`. Each item
+must have an `id` set (the first argument to constructor). Here `Item.hash(vararg any: Any)` is used,
+which is a convenience method call to `Objects.hash`. `ItemLayout` uses special `Holder` that
+caches views queried, so it is safe to `requireView` with each `bind` call.
 
 ```kotlin
-Adapt.create(NotifyDataSetChanged.create())
-Adapt.create(DiffUtilDataSetChanged.create(/*detectMoves = */true))
-Adapt.create(AsyncDiffUtilDataSetChanged.create(/*DiffUtilDataSetChanged.create()*/))
-```
+val container: ViewGroup = view.findViewById(R.id.container)
+val adapt = AdaptViewGroup.init(container)
 
-> Before `2.0.0` version, Adapt instance was _typed_ (`Adapt<T>`) which required explicit registration of items. Starting `2.0.0` it's no longer the case as each Item can render it-self
+// click handler
+fun onClick(item: PageIndicatorItem) {/*...*/}
 
-Initialize `RecyclerView`:
-
-```kotlin
-val adapt = Adapt.create()
-
-val recycler = findViewById<RecyclerView>(R.id.recycler_view)
-recycler.layoutManager = LinearLayoutManager(this)
-recycler.adapter = adapt
-```
-
-Create a list of items and set them to an `Adapt` instance:
-
-```kotlin
-val items = listOf(
-        ColorItem(Color.RED),
-        ColorItem(Color.GREEN),
-        ColorItem(Color.BLUE)
+// create a list of Items
+val items: List<Item<*>> = listOf(
+    PageIndicatorItem("Page 1", false, ::onClick),
+    PageIndicatorItem("Page 2", false, ::onClick),
+    PageIndicatorItem("Page 3", false, ::onClick)
 )
+
 adapt.setItems(items)
 ```
 
-To additionally process rendered items, for example adding a click listener, you can explicitly add `OnClickListener` to your item and apply it in `render` function. Or use `ItemWrapper`:
+`Adapt` accepts `List<Item<*>>` so your list can contain any other `Item`s - you don't need
+to register them beforehand. By changing 2 lines we can display the same list in a `RecyclerView`:
 
 ```kotlin
-val items = listOf(
-        OnClickWrapper(ColorItem(Color.RED)) { item, holder ->  
-            Debug.i("I am read")
-        },
-        ColorItem(Color.GREEN),
-        ColorItem(Color.BLUE)
-)
+val recyclerView: RecyclerView = obtainRecyclerView()
+val adapt = AdaptRecyclerView.init(recyclerView)
 ```
 
-> `OnClickWrapper` is a subclass of `ItemWrapper` that is bundled with the library.
-
-Additionally, each Item can specify `RecyclerView.ItemDecoration` in a decoupled manner:
+or a `ListView`:
 
 ```kotlin
-class ColorItem(
-        @ColorInt private val color: Int
-) : Item<ColorItem.Holder>(color.toLong()) {
+val listView: ListView = view.findViewById(R.id.list_view)
+val adapt = AdaptListView.init(listView)
+```
+
+### RecyclerView
+
+```kotlin
+val adapt = AdaptRecyclerView.init(recyclerView) {
+
+    // data set change handler that takes care of updating underlying list of items
+    //  optional, by default NotifyDataSetChangedHandler
+    it.dataSetChangeHandler(DiffUtilDataSetChangedHandler.create())
+
+    // optional, by default true
+    it.hasStableIds(false)
+}
+```
+
+Additionally there is also `create` factory method that creates `AdaptRecyclerView` instance
+without actual `RecyclerView` - for example to be used with `ViewPager2`:
+
+```kotlin
+// additionally can also specify `dataSetChangedHandler` 
+//  and `hasStableIds` if supplied configurator lambda
+val adapt = AdaptRecyclerView.create()
+val viewPager2: ViewPager2 = view.findViewById(R.id.view_pager2)
+
+viewPager2.adapter = adapt.adapter()
+```
+
+There is also `StickyItemDecoration` that allows creating _sticky_ items (aka section items).
+Refer to the sample application for sample usage.
+
+### ListView
+
+```kotlin
+val adapt = AdaptListView.init(listView) {
+
+    // value that is returned from `Adapter.hasStableIds`
+    //  optional, by default true
+    it.hasStableIds(false)
+
+    // indicates if all items are enabled, in ListView's language if all items should be 
+    //  clickable (delivered by ListView.OnItemClickListener) and have a divider after them
+    // by default false, all disabled unless specified further 
+    //  by enabling individual items (see below)
+    it.areAllItemsEnabled(true);
+
+    // includes specified Item, `isEnabled = false`
+    it.include(Item::class.java)
+
+    // includes specified Item and isEnabled
+    it.include(Item::class.java, true)
+}
+```
+
+Registration of `Item`s (via `include` calls) is optional in most of the cases. Still, if you are planning to use
+only `android.widget.Adapter` (or any of its siblings like `ListAdapter`) without holding an `AdapterView` instance,
+for example in an `AlertDialog` **and** there are multiple item views (multiple types of `Item`s
+will be displayed) then all displayed items must be _included_ explicitly.
+
+This registration can also be a good optimization, because internally `AdaptListView` will
+rebuild internal `ListView` scrap cache when new item views (types of `Item`s) are encountered.
+
+```kotlin
+val adapt = AdaptListView.create(view.context) {
+    // all items must be explicitly registered
+    // if there is only one item, then it is not required
+    it.include(CardBigItem::class.java)
+    it.include(CardItem::class.java)
+    it.include(ControlItem::class.java)
+    it.include(PlainItem::class.java)
+}
+
+// from sample application
+adapt.setItems(/*...*/)
+
+AlertDialog.Builder(view.context)
+    .setAdapter(adapt.adapter()) { _, position ->
+        // item at position is clicked
+    }
+    .show()
+```
+
+### ViewGroup
+
+```kotlin
+// LinearLayout is the most obvious ViewGroup for this
+//  but it can be any other suitable ViewGroup as well
+val container: LinearLayout = view.findViewById(R.id.container)
+val adapt = AdaptViewGroup.init(container) {
+
+    // optional
+    // in this case all changes are going to be animated by default Transition
+    it.changeHandler(TransitionChangeHandler.create())
+
+    // optional, used to create Item views
+    it.layoutInflater(LayoutInflater.from(context))
+
+    // optional, in case a custom diffing algorithm is required
+    it.adaptViewGroupDiff(AdaptViewGroupDiff.create())
+}
+```
+
+**NB!** A list of `Item`s supplied to `AdaptViewGroup` must have unique ids for the same 
+type (multiple items of the same type cannot have duplicate ids). `Item.NO_ID` can be used, but this would
+result in `Item`'s view being created each time anew. So, if possible, consider having unique ids even
+for supplementary items.
+
+### Item
+
+The core `Item` class (which `ItemLayout` subclasses) is `Item`:
+
+```kotlin
+class SectionItem(val text: String) :
+    Item<SectionItem.Holder>(hash(SectionItem::class, text)) {
+
+    // this holder does not cache views returned by `requireView` and `findView` 
+    class Holder(view: View) : Item.Holder(view) {
+        val textView: TextView = requireView(R.id.text)
+    }
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder {
-        return Holder(inflater.inflate(R.layout.item_color, parent, false))
+        return Holder(inflater.inflate(R.layout.item_section, parent, false))
     }
 
-    override fun render(holder: Holder) {
-        holder.image.setBackgroundColor(color)
-    }
-
-    override fun recyclerDecoration(recyclerView: RecyclerView): RecyclerView.ItemDecoration? {
-        return object: RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                outRect.set(16, 16, 16, 16)
-            }
-        }
-    }
-
-    class Holder(itemView: View) : Item.Holder(itemView) {
-        val image = requireView<View>(R.id.image)
+    override fun bind(holder: Holder) {
+        holder.textView.text = text
     }
 }
 ```
 
-Please note that returned `ItemDecoration` must be a _generic_ one, as only one decoration will be registered with RecyclerView for one item-view-type (read: _all instances of an item must return a decoration that does the same_). Which item's decoration will be used should be considered _undefined behaviour_ and **must not** be relied upon.
+### View
 
-Also note that using an `ItemWrapper` only for some items to specify `ItemDecoration` might (and will) lead to unexpected results. Consider moving decoration to item itself or fallback to _old_ decoration registration (via `RecyclerView#addItemDecoration`)
-
-
-## Usage in ViewGroup
-
-Usage in a ViewGroup is almost the same and does not require any changes to an Item. But instead of `Adapt` - `AdaptViewGroup` should be used:
+`AdaptView` can be used to display a single `Item` in your current layout. 
 
 ```kotlin
-val adaptViewGroup = AdaptViewGroup.create(findViewById(R.id.flex_layout))
+val container: ViewGroup = findViewById(R.id.view_group)
+val adaptView: AdaptView = AdaptView.init(container)
+
+adaptView.setItem(SectionItem("Section 1"))
 ```
 
-Create a list of items and apply them to `AdaptViewGroup`:
+### Wrapper
+
+Sometimes an `Item` needs a minor modification depending on layout, like displaying a divider
+or having specific background. To achieve that in a _composable_ way (prefer composition over modification)
+an `ItemWrapper` can be used:
 
 ```kotlin
+class PaddingWrapper(val padding: Int, item: Item<*>) : ItemWrapper(item) {
+    override fun bind(holder: Holder) {
+        super.bind(holder)
+        holder.itemView()
+            .setPadding(padding, padding, padding, padding)
+    }
+}
+```
+
+Important thing to note here - if `ItemWrapper` creates a modification based on a _variable_
+then it should apply its modification in `bind(Holder)` method. For example if your list
+contains `PaddingWrapper(12), PaddingWrapper(4)` (actual `padding` variable is different), 
+then `bind(Holder)` must be used. If, on the other hand, `PaddingWrapper` would always apply the same
+value (some constant value), then `createHolder(LayoutInflater,ViewGroup)` can be used instead.
+
+`ItemWrapper` allows wrapping other `ItemWrapper`, for example:
+
+```kotlin
+class MarginWrapper(val margin: Int, item: Item<*>) : ItemWrapper(item) {
+    override fun bind(holder: Holder) {
+        super.bind(holder)
+        val lp = holder.itemView().layoutParams as ViewGroup.MarginLayoutParams
+        lp.setMargins(margin, margin, margin, margin)
+        holder.itemView().layoutParams = lp
+    }
+}
+```
+
+```kotlin
+val mp = MarginWrapper(12, PaddingWrapper(24, TextItem("Margin / Padding")))
+val pm = PaddingWrapper(8, MarginWrapper(100, TextItem("Padding / Margin")))
+
+assert(mp.viewType() != pm.viewType())
+```
+
+Each `ItemWrapper` changes `viewType` of resulting `Item`. This functionality is
+encapsulated by the `Item.Key` class:
+
+```kotlin
+val key = Item.Key.builder()
+    .wrapped(MarginWrapper::class.java)
+    .wrapped(PaddingWrapper::class.java)
+    .build(TextItem::class.java)
+```
+
+`Item.Key` should be used when an explicit item registration is required, for example
+when used with the `AlertDialog` (or item in `ListView` should be _enabled_):
+
+```kotlin
+val adapt = AdaptListView.create(context) {
+
+    // simple TextItem
+    it.include(TextItem::class.java)
+
+    // TextItem wrapped in `PaddingWrapper`
+    val pt = Item.Key.builder()
+        .wrapped(PaddingWrapper::class.java)
+        .build(TextItem::class.java)
+    it.include(pt)
+
+    // TextItem wrapped in `MarginWrapper`
+    val mt = Item.Key.builder()
+        .wrapped(MarginWrapper::class.java)
+        .build(TextItem::class.java)
+    it.include(mt)
+}
+
 val items = listOf(
-        OnClickWrapper(ColorItem(Color.RED)) { item, holder ->
-            Debug.i("I am read")
-        },
-        ColorItem(Color.GREEN),
-        ColorItem(Color.BLUE)
+    TextItem("Text"),
+    PaddingWrapper(12, TextItem("Padding / Text")),
+    MarginWrapper(96, TextItem("Margin / Text"))
 )
+
+adapt.setItems(items)
+
+AlertDialog.Builder(context)
+    .setAdapter(adapt.adapter()) { _, _ ->
         
-adaptViewGroup.setItems(items)
+    }
+    .show()
 ```
 
-You can set items multiple times. `AdaptViewGroup` will _diff_ 2 sets of items to reduce layout operations. This works great with Android `TransitionManager`:
+Please note that explicit registration is required in only some cases of `ListView/AdapterView`.
 
-```kotlin
-// use auto transition or define your own
-TransitionManager.beginDelayedTransition(adaptViewGroup.viewGroup())
-        
-adaptViewGroup.setItems(items)
-```
-
-## Usage in View
-
-Each Item can also be _bound_ to a standalone View. To create an instance of `AdaptView`:
-
-```kotlin
-// initialize by adding to a parent container
-val adaptView = 
-        AdaptView.append(findViewById(R.id.view_group), ColorItem(Color.RED))
-
-// or specify which View to use (for example defined in layout XML)
-val adaptView =
-        AdaptView.create(findViewById(R.id.color_item_view), ColorItem(Color.RED)) {
-            ColorItem.Holder(it)
-        }
-```
-
-Then an Item can be applied to a `AdaptView` instance:
-
-```kotlin
-adaptView.setItem(ColorItem(Color.GREEN))
-adaptView.setItem(ColorItem(Color.BLUE))
-```
 
 ## License
 
 ```
-  Copyright 2018, 2019 Dimitry Ivanov (legal@noties.io)
+  Copyright 2021 Dimitry Ivanov (legal@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

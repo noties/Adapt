@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dip"
+        android:layout_marginBottom="64dip"
+        android:gravity="center_horizontal"
+        android:paddingStart="@dimen/_16"
+        android:paddingEnd="@dimen/_16"
+        android:text="@string/search_nothing_found"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/divider" />
+
+</FrameLayout>

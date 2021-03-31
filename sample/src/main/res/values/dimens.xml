@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_bar_height">56dip</dimen>
+
+    <dimen name="_1">1dip</dimen>
+    <dimen name="_2">2dip</dimen>
+    <dimen name="_4">4dip</dimen>
+    <dimen name="_8">8dip</dimen>
+    <dimen name="_16">16dip</dimen>
+
+</resources>

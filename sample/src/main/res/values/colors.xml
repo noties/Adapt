@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#9C27B0</color>
-    <color name="colorPrimaryDark">#4A148C</color>
-    <color name="colorAccent">#1DE9B6</color>
+    <color name="primary">#00414b</color>
+    <color name="primaryDark">#00414b</color>
+    <color name="accent">#00a8d1</color>
 
     <color name="white">#fff</color>
+    <color name="transparent">#00000000</color>
+    <color name="orange">#fd8f3b</color>
 
+    <color name="page_indicator_container">#CC000000</color>
+    <color name="page_indicator_selected">#40ffffff</color>
 
+    <color name="divider">#15000000</color>
+
+    <color name="search_bar_background">#15000000</color>
+    <color name="search_bar_text_secondary">#40000000</color>
 
 </resources>
