@@ -26,7 +26,20 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.5.1'
 }
 
-if (project.hasProperty('release')) {
+final def isRelease = project.hasProperty('release')
+final def isSnapshot = project.hasProperty('snapshot')
+
+if (isRelease || isSnapshot) {
+    final String version = project.property('VERSION_NAME')
+
+    if (isRelease && version.contains('SNAPSHOT')) {
+        throw new IllegalStateException("Release was requested, but VERSION_NAME contains 'SNAPSHOT': $version")
+    }
+
+    if (isSnapshot && !version.contains('SNAPSHOT')) {
+        throw new IllegalStateException("Snapshot was requested, but VERSION_NAME does not contain 'SNAPSHOT': $version")
+    }
+
     apply from: config['push-aar-gradle']
 
     tasks.withType(Javadoc) {
