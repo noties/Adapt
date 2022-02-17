@@ -79,6 +79,13 @@ public abstract class Item<H extends Item.Holder> {
 
     public abstract void bind(@NonNull H holder);
 
+    // @since $UNRELEASED;
+    @NonNull
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" + id + ")";
+    }
+
 
     public static class Holder {
         private final View itemView;

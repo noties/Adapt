@@ -1,4 +1,3 @@
-- [ ] add default toString to item, simple class name, id + hash?
 - [ ] selectable item background wrapper
 - [ ] collection of wrappers:
     * background color

@@ -4,6 +4,7 @@
 # Unreleased
 ### Added
 * `Item.Wrapper` and `Item#wrap`
+* Item default `toString` implementation
 
 ### Removed
 * `ItemWrapper.Provider` and dedicated constructor `ItemWrapper#init(Provider)` are removed
