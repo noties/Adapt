@@ -79,6 +79,22 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         return new AdaptViewGroup(viewGroup, configuration);
     }
 
+    /**
+     * @since $UNRELEASED;
+     */
+    @NonNull
+    public static AdaptViewGroup init(
+            @NonNull ViewGroup viewGroup,
+            @NonNull final ChangeHandler changeHandler
+    ) {
+        return init(viewGroup, new Configurator() {
+            @Override
+            public void configure(@NonNull Configuration configuration) {
+                configuration.changeHandler(changeHandler);
+            }
+        });
+    }
+
     private static final int ID_ITEM = R.id.adapt_internal_item;
     private static final int ID_HOLDER = R.id.adapt_internal_holder;
 

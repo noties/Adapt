@@ -5,6 +5,7 @@
 ### Added
 * `Item.Wrapper` and `Item#wrap`
 * Item default `toString` implementation
+* `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
 
 ### Changed
 * `ItemView#bind` is overridden by default (no op)
