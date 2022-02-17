@@ -20,4 +20,10 @@ public abstract class ItemView extends Item<CachingHolder> {
     public CachingHolder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         return new CachingHolder(createView(inflater, parent));
     }
+
+    @Override
+    public void bind(@NonNull CachingHolder holder) {
+        // @since $UNRELEASED;
+        // by default no op
+    }
 }

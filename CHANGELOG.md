@@ -6,6 +6,9 @@
 * `Item.Wrapper` and `Item#wrap`
 * Item default `toString` implementation
 
+### Changed
+* `ItemView#bind` is overridden by default (no op)
+
 ### Removed
 * `ItemWrapper.Provider` and dedicated constructor `ItemWrapper#init(Provider)` are removed
 

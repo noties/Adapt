@@ -1,16 +1,18 @@
-- [ ] selectable item background wrapper
+- [ ] ability to obtain adapt instance during `bind` method
+    (so we can be rendering the same item in multiple adapts, expose during `bind`, holder?)
+    this could be problematic, as for example RecyclerView calls bind before adding
+        view to layout as a mean to pre-fill
+- [ ] dividers abstraction (utility to create those)
+
+* sticky - can we maybe add tracnslationY for item transition (so it is possible to have
+  transparent ones and padding?)
+
 - [ ] collection of wrappers:
     * background color
     * text color ? can we do anything like that
     * Provider? Like an environment property?
-- [ ] ability to obtain adapt instance during `bind` method
-    (so we can be rendering the same item in multiple adapts, expose during `bind`, holder?)
-- [ ] `ItemLayout` bind method can be overridden by default (empty)
-- [ ] dividers abstraction (utility to create those)
+    * selectable item background wrapper
 - [ ] unique ids based on source position (hard, throwing throwable for each one?)
-
-* sticky - can we maybe add tracnslationY for item transition (so it is possible to have
-  transparent ones and padding?)
 
 * ItemContainer
 * explicit tags, define colors for each
