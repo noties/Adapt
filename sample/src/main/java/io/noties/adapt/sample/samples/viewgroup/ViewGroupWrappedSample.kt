@@ -9,7 +9,7 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
-import io.noties.adapt.sample.items.wrapper.PaddingWrapper
+import io.noties.adapt.sample.items.wrapper.padding
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
@@ -40,16 +40,16 @@ class ViewGroupWrappedSample : SampleView() {
                     adapt.setItems(ControlItem.addedItems(items))
                 } else {
                     items.remove(noColor)
-                    items.add(ColorBackgroundWrapper(ItemGenerator.nextColor()) {
-                        noColor
-                    })
+                    noColor
+                        .wrap(ColorBackgroundWrapper.create(ItemGenerator.nextColor()))
+                        .also(items::add)
                     adapt.setItems(items)
                 }
             } else {
                 items.remove(noPadding)
-                items.add(PaddingWrapper(100) {
-                    noPadding
-                })
+                noPadding
+                    .padding(100)
+                    .also(items::add)
                 adapt.setItems(items)
             }
         }

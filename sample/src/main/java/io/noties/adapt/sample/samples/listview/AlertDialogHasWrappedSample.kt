@@ -13,6 +13,7 @@ import io.noties.adapt.sample.items.CardItem
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
+import io.noties.adapt.sample.items.wrapper.backgroundColor
 import io.noties.debug.Debug
 import java.util.*
 
@@ -50,9 +51,9 @@ class AlertDialogHasWrappedSample : SampleView() {
                 items
                     .toMutableList()
                     .also {
-                        it.add(ColorBackgroundWrapper(0x20FF00FF) {
-                            PlainItem("💪", Color.MAGENTA, "WRAPPED at ${Date()}")
-                        })
+                        PlainItem("💪", Color.MAGENTA, "WRAPPED at ${Date()}")
+                            .backgroundColor(0x20FF00F)
+                            .also(it::add)
                     }
             }
         )

@@ -10,6 +10,7 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
+import io.noties.adapt.sample.items.wrapper.backgroundColor
 
 @AdaptSample(
     id = "20210326214950",
@@ -41,13 +42,13 @@ class ListViewWrappedEnabledSample : SampleView() {
                 items
                     .toMutableList()
                     .also {
-                        it.add(ColorBackgroundWrapper(0x200000FF) {
-                            PlainItem(
-                                "$counter",
-                                Color.BLACK,
-                                "Wrapped $counter"
-                            )
-                        })
+                        PlainItem(
+                            "$counter",
+                            Color.BLACK,
+                            "Wrapped $counter"
+                        )
+                            .backgroundColor(0x200000FF)
+                            .also(it::add)
 
                         counter -= 1
                     }

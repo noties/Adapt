@@ -41,19 +41,6 @@ class ViewPager2Sample : SampleView() {
     }
 
     class MatchParentWrapper(item: Item<*>) : ItemWrapper(item) {
-
-        /**
-         * can be useful to create _fluent_ wrappers, for example:
-         * ```
-         * PaddingWrapper {
-         *   MarginWrapper {
-         *     MyItem()
-         *   }
-         * }
-         * ```
-         */
-        constructor(provider: Provider) : this(provider.provide())
-
         override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder {
             return super.createHolder(inflater, parent).also {
                 val view = it.itemView()

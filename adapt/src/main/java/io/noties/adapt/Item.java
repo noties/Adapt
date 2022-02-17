@@ -21,6 +21,15 @@ public abstract class Item<H extends Item.Holder> {
     // NB! this value must be synchronized with RecyclerView in case it changes there
     public static final long NO_ID = -1;
 
+    /**
+     * @since $UNRELEASED;
+     */
+    public interface Wrapper {
+        @NonNull
+        @CheckResult
+        Item<?> build(@NonNull Item<?> original);
+    }
+
     protected static long hash(Object... args) {
         return Objects.hash(args);
     }
@@ -49,6 +58,15 @@ public abstract class Item<H extends Item.Holder> {
             viewType = this.viewType = Item.Key.of(this).viewType();
         }
         return viewType;
+    }
+
+    /**
+     * @since $UNRELEASED;
+     */
+    @NonNull
+    @CheckResult
+    public final Item<?> wrap(@NonNull Wrapper in) {
+        return in.build(this);
     }
 
     /**

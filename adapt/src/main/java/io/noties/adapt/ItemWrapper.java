@@ -10,20 +10,12 @@ import androidx.annotation.NonNull;
 /**
  * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView} (add padding,
  * special layout properties). Shares the same {@code id} as wrapped Item.
- *
- * <strong>NB</strong> by default equals/hashCode methods redirect to wrapped item. Be sure to check
- * for the {@link #viewType()} before calling equals or provide own implementation
- *
+ * <p>
  * <strong>NB</strong> if your wrapper has a variable associated, for example certain padding
  * passed via constructor, then execute _binding_ in {@link #bind(Holder)} method. If wrapper is
  * <em>static/immutable</em> then it can process in the also {@link #createHolder(LayoutInflater, ViewGroup)}
  */
 public abstract class ItemWrapper extends Item<Item.Holder> {
-
-    public interface Provider {
-        @NonNull
-        Item<?> provide();
-    }
 
     @NonNull
     public static Item<?> unwrap(@NonNull Item<?> item) {
@@ -42,10 +34,6 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     public ItemWrapper(@NonNull Item<?> item) {
         super(item.id());
         this.item = item;
-    }
-
-    public ItemWrapper(@NonNull Provider provider) {
-        this(provider.provide());
     }
 
     @NonNull
@@ -71,8 +59,6 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     @Override
     @NonNull
     public String toString() {
-        return "ItemWrapper(" +
-                "item=" + item +
-                ')';
+        return getClass().getSimpleName() + "(" + item + ")";
     }
 }
