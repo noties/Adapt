@@ -213,12 +213,7 @@ public class AdaptView implements Adapt {
     public void notifyItemChanged(@NonNull Item<?> item) {
 
         final Item<?> current = item();
-        if (current == null) {
-            return;
-        }
-
-        if (current.viewType() == item.viewType()
-                && current.id() == item.id()) {
+        if (item.equals(current)) {
             notifyChanged();
         }
     }

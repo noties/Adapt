@@ -8,6 +8,8 @@
 
 ### Changed
 * `ItemView#bind` is overridden by default (no op)
+* `AdaptViewGroup#findViewFor` uses `Item#equals` instead of `==` operator
+* `AdaptView` uses `Item#equals` instead of `==` operator
 
 ### Removed
 * `ItemWrapper.Provider` and dedicated constructor `ItemWrapper#init(Provider)` are removed

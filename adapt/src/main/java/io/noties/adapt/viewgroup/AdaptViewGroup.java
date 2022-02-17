@@ -155,7 +155,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     public View findViewFor(@NonNull Item<?> item) {
         for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             final View view = viewGroup.getChildAt(i);
-            if (item == view.getTag(ID_ITEM)) {
+            if (item.equals(view.getTag(ID_ITEM))) {
                 return view;
             }
         }

@@ -1,5 +1,8 @@
 - [ ] ability to obtain adapt instance during `bind` method
     (so we can be rendering the same item in multiple adapts, expose during `bind`, holder?)
+    (holder seems to be a good candiadate, as each adapt instance creates own holder,
+        so we could set instance when new holder is created. What to do when item is no longer
+        attached to an Adapt, can we detect this moment? An `Holder#isAttached` method?)
     this could be problematic, as for example RecyclerView calls bind before adding
         view to layout as a mean to pre-fill
 - [ ] dividers abstraction (utility to create those)
