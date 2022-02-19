@@ -329,6 +329,7 @@ public class AdaptListView implements Adapt {
 
             if (convertView == null) {
                 holder = item.createHolder(inflater, parent);
+                holder.setAdapt(AdaptListView.this);
                 view = holder.itemView();
                 view.setTag(R.id.adapt_internal_listview_holder_tag, holder);
             } else {

@@ -193,7 +193,10 @@ public class AdaptRecyclerView implements Adapt {
                 this.inflater = inflater = LayoutInflater.from(parent.getContext());
             }
 
-            return new ItemViewHolder(firstItem.createHolder(inflater, parent));
+            final Item.Holder holder = firstItem.createHolder(inflater, parent);
+            holder.setAdapt(AdaptRecyclerView.this);
+
+            return new ItemViewHolder(holder);
         }
 
         @Override

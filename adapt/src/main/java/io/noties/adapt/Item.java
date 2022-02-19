@@ -90,6 +90,9 @@ public abstract class Item<H extends Item.Holder> {
     public static class Holder {
         private final View itemView;
 
+        // @since $UNRELEASED;
+        private Adapt adapt;
+
         public Holder(@NonNull View itemView) {
             this.itemView = itemView;
         }
@@ -110,6 +113,28 @@ public abstract class Item<H extends Item.Holder> {
         @CheckResult
         public <V extends View> V requireView(@IdRes int id) {
             return ViewUtils.requireView(itemView, id);
+        }
+
+        /**
+         * Obtain {@link Adapt} instance associated with this Holder. Normally available
+         * after Holder is created.
+         *
+         * @since $UNRELEASED;
+         */
+        @NonNull
+        public Adapt adapt() {
+            final Adapt adapt = this.adapt;
+            if (adapt == null) {
+                throw AdaptException.create("Cannot obtain adapt instance during " +
+                        "<init> constructor call of holder: " + this);
+            }
+            return adapt;
+        }
+
+        // NB! we do not clear adapt in any way, as we do not track if item is still
+        //  attached
+        public void setAdapt(@NonNull Adapt adapt) {
+            this.adapt = adapt;
         }
     }
 

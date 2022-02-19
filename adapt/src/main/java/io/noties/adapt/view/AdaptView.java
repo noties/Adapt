@@ -154,6 +154,7 @@ public class AdaptView implements Adapt {
     private void createHolder(@NonNull Item<?> item) {
 
         final Item.Holder holder = item.createHolder(layoutInflater, viewGroup);
+        holder.setAdapt(AdaptView.this);
 
         view = replaceView(holder.itemView());
         view.setTag(ID_HOLDER, holder);

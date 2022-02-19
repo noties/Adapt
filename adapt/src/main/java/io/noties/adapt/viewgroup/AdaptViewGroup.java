@@ -201,6 +201,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     @Override
     public void insertAt(int index, @NonNull Item item) {
         final Item.Holder holder = item.createHolder(configuration.inflater, viewGroup);
+        holder.setAdapt(AdaptViewGroup.this);
         final View view = holder.itemView();
         if (view.getParent() != null) {
             throw AdaptException.create(String.format(Locale.ROOT,
