@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.6.10'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -16,7 +16,7 @@ allprojects {
             maven { url LOCAL_MAVEN_URL }
         }
         google()
-        jcenter()
+        mavenCentral()
     }
     group = GROUP
     version = VERSION_NAME
@@ -39,7 +39,7 @@ task clean(type: Delete) {
 }
 
 wrapper {
-    gradleVersion '6.1.1'
+    gradleVersion '7.1.1'
     distributionType 'all'
 }
 
@@ -53,6 +53,7 @@ ext {
     ]
 
     deps = [
+            // https://developer.android.com/jetpack/androidx/releases/recyclerview
             'x-recycler-view': 'androidx.recyclerview:recyclerview:1.0.0'
     ]
 }
