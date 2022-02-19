@@ -125,8 +125,7 @@ public abstract class Item<H extends Item.Holder> {
         public Adapt adapt() {
             final Adapt adapt = this.adapt;
             if (adapt == null) {
-                throw AdaptException.create("Cannot obtain adapt instance during " +
-                        "<init> constructor call of holder: " + this);
+                throw AdaptException.create("Adapt is not yet initialized for this holder: " + this);
             }
             return adapt;
         }

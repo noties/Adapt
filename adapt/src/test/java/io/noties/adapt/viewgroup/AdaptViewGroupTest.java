@@ -1,5 +1,17 @@
 package io.noties.adapt.viewgroup;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static io.noties.adapt.util.ExceptionUtil.assertContains;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,30 +23,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.R;
-
-import static io.noties.adapt.util.ExceptionUtil.assertContains;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -122,7 +121,7 @@ public class AdaptViewGroupTest {
         final View view = mock(View.class);
         when(view.getParent()).thenReturn(mock(ViewParent.class));
         final Item.Holder holder = new Item.Holder(view);
-        when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).thenReturn(holder);
+        when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).then((Answer<Item.Holder>) $ -> holder);
 
         try {
             ((AdaptViewGroupDiff.Parent) group).insertAt(0, item);
@@ -173,7 +172,7 @@ public class AdaptViewGroupTest {
         final Item<?> item = mock(Item.class);
         final Item.Holder holder = new Item.Holder(view);
 
-        when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).thenReturn(holder);
+        when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).then((Answer<Item.Holder>) $ -> holder);
 
         parent.insertAt(666, item);
 
