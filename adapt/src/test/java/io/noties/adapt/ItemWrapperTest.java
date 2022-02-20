@@ -1,5 +1,10 @@
 package io.noties.adapt;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,11 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class ItemWrapperTest {
@@ -43,6 +43,15 @@ public class ItemWrapperTest {
         final Wrap wrap = new Wrap(item);
         final Item<?> unwrapped = ItemWrapper.unwrap(wrap);
         Assert.assertEquals(item, unwrapped);
+    }
+
+    @Test
+    public void unwrap_multiple() {
+        final Item<?> item = mock(Item.class);
+        final Item<?> wrapped = item
+                .wrap(Wrap::new)
+                .wrap(Wrap::new);
+        Assert.assertEquals(item, ItemWrapper.unwrap(wrapped));
     }
 
     @Test
@@ -78,8 +87,66 @@ public class ItemWrapperTest {
         verify(item, times(1)).bind(any(Item.Holder.class));
     }
 
+    @Test
+    public void findWrapper_notWrapped() {
+        final Item<?> item = mock(Item.class);
+        Assert.assertNull(ItemWrapper.findWrapper(item, Wrap.class));
+    }
+
+    @Test
+    public void findWrapper_notFound() {
+        // wrapped, but not in required wrapper type
+        final Item<?> item = mock(Item.class);
+        final Item<?> wrapped = item.wrap(Wrap::new);
+        final Yrap yrap = ItemWrapper.findWrapper(wrapped, Yrap.class);
+        Assert.assertNull(yrap);
+    }
+
+    @Test
+    public void findWrapper() {
+        final Item<?> item = mock(Item.class);
+        final Wrap wrap = new Wrap(item);
+        Assert.assertEquals(wrap, ItemWrapper.findWrapper(wrap, Wrap.class));
+    }
+
+    @Test
+    public void findWrapper_multiple() {
+        final Item<?> item = mock(Item.class);
+        final Wrap wrap = new Wrap(item);
+        final Yrap yrap = new Yrap(wrap);
+
+        //noinspection UnnecessaryLocalVariable
+        final Item<?> wrapped = yrap;
+        Assert.assertEquals(yrap, ItemWrapper.findWrapper(wrapped, Yrap.class));
+        Assert.assertEquals(wrap, ItemWrapper.findWrapper(wrapped, Wrap.class));
+    }
+
+    @Test
+    public void findWrapper_subclass() {
+        final Item<?> item = mock(Item.class);
+        final Zrap zrap = new Zrap(item);
+
+        final Yrap yrap = ItemWrapper.findWrapper(zrap, Yrap.class);
+        final Yrap yrapZ = ItemWrapper.findWrapper(zrap, Zrap.class);
+
+        Assert.assertEquals(zrap, yrap);
+        Assert.assertEquals(zrap, yrapZ);
+    }
+
     private static class Wrap extends ItemWrapper {
         Wrap(@NonNull Item<?> item) {
+            super(item);
+        }
+    }
+
+    private static class Yrap extends ItemWrapper {
+        Yrap(@NonNull Item<?> item) {
+            super(item);
+        }
+    }
+
+    private static class Zrap extends Yrap {
+        Zrap(@NonNull Item<?> item) {
             super(item);
         }
     }

@@ -4,6 +4,7 @@
 # Unreleased
 ### Added
 * `Item.Wrapper` and `Item#wrap`
+* `ItemWrapper#findWrapped` method to obtain wrapper of specific type
 * Item default `toString` implementation
 * `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
 

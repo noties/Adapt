@@ -83,7 +83,7 @@ public abstract class Item<H extends Item.Holder> {
     @NonNull
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + id + ")";
+        return getClass().getSimpleName() + "(id=" + id + ")";
     }
 
 
@@ -151,6 +151,7 @@ public abstract class Item<H extends Item.Holder> {
             return ItemKeys.create(item);
         }
 
+        // TODO: rename to `just`?
         /**
          * Creates a Key for an {@link Item} without any wrappers
          */

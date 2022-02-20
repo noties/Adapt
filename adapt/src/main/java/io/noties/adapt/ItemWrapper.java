@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView} (add padding,
@@ -17,6 +18,9 @@ import androidx.annotation.NonNull;
  */
 public abstract class ItemWrapper extends Item<Item.Holder> {
 
+    /**
+     * Returns <em>source</em> item - original item that was wrapped.
+     */
     @NonNull
     public static Item<?> unwrap(@NonNull Item<?> item) {
         while (item instanceof ItemWrapper) {
@@ -27,6 +31,26 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
 
     public static boolean isWrapped(@NonNull Item<?> item) {
         return item instanceof ItemWrapper;
+    }
+
+    /**
+     * Returns first item of specified ItemWrapper {@code type} or null if none found
+     *
+     * @since $UNRELEASED;
+     */
+    @Nullable
+    public static <T extends ItemWrapper> T findWrapper(
+            @NonNull Item<?> item,
+            @NonNull Class<T> type
+    ) {
+        while (item instanceof ItemWrapper) {
+            if (type.isAssignableFrom(item.getClass())) {
+                //noinspection unchecked
+                return (T) item;
+            }
+            item = ((ItemWrapper) item).item();
+        }
+        return null;
     }
 
     private final Item<?> item;
@@ -59,6 +83,6 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     @Override
     @NonNull
     public String toString() {
-        return getClass().getSimpleName() + "(" + item + ")";
+        return getClass().getSimpleName() + "{" + item + "}";
     }
 }

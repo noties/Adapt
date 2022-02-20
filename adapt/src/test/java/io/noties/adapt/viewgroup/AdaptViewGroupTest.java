@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,15 +51,10 @@ public class AdaptViewGroupTest {
         viewGroup = mock(ViewGroup.class);
         diff = mock(AdaptViewGroupDiff.class);
         changeHandler = mock(AdaptViewGroup.ChangeHandler.class);
-        group = AdaptViewGroup.init(viewGroup, new AdaptViewGroup.Configurator() {
-            @Override
-            public void configure(@NonNull AdaptViewGroup.Configuration configuration) {
-                configuration
-                        .adaptViewGroupDiff(diff)
-                        .layoutInflater(mock(LayoutInflater.class))
-                        .changeHandler(changeHandler);
-            }
-        });
+        group = AdaptViewGroup.init(viewGroup, configuration -> configuration
+                .adaptViewGroupDiff(diff)
+                .layoutInflater(mock(LayoutInflater.class))
+                .changeHandler(changeHandler));
     }
 
     @Test
@@ -73,15 +66,15 @@ public class AdaptViewGroupTest {
     public void empty_items_removes_all_views() {
         // for both inputs (null or empty list) all views will be removed
 
-        group.setItems(Collections.<Item<?>>emptyList());
+        group.setItems(Collections.emptyList());
 
         verify(changeHandler, times(1)).removeAll(eq(viewGroup));
 
         // diff must not be called
         verify(diff, never()).diff(
                 any(AdaptViewGroupDiff.Parent.class),
-                ArgumentMatchers.<Item<?>>anyList(),
-                ArgumentMatchers.<Item<?>>anyList());
+                ArgumentMatchers.anyList(),
+                ArgumentMatchers.anyList());
     }
 
     @Test
@@ -95,8 +88,8 @@ public class AdaptViewGroupTest {
         // diff must not be called
         verify(diff, never()).diff(
                 any(AdaptViewGroupDiff.Parent.class),
-                ArgumentMatchers.<Item<?>>anyList(),
-                ArgumentMatchers.<Item<?>>anyList());
+                ArgumentMatchers.anyList(),
+                ArgumentMatchers.anyList());
     }
 
     @Test
@@ -110,8 +103,8 @@ public class AdaptViewGroupTest {
 
         verify(diff, times(1)).diff(
                 any(AdaptViewGroupDiff.Parent.class),
-                ArgumentMatchers.<Item<?>>anyList(),
-                ArgumentMatchers.<Item<?>>anyList());
+                ArgumentMatchers.anyList(),
+                ArgumentMatchers.anyList());
     }
 
     @Test
@@ -134,7 +127,7 @@ public class AdaptViewGroupTest {
     @Test
     public void parent_callbacks_remove_at() {
 
-        final AdaptViewGroupDiff.Parent parent = (AdaptViewGroupDiff.Parent) group;
+        final AdaptViewGroupDiff.Parent parent = group;
 
         parent.removeAt(0);
 
@@ -153,7 +146,7 @@ public class AdaptViewGroupTest {
     @Test
     public void parent_callbacks_move() {
 
-        final AdaptViewGroupDiff.Parent parent = (AdaptViewGroupDiff.Parent) group;
+        final AdaptViewGroupDiff.Parent parent = group;
 
         final View view = mock(View.class);
         when(viewGroup.getChildAt(eq(1))).thenReturn(view);
@@ -189,7 +182,7 @@ public class AdaptViewGroupTest {
     public void parent_callbacks_render_no_holder() {
         // will throw if view at specified index has no holder
 
-        final AdaptViewGroupDiff.Parent parent = (AdaptViewGroupDiff.Parent) group;
+        final AdaptViewGroupDiff.Parent parent = group;
 
         when(viewGroup.getChildAt(anyInt())).thenReturn(mock(View.class));
 
@@ -205,7 +198,7 @@ public class AdaptViewGroupTest {
     @Test
     public void parent_callbacks_render() {
 
-        final AdaptViewGroupDiff.Parent parent = (AdaptViewGroupDiff.Parent) group;
+        final AdaptViewGroupDiff.Parent parent = group;
 
         final View view = mock(View.class);
         //noinspection unchecked

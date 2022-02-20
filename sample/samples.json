@@ -1,5 +1,16 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridWrapperSample",
+    "id": "20220220144816",
+    "title": "Recycler Grid Wrapper",
+    "description": "\u003ctt\u003eWrapper\u003c/tt\u003e that determines a grid \u003cb\u003espan count\u003c/b\u003e for an item",
+    "tags": [
+      "grid",
+      "recyclerview",
+      "wrapper"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDividerWrapperSample",
     "id": "20210329212452",
     "title": "Recycler divider item wrapper",
