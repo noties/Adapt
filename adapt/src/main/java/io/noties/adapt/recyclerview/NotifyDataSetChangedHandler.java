@@ -1,5 +1,7 @@
 package io.noties.adapt.recyclerview;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,7 @@ public class NotifyDataSetChangedHandler implements AdaptRecyclerView.DataSetCha
         return new NotifyDataSetChangedHandler();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void handleDataSetChange(
             @NonNull List<Item<?>> oldList,

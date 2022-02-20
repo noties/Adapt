@@ -60,6 +60,8 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             throw AdaptException.create("RecyclerView parent must be FrameLayout, actual: " + parent);
         }
 
+        // TODO: these are contradicting each other, maybe allow padding (add it to the item)
+        //  or apply to the framelayout.... along with clipToPadding?
         final FrameLayout layout = (FrameLayout) parent;
         if (layout.getPaddingLeft() != 0
                 || layout.getPaddingTop() != 0

@@ -49,8 +49,8 @@ public class ItemWrapperTest {
     public void unwrap_multiple() {
         final Item<?> item = mock(Item.class);
         final Item<?> wrapped = item
-                .wrap(Wrap::new)
-                .wrap(Wrap::new);
+                .wrap(Wrap.create())
+                .wrap(Wrap.create());
         Assert.assertEquals(item, ItemWrapper.unwrap(wrapped));
     }
 
@@ -97,7 +97,7 @@ public class ItemWrapperTest {
     public void findWrapper_notFound() {
         // wrapped, but not in required wrapper type
         final Item<?> item = mock(Item.class);
-        final Item<?> wrapped = item.wrap(Wrap::new);
+        final Item<?> wrapped = item.wrap(Wrap.create());
         final Yrap yrap = ItemWrapper.findWrapper(wrapped, Yrap.class);
         Assert.assertNull(yrap);
     }
@@ -134,6 +134,12 @@ public class ItemWrapperTest {
     }
 
     private static class Wrap extends ItemWrapper {
+
+        @NonNull
+        public static Wrapper create() {
+            return Wrap::new;
+        }
+
         Wrap(@NonNull Item<?> item) {
             super(item);
         }
