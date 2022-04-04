@@ -2,7 +2,7 @@ package io.noties.adapt.sample.items.wrapper
 
 import io.noties.adapt.Item
 import io.noties.adapt.Item.Wrapper
-import io.noties.adapt.ItemWrapper
+import io.noties.adapt.wrapper.ItemWrapper
 
 class PaddingWrapper(private val padding: Int, item: Item<*>) : ItemWrapper(item) {
 

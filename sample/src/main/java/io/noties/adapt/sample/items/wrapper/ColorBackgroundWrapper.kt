@@ -3,7 +3,7 @@ package io.noties.adapt.sample.items.wrapper
 import android.graphics.drawable.ColorDrawable
 import io.noties.adapt.Item
 import io.noties.adapt.Item.Wrapper
-import io.noties.adapt.ItemWrapper
+import io.noties.adapt.wrapper.ItemWrapper
 
 class ColorBackgroundWrapper(val color: Int, item: Item<*>) : ItemWrapper(item) {
 

@@ -22,7 +22,6 @@ import java.util.Map;
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
-import io.noties.adapt.ItemWrapper;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
@@ -56,7 +55,7 @@ public class AdaptListView implements Adapt {
          * Includes item (adds to itemViewTypes) and reports as `isEnabled = false`. Please specify
          * <em>unwrapped</em> (or root) item class
          *
-         * <strong>NB</strong> including an {@link ItemWrapper} won\'t achieve desired effect
+         * <strong>NB</strong> including an {@link io.noties.adapt.wrapper.ItemWrapper} won\'t achieve desired effect
          * here, as each combination of wrappers results in a different view type. Specify
          * here <strong>only regular items</strong>
          *
@@ -134,10 +133,9 @@ public class AdaptListView implements Adapt {
      * <ul>
      *     <li>{@link Configuration#include(Class)}</li>
      *     <li>{@link Configuration#include(Class, boolean)}</li>
+     *     <li>{@link Configuration#include(Item.Key)}</li>
+     *     <li>{@link Configuration#include(Item.Key, boolean)}</li>
      * </ul>
-     *
-     * <strong>NB</strong> resulting {@link AdaptListView} won\'t be able to handle items wrapped
-     * with {@link ItemWrapper}s
      */
     @NonNull
     public static AdaptListView create(
@@ -398,7 +396,7 @@ public class AdaptListView implements Adapt {
         @NonNull
         @Override
         public Configuration include(@NonNull Class<? extends Item<?>> type, boolean isEnabled) {
-            return include(Item.Key.single(type), isEnabled);
+            return include(Item.Key.just(type), isEnabled);
         }
 
         @NonNull

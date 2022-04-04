@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import io.noties.adapt.Item.Key;
+import io.noties.adapt.wrapper.ItemWrapper;
 
 import static org.junit.Assert.fail;
 

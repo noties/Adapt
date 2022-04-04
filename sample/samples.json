@@ -1,5 +1,39 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.MarginWrapperSample",
+    "id": "20220404133658",
+    "title": "MarginWrapper",
+    "description": "\u003ctt\u003eMarginWrapper\u003c/tt\u003e with different \u003ctt\u003eEdges\u003c/tt\u003e usage",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.FrameWrapperSample",
+    "id": "20220404124224",
+    "title": "FrameWrapper",
+    "description": "Usage of \u003ctt\u003eFrameWrapper\u003c/tt\u003e with different values for \u003ctt\u003ewidth\u003c/tt\u003e, \u003ctt\u003eheight\u003c/tt\u003e and \u003ctt\u003econtentGravity\u003c/tt\u003e",
+    "tags": [
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.OnBindWrapperSample",
+    "id": "20220220214955",
+    "title": "OnBindWrapper",
+    "description": "Add \u003ctt\u003eOnBindWrapper\u003c/tt\u003e to each generated item",
+    "tags": [
+      "wrapper"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.WrapperSample",
+    "id": "20220220212847",
+    "title": "ItemWrapper padding background frame",
+    "description": "With \u003cem\u003esimilar\u003c/em\u003e semantics to SwiftUI",
+    "tags": [
+      "wrapper"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridWrapperSample",
     "id": "20220220144816",
     "title": "Recycler Grid Wrapper",

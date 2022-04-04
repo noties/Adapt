@@ -1,4 +1,4 @@
-package io.noties.adapt;
+package io.noties.adapt.wrapper;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,13 +8,21 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import io.noties.adapt.Item;
+
 /**
- * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView} (add padding,
- * special layout properties). Shares the same {@code id} as wrapped Item.
+ * Wrapper that can process Holder of wrapped Item to modify or inspect {@code itemView}
+ * (for example, add padding, special layout properties). Shares the same {@code id} as wrapped Item.
  * <p>
  * <strong>NB</strong> if your wrapper has a variable associated, for example certain padding
- * passed via constructor, then execute _binding_ in {@link #bind(Holder)} method. If wrapper is
+ * passed via constructor, then execute _binding_ in {@link #bind(Item.Holder)} method. If wrapper is
  * <em>static/immutable</em> then it can process in the also {@link #createHolder(LayoutInflater, ViewGroup)}
+ *
+ * <strong>NB!</strong> there could be a downside of using an {@code ItemWrapper}. As each wrapper
+ * creates unique {@link io.noties.adapt.Item.Key}, the same Item (with the same id) would be
+ * considered different if wrapped in a wrapper and if not wrapped. So, as a general rule consider
+ * always using the same set of wrappers for an Item that should be considered the same (for example,
+ * to be properly animated)
  */
 public abstract class ItemWrapper extends Item<Item.Holder> {
 
@@ -55,9 +63,13 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
 
     private final Item<?> item;
 
-    public ItemWrapper(@NonNull Item<?> item) {
-        super(item.id());
+    public ItemWrapper(@NonNull Item<?> item, long id) {
+        super(id);
         this.item = item;
+    }
+
+    public ItemWrapper(@NonNull Item<?> item) {
+        this(item, item.id());
     }
 
     @NonNull

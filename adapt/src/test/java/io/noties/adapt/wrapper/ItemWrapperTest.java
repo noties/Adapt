@@ -1,5 +1,8 @@
-package io.noties.adapt;
+package io.noties.adapt.wrapper;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -15,6 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import io.noties.adapt.Item;
+
 @RunWith(RobolectricTestRunner.class)
 public class ItemWrapperTest {
 
@@ -22,19 +27,19 @@ public class ItemWrapperTest {
     public void unwrap_notWrapped() {
         final Item<?> item = mock(Item.class);
         final Item<?> unwrapped = ItemWrapper.unwrap(item);
-        Assert.assertEquals(item, unwrapped);
+        assertEquals(item, unwrapped);
     }
 
     @Test
     public void isWrapped_false() {
         final Item<?> item = mock(Item.class);
-        Assert.assertFalse(ItemWrapper.isWrapped(item));
+        assertFalse(ItemWrapper.isWrapped(item));
     }
 
     @Test
     public void isWrapped_true() {
         final Wrap wrap = new Wrap(mock(Item.class));
-        Assert.assertTrue(ItemWrapper.isWrapped(wrap));
+        assertTrue(ItemWrapper.isWrapped(wrap));
     }
 
     @Test
@@ -42,7 +47,7 @@ public class ItemWrapperTest {
         final Item<?> item = mock(Item.class);
         final Wrap wrap = new Wrap(item);
         final Item<?> unwrapped = ItemWrapper.unwrap(wrap);
-        Assert.assertEquals(item, unwrapped);
+        assertEquals(item, unwrapped);
     }
 
     @Test
@@ -51,7 +56,7 @@ public class ItemWrapperTest {
         final Item<?> wrapped = item
                 .wrap(Wrap.create())
                 .wrap(Wrap.create());
-        Assert.assertEquals(item, ItemWrapper.unwrap(wrapped));
+        assertEquals(item, ItemWrapper.unwrap(wrapped));
     }
 
     @Test
@@ -59,7 +64,7 @@ public class ItemWrapperTest {
         final long id = 42L;
         final Root root = new Root(id);
         final Wrap wrap = new Wrap(root);
-        Assert.assertEquals(id, wrap.id());
+        assertEquals(id, wrap.id());
     }
 
     @Test
@@ -67,7 +72,7 @@ public class ItemWrapperTest {
         // getter returns the same item supplied to init
         final Item<?> item = mock(Item.class);
         final Wrap wrap = new Wrap(item);
-        Assert.assertEquals(item, wrap.item());
+        assertEquals(item, wrap.item());
     }
 
     @Test
@@ -106,7 +111,7 @@ public class ItemWrapperTest {
     public void findWrapper() {
         final Item<?> item = mock(Item.class);
         final Wrap wrap = new Wrap(item);
-        Assert.assertEquals(wrap, ItemWrapper.findWrapper(wrap, Wrap.class));
+        assertEquals(wrap, ItemWrapper.findWrapper(wrap, Wrap.class));
     }
 
     @Test
@@ -117,8 +122,8 @@ public class ItemWrapperTest {
 
         //noinspection UnnecessaryLocalVariable
         final Item<?> wrapped = yrap;
-        Assert.assertEquals(yrap, ItemWrapper.findWrapper(wrapped, Yrap.class));
-        Assert.assertEquals(wrap, ItemWrapper.findWrapper(wrapped, Wrap.class));
+        assertEquals(yrap, ItemWrapper.findWrapper(wrapped, Yrap.class));
+        assertEquals(wrap, ItemWrapper.findWrapper(wrapped, Wrap.class));
     }
 
     @Test
@@ -129,8 +134,8 @@ public class ItemWrapperTest {
         final Yrap yrap = ItemWrapper.findWrapper(zrap, Yrap.class);
         final Yrap yrapZ = ItemWrapper.findWrapper(zrap, Zrap.class);
 
-        Assert.assertEquals(zrap, yrap);
-        Assert.assertEquals(zrap, yrapZ);
+        assertEquals(zrap, yrap);
+        assertEquals(zrap, yrapZ);
     }
 
     private static class Wrap extends ItemWrapper {

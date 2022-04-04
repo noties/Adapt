@@ -1,17 +1,29 @@
 # Changelog
 
-
 # Unreleased
+
 ### Added
 * `Item.Wrapper` and `Item#wrap`
 * `ItemWrapper#findWrapped` method to obtain wrapper of specific type
 * Item default `toString` implementation
 * `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
+* A collection of wrappers:
+  * `BackgroundWrapper`
+  * `FrameWrapper`
+  * `IdWrapper`
+  * `MarginWrapper`
+  * `OnBindWrapper`
+  * `OnClickWrapper`
+  * `PaddingWrapper`
 
 ### Changed
 * `ItemView#bind` is overridden by default (no op)
 * `AdaptViewGroup#findViewFor` uses `Item#equals` instead of `==` operator
 * `AdaptView` uses `Item#equals` instead of `==` operator
+* `ItemWrapper` moved to package `io.noties.adapt.wrapper`
+
+### Deprecated
+* `Item.Key.single` in favor of `Item.Key.just`
 
 ### Removed
 * `ItemWrapper.Provider` and dedicated constructor `ItemWrapper#init(Provider)` are removed

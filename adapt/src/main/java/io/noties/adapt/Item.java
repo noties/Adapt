@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import io.noties.adapt.util.ViewUtils;
+import io.noties.adapt.wrapper.ItemWrapper;
 
 public abstract class Item<H extends Item.Holder> {
 
@@ -27,7 +28,7 @@ public abstract class Item<H extends Item.Holder> {
     public interface Wrapper {
         @NonNull
         @CheckResult
-        Item<?> build(@NonNull Item<?> original);
+        Item<?> build(@NonNull Item<?> item);
     }
 
     protected static long hash(Object... args) {
@@ -151,13 +152,25 @@ public abstract class Item<H extends Item.Holder> {
             return ItemKeys.create(item);
         }
 
-        // TODO: rename to `just`?
         /**
-         * Creates a Key for an {@link Item} without any wrappers
+         * Creates a Key for an {@link Item} without any wrappers.
+         * Deprecated, use {@link #just(Class)} as {@code just} appears to have explicit and understandable
+         *
+         * @deprecated $UNRELEASED;
          */
         @NonNull
         @CheckResult
+        @Deprecated
         public static Key single(@NonNull Class<? extends Item<?>> item) {
+            return builder().build(item);
+        }
+
+        /**
+         * @since $UNRELEASED;
+         */
+        @NonNull
+        @CheckResult
+        public static Key just(@NonNull Class<? extends Item<?>> item) {
             return builder().build(item);
         }
 

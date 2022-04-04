@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.noties.adapt.wrapper.ItemWrapper;
+
 abstract class ItemKeys {
 
     private static final Map<Item.Key, Integer> CACHE = new HashMap<>(3);

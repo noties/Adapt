@@ -2,7 +2,7 @@ package io.noties.adapt.sample.samples.viewgroup
 
 import android.view.View
 import android.view.ViewGroup
-import io.noties.adapt.ItemWrapper
+import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
