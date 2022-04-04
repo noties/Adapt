@@ -10,7 +10,7 @@ import io.noties.adapt.Item;
 public class IdWrapper extends ItemWrapper {
 
     @NonNull
-    public static Wrapper init(long id) {
+    public static WrapperBuilder init(long id) {
         return item -> new IdWrapper(item, id);
     }
 

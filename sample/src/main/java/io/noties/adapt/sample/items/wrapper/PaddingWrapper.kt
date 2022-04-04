@@ -1,15 +1,16 @@
 package io.noties.adapt.sample.items.wrapper
 
 import io.noties.adapt.Item
-import io.noties.adapt.Item.Wrapper
+import io.noties.adapt.Item.WrapperBuilder
 import io.noties.adapt.wrapper.ItemWrapper
 
 class PaddingWrapper(private val padding: Int, item: Item<*>) : ItemWrapper(item) {
 
     companion object {
-        fun create(padding: Int): Wrapper = Wrapper {
-            PaddingWrapper(padding, it)
-        }
+        fun create(padding: Int): WrapperBuilder =
+            WrapperBuilder {
+                PaddingWrapper(padding, it)
+            }
     }
 
     override fun bind(holder: Holder) {

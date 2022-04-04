@@ -14,7 +14,7 @@ public class OnBindWrapper extends ItemWrapper {
     }
 
     @NonNull
-    public static Wrapper init(@NonNull OnBind onBind) {
+    public static WrapperBuilder init(@NonNull OnBind onBind) {
         return item -> new OnBindWrapper(item, onBind);
     }
 

@@ -30,7 +30,7 @@ class RecyclerViewGridSample : SampleView() {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 
             private val controlViewType = Item.Key
-                .single(ControlItem::class.java)
+                .just(ControlItem::class.java)
                 .viewType()
 
             override fun getSpanSize(position: Int): Int {

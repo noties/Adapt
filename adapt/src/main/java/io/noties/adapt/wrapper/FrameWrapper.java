@@ -20,17 +20,17 @@ public class FrameWrapper extends ItemWrapper {
     public static int NO_GRAVITY = -1;
 
     @NonNull
-    public static Wrapper init() {
+    public static WrapperBuilder init() {
         return init(MATCH_PARENT, WRAP_CONTENT);
     }
 
     @NonNull
-    public static Wrapper init(int width, int height) {
+    public static WrapperBuilder init(int width, int height) {
         return init(width, height, NO_GRAVITY);
     }
 
     @NonNull
-    public static Wrapper init(int width, int height, int contentGravity) {
+    public static WrapperBuilder init(int width, int height, int contentGravity) {
         return item -> new FrameWrapper(item, width, height, contentGravity);
     }
 

@@ -16,7 +16,7 @@ public class OnClickWrapper extends ItemWrapper {
 
     @NonNull
     @CheckResult
-    public static Wrapper init(@NonNull Callbacks callbacks) {
+    public static WrapperBuilder init(@NonNull Callbacks callbacks) {
         return item -> new OnClickWrapper(item, callbacks);
     }
 

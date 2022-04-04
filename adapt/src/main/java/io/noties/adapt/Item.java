@@ -25,7 +25,7 @@ public abstract class Item<H extends Item.Holder> {
     /**
      * @since $UNRELEASED;
      */
-    public interface Wrapper {
+    public interface WrapperBuilder {
         @NonNull
         @CheckResult
         Item<?> build(@NonNull Item<?> item);
@@ -66,7 +66,7 @@ public abstract class Item<H extends Item.Holder> {
      */
     @NonNull
     @CheckResult
-    public final Item<?> wrap(@NonNull Wrapper in) {
+    public final Item<?> wrap(@NonNull WrapperBuilder in) {
         return in.build(this);
     }
 
@@ -142,8 +142,8 @@ public abstract class Item<H extends Item.Holder> {
 
         @NonNull
         @CheckResult
-        public static Builder builder() {
-            return new ItemKeys.KeyImpl.BuilderImpl();
+        public static Builder builder(@NonNull Class<? extends Item<?>> root) {
+            return new ItemKeys.KeyImpl.BuilderImpl(root);
         }
 
         @NonNull
@@ -162,7 +162,7 @@ public abstract class Item<H extends Item.Holder> {
         @CheckResult
         @Deprecated
         public static Key single(@NonNull Class<? extends Item<?>> item) {
-            return builder().build(item);
+            return builder(item).build();
         }
 
         /**
@@ -171,9 +171,12 @@ public abstract class Item<H extends Item.Holder> {
         @NonNull
         @CheckResult
         public static Key just(@NonNull Class<? extends Item<?>> item) {
-            return builder().build(item);
+            return builder(item).build();
         }
 
+        // TODO! we need to determine the order in which items are added:
+        //  first is root
+        //  or root is the last?
         public interface Builder {
 
             @NonNull
@@ -182,7 +185,7 @@ public abstract class Item<H extends Item.Holder> {
 
             @NonNull
             @CheckResult
-            Key build(@NonNull Class<? extends Item<?>> item);
+            Key build();
         }
 
         @CheckResult

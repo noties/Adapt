@@ -29,9 +29,9 @@ class ListViewWrappedEnabledSample : SampleView() {
         val listView: ListView = view.findViewById(R.id.list_view)
         val adapt = AdaptListView.init(listView) {
 
-            val key = Item.Key.builder()
+            val key = Item.Key.builder(PlainItem::class.java)
                 .wrapped(ColorBackgroundWrapper::class.java)
-                .build(PlainItem::class.java)
+                .build()
 
             it.include(key, true)
         }

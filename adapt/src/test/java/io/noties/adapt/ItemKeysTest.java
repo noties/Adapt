@@ -1,5 +1,7 @@
 package io.noties.adapt;
 
+import static org.junit.Assert.fail;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,8 +16,6 @@ import java.util.Collections;
 
 import io.noties.adapt.Item.Key;
 import io.noties.adapt.wrapper.ItemWrapper;
-
-import static org.junit.Assert.fail;
 
 public class ItemKeysTest {
 
@@ -91,9 +91,9 @@ public class ItemKeysTest {
 
     @Test
     public void builder_unmodifiable() {
-        final Key key = Key.builder()
+        final Key key = Key.builder(Root.class)
                 .wrapped(Padding.class)
-                .build(Root.class);
+                .build();
 
         try {
             key.items().add(Margin.class);
@@ -105,8 +105,8 @@ public class ItemKeysTest {
 
     @Test
     public void builder_single() {
-        final Key builder = Key.builder().build(Root.class);
-        final Key single = Key.single(Root.class);
+        final Key builder = Key.builder(Root.class).build();
+        final Key single = Key.just(Root.class);
         Assert.assertEquals(builder, single);
     }
 
@@ -115,15 +115,15 @@ public class ItemKeysTest {
         // key contains the same items, but in different order must be considered
         //  a new key and have different hashCode and equals
 
-        final Key pmr = Key.builder()
+        final Key pmr = Key.builder(Root.class)
                 .wrapped(Padding.class)
                 .wrapped(Margin.class)
-                .build(Root.class);
+                .build();
 
-        final Key mpr = Key.builder()
+        final Key mpr = Key.builder(Root.class)
                 .wrapped(Margin.class)
                 .wrapped(Padding.class)
-                .build(Root.class);
+                .build();
 
         Assert.assertNotEquals(pmr, mpr);
         Assert.assertNotEquals(pmr.viewType(), mpr.viewType());

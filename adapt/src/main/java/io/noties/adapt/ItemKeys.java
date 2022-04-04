@@ -103,35 +103,24 @@ abstract class ItemKeys {
 
         static class BuilderImpl implements Builder {
 
-            private final List<Class<? extends Item<?>>> items;
+            private final List<Class<? extends Item<?>>> items = new ArrayList<>(3);
 
-            BuilderImpl() {
-                this(Collections.<Class<? extends Item<?>>>emptyList());
-            }
-
-            BuilderImpl(@NonNull List<Class<? extends Item<?>>> items) {
-                this.items = items;
+            BuilderImpl(@NonNull Class<? extends Item<?>> root) {
+                items.add(root);
             }
 
             @NonNull
             @Override
             public Builder wrapped(@NonNull Class<? extends ItemWrapper> by) {
-                return new BuilderImpl(with(by));
+                // add first
+                items.add(0, by);
+                return this;
             }
 
             @NonNull
             @Override
-            public Item.Key build(@NonNull Class<? extends Item<?>> item) {
-                return new KeyImpl(with(item));
-            }
-
-            @NonNull
-            @CheckResult
-            List<Class<? extends Item<?>>> with(@NonNull Class<? extends Item<?>> item) {
-                final List<Class<? extends Item<?>>> list = new ArrayList<>(items.size() + 1);
-                list.addAll(items);
-                list.add(item);
-                return Collections.unmodifiableList(list);
+            public Item.Key build() {
+                return new KeyImpl(Collections.unmodifiableList(new ArrayList<>(items)));
             }
         }
     }
@@ -139,7 +128,7 @@ abstract class ItemKeys {
     @NonNull
     @CheckResult
     static Item.Key create(@NonNull Item<?> item) {
-        final List<Class<? extends Item<?>>> items = new ArrayList<>(1);
+        final List<Class<? extends Item<?>>> items = new ArrayList<>(2);
 
         //noinspection unchecked
         items.add((Class<? extends Item<?>>) item.getClass());

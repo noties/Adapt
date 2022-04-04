@@ -33,7 +33,7 @@ class RecyclerViewWrappedDecorationsSample : SampleView() {
                 recyclerView.layoutManager = LinearLayoutManager(view.context)
 
                 // register even decoration
-                Item.Key.builder().wrapped(EvenItem::class.java).build(PlainItem::class.java)
+                Item.Key.builder(PlainItem::class.java).wrapped(EvenItem::class.java).build()
                     .also { key ->
                         Debug.i("event, short: ${key.toShortString()}, regular: $key")
                         recyclerView.addItemDecoration(
@@ -45,7 +45,7 @@ class RecyclerViewWrappedDecorationsSample : SampleView() {
                     }
 
                 // register odd decoration
-                Item.Key.builder().wrapped(OddItem::class.java).build(PlainItem::class.java)
+                Item.Key.builder(PlainItem::class.java).wrapped(OddItem::class.java).build()
                     .also { key ->
                         Debug.i("odd, short: ${key.toShortString()}, regular: $key")
                         recyclerView.addItemDecoration(

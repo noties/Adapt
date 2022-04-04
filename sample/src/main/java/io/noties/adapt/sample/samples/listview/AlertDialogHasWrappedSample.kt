@@ -39,9 +39,9 @@ class AlertDialogHasWrappedSample : SampleView() {
             it.include(PlainItem::class.java)
 
             // explicit item with a Key
-            val key = Item.Key.builder()
+            val key = Item.Key.builder(PlainItem::class.java)
                 .wrapped(ColorBackgroundWrapper::class.java)
-                .build(PlainItem::class.java)
+                .build()
             it.include(key)
         }
 

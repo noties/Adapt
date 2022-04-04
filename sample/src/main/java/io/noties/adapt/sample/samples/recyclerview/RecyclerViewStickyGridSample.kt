@@ -39,7 +39,7 @@ class RecyclerViewStickyGridSample : SampleView() {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
 
                     val sectionViewType = Item.Key
-                        .single(SectionItem::class.java)
+                        .just(SectionItem::class.java)
                         .viewType()
 
                     override fun getSpanSize(position: Int): Int {

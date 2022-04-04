@@ -15,17 +15,17 @@ import io.noties.adapt.Item;
 public class BackgroundWrapper extends ItemWrapper {
 
     @NonNull
-    public static Wrapper clear() {
+    public static WrapperBuilder clear() {
         return init(null);
     }
 
     @NonNull
-    public static Wrapper init(@ColorInt final int color) {
+    public static WrapperBuilder init(@ColorInt final int color) {
         return item -> new BackgroundWrapper(item, new ColorDrawable(color));
     }
 
     @NonNull
-    public static Wrapper init(@Nullable Drawable drawable) {
+    public static WrapperBuilder init(@Nullable Drawable drawable) {
         return item -> new BackgroundWrapper(item, drawable);
     }
 

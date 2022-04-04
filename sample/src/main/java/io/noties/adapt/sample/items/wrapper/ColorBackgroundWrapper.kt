@@ -2,15 +2,16 @@ package io.noties.adapt.sample.items.wrapper
 
 import android.graphics.drawable.ColorDrawable
 import io.noties.adapt.Item
-import io.noties.adapt.Item.Wrapper
+import io.noties.adapt.Item.WrapperBuilder
 import io.noties.adapt.wrapper.ItemWrapper
 
 class ColorBackgroundWrapper(val color: Int, item: Item<*>) : ItemWrapper(item) {
 
     companion object {
-        fun create(color: Int): Wrapper = Wrapper {
-            ColorBackgroundWrapper(color, it)
-        }
+        fun create(color: Int): WrapperBuilder =
+            WrapperBuilder {
+                ColorBackgroundWrapper(color, it)
+            }
     }
 
     override fun bind(holder: Holder) {

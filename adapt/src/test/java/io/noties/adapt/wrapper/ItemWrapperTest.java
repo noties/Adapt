@@ -141,7 +141,7 @@ public class ItemWrapperTest {
     private static class Wrap extends ItemWrapper {
 
         @NonNull
-        public static Wrapper create() {
+        public static WrapperBuilder create() {
             return Wrap::new;
         }
 

@@ -16,8 +16,8 @@ public class ItemTest {
     @Test
     public void wrap() {
         final Item<?> item = mock(Item.class, CALLS_REAL_METHODS);
-        final Item.Wrapper wrapper = mock(Item.Wrapper.class);
-        item.wrap(wrapper);
-        verify(wrapper, times(1)).build(eq(item));
+        final Item.WrapperBuilder wrapperBuilder = mock(Item.WrapperBuilder.class);
+        item.wrap(wrapperBuilder);
+        verify(wrapperBuilder, times(1)).build(eq(item));
     }
 }

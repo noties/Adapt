@@ -7,5 +7,5 @@ fun String.normalized(): String {
     return Normalizer
         .normalize(this, Normalizer.Form.NFKD)
         .replace(Regex("[\\p{InCombiningDiacriticalMarks}]"), "")
-        .toLowerCase(Locale.ROOT)
+        .lowercase(Locale.ROOT)
 }

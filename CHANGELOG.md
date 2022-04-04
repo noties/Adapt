@@ -17,6 +17,8 @@
   * `PaddingWrapper`
 
 ### Changed
+* `Item.Key#builder` now requires root item, `Item.Key.Builder#build` does not require argument;
+  this is done due to possible confusion of positions of items (so, each call wrap previous)
 * `ItemView#bind` is overridden by default (no op)
 * `AdaptViewGroup#findViewFor` uses `Item#equals` instead of `==` operator
 * `AdaptView` uses `Item#equals` instead of `==` operator

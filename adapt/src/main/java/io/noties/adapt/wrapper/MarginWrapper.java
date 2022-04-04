@@ -14,12 +14,12 @@ import io.noties.adapt.util.Edges;
 public class MarginWrapper extends ItemWrapper {
 
     @NonNull
-    public static Wrapper all(int margin) {
+    public static WrapperBuilder all(int margin) {
         return init(Edges.all(margin));
     }
 
     @NonNull
-    public static Wrapper init(@NonNull Edges edges) {
+    public static WrapperBuilder init(@NonNull Edges edges) {
         return item -> new MarginWrapper(item, edges);
     }
 

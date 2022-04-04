@@ -13,12 +13,12 @@ import io.noties.adapt.util.Edges;
 public class PaddingWrapper extends ItemWrapper {
 
     @NonNull
-    public static Wrapper all(int padding) {
+    public static WrapperBuilder all(int padding) {
         return init(Edges.all(padding));
     }
 
     @NonNull
-    public static Wrapper init(@NonNull Edges edges) {
+    public static WrapperBuilder init(@NonNull Edges edges) {
         return item -> new PaddingWrapper(item, edges);
     }
 

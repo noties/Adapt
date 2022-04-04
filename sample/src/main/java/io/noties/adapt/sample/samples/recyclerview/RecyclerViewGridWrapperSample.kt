@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
-import io.noties.adapt.Item.Wrapper
+import io.noties.adapt.Item.WrapperBuilder
 import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
@@ -66,9 +66,10 @@ class RecyclerViewGridWrapperSample : SampleView() {
 
     private open class GridWrapped(val spanCount: Int, item: Item<*>) : ItemWrapper(item) {
         companion object {
-            fun create(spanCount: Int): Wrapper = Wrapper {
-                GridWrapped(spanCount, it)
-            }
+            fun create(spanCount: Int): WrapperBuilder =
+                WrapperBuilder {
+                    GridWrapped(spanCount, it)
+                }
 
             // create extension function
             fun Item<*>.grid(spanCount: Int): Item<*> = wrap(GridWrapped.create(spanCount))
