@@ -174,9 +174,6 @@ public abstract class Item<H extends Item.Holder> {
             return builder(item).build();
         }
 
-        // TODO! we need to determine the order in which items are added:
-        //  first is root
-        //  or root is the last?
         public interface Builder {
 
             @NonNull

@@ -53,6 +53,11 @@ public class ItemKeysTest {
 
         // in this case padding viewType is equal to viewType of the whole Key
         Assert.assertEquals(padding.viewType(), key.viewType());
+
+        final Key built = Key.builder(Root.class)
+                .wrapped(Padding.class)
+                .build();
+        Assert.assertEquals(built, key);
     }
 
     @Test
@@ -76,6 +81,12 @@ public class ItemKeysTest {
         Assert.assertNotEquals(root.viewType(), key.viewType());
         Assert.assertNotEquals(padding.viewType(), key.viewType());
         Assert.assertEquals(margin.viewType(), key.viewType());
+
+        final Key built = Key.builder(Root.class)
+                .wrapped(Padding.class)
+                .wrapped(Margin.class)
+                .build();
+        Assert.assertEquals(built, key);
     }
 
     @Test
@@ -104,7 +115,7 @@ public class ItemKeysTest {
     }
 
     @Test
-    public void builder_single() {
+    public void builder_just() {
         final Key builder = Key.builder(Root.class).build();
         final Key single = Key.just(Root.class);
         Assert.assertEquals(builder, single);
