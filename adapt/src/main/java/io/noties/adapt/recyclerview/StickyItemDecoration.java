@@ -161,7 +161,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        int position = holder.getBindingAdapterPosition();
+        int position = holder.getAdapterPosition();
         Item<?> item = null;
 
         while (position >= 0) {
