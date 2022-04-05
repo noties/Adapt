@@ -1,5 +1,6 @@
 package io.noties.adapt.sample.samples.recyclerview
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,8 @@ class RecyclerViewDiffSample : SampleView() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 
+    // Suppress because it is triggered mistakenly
+    @SuppressLint("InvalidSetHasFixedSize")
     override fun render(view: View) {
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(view.context)

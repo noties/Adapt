@@ -1,0 +1,56 @@
+final def isRelease = project.hasProperty('release')
+final def isSnapshot = project.hasProperty('snapshot')
+
+if (isRelease || isSnapshot) {
+
+    final String version = project.version
+    if (isRelease && version.contains('SNAPSHOT')) {
+        throw new IllegalStateException("Release was requested, but 'version' contains 'SNAPSHOT': $version")
+    }
+    if (isSnapshot && !version.contains('SNAPSHOT')) {
+        throw new IllegalStateException("Snapshot was requested, but 'version' does not contain 'SNAPSHOT': $version")
+    }
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    afterEvaluate {
+        publishing {
+
+            publications {
+                release(MavenPublication) {
+                    groupId group
+                    artifactId 'adapt'
+                    it.version version
+
+                    from components.release
+                }
+            }
+
+            repositories {
+                // local repository - in a directory
+                maven {
+                    url "$rootDir/repo"
+                }
+
+                // sonatype
+                maven {
+                    url isRelease
+                            ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                            : 'https://oss.sonatype.org/content/repositories/snapshots/'
+
+                    credentials(PasswordCredentials) {
+                        username NEXUS_USERNAME
+                        password NEXUS_PASSWORD
+                    }
+                }
+            }
+
+            signing {
+                publishing.publications.all { publication ->
+                    sign publication
+                }
+            }
+        }
+    }
+}

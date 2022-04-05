@@ -22,38 +22,28 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // https://developer.android.com/studio/publish-library/prep-lib-release
+    // What this namespace represents? It doesn't seem to be used anywhere
+    namespace 'io.noties.adapt'
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
 
-    api 'androidx.annotation:annotation:1.1.0'
+    api 'androidx.annotation:annotation:1.3.0'
 
     compileOnly deps['x-recycler-view']
 
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.8.0'
 
     // https://github.com/robolectric/robolectric
     testImplementation 'org.robolectric:robolectric:4.7.3'
 }
 
-final def isRelease = project.hasProperty('release')
-final def isSnapshot = project.hasProperty('snapshot')
-
-if (isRelease || isSnapshot) {
-    final String version = project.property('VERSION_NAME')
-
-    if (isRelease && version.contains('SNAPSHOT')) {
-        throw new IllegalStateException("Release was requested, but VERSION_NAME contains 'SNAPSHOT': $version")
-    }
-
-    if (isSnapshot && !version.contains('SNAPSHOT')) {
-        throw new IllegalStateException("Snapshot was requested, but VERSION_NAME does not contain 'SNAPSHOT': $version")
-    }
-
-    apply from: config['push-aar-gradle']
-
-    tasks.withType(Javadoc) {
-        enabled = false
-    }
-}
+apply from: '../publish.gradle'

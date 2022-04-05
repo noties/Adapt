@@ -1,37 +1,27 @@
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.6.20'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
-        if (project.hasProperty('LOCAL_MAVEN_URL')) {
-            maven { url LOCAL_MAVEN_URL }
-        }
         google()
         mavenCentral()
     }
-    group = GROUP
-    version = VERSION_NAME
+
+    group = 'io.noties'
+    version = '4.0.0-SNAPSHOT'
 
     tasks.withType(Javadoc) {
         enabled(false)
     }
-}
-
-if (hasProperty('local')) {
-    if (!hasProperty('LOCAL_MAVEN_URL')) {
-        throw new RuntimeException('Cannot publish to local maven as no such property exists: LOCAL_MAVEN_URL')
-    }
-    ext.RELEASE_REPOSITORY_URL = LOCAL_MAVEN_URL
-    ext.SNAPSHOT_REPOSITORY_URL = LOCAL_MAVEN_URL
 }
 
 task clean(type: Delete) {
@@ -39,7 +29,7 @@ task clean(type: Delete) {
 }
 
 wrapper {
-    gradleVersion '7.1.1'
+    gradleVersion '7.3.3'
     distributionType 'all'
 }
 
@@ -48,12 +38,11 @@ ext {
     config = [
             'min-sdk'        : 21,
             'target-sdk'     : 30,
-            'build-tools'    : '30.0.2',
-            'push-aar-gradle': 'https://raw.githubusercontent.com/noties/gradle-mvn-push/master/gradle-mvn-push-aar.gradle'
+            'build-tools'    : '30.0.3'
     ]
 
     deps = [
             // https://developer.android.com/jetpack/androidx/releases/recyclerview
-            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.0.0'
+            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.2.1'
     ]
 }

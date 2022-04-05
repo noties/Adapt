@@ -24,6 +24,10 @@ android {
             java.srcDirs += '../sample-utils/annotation'
         }
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 kapt {
@@ -33,8 +37,6 @@ kapt {
 }
 
 dependencies {
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(':adapt')
     implementation deps['x-recycler-view']
