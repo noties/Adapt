@@ -8,6 +8,7 @@
 * Item default `toString` implementation
 * `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
 * `LineNumberId` utility to get current line number in source code
+* `AdaptDivider` utility to _divide_ supplied list (convenience to add dividers/separators)
 * A collection of wrappers:
   * `BackgroundWrapper`
   * `FrameWrapper`
