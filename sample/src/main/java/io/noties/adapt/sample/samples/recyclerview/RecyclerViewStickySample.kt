@@ -11,6 +11,9 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
+import io.noties.adapt.sample.samples.wrapper.background
+import io.noties.adapt.sample.samples.wrapper.onBind
+import io.noties.adapt.sample.util.dip
 import java.util.*
 
 @AdaptSample(
@@ -32,7 +35,15 @@ open class RecyclerViewStickySample : SampleView() {
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         // create item (can be a mock, data will be taken from real list of items)
-        val decoration = StickyItemDecoration.create(recyclerView, SectionItem("Mock"))
+        val decoration = StickyItemDecoration.create(recyclerView, SectionItem("Mock")) {
+            it
+                // for better UX use window background
+                .background(0xFFeeeeee.toInt())
+                .onBind {
+                    it.itemView().translationZ = 12.dip.toFloat()
+                }
+        }
+
         recyclerView.addItemDecoration(decoration)
 
         val adapt = AdaptRecyclerView.init(recyclerView)

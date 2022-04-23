@@ -48,6 +48,17 @@ public class AdaptView implements Adapt {
         return new AdaptView(viewGroup, configuration);
     }
 
+    /**
+     * @since $UNRELEASED;
+     */
+    @NonNull
+    @CheckResult
+    public static AdaptView init(@NonNull ViewGroup viewGroup, @NonNull Item<?> item) {
+        final ConfigurationImpl configuration = new ConfigurationImpl();
+        configuration.item(item);
+        return new AdaptView(viewGroup, configuration);
+    }
+
     static final int ID_HOLDER = R.id.adapt_internal_holder;
     static final int ID_ITEM = R.id.adapt_internal_item;
 

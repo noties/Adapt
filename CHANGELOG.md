@@ -7,9 +7,11 @@
 * `ItemWrapper#findWrapped` method to obtain wrapper of specific type
 * Item default `toString` implementation
 * `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
+* `AdaptView#init` convenience method that takes `Item<?>` directly
 * `LineNumberId` utility to get current line number in source code
 * `AdaptDivider` utility to _divide_ supplied list (convenience to add dividers/separators)
 * `Edges` utility class to encapsulate padding/margin
+* `Decorator` in `StickyItemDecoration` to additionally process sticky item view
 * A collection of wrappers:
   + `BackgroundWrapper`
   + `FrameWrapper`

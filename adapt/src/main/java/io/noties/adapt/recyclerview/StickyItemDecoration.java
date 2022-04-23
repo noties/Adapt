@@ -34,18 +34,34 @@ import io.noties.adapt.view.AdaptView;
  */
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
+    /**
+     * @since $UNRELEASED;
+     */
+    public interface Decorator {
+        @NonNull
+        Item<?> decorate(@NonNull Item<?> item);
+    }
+
     @NonNull
     public static StickyItemDecoration create(
             @NonNull RecyclerView recyclerView,
             @NonNull final Item<?> item
     ) {
+        return create(recyclerView, item, null);
+    }
+
+    /**
+     * @since $UNRELEASED;
+     */
+    @NonNull
+    public static StickyItemDecoration create(
+            @NonNull RecyclerView recyclerView,
+            @NonNull Item<?> item,
+            @Nullable Decorator decorator
+    ) {
         final ViewGroup parent = processRecyclerView(recyclerView);
-        return new StickyItemDecoration(AdaptView.init(parent, new AdaptView.Configurator() {
-            @Override
-            public void configure(@NonNull AdaptView.Configuration configuration) {
-                configuration.item(item);
-            }
-        }));
+        final AdaptView adaptView = AdaptView.init(parent, item);
+        return new StickyItemDecoration(adaptView, decorator);
     }
 
     @NonNull
@@ -89,6 +105,9 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     private final AdaptView adaptView;
     private final int stickyViewType;
 
+    @NonNull
+    private final Decorator decorator;
+
     // flag that is used to invalidate sticky view
     //  as it is inside a different than RecyclerView parent, then parent might measure/layout it
     //  independently, so we must listen fro such an event, so we can invalidate sticky view accordingly
@@ -96,9 +115,12 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
     // For the future, multiple viewtypes can be sticky, even dynamically with a callback interface,
     //  as AdaptView is no longer typed and allows multiple item types
-    StickyItemDecoration(@NonNull AdaptView adaptView) {
+    StickyItemDecoration(@NonNull AdaptView adaptView, @Nullable Decorator decorator) {
         this.adaptView = adaptView;
         this.stickyViewType = Objects.requireNonNull(adaptView.item()).viewType();
+        this.decorator = decorator != null
+                ? decorator
+                : item -> item;
 
         prepareAdaptView(adaptView);
     }
@@ -295,7 +317,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
                 || id == Item.NO_ID
                 || id != Objects.requireNonNull(previousStickyItem).id()) {
 
-            adaptView.setItem(item);
+            adaptView.setItem(decorator.decorate(item));
 
             requestStickyLayout(adaptView.view(), recyclerView);
 
