@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+/**
+ * @since $UNRELEASED;
+ */
 public class Edges {
 
     @NonNull

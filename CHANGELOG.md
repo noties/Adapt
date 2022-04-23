@@ -9,15 +9,16 @@
 * `AdaptViewGroup#init` convenience method that takes `ChangeHandler` directly
 * `LineNumberId` utility to get current line number in source code
 * `AdaptDivider` utility to _divide_ supplied list (convenience to add dividers/separators)
+* `Edges` utility class to encapsulate padding/margin
 * A collection of wrappers:
-  * `BackgroundWrapper`
-  * `FrameWrapper`
-  * `IdWrapper`
-  * `MarginWrapper`
-  * `OnBindWrapper`
-  * `OnClickWrapper`
-  * `PaddingWrapper`
-  * `EnabledWrapper`
+  + `BackgroundWrapper`
+  + `FrameWrapper`
+  + `IdWrapper`
+  + `MarginWrapper`
+  + `OnBindWrapper`
+  + `OnClickWrapper`
+  + `PaddingWrapper`
+  + `EnabledWrapper`
 
 ### Changed
 * `Item.Key#builder` now requires root item, `Item.Key.Builder#build` does not require argument;
