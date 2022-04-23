@@ -1,5 +1,7 @@
 package io.noties.adapt.wrapper;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -27,6 +29,19 @@ public class BackgroundWrapper extends ItemWrapper {
     @NonNull
     public static WrapperBuilder init(@Nullable Drawable drawable) {
         return item -> new BackgroundWrapper(item, drawable);
+    }
+
+    @NonNull
+    public static WrapperBuilder initSelectableItemBackground(@NonNull Context context) {
+        final int[] attrs = {android.R.attr.selectableItemBackground};
+        final TypedArray array = context.obtainStyledAttributes(attrs);
+        final Drawable drawable;
+        try {
+            drawable = array.getDrawable(0);
+        } finally {
+            array.recycle();
+        }
+        return init(drawable);
     }
 
     @Nullable

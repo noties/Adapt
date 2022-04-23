@@ -300,10 +300,10 @@ Each `ItemWrapper` changes `viewType` of resulting `Item`. This functionality is
 encapsulated by the `Item.Key` class:
 
 ```kotlin
-val key = Item.Key.builder()
+val key = Item.Key.builder(TextItem::class.java)
     .wrapped(MarginWrapper::class.java)
     .wrapped(PaddingWrapper::class.java)
-    .build(TextItem::class.java)
+    .build()
 ```
 
 `Item.Key` should be used when an explicit item registration is required, for example
@@ -316,15 +316,15 @@ val adapt = AdaptListView.create(context) {
     it.include(TextItem::class.java)
 
     // TextItem wrapped in `PaddingWrapper`
-    val pt = Item.Key.builder()
+    val pt = Item.Key.builder(TextItem::class.java)
         .wrapped(PaddingWrapper::class.java)
-        .build(TextItem::class.java)
+        .build()
     it.include(pt)
 
     // TextItem wrapped in `MarginWrapper`
-    val mt = Item.Key.builder()
+    val mt = Item.Key.builder(TextItem::class.java)
         .wrapped(MarginWrapper::class.java)
-        .build(TextItem::class.java)
+        .build()
     it.include(mt)
 }
 
@@ -344,6 +344,15 @@ AlertDialog.Builder(context)
 ```
 
 Please note that explicit registration is required in only some cases of `ListView/AdapterView`.
+
+```kotlin
+// since 4.0.0 all items have special `wrap` method
+val item = TextItem("This is text")
+  .wrap(BackgroundWrapper.init(0xFFff0000))
+
+// instead of 
+val item = BackgroundWrapper(0xFFff0000, TextItem("This is text"))
+```
 
 
 ## License

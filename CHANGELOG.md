@@ -17,6 +17,7 @@
   * `OnBindWrapper`
   * `OnClickWrapper`
   * `PaddingWrapper`
+  * `EnabledWrapper`
 
 ### Changed
 * `Item.Key#builder` now requires root item, `Item.Key.Builder#build` does not require argument;
