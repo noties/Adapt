@@ -352,7 +352,25 @@ val item = TextItem("This is text")
 
 // instead of 
 val item = BackgroundWrapper(0xFFff0000, TextItem("This is text"))
+
+// which can be turned into an extension function:
+fun Item<*>.background(color: Int): Item<*> = wrap(BackgroundWrapper.init(color))
+
+// an used:
+val item = TextItem("this is text")
+  .background(0xFFff00ff)
 ```
+
+There is a number of different wrappers distributed along with the library:
+
+* `BackgroundWrapper` - modifies background of item view
+* `EnabledWrapper` - sets `isEnabled` for the item view
+* `FrameWrapper` - wraps item view in a FrameLayout, accepts width, height and gravity
+* `IdWrapper` - changes id of item
+* `MarginWrapper` - changes margins of item view
+* `OnBindWrapper` - accepts a callback that could be triggered each time `onBind` method of original item is called
+* `OnClickWrapper` - adds an `OnClickListener` for item view
+* `PaddingWrapper` - changes paddings of item view
 
 
 ## License
