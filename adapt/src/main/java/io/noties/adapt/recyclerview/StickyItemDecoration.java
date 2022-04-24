@@ -35,7 +35,7 @@ import io.noties.adapt.view.AdaptView;
 public class StickyItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     public interface Decorator {
         @NonNull
@@ -51,7 +51,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     @NonNull
     public static StickyItemDecoration create(

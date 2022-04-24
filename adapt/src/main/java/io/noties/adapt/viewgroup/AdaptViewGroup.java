@@ -80,7 +80,7 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     }
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     @NonNull
     public static AdaptViewGroup init(

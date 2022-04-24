@@ -9,7 +9,7 @@ import io.noties.adapt.Item;
 import io.noties.adapt.util.Edges;
 
 /**
- * @since $UNRELEASED;
+ * @since 4.0.0
  */
 public class MarginWrapper extends ItemWrapper {
 

@@ -10,7 +10,7 @@ import java.util.List;
 import io.noties.adapt.Item;
 
 /**
- * @since $UNRELEASED;
+ * @since 4.0.0
  */
 public abstract class AdaptDivider {
 

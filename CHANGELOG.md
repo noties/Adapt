@@ -1,6 +1,6 @@
 # Changelog
 
-# Unreleased
+# 4.0.0
 
 ### Added
 * `Item.Wrapper` and `Item#wrap`

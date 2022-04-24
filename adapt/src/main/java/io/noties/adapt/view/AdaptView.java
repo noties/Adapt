@@ -49,7 +49,7 @@ public class AdaptView implements Adapt {
     }
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     @NonNull
     @CheckResult

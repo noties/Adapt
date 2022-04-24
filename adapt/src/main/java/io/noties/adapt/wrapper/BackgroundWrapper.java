@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import io.noties.adapt.Item;
 
 /**
- * @since $UNRELEASED;
+ * @since 4.0.0
  */
 public class BackgroundWrapper extends ItemWrapper {
 

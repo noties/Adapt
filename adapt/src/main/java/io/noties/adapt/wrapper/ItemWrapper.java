@@ -44,7 +44,7 @@ public abstract class ItemWrapper extends Item<Item.Holder> {
     /**
      * Returns first item of specified ItemWrapper {@code type} or null if none found
      *
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     @Nullable
     public static <T extends ItemWrapper> T findWrapper(

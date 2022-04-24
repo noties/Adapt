@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import io.noties.adapt.Item;
 
 /**
- * @since $UNRELEASED;
+ * @since 4.0.0
  */
 public class FrameWrapper extends ItemWrapper {
 

@@ -5,7 +5,7 @@ import io.noties.adapt.Item;
 /**
  * <strong>Experimental</strong>.
  *
- * @since $UNRELEASED;
+ * @since 4.0.0
  */
 public abstract class LineNumberId {
 

@@ -23,7 +23,7 @@ public abstract class ItemView extends Item<CachingHolder> {
 
     @Override
     public void bind(@NonNull CachingHolder holder) {
-        // @since $UNRELEASED;
+        // @since 4.0.0
         // by default no op
     }
 }

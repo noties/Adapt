@@ -23,7 +23,7 @@ public abstract class Item<H extends Item.Holder> {
     public static final long NO_ID = -1;
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     public interface WrapperBuilder {
         @NonNull
@@ -62,7 +62,7 @@ public abstract class Item<H extends Item.Holder> {
     }
 
     /**
-     * @since $UNRELEASED;
+     * @since 4.0.0
      */
     @NonNull
     @CheckResult
@@ -80,7 +80,7 @@ public abstract class Item<H extends Item.Holder> {
 
     public abstract void bind(@NonNull H holder);
 
-    // @since $UNRELEASED;
+    // @since 4.0.0
     @NonNull
     @Override
     public String toString() {
@@ -91,7 +91,7 @@ public abstract class Item<H extends Item.Holder> {
     public static class Holder {
         private final View itemView;
 
-        // @since $UNRELEASED;
+        // @since 4.0.0
         private Adapt adapt;
 
         public Holder(@NonNull View itemView) {
@@ -120,7 +120,7 @@ public abstract class Item<H extends Item.Holder> {
          * Obtain {@link Adapt} instance associated with this Holder. Normally available
          * after Holder is created.
          *
-         * @since $UNRELEASED;
+         * @since 4.0.0
          */
         @NonNull
         public Adapt adapt() {
@@ -166,7 +166,7 @@ public abstract class Item<H extends Item.Holder> {
         }
 
         /**
-         * @since $UNRELEASED;
+         * @since 4.0.0
          */
         @NonNull
         @CheckResult
