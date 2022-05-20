@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdkVersion config['target-sdk']
+    buildToolsVersion config['build-tools']
+
+    defaultConfig {
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    api 'androidx.annotation:annotation:1.3.0'
+}

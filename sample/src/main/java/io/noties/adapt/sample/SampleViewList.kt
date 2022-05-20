@@ -17,6 +17,9 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.ui.DividerOverlay
 import io.noties.adapt.sample.ui.SearchBar
 import io.noties.adapt.sample.util.normalized
+import io.noties.adapt.sample.viewdsl.MyItem
+import io.noties.adapt.sample.viewdsl.MyItem2
+import io.noties.adapt.sample.viewdsl.MyItem3
 
 class SampleViewList(
     private val samples: List<Sample>,
@@ -37,7 +40,10 @@ class SampleViewList(
                 val initialItems = samples.map {
                     SampleItem(it, onSampleClicked)
                 }
-                adapt.setItems(initialItems)
+
+//                adapt.setItems(initialItems)
+                // STOPSHIP: STOPIT
+                adapt.setItems(listOf(MyItem(), MyItem2(), MyItem3()) + initialItems)
 
                 val searchBar: SearchBar = findViewById(R.id.search_bar)
                 searchBar.onTextChangedListener = { search ->
