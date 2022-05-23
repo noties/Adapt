@@ -17,7 +17,7 @@ val ViewFactory<*>.WRAP: Int
     }
 
 
-inline fun <G : ViewGroup, reified LP : LayoutParams> ViewFactory.Companion.addChildren(
+fun <G : ViewGroup, LP : LayoutParams> ViewFactory.Companion.addChildren(
     g: G,
     children: ViewFactory<LP>.() -> Unit
 ) {
@@ -34,6 +34,7 @@ inline fun <G : ViewGroup, reified LP : LayoutParams> ViewFactory.Companion.addC
         // now layoutParams are generated
         g.addView(view)
 
+        @Suppress("UNCHECKED_CAST")
         val lp = view.layoutParams as LP
         el.layoutBlocks.forEach { it(lp) }
         el.viewBlocks.forEach { it(view) }

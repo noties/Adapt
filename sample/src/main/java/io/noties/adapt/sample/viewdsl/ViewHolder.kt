@@ -20,9 +20,6 @@ import io.noties.debug.Debug
 import java.util.*
 import kotlin.reflect.KMutableProperty0
 
-// TODO: onClickListener, actually, do not expose, we should focus on _static_ building...
-// TODO: View (just view for bg, or space)
-
 class ViewFactory<LP : LayoutParams> {
 
     fun <V : View> ViewElement<V, LP>.layout(
@@ -126,6 +123,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onView(
 
 @JvmName("holdInNotNull")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.holdIn(
+    property: KMutableProperty0<V>
+): ViewElement<V, LP> = onView {
+    property.set(this)
+}
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<V>
 ): ViewElement<V, LP> = onView {
     property.set(this)
@@ -327,6 +330,7 @@ class MyItem2: ViewItem<MyItem2.Views>(0) {
                     .background(Color.GREEN)
                     .textGravity(Gravity.CENTER)
                     .holdIn(holder::rightView)
+                    .reference(holder::rightView)
             }
         }.layout(FILL, WRAP)
     }

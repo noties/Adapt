@@ -55,5 +55,4 @@ class CircleDrawable(color: Int) : Drawable() {
     override fun setAlpha(alpha: Int) = Unit
     override fun setColorFilter(colorFilter: ColorFilter?) = Unit
     override fun getOpacity(): Int = PixelFormat.OPAQUE
-
 }

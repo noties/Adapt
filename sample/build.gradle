@@ -39,6 +39,8 @@ kapt {
 dependencies {
 
     implementation project(':adapt')
+    implementation project(':adapt-ui')
+
     implementation deps['x-recycler-view']
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'

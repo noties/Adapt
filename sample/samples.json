@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUISample",
+    "id": "20220523200713",
+    "title": "Adapt-UI sample",
+    "description": "usage of \u003ctt\u003eadapt-ui\u003c/tt\u003e module to build simple layouts in Kotlin",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.wrapper.MarginWrapperSample",
     "id": "20220404133658",
     "title": "MarginWrapper",

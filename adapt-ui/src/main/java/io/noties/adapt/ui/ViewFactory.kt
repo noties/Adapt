@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.GravityInt
 
-class ViewFactory<LP : LayoutParams> {
+class ViewFactory<out LP : LayoutParams> {
 
     fun <V : View> ViewElement<V, LP>.layout(
         block: LP.() -> Unit
@@ -78,3 +78,7 @@ class ViewFactory<LP : LayoutParams> {
     // empty companion object to be used in extensions
     companion object
 }
+
+// `*` would match all
+// `ViewGroup.LayoutParams` would match ONLY `ViewGroup.LayoutParams`, not type children
+typealias AnyViewFactory = ViewFactory<*>

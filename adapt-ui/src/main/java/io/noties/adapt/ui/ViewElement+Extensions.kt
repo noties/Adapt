@@ -1,24 +1,30 @@
 package io.noties.adapt.ui
 
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.View
-import android.view.ViewGroup.*
+import android.view.ViewGroup.GONE
+import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup.VISIBLE
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import androidx.annotation.GravityInt
+import androidx.annotation.RequiresApi
+import io.noties.adapt.ui.shape.Shape
 import kotlin.reflect.KMutableProperty0
 
 /**
- * HoldIn
+ * Reference
  */
-@JvmName("holdInNotNull")
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.holdIn(
+@JvmName("referenceNotNull")
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<V>
 ): ViewElement<V, LP> = onView {
     property.set(this)
 }
 
-@JvmName("holdInNullable")
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.holdIn(
+@JvmName("referenceNullable")
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<V?>
 ): ViewElement<V, LP> = onView {
     property.set(this)
@@ -60,6 +66,27 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
         }
     }
 
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(shape: Shape): ViewElement<V, LP> =
+    background(shape.drawable())
+
+/**
+ * Foreground
+ */
+@RequiresApi(Build.VERSION_CODES.M)
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
+    drawable: Drawable?,
+    @GravityInt gravity: Int? = null
+): ViewElement<V, LP> = onView {
+    foreground = drawable
+    gravity?.also { foregroundGravity = it }
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
+    shape: Shape,
+    @GravityInt gravity: Int? = null
+): ViewElement<V, LP> = foreground(shape.drawable(), gravity)
+
 /**
  * Padding
  */
@@ -93,6 +120,15 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
     enabled: Boolean
 ): ViewElement<V, LP> = onView {
     isEnabled = enabled
+}
+
+/**
+ * Activated
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
+    activated: Boolean
+): ViewElement<V, LP> = onView {
+    isActivated = activated
 }
 
 /**
