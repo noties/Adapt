@@ -51,6 +51,7 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
 import java.util.Date
@@ -386,7 +387,10 @@ class AdaptUISample : SampleView() {
 
                     Text("Start")
                         .textAllCaps()
-                        .textColor(Color.WHITE)
+                        .textColor(ColorStateListBuilder.create {
+                            setActivated(Color.BLUE)
+                            setDefault(Color.WHITE)
+                        })
                         .textFont(fontStyle = Typeface.BOLD)
                         .padding(horizontal = 24, vertical = 8)
                         .onView {

@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.element
 
+import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Text(
 
 data class TextStyle(
     val size: Int,
-    @ColorInt val color: Int,
+    val color: ColorStateList,
     @GravityInt val gravity: Int,
     val font: Typeface?,
     val fontStyle: Int = Typeface.NORMAL
@@ -32,8 +33,8 @@ data class TextStyle(
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size.toFloat())
         }
 
-        fun setColor(textView: TextView, @ColorInt color: Int) {
-            textView.setTextColor(color)
+        fun setColor(textView: TextView, colorStateList: ColorStateList) {
+            textView.setTextColor(colorStateList)
         }
 
         fun setGravity(textView: TextView, @GravityInt gravity: Int) {
@@ -54,8 +55,12 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSize(
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
     @ColorInt color: Int
+): ViewElement<V, LP> = textColor(ColorStateList.valueOf(color))
+
+fun <V: TextView, LP: ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
+    colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
-    TextStyle.setColor(this, color)
+    TextStyle.setColor(this, colorStateList)
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textGravity(
