@@ -1,6 +1,7 @@
 package io.noties.adapt.ui.shape
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
 import android.graphics.Outline
@@ -17,6 +18,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
 import io.noties.adapt.ui.dip
+import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.gradient.RadialGradient
 import kotlin.math.min
 
 abstract class Shape {
@@ -178,6 +181,15 @@ abstract class Shape {
                     fillPaint.alpha = alphaInt
                 }
 
+                if (true) {
+                    fillPaint.shader = RadialGradient(
+                        Color.BLACK,
+                        Color.GREEN,
+                        angle = 0F,
+                        startColorRatio = 0.25F
+                    ).createShader(fillRect)
+                }
+
                 drawShape(canvas, fillRect, fillPaint)
             }
 
@@ -206,6 +218,10 @@ abstract class Shape {
                 }
 
                 strokeRect.set(fillRect)
+
+                if (true) {
+                    strokePaint.shader = LinearGradient(100F, Color.BLUE, Color.RED).createShader(strokeRect)
+                }
 
                 // "2.25" is a bit arbitrary - it is a little less than 2,
                 //  so in rounded rectangles the corner curve is drawn properly
