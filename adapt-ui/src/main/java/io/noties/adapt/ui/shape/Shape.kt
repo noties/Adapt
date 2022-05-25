@@ -5,16 +5,19 @@ import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
 import android.graphics.Outline
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
 import io.noties.adapt.ui.dip
+import kotlin.math.min
 
 abstract class Shape {
 
@@ -415,6 +418,132 @@ class RoundedRectangle private constructor(private val radius: Float) : Shape() 
 
     override fun outlineShape(outline: Outline, bounds: Rect) {
         outline.setRoundRect(bounds, radius)
+    }
+}
+
+class Corners private constructor(
+    private val leadingTop: Float,
+    private val topTrailing: Float,
+    private val trailingBottom: Float,
+    private val bottomLeading: Float
+) : Shape() {
+
+    constructor(
+        leadingTop: Int? = null,
+        topTrailing: Int? = null,
+        trailingBottom: Int? = null,
+        bottomLeading: Int? = null
+    ) : this(
+        leadingTop?.dip?.toFloat() ?: 0F,
+        topTrailing?.dip?.toFloat() ?: 0F,
+        trailingBottom?.dip?.toFloat() ?: 0F,
+        bottomLeading?.dip?.toFloat() ?: 0F
+    )
+
+    companion object {
+        operator fun invoke(block: Corners.() -> Unit): Corners {
+            val shape = Corners()
+            block(shape)
+            return shape
+        }
+    }
+
+    private val path = Path()
+    private val rectF = RectF()
+
+    override fun copy(block: Shape.() -> Unit): Shape =
+        Corners(
+            leadingTop, topTrailing, trailingBottom, bottomLeading
+        ).also {
+            this.copy(it)
+            block(it)
+        }
+
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+        buildPath(bounds)
+
+        canvas.drawPath(path, paint)
+    }
+
+    override fun outlineShape(outline: Outline, bounds: Rect) {
+        buildPath(bounds)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            outline.setPath(path)
+        } else {
+            @Suppress("DEPRECATION")
+            outline.setConvexPath(path)
+        }
+    }
+
+    private fun buildPath(bounds: Rect) {
+        path.reset()
+
+        val halfX = bounds.centerX().toFloat()
+        val halfY = bounds.centerY().toFloat()
+
+        val left = bounds.left.toFloat()
+        val top = bounds.top.toFloat()
+        val right = bounds.right.toFloat()
+        val bottom = bounds.bottom.toFloat()
+
+        val maxRadius = min(bounds.width(), bounds.height()) / 2F
+
+        fun radius(value: Float): Float? {
+            val radius = min(value, maxRadius)
+            return if (radius > 0) {
+                radius
+            } else null
+        }
+
+        // leading
+        path.moveTo(left, halfY)
+
+        val leadingTop = radius(this.leadingTop)
+        if (leadingTop != null) {
+            val d = leadingTop * 2F
+            rectF.set(left, top, left + d, top + d)
+            path.lineTo(left, top + leadingTop)
+            path.arcTo(rectF, 180F, 90F)
+        } else {
+            path.lineTo(left, top)
+        }
+        path.lineTo(halfX, top)
+
+        val topTrailing = radius(this.topTrailing)
+        if (topTrailing != null) {
+            val d = topTrailing * 2F
+            rectF.set(right - d, top, right, top + d)
+            path.lineTo(right - topTrailing, top)
+            path.arcTo(rectF, 270F, 90F)
+        } else {
+            path.lineTo(right, top)
+        }
+        path.lineTo(right, halfY)
+
+        val trailingBottom = radius(this.trailingBottom)
+        if (trailingBottom != null) {
+            val d = trailingBottom * 2F
+            rectF.set(right - d, bottom - d, right, bottom)
+            path.lineTo(right, bottom - d)
+            path.arcTo(rectF, 0F, 90F)
+        } else {
+            path.lineTo(right, bottom)
+        }
+
+        path.lineTo(halfX, bottom)
+
+        val bottomLeading = radius(this.bottomLeading)
+        if (bottomLeading != null) {
+            val d = bottomLeading * 2F
+            rectF.set(left, bottom - d, left + d, bottom)
+            path.lineTo(left + bottomLeading, bottom)
+            path.arcTo(rectF, 90F, 90F)
+        } else {
+            path.lineTo(left, bottom)
+        }
+        path.lineTo(left, halfY)
+        path.close()
     }
 }
 

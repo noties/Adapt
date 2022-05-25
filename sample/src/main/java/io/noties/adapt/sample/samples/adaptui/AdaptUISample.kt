@@ -46,11 +46,13 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
+import io.noties.adapt.ui.shape.Corners
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.translation
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
@@ -116,6 +118,7 @@ class AdaptUISample : SampleView() {
         adapt.setItems(items)
     }
 
+    // TODO: corners are temp here
     private class StaticTextItem : ElementItemNoRef(0L) {
         // as `text` is static we use it directly here
         override fun ViewFactory<LayoutParams>.body() {
@@ -127,6 +130,14 @@ class AdaptUISample : SampleView() {
                 // 16 is DP, not pixels
                 .padding(16)
                 .background(Color.YELLOW)
+                .background(Corners(
+                    topTrailing = 48,
+                    bottomLeading = 48,
+                ).apply {
+                    fill(Color.RED)
+                    stroke(Color.BLACK, 2)
+                    padding(8)
+                })
         }
     }
 
@@ -460,7 +471,7 @@ class AdaptUISample : SampleView() {
             }
         }
 
-        //  TODO: think if shape building... it is easy to forget to `add`
+        //  TODO: think of shape building... it is easy to forget to `add`
         private val toggleDrawable
             get() = StatefulShape.drawable {
 
