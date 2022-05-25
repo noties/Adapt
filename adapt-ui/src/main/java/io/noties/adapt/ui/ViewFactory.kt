@@ -9,20 +9,30 @@ import androidx.annotation.GravityInt
 
 class ViewFactory<out LP : LayoutParams> {
 
-    fun <V : View> ViewElement<V, LP>.layout(
-        block: LP.() -> Unit
-    ): ViewElement<V, LP> = this.also {
+    fun <V : View, TLP : LayoutParams> ViewElement<V, TLP>.layout(
+        block: TLP.() -> Unit
+    ): ViewElement<V, TLP> = this.also {
         it.layoutBlocks.add(block)
     }
 
-    fun <V : View> ViewElement<V, LP>.layout(
+    fun <V : View, TLP : LayoutParams> ViewElement<V, TLP>.layout(
         width: Int,
         height: Int,
-        block: (LP.() -> Unit)? = null
-    ): ViewElement<V, LP> = this.also {
+        block: (TLP.() -> Unit)? = null
+    ): ViewElement<V, TLP> = this.also {
         it.layoutBlocks.add {
-            this.width = width.dip
-            this.height = height.dip
+            // special values
+            if (width == FILL || width == WRAP) {
+                this.width = width
+            } else {
+                // else exact dp values, convert to px
+                this.width = width.dip
+            }
+            if (height == FILL || height == WRAP) {
+                this.height = height
+            } else {
+                this.height = height.dip
+            }
         }
         if (block != null) {
             it.layoutBlocks.add(block)
@@ -60,6 +70,11 @@ class ViewFactory<out LP : LayoutParams> {
     ) = margin(all, all, all, all)
 
     fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.margin(
+        horizontal: Int? = null,
+        vertical: Int? = null
+    ) = margin(horizontal, vertical, horizontal, vertical)
+
+    fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.margin(
         leading: Int? = null,
         top: Int? = null,
         trailing: Int? = null,
@@ -73,7 +88,7 @@ class ViewFactory<out LP : LayoutParams> {
         }
     }
 
-    var elements: MutableList<ViewElement<out View, LP>> = mutableListOf()
+    var elements: MutableList<ViewElement<out View, *>> = mutableListOf()
 
     // empty companion object to be used in extensions
     companion object

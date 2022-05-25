@@ -71,6 +71,11 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(
     TextStyle.setFont(this, font, fontStyle)
 }
 
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(): ViewElement<V, LP> =
+    onView {
+        isAllCaps = true
+    }
+
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textStyle(
     style: TextStyle
 ): ViewElement<V, LP> = onView {

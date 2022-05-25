@@ -16,5 +16,3 @@ class ViewElement<V : View, LP : LayoutParams>(
         it.viewBlocks.add(block)
     }
 }
-
-typealias AnyViewElement<V> = ViewElement<V, LayoutParams>

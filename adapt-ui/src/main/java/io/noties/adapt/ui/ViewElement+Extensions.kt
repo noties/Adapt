@@ -3,6 +3,7 @@ package io.noties.adapt.ui
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.VISIBLE
@@ -115,6 +116,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
 
 /**
  * Enabled
+ * @see View.setEnabled
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
     enabled: Boolean
@@ -124,6 +126,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
 
 /**
  * Activated
+ * @see View.setActivated
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
     activated: Boolean
@@ -133,6 +136,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
 
 /**
  * Visible
+ * @see View.setVisibility
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
     visible: Boolean
@@ -142,6 +146,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
 
 /**
  * Alpha
+ * @see View.setAlpha
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.alpha(
     @FloatRange(from = 0.0, to = 1.0) alpha: Float
@@ -151,6 +156,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.alpha(
 
 /**
  * OnClick
+ * @see View.setOnClickListener
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
     action: () -> Unit
@@ -160,6 +166,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
 
 /**
  * Elevation
+ * @see View.setElevation
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
     elevation: Int
@@ -169,6 +176,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
 
 /**
  * Translation
+ * @see View.setTranslationX
+ * @see View.setTranslationY
+ * @see View.setTranslationZ
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
     x: Int? = null,
@@ -178,4 +188,44 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
     x?.dip?.also { translationX = it.toFloat() }
     y?.dip?.also { translationY = it.toFloat() }
     z?.dip?.also { translationZ = it.toFloat() }
+}
+
+/**
+ * ClipChildren
+ * @see ViewGroup.setClipChildren
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipChildren(
+    clipChildren: Boolean
+): ViewElement<V, LP> = onView {
+    this.clipChildren = clipChildren
+}
+
+/**
+ * ClipToPadding
+ * @see ViewGroup.setClipToPadding
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipToPadding(
+    clipToPadding: Boolean
+): ViewElement<V, LP> = onView {
+    this.clipToPadding = clipToPadding
+}
+
+/**
+ * OverScrollMode
+ * @see View.setOverScrollMode
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
+    overScrollMode: Int
+): ViewElement<V, LP> = onView {
+    this.overScrollMode = overScrollMode
+}
+
+/**
+ * ScrollBarStyle
+ * @see View.setScrollBarStyle
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
+    scrollBarStyle: Int
+): ViewElement<V, LP> = onView {
+    this.scrollBarStyle = scrollBarStyle
 }

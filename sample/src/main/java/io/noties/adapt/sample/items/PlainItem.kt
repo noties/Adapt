@@ -47,7 +47,7 @@ class PlainItem(
                     fill(Color.BLUE)
                     add(Circle()) {
                         fill(Color.MAGENTA)
-                        padding(Edges(2))
+                        padding(2)
                         size(24, 24, Gravity.END or Gravity.BOTTOM)
                         translate(x = -16, y = -16)
                     }

@@ -13,4 +13,8 @@ attempt at creating proper abstraction for re-usable view components across diff
   `Padding Margin Item` and `Padding Item` are not the same
 * uniqueness of generated viewType combined with reliable generator that can 
   be proven and does not rely on some randomness of hashcode
+  
+# Benefits
+* adding background would require modification of existing components, so delegation
+* for single file - refactoring, for example cleaning
  
