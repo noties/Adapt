@@ -57,21 +57,21 @@ if (isRelease || isSnapshot) {
 
             repositories {
                 // local repository - in a directory
-                maven {
-                    url "$rootDir/repo"
-                }
+//                maven {
+//                    url "$rootDir/repo"
+//                }
 
                 // sonatype
-//                maven {
-//                    url isRelease
-//                            ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-//                            : 'https://oss.sonatype.org/content/repositories/snapshots/'
-//
-//                    credentials(PasswordCredentials) {
-//                        username NEXUS_USERNAME
-//                        password NEXUS_PASSWORD
-//                    }
-//                }
+                maven {
+                    url isRelease
+                            ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                            : 'https://oss.sonatype.org/content/repositories/snapshots/'
+
+                    credentials(PasswordCredentials) {
+                        username NEXUS_USERNAME
+                        password NEXUS_PASSWORD
+                    }
+                }
             }
 
             signing {

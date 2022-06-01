@@ -23,7 +23,7 @@ android {
 
     // https://developer.android.com/studio/publish-library/prep-lib-release
     // What this namespace represents? It doesn't seem to be used anywhere
-    namespace 'io.noties.adapt'
+    namespace 'io.noties.adapt.ui'
     publishing {
         singleVariant('release') {
             withSourcesJar()
