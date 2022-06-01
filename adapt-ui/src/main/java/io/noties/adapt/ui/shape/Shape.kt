@@ -1,7 +1,6 @@
 package io.noties.adapt.ui.shape
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
 import android.graphics.Outline
@@ -18,11 +17,17 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
 import io.noties.adapt.ui.dip
-import io.noties.adapt.ui.gradient.LinearGradient
-import io.noties.adapt.ui.gradient.RadialGradient
+import io.noties.adapt.ui.gradient.Gradient
 import kotlin.math.min
 
 abstract class Shape {
+
+    companion object {
+        fun <S : Shape> drawable(shape: S, block: S.() -> Unit = {}): Drawable {
+            block(shape)
+            return ShapeDrawable(shape)
+        }
+    }
 
     // cannot have abstract data class
     abstract fun copy(block: Shape.() -> Unit = {}): Shape
@@ -39,10 +44,12 @@ abstract class Shape {
         to.paddingBottom = this.paddingBottom
         to.alpha = this.alpha
         to.fillColor = this.fillColor
+        to.fillGradient = this.fillGradient
         to.strokeColor = this.strokeColor
         to.strokeWidth = this.strokeWidth
         to.strokeDashWidth = this.strokeDashWidth
         to.strokeDashGap = this.strokeDashGap
+        to.strokeGradient = this.strokeGradient
         to.children.addAll(this.children.map { it.copy() })
     }
 
@@ -54,15 +61,14 @@ abstract class Shape {
         height: Int? = null,
         @GravityInt gravity: Int? = null
     ): Shape {
-        this.width = width
-        this.height = height
-        this.gravity = gravity
+        width?.also { this.width = it }
+        height?.also { this.height = it }
+        gravity?.also { this.gravity = it }
         return this
     }
 
-    fun gravity(@GravityInt gravity: Int?): Shape {
-        this.gravity = gravity
-        return this
+    fun gravity(@GravityInt gravity: Int?) = this.also {
+        gravity?.also { this.gravity = it }
     }
 
     fun padding(all: Int): Shape = padding(all, all)
@@ -78,16 +84,16 @@ abstract class Shape {
         trailing: Int? = null,
         bottom: Int? = null
     ): Shape {
-        this.paddingLeading = leading
-        this.paddingTop = top
-        this.paddingTrailing = trailing
-        this.paddingBottom = bottom
+        leading?.also { this.paddingLeading = it }
+        top?.also { this.paddingTop = it }
+        trailing?.also { this.paddingTrailing = it }
+        bottom?.also { this.paddingBottom = it }
         return this
     }
 
     fun translate(x: Int? = null, y: Int? = null): Shape {
-        this.translateX = x
-        this.translateY = y
+        x?.also { this.translateX = it }
+        y?.also { this.translateY = it }
         return this
     }
 
@@ -101,6 +107,10 @@ abstract class Shape {
         return this
     }
 
+    fun fill(gradient: Gradient?) = this.also {
+        this.fillGradient = gradient
+    }
+
     fun stroke(
         @ColorInt color: Int,
         width: Int? = 1,
@@ -108,10 +118,22 @@ abstract class Shape {
         dashGap: Int? = null
     ): Shape {
         this.strokeColor = color
-        this.strokeWidth = width ?: 1
-        this.strokeDashWidth = dashWidth
-        this.strokeDashGap = dashGap
+        width?.also { this.strokeWidth = it }
+        dashWidth?.also { this.strokeDashWidth = it }
+        dashGap?.also { this.strokeDashGap = it }
         return this
+    }
+
+    fun stroke(
+        gradient: Gradient,
+        width: Int? = null,
+        dashWidth: Int? = null,
+        dashGap: Int? = null
+    ) = this.also {
+        this.strokeGradient = gradient
+        width?.also { this.strokeWidth = it }
+        dashWidth?.also { this.strokeDashWidth = it }
+        dashGap?.also { this.strokeDashGap = it }
     }
 
     fun <S : Shape> add(shape: S, block: S.() -> Unit = {}): Shape {
@@ -123,25 +145,30 @@ abstract class Shape {
     var width: Int? = null
     var height: Int? = null
 
-    private var gravity: Int? = null
+    var gravity: Int? = null
 
-    private var translateX: Int? = null
-    private var translateY: Int? = null
+    var translateX: Int? = null
+    var translateY: Int? = null
 
-    private var paddingLeading: Int? = null
-    private var paddingTop: Int? = null
-    private var paddingTrailing: Int? = null
-    private var paddingBottom: Int? = null
+    var paddingLeading: Int? = null
+    var paddingTop: Int? = null
+    var paddingTrailing: Int? = null
+    var paddingBottom: Int? = null
 
     // applied to both fill and stroke and children (?)
-    private var alpha: Float? = null
+    var alpha: Float? = null
 
-    private var fillColor: Int? = null
+    var fillColor: Int? = null
+    var fillGradient: Gradient? = null
 
-    private var strokeColor: Int? = null
-    private var strokeWidth: Int? = null
-    private var strokeDashWidth: Int? = null
-    private var strokeDashGap: Int? = null
+    var strokeColor: Int? = null
+    var strokeWidth: Int? = null
+    var strokeDashWidth: Int? = null
+    var strokeDashGap: Int? = null
+
+    var strokeGradient: Gradient? = null
+
+    fun children(): List<Shape> = children.toList()
 
     private val children: MutableList<Shape> = mutableListOf()
 
@@ -150,6 +177,9 @@ abstract class Shape {
 
     private val fillRect = Rect()
     private val strokeRect = Rect()
+
+    private var fillShaderCache: ShaderCache? = null
+    private var strokeShaderCache: ShaderCache? = null
 
     fun draw(canvas: Canvas, bounds: Rect) {
         val save = canvas.save()
@@ -171,9 +201,17 @@ abstract class Shape {
             val alphaInt = ((alpha ?: 1F) * 255).toInt()
 
             val fillColor = this.fillColor
-            if (fillColor != null && fillColor != 0) {
-                fillPaint.color = fillColor
+            val fillGradient = this.fillGradient
+            // we fill if we have color OR gradient
+            if ((fillGradient != null)
+                || (fillColor != null && fillColor != 0)
+            ) {
+
                 fillPaint.style = Paint.Style.FILL
+
+                if (fillColor != null) {
+                    fillPaint.color = fillColor
+                }
 
                 // important to check if there is alpha, otherwise, a color with alpha component
                 //  would be drawn without alpha (solid)
@@ -181,25 +219,46 @@ abstract class Shape {
                     fillPaint.alpha = alphaInt
                 }
 
-                if (true) {
-                    fillPaint.shader = RadialGradient(
-                        Color.BLACK,
-                        Color.GREEN,
-                        angle = 0F,
-                        startColorRatio = 0.25F
-                    ).createShader(fillRect)
+                // Gradient + Shader
+                // actual gradient object (must be the same)
+                // actual bounds used, because on new bounds new shader must be created
+                if (fillGradient != null) {
+                    // if fillPaint.shader != equal our
+                    val cache = fillShaderCache
+                    if (cache != null
+                        && cache.gradient == fillGradient && fillRect == cache.bounds
+                    ) {
+                        // check that gradient and bounds are the same
+                        fillPaint.shader = cache.shader
+                    } else {
+                        // create new cache instance
+                        fillShaderCache = ShaderCache(
+                            fillGradient,
+                            fillRect
+                        ).also {
+                            fillPaint.shader = it.shader
+                        }
+                    }
+                } else {
+                    fillPaint.shader = null
+                    fillShaderCache = null
                 }
 
                 drawShape(canvas, fillRect, fillPaint)
             }
 
             val strokeColor = this.strokeColor
-            val strokeWidth = this.strokeWidth
+            val strokeWidth = this.strokeWidth ?: 1
+            val strokeGradient = this.strokeGradient
 
-            if (strokeColor != null && strokeWidth != null && strokeColor != 0 && strokeWidth != 0) {
+            if ((strokeColor != null || strokeGradient != null)
+                && strokeColor != 0 && strokeWidth != 0
+            ) {
                 strokePaint.strokeWidth = strokeWidth.dip.toFloat()
                 strokePaint.style = Paint.Style.STROKE
-                strokePaint.color = strokeColor
+                if (strokeColor != null) {
+                    strokePaint.color = strokeColor
+                }
 
                 if (alpha != null) {
                     strokePaint.alpha = alphaInt
@@ -219,20 +278,30 @@ abstract class Shape {
 
                 strokeRect.set(fillRect)
 
-                if (true) {
-                    strokePaint.shader = LinearGradient(100F, Color.BLUE, Color.RED).createShader(strokeRect)
-                }
-
                 // "2.25" is a bit arbitrary - it is a little less than 2,
                 //  so in rounded rectangles the corner curve is drawn properly
                 //  can we even have a proper calculation here? so out-most border of stroke
                 //      would fir exactly fill bounds? can this be done via simple inset?
                 //      or would we need to recalculate everything - including corner radius...
-                val inset = (strokePaint.strokeWidth / 2.25F).toInt()
-                strokeRect.inset(
-                    inset,
-                    inset
-                )
+//                val inset = (strokePaint.strokeWidth / 2.25F).toInt()
+//                strokeRect.inset(
+//                    inset,
+//                    inset
+//                )
+
+                if (strokeGradient != null) {
+                    val cache = strokeShaderCache
+                    if (cache != null && cache.gradient == strokeGradient && cache.bounds == strokeRect) {
+                        strokePaint.shader = cache.shader
+                    } else {
+                        fillShaderCache = ShaderCache(strokeGradient, strokeRect).also {
+                            strokePaint.shader = it.shader
+                        }
+                    }
+                } else {
+                    strokePaint.shader = null
+                    strokeShaderCache = null
+                }
 
                 drawShape(canvas, strokeRect, strokePaint)
             }
@@ -307,13 +376,21 @@ abstract class Shape {
             fillRect.set(bounds)
         }
 
-        // padding is applied to internal? so, we have width and height,
+        // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
         // TODO: layout direction?
         paddingLeading?.dip?.also { fillRect.left += it }
         paddingTop?.dip?.also { fillRect.top += it }
         paddingTrailing?.dip?.also { fillRect.right -= it }
         paddingBottom?.dip?.also { fillRect.bottom -= it }
+    }
+
+    private class ShaderCache(
+        val gradient: Gradient,
+        bounds: Rect
+    ) {
+        val bounds = Rect(bounds)
+        val shader = gradient.createShader(bounds)
     }
 }
 
@@ -457,8 +534,14 @@ class Corners private constructor(
     )
 
     companion object {
-        operator fun invoke(block: Corners.() -> Unit): Corners {
-            val shape = Corners()
+        operator fun invoke(
+            leadingTop: Int? = null,
+            topTrailing: Int? = null,
+            trailingBottom: Int? = null,
+            bottomLeading: Int? = null,
+            block: Corners.() -> Unit
+        ): Corners {
+            val shape = Corners(leadingTop, topTrailing, trailingBottom, bottomLeading)
             block(shape)
             return shape
         }

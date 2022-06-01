@@ -1,11 +1,9 @@
 package io.noties.adapt.sample
 
-import android.graphics.Color
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +17,6 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.ui.DividerOverlay
 import io.noties.adapt.sample.ui.SearchBar
 import io.noties.adapt.sample.util.normalized
-import io.noties.adapt.sample.viewdsl.MyItem
-import io.noties.adapt.sample.viewdsl.MyItem2
-import io.noties.adapt.sample.viewdsl.MyItem3
-import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.Oval
-import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.shape.RoundedRectangle
 
 class SampleViewList(
     private val samples: List<Sample>,
@@ -42,41 +33,12 @@ class SampleViewList(
                     it.layoutManager = LinearLayoutManager(context)
                 }
 
-                val s = Oval()
-                    .fill(Color.RED)
-                    .stroke(Color.BLUE, 8, 8, 8)
-                    .add(Rectangle()) {
-                        size(100, 100, Gravity.BOTTOM or Gravity.END)
-                        translate(-100, -200)
-                        fill(Color.GREEN)
-                    }
-                    .add(RoundedRectangle(8)) {
-                        fill(Color.MAGENTA)
-                        size(128, 56, Gravity.TOP or Gravity.CENTER_HORIZONTAL)
-                        stroke(Color.BLACK, 1)
-                    }
-                    .add(Capsule()) {
-                        fill(Color.CYAN)
-                        stroke(Color.YELLOW, 4, 8, 4)
-                        size(48, 180, Gravity.START or Gravity.BOTTOM)
-                        add(Oval()) {
-                            fill(Color.RED)
-                            stroke(Color.WHITE, 2, 4, 1)
-                            size(24, 24, Gravity.END)
-                        }
-                    }
-                    .drawable()
-
-//                recyclerView.background = s
-
                 val adapt = AdaptRecyclerView.init(recyclerView)
                 val initialItems = samples.map {
                     SampleItem(it, onSampleClicked)
                 }
 
-//                adapt.setItems(initialItems)
-                // STOPSHIP: STOPIT
-                adapt.setItems(listOf(MyItem(), MyItem2(), MyItem3()) + initialItems)
+                adapt.setItems(initialItems)
 
                 val searchBar: SearchBar = findViewById(R.id.search_bar)
                 searchBar.onTextChangedListener = { search ->

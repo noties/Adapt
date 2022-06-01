@@ -14,6 +14,7 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.dip
+import io.noties.adapt.ui.AnyViewElement
 import io.noties.adapt.ui.AnyViewFactory
 import io.noties.adapt.ui.FILL
 import io.noties.adapt.ui.ViewElement
@@ -38,12 +39,15 @@ import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
+import io.noties.adapt.ui.gradient.GradientEdge
+import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.overScrollMode
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
+import io.noties.adapt.ui.scrollBarStyle
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
@@ -52,7 +56,6 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
-import io.noties.adapt.ui.translation
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
@@ -102,9 +105,59 @@ class AdaptUISample : SampleView() {
             }
             .layout(FILL, FILL)
         }
+
+        // TODO: color overload - allow hex string?
     }
 
+    // @formatter:off
+//    private fun fillTest(viewGroup: ViewGroup) {
+//
+//        ViewFactory.addChildren(viewGroup) {
+//            VScroll {
+//                VStack {
+//
+//                    Spacer()
+//                        .layout(0, 0)
+//                        .minimumSize(height = 24)
+//
+//                    repeat(1) {
+//                        Text("In the middle")
+//                            .padding(24)
+//                            .margin(16)
+//                            .background(RoundedRectangle(8) {
+//                                fill(Color.GREEN)
+//                            })
+//                    }
+//
+//                    Spacer()
+//                        .layout(0, 0)
+//                        .minimumSize(height = 24)
+//
+//                    Text("Button, okay?")
+//                        .textSize(16)
+//                        .textColor(Color.WHITE)
+//                        .padding(16, 8)
+//                        .textGravity(Gravity.CENTER)
+//                        .margin(16)
+//                        .background(RoundedRectangle(8) {
+//                            fill(Color.RED)
+//                        })
+//                        .onClick {  }
+//                        .myCustomStyle()
+//                }
+//            }
+//            .fillViewPort(true)
+//        }
+//    }
+    // @formatter:on
+
+    private fun AnyViewElement.myCustomStyle() = this
+        .scrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+        .overScrollMode(View.OVER_SCROLL_NEVER)
+        .padding(101)
+
     private fun bindAdapt(adapt: Adapt) {
+        // add different item, not ui one
         val items = listOf<Item<*>>(
             StaticTextItem(),
             TextItem("Created: ${Date()}"),
@@ -118,26 +171,45 @@ class AdaptUISample : SampleView() {
         adapt.setItems(items)
     }
 
-    // TODO: corners are temp here
     private class StaticTextItem : ElementItemNoRef(0L) {
         // as `text` is static we use it directly here
         override fun ViewFactory<LayoutParams>.body() {
-            Text("This is static text that never changes")
+            Text("This is static text\nthat never changes")
+                .textGravity(Gravity.CENTER)
+                .textColor(Color.BLACK)
                 // 24 is SP, not pixels
                 .textSize(24)
-                .textColor(Color.BLACK)
-                .textGravity(Gravity.CENTER)
-                // 16 is DP, not pixels
-                .padding(16)
-                .background(Color.YELLOW)
-                .background(Corners(
-                    topTrailing = 48,
-                    bottomLeading = 48,
-                ).apply {
-                    fill(Color.RED)
-                    stroke(Color.BLACK, 2)
-                    padding(8)
+                // 48 is Dp here
+                .padding(48)
+                .layout(FILL, 256)
+                // Note that shape has distinct padding from the view
+                .background(Corners(leadingTop = 32) {
+                    padding(16)
+
+                    fill(
+                        LinearGradient(
+                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                            Color.YELLOW,
+                            Color.RED
+                        )
+                    )
+
+                    // add copy of self to stroke with padding
+                    add(copy()) {
+                        fill(null)
+                        stroke(
+                            LinearGradient(
+                                GradientEdge.Top to GradientEdge.Bottom,
+                                Color.MAGENTA,
+                                Color.BLUE
+                            ),
+                            4,
+                            16
+                        )
+                        padding(2)
+                    }
                 })
+                .elevation(12)
         }
     }
 
@@ -215,6 +287,7 @@ class AdaptUISample : SampleView() {
                 paragraph()
             }
         }
+        // @formatter:on
 
         private fun ViewFactory<LinearLayout.LayoutParams>.square(color: Int) {
             View()
@@ -354,6 +427,7 @@ class AdaptUISample : SampleView() {
             .padding(16)
             .background(0x10000000)
         }
+        // @formatter:on
 
         private val background = StatefulShape.drawable {
             val base = Capsule {
@@ -414,6 +488,7 @@ class AdaptUISample : SampleView() {
                 .pressable(RoundedRectangle(12) {
                     stroke(Color.BLACK, 2)
                     fill(Color.WHITE)
+                    padding(1)
                 })
                 .padding(8)
                 .padding(bottom = 12)
@@ -423,6 +498,7 @@ class AdaptUISample : SampleView() {
             }
             .padding(16, 8)
         }
+        // @formatter:on
 
         private val iconShape: Shape
             get() = Rectangle {
@@ -441,7 +517,6 @@ class AdaptUISample : SampleView() {
                 padding(4)
             }
 
-        // @formatter:on
         private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pressable(
             shape: Shape
         ): ViewElement<V, LP> = onView {
@@ -450,12 +525,12 @@ class AdaptUISample : SampleView() {
 
             background = StatefulShape.drawable {
                 val base = shape.copy {
-                    padding(bottom = distance)
+                    padding(bottom = distance + (paddingBottom ?: 0))
                 }
                 setPressed(base)
                 setDefault(Rectangle {
                     add(shape.copy()) {
-                        size(null, 24, Gravity.BOTTOM)
+                        size(null, 32, Gravity.BOTTOM)
                         fill(Color.GREEN)
                     }
                     add(base)
@@ -471,22 +546,22 @@ class AdaptUISample : SampleView() {
             }
         }
 
-        //  TODO: think of shape building... it is easy to forget to `add`
         private val toggleDrawable
             get() = StatefulShape.drawable {
 
                 val control = Rectangle {
                     size(width = 12)
                     fill(Color.GRAY)
-                    stroke(Color.BLACK, 2)
+                    stroke(Color.BLACK, 1)
                 }
 
                 setActivated(Rectangle {
 
-                    add(Rectangle()) {
-                        padding(2, 2, 12, 2)
+                    add(Rectangle {
+                        padding(1)
+                        padding(trailing = 12)
                         fill(Color.GREEN)
-                    }
+                    })
                     add(control.copy {
                         gravity(Gravity.END)
                     })
@@ -496,7 +571,8 @@ class AdaptUISample : SampleView() {
 
                 setDefault(Rectangle {
                     add(Rectangle()) {
-                        padding(12, 2, 2, 2)
+                        padding(1)
+                        padding(leading = 12)
                         fill(Color.RED)
                     }
                     add(control.copy())

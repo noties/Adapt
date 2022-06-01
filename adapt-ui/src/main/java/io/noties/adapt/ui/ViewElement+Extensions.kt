@@ -229,3 +229,16 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
 ): ViewElement<V, LP> = onView {
     this.scrollBarStyle = scrollBarStyle
 }
+
+/**
+ * Minimum width and height
+ * @see View.setMinimumWidth
+ * @see View.setMinimumHeight
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
+    width: Int? = null,
+    height: Int? = null
+): ViewElement<V, LP> = onView {
+    width?.dip?.also { minimumWidth = it }
+    height?.dip?.also { minimumHeight = it }
+}

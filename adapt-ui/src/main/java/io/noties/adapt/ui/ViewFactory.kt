@@ -9,7 +9,7 @@ import androidx.annotation.GravityInt
 
 class ViewFactory<out LP : LayoutParams> {
 
-    fun <V : View, TLP : LayoutParams> ViewElement<V, TLP>.layout(
+    fun <V : View, TLP : LayoutParams> ViewElement<V, TLP>.onLayout(
         block: TLP.() -> Unit
     ): ViewElement<V, TLP> = this.also {
         it.layoutBlocks.add(block)
