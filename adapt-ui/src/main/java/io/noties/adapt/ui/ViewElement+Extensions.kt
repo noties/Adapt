@@ -238,6 +238,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
 /**
  * NoClip
  */
-fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noCLip(): ViewElement<V, LP> =
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noClip(): ViewElement<V, LP> =
     this.clipChildren(false)
         .clipToPadding(false)
