@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.shape
 
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
@@ -681,6 +682,41 @@ class Capsule : Shape() {
     }
 
     private fun radius(bounds: Rect): Float = Math.min(bounds.width(), bounds.height()) / 2F
+}
+
+// NB! it discards received paint (so, fill, nor stroke would function)
+class Asset(private val resource: Drawable) : Shape() {
+
+    init {
+
+        // we need fill value in order to trigger drawing
+        fill(0xFF000000.toInt())
+
+        // we need to report size, let's see if bounds are empty
+        val density = Resources.getSystem().displayMetrics.density
+
+        fun value(intrinsic: Int?): Int? = intrinsic
+            ?.takeIf { it > 0 }
+            ?.let { (it / density).toInt() }
+
+        val w = value(resource.intrinsicWidth)
+        val h = value(resource.intrinsicHeight)
+
+        if (w != null && h != null) {
+            size(w, h)
+        }
+    }
+
+    override fun copy(block: Shape.() -> Unit): Shape = Asset(resource).also {
+        this.copy(it)
+        block(this)
+    }
+
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+        resource.bounds = bounds
+        resource.alpha = paint.alpha
+        resource.draw(canvas)
+    }
 }
 
 class ShapeDrawable(private val shape: Shape) : Drawable() {

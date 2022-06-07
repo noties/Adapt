@@ -17,16 +17,8 @@ import kotlin.reflect.KMutableProperty0
 /**
  * Reference
  */
-@JvmName("referenceNotNull")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
-    property: KMutableProperty0<V>
-): ViewElement<V, LP> = onView {
-    property.set(this)
-}
-
-@JvmName("referenceNullable")
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
-    property: KMutableProperty0<V?>
+    property: KMutableProperty0<in V>
 ): ViewElement<V, LP> = onView {
     property.set(this)
 }
@@ -242,3 +234,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     width?.dip?.also { minimumWidth = it }
     height?.dip?.also { minimumHeight = it }
 }
+
+/**
+ * NoClip
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noCLip(): ViewElement<V, LP> =
+    this.clipChildren(false)
+        .clipToPadding(false)

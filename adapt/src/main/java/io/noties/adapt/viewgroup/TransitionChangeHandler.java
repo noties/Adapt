@@ -68,6 +68,20 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
         return new TransitionChangeHandler(configuration);
     }
 
+    // @since $UNRELEASED;
+    @NonNull
+    public static TransitionChangeHandler create(@NonNull ViewGroupProvider provider) {
+        final ConfigurationImpl configuration = new ConfigurationImpl();
+        configuration.viewGroupProvider(provider);
+        return new TransitionChangeHandler(configuration);
+    }
+
+    // @since $UNRELEASED;
+    @NonNull
+    public static TransitionChangeHandler createTransitionOnParent() {
+        return create(new ParentViewGroupProvider());
+    }
+
     @NonNull
     private final AdaptViewGroup.ChangeHandler changeHandler;
 

@@ -1,5 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
@@ -48,6 +49,7 @@ import io.noties.adapt.ui.overScrollMode
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.scrollBarStyle
+import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
@@ -208,6 +210,8 @@ class AdaptUISample : SampleView() {
                         )
                         padding(2)
                     }
+
+//                    add(Asset())
                 })
                 .elevation(12)
         }
@@ -219,7 +223,11 @@ class AdaptUISample : SampleView() {
 
         class References {
             lateinit var textView: TextView
+            var textViewNullable: TextView? = null
         }
+
+        private class LabelView(context: Context): TextView(context)
+        private fun <LP: LayoutParams> ViewFactory<LP>.Label(): ViewElement<LabelView, LayoutParams> = ViewElement<LabelView, LayoutParams> { LabelView(it) }.also(elements::add)
 
         override fun ViewFactory<LayoutParams>.body(references: References) {
             VStack {
@@ -227,10 +235,11 @@ class AdaptUISample : SampleView() {
                     // 48 is already dp
                     .layout(FILL, 48)
                     .background(Color.MAGENTA)
-                Text()
+                Label()
                     .textSize(17)
                     .textFont(null, Typeface.BOLD)
                     .reference(references::textView)
+                    .reference(references::textViewNullable)
                     .padding(8)
             }
         }
