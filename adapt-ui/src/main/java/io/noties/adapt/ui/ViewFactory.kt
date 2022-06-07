@@ -1,5 +1,6 @@
 package io.noties.adapt.ui
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -7,7 +8,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.GravityInt
 
-class ViewFactory<out LP : LayoutParams> {
+class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
     fun <V : View, TLP : LayoutParams> ViewElement<V, TLP>.onLayout(
         block: TLP.() -> Unit

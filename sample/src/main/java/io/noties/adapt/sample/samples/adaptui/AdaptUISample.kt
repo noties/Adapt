@@ -211,7 +211,12 @@ class AdaptUISample : SampleView() {
                         padding(2)
                     }
 
-//                    add(Asset())
+                    add(Asset(context.getDrawable(R.drawable.ic_search_24)!!)) {
+                        gravity(Gravity.BOTTOM or Gravity.END)
+                        translate(-8, -8)
+                        alpha(0.5F)
+                        size(48, 48)
+                    }
                 })
                 .elevation(12)
         }

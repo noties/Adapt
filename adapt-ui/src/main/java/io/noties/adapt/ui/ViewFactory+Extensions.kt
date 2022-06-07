@@ -29,7 +29,7 @@ fun <G : ViewGroup, LP : LayoutParams> ViewFactory.Companion.addChildren(
     children: ViewFactory<LP>.() -> Unit
 ) {
 
-    val factory = ViewFactory<LP>()
+    val factory = ViewFactory<LP>(g.context)
     children(factory)
 
     factory.elements.forEach { el ->
@@ -63,7 +63,7 @@ fun <R> ViewFactory.Companion.createView(
     children: ViewFactory<LayoutParams>.(R) -> Unit
 ): View {
 
-    val factory = ViewFactory<LayoutParams>()
+    val factory = ViewFactory<LayoutParams>(context)
     children(factory, references)
 
     // ensure single element
