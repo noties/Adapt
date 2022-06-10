@@ -53,6 +53,9 @@ class StatefulShape {
     fun setActivated(shape: Shape): StatefulShape =
         set(android.R.attr.state_activated, shape)
 
+    fun setSelected(shape: Shape): StatefulShape =
+        set(android.R.attr.state_selected, shape)
+
     fun setDefault(shape: Shape): StatefulShape =
         set(StateSet.WILD_CARD, shape)
 }

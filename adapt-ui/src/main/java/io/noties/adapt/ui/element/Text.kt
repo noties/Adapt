@@ -9,10 +9,11 @@ import androidx.annotation.ColorInt
 import androidx.annotation.GravityInt
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 
 @Suppress("FunctionName")
 fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Text(
-    text: String? = null
+    text: CharSequence? = null
 ): ViewElement<TextView, LP> {
     // not only return, but we also need to add it to internal collection
     return ViewElement<TextView, LP> {
@@ -45,6 +46,13 @@ data class TextStyle(
             textView.setTypeface(font, style)
         }
     }
+
+    fun applyTo(textView: TextView) {
+        setSize(textView, size)
+        setColor(textView, color)
+        setGravity(textView, gravity)
+        setFont(textView, font, fontStyle)
+    }
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSize(
@@ -57,7 +65,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
     @ColorInt color: Int
 ): ViewElement<V, LP> = textColor(ColorStateList.valueOf(color))
 
-fun <V: TextView, LP: ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
     colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
     TextStyle.setColor(this, colorStateList)
@@ -76,16 +84,25 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(
     TextStyle.setFont(this, font, fontStyle)
 }
 
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(): ViewElement<V, LP> =
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(
+    allCaps: Boolean = true
+): ViewElement<V, LP> =
     onView {
-        isAllCaps = true
+        isAllCaps = allCaps
+    }
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHideIfEmpty(
+    hideIfEmpty: Boolean = true
+): ViewElement<V, LP> =
+    onView {
+        TextWatcherHideIfEmpty.remove(this)
+        if (hideIfEmpty) {
+            TextWatcherHideIfEmpty.init(this)
+        }
     }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textStyle(
     style: TextStyle
 ): ViewElement<V, LP> = onView {
-    TextStyle.setSize(this, style.size)
-    TextStyle.setColor(this, style.color)
-    TextStyle.setGravity(this, style.gravity)
-    TextStyle.setFont(this, style.font, style.fontStyle)
+    style.applyTo(this)
 }

@@ -24,21 +24,29 @@ class ColorStateListBuilder {
         return ColorStateList(states.toTypedArray(), colors.toIntArray())
     }
 
-    fun addState(state: Int, @ColorInt color: Int) = addState(intArrayOf(state), color)
+    fun set(state: Int, @ColorInt color: Int) =
+        set(intArrayOf(state), color)
 
-    fun addState(states: IntArray, @ColorInt color: Int) = this.also {
+    fun set(states: IntArray, @ColorInt color: Int) = this.also {
         this.states.add(Entry(states, color))
     }
 
-    fun setPressed(@ColorInt color: Int) = addState(android.R.attr.state_pressed, color)
+    fun setPressed(@ColorInt color: Int) =
+        set(android.R.attr.state_pressed, color)
 
-    fun setEnabled(@ColorInt color: Int) = addState(android.R.attr.state_enabled, color)
+    fun setEnabled(@ColorInt color: Int) =
+        set(android.R.attr.state_enabled, color)
 
-    fun setFocused(@ColorInt color: Int) = addState(android.R.attr.state_focused, color)
+    fun setFocused(@ColorInt color: Int) =
+        set(android.R.attr.state_focused, color)
 
-    fun setActivated(@ColorInt color: Int) = addState(android.R.attr.state_activated, color)
+    fun setActivated(@ColorInt color: Int) =
+        set(android.R.attr.state_activated, color)
 
-    fun setDefault(@ColorInt color: Int) = addState(intArrayOf(), color)
+    fun setSelected(@ColorInt color: Int) =
+        set(android.R.attr.state_selected, color)
+
+    fun setDefault(@ColorInt color: Int) = set(intArrayOf(), color)
 
 
     private class Entry(val states: IntArray, @ColorInt val color: Int)

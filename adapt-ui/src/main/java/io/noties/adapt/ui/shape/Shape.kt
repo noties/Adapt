@@ -687,6 +687,9 @@ class Capsule : Shape() {
 // NB! it discards received paint (so, fill, nor stroke would function)
 class Asset(private val resource: Drawable) : Shape() {
 
+    // empty companion object in order to allow users adding factory-like creation methods
+    companion object {}
+
     init {
 
         // we need fill value in order to trigger drawing

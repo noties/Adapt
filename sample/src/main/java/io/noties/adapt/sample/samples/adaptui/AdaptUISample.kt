@@ -38,6 +38,7 @@ import io.noties.adapt.ui.element.textAllCaps
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
+import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.gradient.GradientEdge
@@ -107,8 +108,6 @@ class AdaptUISample : SampleView() {
             }
             .layout(FILL, FILL)
         }
-
-        // TODO: color overload - allow hex string?
     }
 
     // @formatter:off
@@ -231,8 +230,11 @@ class AdaptUISample : SampleView() {
             var textViewNullable: TextView? = null
         }
 
-        private class LabelView(context: Context): TextView(context)
-        private fun <LP: LayoutParams> ViewFactory<LP>.Label(): ViewElement<LabelView, LayoutParams> = ViewElement<LabelView, LayoutParams> { LabelView(it) }.also(elements::add)
+        private class LabelView(context: Context) : TextView(context)
+
+        @Suppress("FunctionName")
+        private fun <LP : LayoutParams> ViewFactory<LP>.Label(): ViewElement<LabelView, LayoutParams> =
+            ViewElement<LabelView, LayoutParams> { LabelView(it) }.also(elements::add)
 
         override fun ViewFactory<LayoutParams>.body(references: References) {
             VStack {
@@ -245,6 +247,7 @@ class AdaptUISample : SampleView() {
                     .textFont(null, Typeface.BOLD)
                     .reference(references::textView)
                     .reference(references::textViewNullable)
+                    .textHideIfEmpty()
                     .padding(8)
             }
         }
