@@ -7,12 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.noties.adapt.Adapt;
-import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.util.ListUtils;
 
@@ -48,10 +45,30 @@ public class AdaptRecyclerView implements Adapt {
          */
         @NonNull
         Configuration dataSetChangeHandler(@NonNull DataSetChangeHandler dataSetChangeHandler);
+
+        /**
+         * By default {@link DynamicItemFactory} is used
+         *
+         * @since $UNRELEASED;
+         */
+        @NonNull
+        Configuration itemFactory(@NonNull ItemFactory itemFactory);
     }
 
     public interface Configurator {
         void configure(@NonNull Configuration configuration);
+    }
+
+    /**
+     * Item factory that is responsible for creation of item view
+     *
+     * @since $UNRELEASED;
+     */
+    public interface ItemFactory {
+        void onNewItems(@NonNull List<Item<?>> items);
+
+        @NonNull
+        Item<?> itemToCreateViewFrom(int viewType);
     }
 
     @NonNull
@@ -113,20 +130,12 @@ public class AdaptRecyclerView implements Adapt {
     private final ConfigurationImpl configuration;
     private final Adapter<? extends RecyclerView.ViewHolder> adapter;
 
-    // special storage to keep track of items and view-types
-    private final Map<Integer, Item<?>> store = new HashMap<>(3);
-
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
         @NonNull
         @Override
         public RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items) {
 
-            // release old items from referencing
-            store.clear();
-
-            for (Item<?> item : items) {
-                store.put(item.viewType(), item);
-            }
+            configuration.itemFactory.onNewItems(items);
 
             AdaptRecyclerView.this.items = items;
 
@@ -200,10 +209,7 @@ public class AdaptRecyclerView implements Adapt {
         @NonNull
         @Override
         public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final Item<?> firstItem = store.get(viewType);
-            if (firstItem == null) {
-                throw AdaptException.create("Unexpected viewType: " + viewType);
-            }
+            final Item<?> firstItem = configuration.itemFactory.itemToCreateViewFrom(viewType);
 
             LayoutInflater inflater = this.inflater;
             if (inflater == null) {
@@ -251,6 +257,7 @@ public class AdaptRecyclerView implements Adapt {
 
         boolean hasStableIds = true;
         DataSetChangeHandler dataSetChangeHandler = NotifyDataSetChangedHandler.create();
+        ItemFactory itemFactory = new DynamicItemFactory();
 
         @NonNull
         @Override
@@ -263,6 +270,13 @@ public class AdaptRecyclerView implements Adapt {
         @Override
         public Configuration dataSetChangeHandler(@NonNull DataSetChangeHandler dataSetChangeHandler) {
             this.dataSetChangeHandler = dataSetChangeHandler;
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration itemFactory(@NonNull ItemFactory itemFactory) {
+            this.itemFactory = itemFactory;
             return this;
         }
     }
