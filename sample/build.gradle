@@ -41,7 +41,8 @@ dependencies {
     implementation project(':adapt')
     implementation project(':adapt-ui')
 
-    implementation deps['x-recycler-view']
+    implementation deps['x-recyclerview']
+    implementation deps['x-viewpager']
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 

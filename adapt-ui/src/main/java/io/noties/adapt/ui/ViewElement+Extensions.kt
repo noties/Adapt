@@ -202,6 +202,16 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipToPadding(
     this.clipToPadding = clipToPadding
 }
 
+
+/**
+ * NoClip
+ * @see clipToPadding
+ * @see clipChildren
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noClip(): ViewElement<V, LP> =
+    this.clipChildren(false)
+        .clipToPadding(false)
+
 /**
  * OverScrollMode
  * @see View.setOverScrollMode
@@ -234,10 +244,3 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     width?.dip?.also { minimumWidth = it }
     height?.dip?.also { minimumHeight = it }
 }
-
-/**
- * NoClip
- */
-fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noClip(): ViewElement<V, LP> =
-    this.clipChildren(false)
-        .clipToPadding(false)
