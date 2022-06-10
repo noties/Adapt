@@ -17,6 +17,5 @@ private fun AnyViewElement.myCustomStyle() = this
 * shape, if paint is supplied color with alpha, it would be considered solid (when elevating)
   and draw only part of the shadow...
 * input element
-* recycler, provide a way to create factory of a view-type
 * ability to use shape directly
 * onPreDraw callback

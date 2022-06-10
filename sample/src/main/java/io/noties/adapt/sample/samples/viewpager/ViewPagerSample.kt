@@ -2,6 +2,7 @@ package io.noties.adapt.sample.samples.viewpager
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -13,10 +14,12 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.ui.FILL
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.WRAP
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToPadding
+import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Pager
 import io.noties.adapt.ui.element.Text
@@ -24,6 +27,7 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
+import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.item.ElementItem
@@ -63,6 +67,17 @@ class ViewPagerSample : SampleView() {
                     .onView(::processViewPager)
                     .adaptViewPager { it.pageWidth(pageWidth) }
                     .setItems(items)
+
+                Text("Wrap height")
+                Element(::ViewPagerWrapContent)
+                    .onView(::processViewPager)
+                    .layout(FILL, WRAP)
+                    .adaptViewPager { it.pageWidth(pageWidth) }
+                    .setItems(items)
+
+                Text("At bottom")
+                    .padding(16)
+                    .textGravity(Gravity.CENTER)
             }
         }
     }
@@ -72,7 +87,7 @@ class ViewPagerSample : SampleView() {
             return listOf(
                 PageItem("The FIRST page here! How it is?"),
                 PageItem("The SECOND page here! How it is?"),
-                PageItem("The THIRD page here! How it is?"),
+                PageItem("The THIRD page here! How it is? DFGHJKdsgfhjskdgfhjdsk sfghjkdsgfhjkdsgfhjds"),
                 PageItem("The FORTH page here! How it is?"),
                 PageItem("The FIFTH page here! How it is?")
             )
