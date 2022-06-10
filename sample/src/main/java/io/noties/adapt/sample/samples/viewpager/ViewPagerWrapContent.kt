@@ -48,7 +48,10 @@ class ViewPagerWrapContent(context: Context) : ViewPager(context) {
         }
 
         // obtain current item view
+        // should we bind it here?
         val view = adapt.findViewForAdapterPosition(currentItem) ?: return null
+
+        adapt.notifyItemChanged(adapt.items()[currentItem])
 
         // it is mock measure to determine actual size of a child
         val childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
