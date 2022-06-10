@@ -53,6 +53,15 @@ public class AdaptViewPager implements Adapt {
         return adaptViewPager;
     }
 
+    @Nullable
+    public static AdaptViewPager find(@NonNull ViewPager viewPager) {
+        final PagerAdapter adapter = viewPager.getAdapter();
+        if (adapter instanceof Adapter) {
+            return ((Adapter) adapter).adaptViewPager();
+        }
+        return null;
+    }
+
     private static final int ID_ITEM = R.id.adapt_internal_item;
     private static final int ID_HOLDER = R.id.adapt_internal_holder;
 
@@ -94,23 +103,41 @@ public class AdaptViewPager implements Adapt {
     public void notifyItemChanged(@NonNull Item<?> item) {
         final int count = viewPager.getChildCount();
         View view;
-        //noinspection rawtypes
-        Item viewItem;
         for (int i = 0; i < count; i++) {
             view = viewPager.getChildAt(i);
-            //noinspection rawtypes
-            viewItem = (Item) view.getTag(ID_ITEM);
-            if (item.equals(viewItem)) {
+            if (item.equals(view.getTag(ID_ITEM))) {
                 final Item.Holder holder = (Item.Holder) view.getTag(ID_HOLDER);
                 if (holder != null) {
-                    //noinspection unchecked
-                    viewItem.bind(holder);
+                    //noinspection unchecked,rawtypes,
+                    ((Item) item).bind(holder);
                 }
             }
         }
     }
 
+    @Nullable
+    public View findViewForAdapterPosition(int position) {
+        //noinspection rawtypes
+        final Item item = items.get(position);
+
+        View view;
+
+        for (int i = 0, count = viewPager.getChildCount(); i < count; i++) {
+            view = viewPager.getChildAt(i);
+            if (item.equals(view.getTag(ID_ITEM))) {
+                return view;
+            }
+        }
+
+        return null;
+    }
+
     private class Adapter extends PagerAdapter {
+
+        @NonNull
+        AdaptViewPager adaptViewPager() {
+            return AdaptViewPager.this;
+        }
 
         @Override
         public int getCount() {
@@ -146,7 +173,6 @@ public class AdaptViewPager implements Adapt {
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
         }
-
 
         @Override
         public void notifyDataSetChanged() {

@@ -82,6 +82,18 @@ public class AdaptRecyclerView implements Adapt {
         return new AdaptRecyclerView(null, configuration);
     }
 
+    /**
+     * @since $UNRELEASED;
+     */
+    @Nullable
+    public static AdaptRecyclerView find(@NonNull RecyclerView recyclerView) {
+        final RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+        if (adapter instanceof AdapterImpl) {
+            return ((AdapterImpl) adapter).adaptRecyclerView();
+        }
+        return null;
+    }
+
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final Item.Holder holder;
@@ -179,6 +191,11 @@ public class AdaptRecyclerView implements Adapt {
     private class AdapterImpl extends Adapter<ItemViewHolder> {
 
         private LayoutInflater inflater;
+
+        @NonNull
+        AdaptRecyclerView adaptRecyclerView() {
+            return AdaptRecyclerView.this;
+        }
 
         @NonNull
         @Override
