@@ -30,6 +30,7 @@ import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
+import io.noties.adapt.ui.enabled
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
@@ -38,6 +39,8 @@ import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.viewgroup.TransitionChangeHandler
+import kotlin.math.roundToInt
 
 @AdaptSample(
     id = "20220610113434",
@@ -102,7 +105,7 @@ class ViewPagerSample : SampleView() {
                     viewPager.viewTreeObserver.removeOnPreDrawListener(this)
 
                     viewPager.setPadding(
-                        Math.round(w * (1F - pageWidth)),
+                        (w * (1F - pageWidth)).roundToInt(),
                         viewPager.paddingTop,
                         viewPager.paddingRight,
                         viewPager.paddingBottom
@@ -161,6 +164,10 @@ class ViewPagerSample : SampleView() {
             holder.references.textView.text = text
             holder.itemView().isSelected = isSelected
 
+            val parent = holder.itemView().parent as? ViewGroup
+            val handler = TransitionChangeHandler.createTransitionOnParent()
+            parent?.also(handler::begin)
+
             holder.itemView().setOnClickListener {
                 val adapt = holder.adapt()
                 adapt.items()
@@ -176,6 +183,7 @@ class ViewPagerSample : SampleView() {
                         adapt.notifyItemChanged(it)
                     }
             }
+            parent?.also(handler::end)
         }
     }
 }

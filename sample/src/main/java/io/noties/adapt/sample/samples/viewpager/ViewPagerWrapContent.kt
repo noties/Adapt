@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.viewpager.widget.ViewPager
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.viewpager.AdaptViewPager
+import kotlin.math.roundToInt
 
 class ViewPagerWrapContent(context: Context) : ViewPager(context) {
 
@@ -51,12 +52,19 @@ class ViewPagerWrapContent(context: Context) : ViewPager(context) {
         // should we bind it here?
         val view = adapt.findViewForAdapterPosition(currentItem) ?: return null
 
+        // render the item before measuring
         adapt.notifyItemChanged(adapt.items()[currentItem])
 
-        // it is mock measure to determine actual size of a child
+        val pageWidth = adapt.pagerAdapter().getPageWidth(currentItem)
+
+        // we need to have real width in order to properly calculate height
+        val childWidthSpec = MeasureSpec.makeMeasureSpec(
+            ((MeasureSpec.getSize(originalWidthSpec) - paddingLeft - paddingRight) * pageWidth).roundToInt(),
+            MeasureSpec.EXACTLY
+        )
         val childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
 
-        view.measure(originalWidthSpec, childHeightSpec)
+        view.measure(childWidthSpec, childHeightSpec)
 
         return MeasureSpec.makeMeasureSpec(
             view.measuredHeight + paddingTop + paddingBottom,
