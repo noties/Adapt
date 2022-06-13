@@ -5,18 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 
-@Suppress("PropertyName", "unused")
-val ViewFactory<*>.FILL: Int
-    get() {
-        return LayoutParams.MATCH_PARENT
-    }
-
-@Suppress("PropertyName", "unused")
-val ViewFactory<*>.WRAP: Int
-    get() {
-        return LayoutParams.WRAP_CONTENT
-    }
-
 @JvmName("addChildrenViewGroup")
 fun ViewFactory.Companion.addChildren(
     group: ViewGroup,
@@ -36,15 +24,12 @@ fun <G : ViewGroup, LP : LayoutParams> ViewFactory.Companion.addChildren(
         @Suppress("UNCHECKED_CAST")
         el as ViewElement<View, LP>
 
-        val view = el.provider(g.context)
+        val view = el.init(g.context)
 
         // now layoutParams are generated
         g.addView(view)
 
-        @Suppress("UNCHECKED_CAST")
-        val lp = view.layoutParams as LP
-        el.layoutBlocks.forEach { it(lp) }
-        el.viewBlocks.forEach { it(view) }
+        el.render()
 
         view.requestLayout()
     }
@@ -74,7 +59,7 @@ fun <R> ViewFactory.Companion.createView(
     @Suppress("UNCHECKED_CAST")
     val root = factory.elements[0] as ViewElement<View, LayoutParams>
 
-    val view = root.provider(context)
+    val view = root.init(context)
 
     // default layout params
     val lp = LayoutParams(
@@ -84,8 +69,7 @@ fun <R> ViewFactory.Companion.createView(
 
     view.layoutParams = lp
 
-    root.layoutBlocks.forEach { it(lp) }
-    root.viewBlocks.forEach { it(view) }
+    root.render()
 
     return view
 }

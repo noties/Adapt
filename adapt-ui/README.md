@@ -7,7 +7,6 @@ private fun AnyViewElement.myCustomStyle() = this
     .padding(101)
 ```
 
-// NB! layout definitions cannot be extended (onLayout, etc to the resque)
 // NB! new elements func builder can be added to a specific layout params, like `Spacer`
 
 # TODO

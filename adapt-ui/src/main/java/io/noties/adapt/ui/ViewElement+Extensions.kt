@@ -17,11 +17,17 @@ import kotlin.reflect.KMutableProperty0
 /**
  * Reference
  */
+@JvmName("referenceView")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<in V>
 ): ViewElement<V, LP> = onView {
     property.set(this)
 }
+
+@JvmName("referenceElement")
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
+    property: KMutableProperty0<in ViewElement<V, LP>>
+): ViewElement<V, LP> = this.also { property.set(it) }
 
 /**
  * Id

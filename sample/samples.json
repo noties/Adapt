@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.FlexboxUISample",
+    "id": "20220612133759",
+    "title": "Flexbox layout build with adapt-ui",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "flexbox"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewFixedItemFactorySample",
     "id": "20220610171905",
     "title": "FixedItemFactory",

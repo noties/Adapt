@@ -12,9 +12,8 @@ import io.noties.adapt.Item
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.ui.FILL
+import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.WRAP
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
@@ -30,8 +29,9 @@ import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
-import io.noties.adapt.ui.enabled
 import io.noties.adapt.ui.item.ElementItem
+import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
@@ -62,7 +62,7 @@ class ViewPagerSample : SampleView() {
 
                 Text("Fixed height")
                     .padding(16, 8)
-                    .margin(top = 8)
+                    .layoutMargin(top = 8)
                     .textSize(21)
 
                 Pager()
@@ -124,6 +124,7 @@ class ViewPagerSample : SampleView() {
 
         class Ref {
             lateinit var textView: TextView
+            lateinit var textElement: ViewElement<TextView, *>
         }
 
         var isSelected = false
@@ -141,8 +142,10 @@ class ViewPagerSample : SampleView() {
                     .textSize(21)
                     .textColor(Color.BLACK)
                     .textFont(fontStyle = Typeface.BOLD)
-                    .margin(leading = 8)
+                    .layoutMargin(leading = 8)
                     .reference(references::textView)
+                    .reference(references::textElement)
+//                    .also { references.textElement = it }
 
             }.layout(FILL, FILL)
                 .padding(16)
@@ -163,6 +166,18 @@ class ViewPagerSample : SampleView() {
         override fun bind(holder: Holder<Ref>) {
             holder.references.textView.text = text
             holder.itemView().isSelected = isSelected
+
+            holder.references.textElement
+                .padding(listOf(0, 4, 8, 16).shuffled().first())
+//                .textSize(listOf(16, 20, 24).shuffled().first())
+//                .textGravity(
+//                    listOf(
+//                        Gravity.START,
+//                        Gravity.CENTER_HORIZONTAL,
+//                        Gravity.END
+//                    ).shuffled().first()
+//                )
+                .render()
 
             val parent = holder.itemView().parent as? ViewGroup
             val handler = TransitionChangeHandler.createTransitionOnParent()

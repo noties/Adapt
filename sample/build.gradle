@@ -48,5 +48,8 @@ dependencies {
 
     implementation 'io.noties:debug:5.1.0'
 
+    // https://github.com/google/flexbox-layout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
     kapt project(':sample-utils:processor')
 }

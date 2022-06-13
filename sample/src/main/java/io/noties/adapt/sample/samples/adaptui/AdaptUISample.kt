@@ -17,10 +17,8 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.AnyViewElement
 import io.noties.adapt.ui.AnyViewFactory
-import io.noties.adapt.ui.FILL
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.WRAP
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipChildren
@@ -45,6 +43,9 @@ import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.item.ElementItemNoRef
+import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.overScrollMode
 import io.noties.adapt.ui.padding
@@ -97,7 +98,6 @@ class AdaptUISample : SampleView() {
 //        }
 
         // ScrollView + LinearLayout (VScroll + VStack)
-        // @formatter:off
         ViewFactory.addChildren(viewGroup) {
             VScroll {
                 VStack { /*no op*/ }
@@ -105,12 +105,12 @@ class AdaptUISample : SampleView() {
                     .onView {
                         bindAdapt(AdaptViewGroup.init(this))
                     }
+//                    .myCustomStyle()
             }
-            .layout(FILL, FILL)
+                .layout(FILL, FILL)
         }
     }
 
-    // @formatter:off
 //    private fun fillTest(viewGroup: ViewGroup) {
 //
 //        ViewFactory.addChildren(viewGroup) {
@@ -150,7 +150,6 @@ class AdaptUISample : SampleView() {
 //            .fillViewPort(true)
 //        }
 //    }
-    // @formatter:on
 
     private fun AnyViewElement.myCustomStyle() = this
         .scrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
@@ -266,17 +265,15 @@ class AdaptUISample : SampleView() {
             lateinit var valueView: TextView
         }
 
-        // @formatter:off
         override fun ViewFactory<LayoutParams>.body(references: References) {
             VStack {
                 test()
-
                 test2()
 
                 paragraph()
                     .layout(FILL, WRAP)
                     .background(Color.RED)
-                    .margin(8)
+                    .layoutMargin(8)
 
                 HStack {
                     Text()
@@ -291,26 +288,28 @@ class AdaptUISample : SampleView() {
                 }
 
                 HScroll {
+
                     HStack {
                         square(Color.GRAY)
                         square(Color.BLACK)
                         square(Color.YELLOW)
                         square(Color.MAGENTA)
                     }.layout(WRAP, WRAP)
-                }
-                .fillViewPort(true)
-                .overScrollMode(View.OVER_SCROLL_ALWAYS)
+
+                }.fillViewPort(true)
+                    .overScrollMode(View.OVER_SCROLL_ALWAYS)
 
                 paragraph()
             }
         }
-        // @formatter:on
 
+        // it does not return anything, so further modification won't be possible,
+        //  but view will be added to layout
         private fun ViewFactory<LinearLayout.LayoutParams>.square(color: Int) {
             View()
                 .layout(128, 128)
                 .background(color)
-                .margin(horizontal = 2)
+                .layoutMargin(horizontal = 2)
         }
 
         // this would reduce layoutParams to ViewGroups, so only basic layout(width, height)
@@ -361,7 +360,7 @@ class AdaptUISample : SampleView() {
                     .textSize(16)
                     .padding(horizontal = 16, vertical = 8)
                     .background(background)
-                    .margin(16)
+                    .layoutMargin(16)
                     .onClick {
                         Debug.i("Clicked!")
                     }
@@ -424,27 +423,25 @@ class AdaptUISample : SampleView() {
     // root shape of drawable automatically reports to outline provider,
     //  making it possible to add shadows around defined shape
     private class ElevatedShapeItem : ElementItemNoRef(0L) {
-        // @formatter:off
         override fun ViewFactory<LayoutParams>.body() {
             ZStack {
+
                 VStack {
                     Text("First line")
                         .textSize(24)
                         .textFont(fontStyle = Typeface.BOLD)
                     Text("Second line")
                         .textSize(16)
-                }
-                .background(background)
-                .elevation(4)
+                }.background(background)
+                    .elevation(4)
+                    .padding(16)
+                    .onClick { }
+
+            }.clipToPadding(false)
+                .clipChildren(false)
                 .padding(16)
-                .onClick { }
-            }
-            .clipToPadding(false)
-            .clipChildren(false)
-            .padding(16)
-            .background(0x10000000)
+                .background(0x10000000)
         }
-        // @formatter:on
 
         private val background = StatefulShape.drawable {
             val base = Capsule {
@@ -464,7 +461,6 @@ class AdaptUISample : SampleView() {
     }
 
     private class CardItem : ElementItemNoRef(0L) {
-        // @formatter:off
         override fun ViewFactory<LayoutParams>.body() {
             ZStack {
                 HStack {
@@ -481,11 +477,10 @@ class AdaptUISample : SampleView() {
                         Text("350")
                             .textSize(16)
                             .textColor(Color.GRAY)
-                            .margin(top = 8)
-                    }
-                    .layout(0, WRAP)
-                    .layoutWeight(1F)
-                    .margin(leading = 8)
+                            .layoutMargin(top = 8)
+                    }.layout(0, WRAP)
+                        .layoutWeight(1F)
+                        .layoutMargin(leading = 8)
 
                     Text("Start")
                         .textAllCaps()
@@ -501,21 +496,18 @@ class AdaptUISample : SampleView() {
                                 it.isActivated = !it.isActivated
                             }
                         }
-                }
-                .pressable(RoundedRectangle(12) {
-                    stroke(Color.BLACK, 2)
-                    fill(Color.WHITE)
-                    padding(1)
-                })
-                .padding(8)
-                .padding(bottom = 12)
-                .onClick {
+                }.padding(8)
+                    .padding(bottom = 12)
+                    .pressable(RoundedRectangle(12) {
+                        stroke(Color.BLACK, 2)
+                        fill(Color.WHITE)
+                        padding(1)
+                    })
+                    .onClick {
 
-                }
-            }
-            .padding(16, 8)
+                    }
+            }.padding(16, 8)
         }
-        // @formatter:on
 
         private val iconShape: Shape
             get() = Rectangle {

@@ -2,6 +2,7 @@ package io.noties.adapt.ui.shape
 
 import android.content.res.Resources
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
 import android.graphics.Outline
@@ -324,19 +325,29 @@ abstract class Shape {
     fun outline(outline: Outline, bounds: Rect) {
         fillRect(bounds)
 
-        val (x, y) = translateX to translateY
+        val (x, y) = translateX?.dip to translateY?.dip
+
         if (x != null) {
-            fillRect.left += x.dip
-            fillRect.right += x.dip
+            fillRect.left += x
+            fillRect.right += x
         }
 
+        // NB! we need to update both top+bottom for translation
         if (y != null) {
-            fillRect.top += y.dip
-            fillRect.bottom += y.dip
+            fillRect.top += y
+            fillRect.bottom += y
         }
 
         outlineShape(outline, fillRect)
-        outline.alpha = alpha ?: 1F
+
+        // if we have generic alpha -> use it
+        //  if we have fill colors and it has alpha -> use it, else just 1F
+        // actually.. if fill color is 0, then we must also assume no transparency
+        // if we specify 1F then outline would optimize shadow and draw it only for visible
+        // parts, overwise it executes a more advanced calculation
+        outline.alpha =
+            alpha ?: (fillColor?.takeIf { Color.alpha(it) < 255 }?.toFloat())
+                    ?: 1F
     }
 
     open fun outlineShape(outline: Outline, bounds: Rect) = Unit
