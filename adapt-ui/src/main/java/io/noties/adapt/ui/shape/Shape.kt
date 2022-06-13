@@ -63,10 +63,20 @@ abstract class Shape {
         height: Int? = null,
         @GravityInt gravity: Int? = null
     ): Shape {
-        width?.also { this.width = it }
-        height?.also { this.height = it }
+        width?.also { this.width = Dimension.Exact(it) }
+        height?.also { this.height = Dimension.Exact(it) }
         gravity?.also { this.gravity = it }
         return this
+    }
+
+    fun sizeRelative(
+        @FloatRange(from = 0.0, to = 1.0) width: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) height: Float? = null,
+        @GravityInt gravity: Int? = null
+    ): Shape = this.apply {
+        width?.also { this.width = Dimension.Relative(it) }
+        height?.also { this.height = Dimension.Relative(it) }
+        gravity?.also { this.gravity = it }
     }
 
     fun gravity(@GravityInt gravity: Int?) = this.also {
@@ -86,17 +96,45 @@ abstract class Shape {
         trailing: Int? = null,
         bottom: Int? = null
     ): Shape {
-        leading?.also { this.paddingLeading = it }
-        top?.also { this.paddingTop = it }
-        trailing?.also { this.paddingTrailing = it }
-        bottom?.also { this.paddingBottom = it }
+        leading?.also { this.paddingLeading = Dimension.Exact(it) }
+        top?.also { this.paddingTop = Dimension.Exact(it) }
+        trailing?.also { this.paddingTrailing = Dimension.Exact(it) }
+        bottom?.also { this.paddingBottom = Dimension.Exact(it) }
         return this
     }
 
-    fun translate(x: Int? = null, y: Int? = null): Shape {
-        x?.also { this.translateX = it }
-        y?.also { this.translateY = it }
-        return this
+    fun paddingRelative(
+        @FloatRange(from = 0.0, to = 1.0) all: Float
+    ): Shape = paddingRelative(all, all)
+
+    fun paddingRelative(
+        @FloatRange(from = 0.0, to = 1.0) horizontal: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) vertical: Float? = null
+    ): Shape = paddingRelative(horizontal, vertical, horizontal, vertical)
+
+    fun paddingRelative(
+        @FloatRange(from = 0.0, to = 1.0) leading: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) top: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) trailing: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) bottom: Float? = null
+    ): Shape = this.apply {
+        leading?.also { this.paddingLeading = Dimension.Relative(it) }
+        top?.also { this.paddingTop = Dimension.Relative(it) }
+        trailing?.also { this.paddingTrailing = Dimension.Relative(it) }
+        bottom?.also { this.paddingBottom = Dimension.Relative(it) }
+    }
+
+    fun translate(x: Int? = null, y: Int? = null): Shape = this.apply {
+        x?.also { this.translateX = Dimension.Exact(it) }
+        y?.also { this.translateY = Dimension.Exact(it) }
+    }
+
+    fun translateRelative(
+        @FloatRange(from = -1.0, to = 1.0) x: Float? = null,
+        @FloatRange(from = -1.0, to = 1.0) y: Float? = null
+    ): Shape = this.apply {
+        x?.also { this.translateX = Dimension.Relative(it) }
+        y?.also { this.translateY = Dimension.Relative(it) }
     }
 
     fun alpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Shape {
@@ -144,18 +182,18 @@ abstract class Shape {
         return this
     }
 
-    var width: Int? = null
-    var height: Int? = null
+    var width: Dimension? = null
+    var height: Dimension? = null
 
     var gravity: Int? = null
 
-    var translateX: Int? = null
-    var translateY: Int? = null
+    var translateX: Dimension? = null
+    var translateY: Dimension? = null
 
-    var paddingLeading: Int? = null
-    var paddingTop: Int? = null
-    var paddingTrailing: Int? = null
-    var paddingBottom: Int? = null
+    var paddingLeading: Dimension? = null
+    var paddingTop: Dimension? = null
+    var paddingTrailing: Dimension? = null
+    var paddingBottom: Dimension? = null
 
     // applied to both fill and stroke and children (?)
     var alpha: Float? = null
@@ -187,13 +225,14 @@ abstract class Shape {
         val save = canvas.save()
         try {
 
-            val offsetX = this.translateX
-            val offsetY = this.translateY
+            val offsetX = this.translateX?.resolve(bounds.width())
+            val offsetY = this.translateY?.resolve(bounds.height())
 
             if (offsetX != null || offsetY != null) {
+                // TODO: layout direction
                 canvas.translate(
-                    offsetX?.dip?.toFloat() ?: 0F,
-                    offsetY?.dip?.toFloat() ?: 0F
+                    offsetX?.toFloat() ?: 0F,
+                    offsetY?.toFloat() ?: 0F
                 )
             }
 
@@ -325,7 +364,7 @@ abstract class Shape {
     fun outline(outline: Outline, bounds: Rect) {
         fillRect(bounds)
 
-        val (x, y) = translateX?.dip to translateY?.dip
+        val (x, y) = translateX?.resolve(bounds.width()) to translateY?.resolve(bounds.height())
 
         if (x != null) {
             fillRect.left += x
@@ -354,8 +393,8 @@ abstract class Shape {
 
     private fun fillRect(bounds: Rect) {
 
-        val width = this.width?.dip
-        val height = this.height?.dip
+        val width = this.width?.resolve(bounds.width())
+        val height = this.height?.resolve(bounds.height())
 
         // we need to apply gravity only if we have both sizes... (no reason to add gravity
         //  if we match bounds)
@@ -391,10 +430,10 @@ abstract class Shape {
         // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
         // TODO: layout direction?
-        paddingLeading?.dip?.also { fillRect.left += it }
-        paddingTop?.dip?.also { fillRect.top += it }
-        paddingTrailing?.dip?.also { fillRect.right -= it }
-        paddingBottom?.dip?.also { fillRect.bottom -= it }
+        paddingLeading?.resolve(bounds.width())?.also { fillRect.left += it }
+        paddingTop?.resolve(bounds.height())?.also { fillRect.top += it }
+        paddingTrailing?.resolve(bounds.width())?.also { fillRect.right -= it }
+        paddingBottom?.resolve(bounds.height())?.also { fillRect.bottom -= it }
     }
 
     private class ShaderCache(
@@ -699,7 +738,7 @@ class Capsule : Shape() {
 class Asset(private val resource: Drawable) : Shape() {
 
     // empty companion object in order to allow users adding factory-like creation methods
-    companion object {}
+    companion object;
 
     init {
 
@@ -740,11 +779,13 @@ class ShapeDrawable(private val shape: Shape) : Drawable() {
     }
 
     override fun getIntrinsicWidth(): Int {
-        return shape.width?.dip ?: super.getIntrinsicWidth()
+        // NB! relative dimension would not report intrinsic value (we have no reference)
+        return shape.width?.resolve(0) ?: super.getIntrinsicWidth()
     }
 
     override fun getIntrinsicHeight(): Int {
-        return shape.height?.dip ?: super.getIntrinsicHeight()
+        // NB! relative dimension would not report intrinsic value (we have no reference)
+        return shape.height?.resolve(0) ?: super.getIntrinsicHeight()
     }
 
     override fun setAlpha(alpha: Int) = Unit

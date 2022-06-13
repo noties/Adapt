@@ -240,7 +240,13 @@ class AdaptUISample : SampleView() {
                 View()
                     // 48 is already dp
                     .layout(FILL, 48)
-                    .background(Color.MAGENTA)
+                    .background(Shape.drawable(Rectangle {
+
+                        fill(Color.MAGENTA)
+                        paddingRelative(.25F)
+//                        sizeRelative(.5F, .5F, gravity = Gravity.END or Gravity.BOTTOM)
+//                        translateRelative(-.25F, -.25F)
+                    }))
                 Label()
                     .textSize(17)
                     .textFont(null, Typeface.BOLD)
@@ -534,7 +540,7 @@ class AdaptUISample : SampleView() {
 
             background = StatefulShape.drawable {
                 val base = shape.copy {
-                    padding(bottom = distance + (paddingBottom ?: 0))
+                    padding(bottom = distance + (paddingBottom?.resolve(0) ?: 0))
                 }
                 setPressed(base)
                 setDefault(Rectangle {
