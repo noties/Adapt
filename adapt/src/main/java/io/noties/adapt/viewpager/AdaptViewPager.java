@@ -78,6 +78,11 @@ public class AdaptViewPager implements Adapt {
     }
 
     @NonNull
+    public ViewPager viewPager() {
+        return viewPager;
+    }
+
+    @NonNull
     public PagerAdapter pagerAdapter() {
         return adapter;
     }
