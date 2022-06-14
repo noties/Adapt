@@ -35,7 +35,9 @@ dependencies {
     api 'androidx.annotation:annotation:1.3.0'
     api project(':adapt')
 
+    compileOnly deps['x-recyclerview']
     compileOnly deps['x-viewpager']
+    compileOnly deps['x-viewpager2']
 }
 
 apply from: '../publish.gradle'

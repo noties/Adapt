@@ -142,9 +142,14 @@ abstract class Shape {
         return this
     }
 
-    fun fill(@ColorInt color: Int): Shape {
+    fun fill(@ColorInt color: Int): Shape = this.apply {
         this.fillColor = color
-        return this
+        if (alpha == null && color != 0) {
+            val colorAlpha = Color.alpha(color)
+            if (colorAlpha > 0 && colorAlpha != 255) {
+                this.alpha = colorAlpha.toFloat() / 255F
+            }
+        }
     }
 
     fun fill(gradient: Gradient?) = this.also {
@@ -229,8 +234,8 @@ abstract class Shape {
             val offsetY = this.translateY?.resolve(bounds.height())
 
             if (offsetX != null || offsetY != null) {
-                // TODO: layout direction
                 canvas.translate(
+                    // TODO: layout direction
                     offsetX?.toFloat() ?: 0F,
                     offsetY?.toFloat() ?: 0F
                 )
@@ -349,7 +354,11 @@ abstract class Shape {
 
             children.forEach {
                 val childAlpha = it.alpha
+
+                // if child had paint with alpha, it will be cleared always (even if parent has no alpha)
+                //  so, prioritize independent `alpha` usage, but prefill alpha value from color if it is supplied
                 it.alpha = (childAlpha ?: 1F) * (alpha ?: 1F)
+
                 it.draw(canvas, fillRect)
                 it.alpha = childAlpha
             }
@@ -383,7 +392,7 @@ abstract class Shape {
         //  if we have fill colors and it has alpha -> use it, else just 1F
         // actually.. if fill color is 0, then we must also assume no transparency
         // if we specify 1F then outline would optimize shadow and draw it only for visible
-        // parts, overwise it executes a more advanced calculation
+        // parts, otherwise it executes a more advanced calculation
         outline.alpha =
             alpha ?: (fillColor?.takeIf { Color.alpha(it) < 255 }?.toFloat())
                     ?: 1F
@@ -482,6 +491,8 @@ class Circle : Shape() {
         }
     }
 
+    private val rect = Rect()
+
     override fun copy(block: Shape.() -> Unit): Shape = Circle().also {
         this.copy(it)
         block(it)
@@ -489,18 +500,45 @@ class Circle : Shape() {
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         val radius = radius(bounds)
+
+        // TODO: layout direction
+        val rect = gravity?.let {
+            val side = radius * 2
+            Gravity.apply(
+                it,
+                side,
+                side,
+                bounds,
+                rect
+            )
+            rect
+        } ?: bounds
+
         canvas.drawCircle(
-            bounds.centerX().toFloat(),
-            bounds.centerY().toFloat(),
+            rect.centerX().toFloat(),
+            rect.centerY().toFloat(),
             radius.toFloat(),
             paint
         )
     }
 
+    // TODO: gravity
     override fun outlineShape(outline: Outline, bounds: Rect) {
-        val centerX = bounds.centerX()
-        val centerY = bounds.centerY()
         val radius = radius(bounds)
+        // TODO: layout direction
+        val rect = gravity?.let {
+            val side = radius * 2
+            Gravity.apply(
+                it,
+                side,
+                side,
+                bounds,
+                rect
+            )
+            rect
+        } ?: bounds
+        val centerX = rect.centerX()
+        val centerY = rect.centerY()
         outline.setOval(
             centerX - radius,
             centerY - radius,

@@ -46,6 +46,7 @@ import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
+import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.overScrollMode
 import io.noties.adapt.ui.padding
@@ -238,14 +239,31 @@ class AdaptUISample : SampleView() {
         override fun ViewFactory<LayoutParams>.body(references: References) {
             VStack {
                 View()
-                    // 48 is already dp
-                    .layout(FILL, 48)
+                    // 128 is already dp
+                    .layout(FILL, 128)
                     .background(Shape.drawable(Rectangle {
 
-                        fill(Color.MAGENTA)
-                        paddingRelative(.25F)
-//                        sizeRelative(.5F, .5F, gravity = Gravity.END or Gravity.BOTTOM)
-//                        translateRelative(-.25F, -.25F)
+                        val base = Rectangle {
+                            fill(Color.MAGENTA)
+                            sizeRelative(.75F, .75F, gravity = Gravity.BOTTOM or Gravity.END)
+                            alpha(0.5F)
+
+                            add(Circle {
+                                fill(0xFF000000.toInt())
+                                sizeRelative(0.25F, 0.25F)
+                                gravity(Gravity.START or Gravity.TOP)
+                            })
+                        }
+
+                        add(base.copy {
+                            fill(Color.GREEN)
+                            add(base.copy {
+                                fill(Color.BLUE)
+                                add(base.copy {
+                                    fill(Color.RED)
+                                })
+                            })
+                        })
                     }))
                 Label()
                     .textSize(17)
@@ -254,7 +272,7 @@ class AdaptUISample : SampleView() {
                     .reference(references::textViewNullable)
                     .textHideIfEmpty()
                     .padding(8)
-            }
+            }.noClip()
         }
 
         override fun bind(holder: Holder<References>) {

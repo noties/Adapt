@@ -14,6 +14,7 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
@@ -68,7 +69,7 @@ class ViewPagerSample : SampleView() {
                 Pager()
                     .layout(FILL, 128)
                     .onView(::processViewPager)
-                    .adaptViewPager { it.pageWidth(pageWidth) }
+                    .adaptViewGroup()
                     .setItems(items)
 
                 Text("Wrap height")

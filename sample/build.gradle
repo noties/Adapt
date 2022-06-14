@@ -43,8 +43,7 @@ dependencies {
 
     implementation deps['x-recyclerview']
     implementation deps['x-viewpager']
-
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation deps['x-viewpager2']
 
     implementation 'io.noties:debug:5.1.0'
 
