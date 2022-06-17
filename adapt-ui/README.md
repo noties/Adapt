@@ -19,3 +19,7 @@ private fun AnyViewElement.myCustomStyle() = this
   and draw only part of the shadow...
 * input element
 * onPreDraw callback
+* check all elements, for example `fillViewPort` should have boolean with default argument
+* image, make center inside default scale type? yep
+* empty shape?
+* text element, actual set text setter

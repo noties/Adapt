@@ -77,7 +77,7 @@ class AdaptRecyclerViewElement(
 }
 
 fun <V : RecyclerView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptRecyclerView(
-    configurator: (AdaptRecyclerView.Configuration) -> Unit
+    configurator: (AdaptRecyclerView.Configuration) -> Unit = {}
 ): AdaptElement<AdaptRecyclerView> {
     val element = AdaptRecyclerViewElement(configurator)
     onView(element.onView)
@@ -104,7 +104,7 @@ class AdaptViewPager2Element(
 // What if they change it to be non-final
 @Suppress("FINAL_UPPER_BOUND")
 fun <V : ViewPager2, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewPager2(
-    configurator: (AdaptRecyclerView.Configuration) -> Unit
+    configurator: (AdaptRecyclerView.Configuration) -> Unit = {}
 ): AdaptElement<AdaptRecyclerView> {
     val element = AdaptViewPager2Element(configurator)
     onView(element.onView)

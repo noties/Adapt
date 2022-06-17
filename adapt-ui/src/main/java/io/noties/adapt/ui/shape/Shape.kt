@@ -35,6 +35,7 @@ abstract class Shape {
     abstract fun copy(block: Shape.() -> Unit = {}): Shape
 
     fun copy(to: Shape) {
+        to.visible = this.visible
         to.width = this.width
         to.height = this.height
         to.gravity = this.gravity
@@ -56,6 +57,10 @@ abstract class Shape {
     }
 
     fun drawable(): Drawable = ShapeDrawable(this)
+
+    fun visible(visible: Boolean): Shape = this.also {
+        it.visible = visible
+    }
 
     // if null, then use bounds value
     fun size(
@@ -187,6 +192,8 @@ abstract class Shape {
         return this
     }
 
+    var visible: Boolean = true
+
     var width: Dimension? = null
     var height: Dimension? = null
 
@@ -227,6 +234,11 @@ abstract class Shape {
     private var strokeShaderCache: ShaderCache? = null
 
     fun draw(canvas: Canvas, bounds: Rect) {
+
+        if (!visible) {
+            return
+        }
+
         val save = canvas.save()
         try {
 
@@ -324,17 +336,6 @@ abstract class Shape {
 
                 strokeRect.set(fillRect)
 
-                // "2.25" is a bit arbitrary - it is a little less than 2,
-                //  so in rounded rectangles the corner curve is drawn properly
-                //  can we even have a proper calculation here? so out-most border of stroke
-                //      would fir exactly fill bounds? can this be done via simple inset?
-                //      or would we need to recalculate everything - including corner radius...
-//                val inset = (strokePaint.strokeWidth / 2.25F).toInt()
-//                strokeRect.inset(
-//                    inset,
-//                    inset
-//                )
-
                 if (strokeGradient != null) {
                     val cache = strokeShaderCache
                     if (cache != null && cache.gradient == strokeGradient && cache.bounds == strokeRect) {
@@ -371,6 +372,12 @@ abstract class Shape {
     protected abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint)
 
     fun outline(outline: Outline, bounds: Rect) {
+
+        if (!visible) {
+            outline.setEmpty()
+            return
+        }
+
         fillRect(bounds)
 
         val (x, y) = translateX?.resolve(bounds.width()) to translateY?.resolve(bounds.height())
