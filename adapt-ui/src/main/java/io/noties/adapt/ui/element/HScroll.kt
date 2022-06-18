@@ -19,7 +19,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
 }
 
 fun <V : HorizontalScrollView, LP : LayoutParams> ViewElement<V, LP>.fillViewPort(
-    fillViewPort: Boolean
+    fillViewPort: Boolean = true
 ): ViewElement<V, LP> = onView {
     isFillViewport = fillViewPort
 }

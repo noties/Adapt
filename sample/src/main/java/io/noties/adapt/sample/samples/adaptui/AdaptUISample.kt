@@ -247,20 +247,29 @@ class AdaptUISample : SampleView() {
                             fill(Color.MAGENTA)
                             sizeRelative(.75F, .75F, gravity = Gravity.BOTTOM or Gravity.END)
                             alpha(0.5F)
+                        }
 
-                            add(Circle {
-                                fill(0xFF000000.toInt())
-                                sizeRelative(0.25F, 0.25F)
-                                gravity(Gravity.START or Gravity.TOP)
-                            })
+                        val circle = Circle {
+                            fill(0xFF000000.toInt())
+                            sizeRelative(0.25F, 0.25F)
+                            gravity(Gravity.START or Gravity.TOP)
                         }
 
                         add(base.copy {
                             fill(Color.GREEN)
+                            add(circle.copy())
+
                             add(base.copy {
                                 fill(Color.BLUE)
+                                add(circle.copy {
+                                    gravity(Gravity.CENTER)
+                                })
+
                                 add(base.copy {
                                     fill(Color.RED)
+                                    add(circle.copy {
+                                        gravity(Gravity.END or Gravity.BOTTOM)
+                                    })
                                 })
                             })
                         })

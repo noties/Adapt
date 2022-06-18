@@ -220,9 +220,7 @@ abstract class Shape {
 
     var strokeGradient: Gradient? = null
 
-    fun children(): List<Shape> = children.toList()
-
-    private val children: MutableList<Shape> = mutableListOf()
+    val children: MutableList<Shape> = mutableListOf()
 
     private val fillPaint: Paint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }
     private val strokePaint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }

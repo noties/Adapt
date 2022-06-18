@@ -101,6 +101,12 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHideIfEmp
         }
     }
 
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
+    text: CharSequence?
+): ViewElement<V, LP> = onView {
+    this.text = text
+}
+
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textStyle(
     style: TextStyle
 ): ViewElement<V, LP> = onView {

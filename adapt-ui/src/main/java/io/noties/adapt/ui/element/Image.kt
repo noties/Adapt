@@ -15,6 +15,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> {
     return ViewElement<ImageView, LP> {
         ImageView(it)
     }.also(elements::add)
+        .imageScaleType(ImageView.ScaleType.CENTER_INSIDE)
 }
 
 @Suppress("FunctionName", "unused")
