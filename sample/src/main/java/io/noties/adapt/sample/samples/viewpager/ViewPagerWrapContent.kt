@@ -6,6 +6,7 @@ import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.viewpager.AdaptViewPager
 import kotlin.math.roundToInt
 
+// view pager is great, if it is added to a scroll view, then the scroll view is not scrolling
 class ViewPagerWrapContent(context: Context) : ViewPager(context) {
 
     private val handler: TransitionChangeHandler by lazy(LazyThreadSafetyMode.NONE) {

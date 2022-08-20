@@ -15,8 +15,5 @@ private fun AnyViewElement.myCustomStyle() = this
   (or maybe disallow importing certain functions... that require explicit permission?)
   It is better to keep current semantics, but allow using different imports... it is not that safe
   can we ensure that certain elements are not imported? plus, different types can be returned
-* shape, if paint is supplied color with alpha, it would be considered solid (when elevating)
-  and draw only part of the shadow...
 * input element
-* onPreDraw callback
-* check all elements, for example `fillViewPort` should have boolean with default argument
+* lazy view (conditionally added to layout, like view-something in android xml)

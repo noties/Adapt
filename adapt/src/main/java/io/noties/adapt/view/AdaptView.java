@@ -137,7 +137,11 @@ public class AdaptView implements Adapt {
             // if we have no item at this point, then there is no need to create a new mocked view
             if (currentItem != null) {
                 // just put mocked view
-                view = replaceView(new View(viewGroup.getContext()));
+                final View view = new View(viewGroup.getContext());
+                // provide explicit layout size to be 0, otherwise can be treated
+                //  by some layouts as MATCH/MATCH
+                view.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+                this.view = replaceView(view);
             }
         } else {
 

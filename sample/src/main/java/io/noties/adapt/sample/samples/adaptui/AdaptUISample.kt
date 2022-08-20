@@ -3,17 +3,22 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
+import io.noties.adapt.preview.AdaptPreviewLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.items.CardBigItem
+import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.AnyViewElement
 import io.noties.adapt.ui.AnyViewFactory
@@ -23,6 +28,7 @@ import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipChildren
 import io.noties.adapt.ui.clipToPadding
+import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.HScroll
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Spacer
@@ -228,6 +234,7 @@ class AdaptUISample : SampleView() {
         class References {
             lateinit var textView: TextView
             var textViewNullable: TextView? = null
+            lateinit var textViewElement: ViewElement<out TextView, *>
         }
 
         private class LabelView(context: Context) : TextView(context)
@@ -274,11 +281,13 @@ class AdaptUISample : SampleView() {
                             })
                         })
                     }))
-                Label()
+                Element(::Button)
                     .textSize(17)
                     .textFont(null, Typeface.BOLD)
                     .reference(references::textView)
                     .reference(references::textViewNullable)
+                    .also { references.textViewElement = it }
+                    .reference(references::textViewElement)
                     .textHideIfEmpty()
                     .padding(8)
             }.noClip()
@@ -622,4 +631,12 @@ class AdaptUISample : SampleView() {
                 })
             }
     }
+}
+
+class SamplePreview(context: Context, attributeSet: AttributeSet?) :
+    AdaptPreviewLayout(context, attributeSet) {
+    override fun items(): List<Item<*>> = listOf(
+        CardBigItem("FG", Color.MAGENTA, "The title goes here"),
+        PlainItem("TY", Color.YELLOW, "The title is here")
+    )
 }

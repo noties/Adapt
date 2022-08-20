@@ -11,7 +11,7 @@ class ViewElement<V : View, LP : LayoutParams>(
     lateinit var view: V
 
     private val layoutBlocks: MutableList<LP.() -> Unit> = mutableListOf()
-    private  val viewBlocks: MutableList<V.() -> Unit> = mutableListOf()
+    private val viewBlocks: MutableList<V.() -> Unit> = mutableListOf()
 
     fun init(context: Context): V {
         view = provider(context)
@@ -39,17 +39,28 @@ class ViewElement<V : View, LP : LayoutParams>(
         //  it would make sense, if we would hold our created view only (without accepting
         //  external view)
         layoutBlocks.also {
+
             @Suppress("UNCHECKED_CAST")
             if (it.isNotEmpty()) {
                 val lp = view.layoutParams as LP
                 it.forEach { it(lp) }
+
+                // trigger layout update
+                view.requestLayout()
+
+                it.clear()
             }
-            it.clear()
         }
 
         viewBlocks.also {
-            it.forEach { it(view) }
-            it.clear()
+            if (it.isNotEmpty()) {
+                it.forEach { it(view) }
+
+                // invalidate to apply changes
+                view.invalidate()
+
+                it.clear()
+            }
         }
     }
 }

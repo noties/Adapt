@@ -24,9 +24,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property.set(this)
 }
 
+// TODO: a subclass of view won't be able to assign... for example,
+//  TextView is put in ViewElement, but actual view is a subclass..
 @JvmName("referenceElement")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
-    property: KMutableProperty0<in ViewElement<V, LP>>
+    property: KMutableProperty0<in ViewElement<out V, LP>>
 ): ViewElement<V, LP> = this.also { property.set(it) }
 
 /**
@@ -157,9 +159,13 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.alpha(
  * @see View.setOnClickListener
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
-    action: () -> Unit
+    action: (() -> Unit)?
 ): ViewElement<V, LP> = onView {
-    setOnClickListener { action() }
+    if (action == null) {
+        setOnClickListener(null)
+    } else {
+        setOnClickListener { action() }
+    }
 }
 
 /**

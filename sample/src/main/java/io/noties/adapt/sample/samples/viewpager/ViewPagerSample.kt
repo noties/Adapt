@@ -125,7 +125,7 @@ class ViewPagerSample : SampleView() {
 
         class Ref {
             lateinit var textView: TextView
-            lateinit var textElement: ViewElement<TextView, *>
+            lateinit var textElement: ViewElement<out TextView, *>
         }
 
         var isSelected = false

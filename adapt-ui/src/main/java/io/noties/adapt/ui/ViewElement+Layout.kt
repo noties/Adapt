@@ -33,6 +33,9 @@ fun <V : View, TLP : ViewGroup.LayoutParams> ViewElement<V, TLP>.layout(
     }
 }
 
+fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.layoutFill() =
+    this.layout(MATCH_PARENT, MATCH_PARENT)
+
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight(
     weight: Float
 ): ViewElement<V, LLP> = onLayout {
