@@ -1,8 +1,24 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeSample",
+    "id": "20220926220755",
+    "title": "AdaptUI, Shape usage",
+    "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemsSample",
+    "id": "20220926192547",
+    "title": "AdaptUI, adapt items",
+    "description": "ElementItem and ElementItemNoRef usage, single-file component",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.FlexboxUISample",
     "id": "20220612133759",
-    "title": "Flexbox layout build with adapt-ui",
+    "title": "Typed Flexbox layout build with adapt-ui extensions",
     "description": "",
     "tags": [
       "adapt-ui",

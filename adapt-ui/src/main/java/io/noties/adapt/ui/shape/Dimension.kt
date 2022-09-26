@@ -1,6 +1,6 @@
 package io.noties.adapt.ui.shape
 
-import io.noties.adapt.ui.dip
+import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
 sealed class Dimension {

@@ -8,11 +8,13 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.GravityInt
 import androidx.annotation.IntDef
+import io.noties.adapt.ui.util.dip
 
 @IntDef(
     value = [MATCH_PARENT, WRAP_CONTENT],
     open = true
 )
+@Retention(AnnotationRetention.SOURCE)
 annotation class LayoutDimension
 
 fun <V : View, TLP : ViewGroup.LayoutParams> ViewElement<V, TLP>.layout(

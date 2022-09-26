@@ -16,7 +16,7 @@ fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Progress(
         isIndeterminate = indeterminate
     }
 
-fun <V : ProgressBar, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.tint(
+fun <V : ProgressBar, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.progressTint(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
     if (isIndeterminate) {

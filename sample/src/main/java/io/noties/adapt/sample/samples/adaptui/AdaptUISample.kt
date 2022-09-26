@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
@@ -9,16 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
-import io.noties.adapt.preview.AdaptPreviewLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.items.CardBigItem
-import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.AnyViewElement
 import io.noties.adapt.ui.AnyViewFactory
@@ -47,9 +47,11 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
@@ -633,10 +635,43 @@ class AdaptUISample : SampleView() {
     }
 }
 
-class SamplePreview(context: Context, attributeSet: AttributeSet?) :
-    AdaptPreviewLayout(context, attributeSet) {
-    override fun items(): List<Item<*>> = listOf(
-        CardBigItem("FG", Color.MAGENTA, "The title goes here"),
-        PlainItem("TY", Color.YELLOW, "The title is here")
-    )
+@Suppress("ClassName")
+class __AdaptUISample(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+    init {
+        ViewFactory.addChildren<FrameLayout, LayoutParams>(this) {
+            ZStack {
+                Text("This is text!")
+                    .textSize(20)
+                    .textGravity(Gravity.CENTER_HORIZONTAL)
+                    .padding(horizontal = 16 + 16 + 8, vertical = 12)
+                    .background(RoundedRectangle(9) {
+                        add(Circle {
+                            fill(Color.YELLOW)
+                            size(24, 24, Gravity.END or Gravity.CENTER_VERTICAL)
+                            translate(x = -16)
+                        })
+                        fill(LinearGradient(
+                                GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                                Color.CYAN,
+                                Color.GREEN
+                        ))
+                    })
+                    .layoutMargin(16)
+                    .elevation(8)
+                    .layout(FILL, WRAP)
+
+                View()
+                    .layout(FILL, FILL)
+                    .background(Circle {
+                        fill(RadialGradient(Color.MAGENTA, Color.YELLOW))
+                        gravity(Gravity.START or Gravity.TOP)
+                        add(Rectangle {
+                            stroke(Color.BLACK, 2)
+                        })
+                    })
+            }.layoutFill()
+                .noClip()
+                .padding(16)
+        }
+    }
 }

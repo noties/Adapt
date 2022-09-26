@@ -1,4 +1,4 @@
-package io.noties.adapt.ui
+package io.noties.adapt.ui.util
 
 import android.content.res.Resources
 

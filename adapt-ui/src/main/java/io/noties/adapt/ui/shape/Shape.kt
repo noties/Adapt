@@ -18,9 +18,10 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
-import io.noties.adapt.ui.dip
 import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.util.dip
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 abstract class Shape {
 
@@ -149,12 +150,6 @@ abstract class Shape {
 
     fun fill(@ColorInt color: Int): Shape = this.apply {
         this.fillColor = color
-        if (alpha == null && color != 0) {
-            val colorAlpha = Color.alpha(color)
-            if (colorAlpha > 0 && colorAlpha != 255) {
-                this.alpha = colorAlpha.toFloat() / 255F
-            }
-        }
     }
 
     fun fill(gradient: Gradient?) = this.also {
@@ -254,7 +249,6 @@ abstract class Shape {
             fillRect(bounds)
 
             val alpha = this.alpha
-            val alphaInt = ((alpha ?: 1F) * 255).toInt()
 
             val fillColor = this.fillColor
             val fillGradient = this.fillGradient
@@ -272,7 +266,7 @@ abstract class Shape {
                 // important to check if there is alpha, otherwise, a color with alpha component
                 //  would be drawn without alpha (solid)
                 if (alpha != null) {
-                    fillPaint.alpha = alphaInt
+                    fillPaint.alpha = (fillPaint.alpha * alpha).roundToInt()
                 }
 
                 // Gradient + Shader
@@ -317,7 +311,7 @@ abstract class Shape {
                 }
 
                 if (alpha != null) {
-                    strokePaint.alpha = alphaInt
+                    strokePaint.alpha = (strokePaint.alpha * alpha).roundToInt()
                 }
 
                 val dashWidth = this.strokeDashWidth?.dip
@@ -780,8 +774,11 @@ class Capsule : Shape() {
 // NB! it discards received paint (so, fill, nor stroke would function)
 class Asset(private val resource: Drawable) : Shape() {
 
-    // empty companion object in order to allow users adding factory-like creation methods
-    companion object;
+    companion object {
+        operator fun invoke(drawable: Drawable, block: Asset.() -> Unit = {}): Asset {
+            return Asset(drawable).also { block(it) }
+        }
+    }
 
     init {
 
@@ -815,7 +812,7 @@ class Asset(private val resource: Drawable) : Shape() {
     }
 }
 
-class ShapeDrawable(private val shape: Shape) : Drawable() {
+class ShapeDrawable(val shape: Shape) : Drawable() {
 
     override fun draw(canvas: Canvas) {
         shape.draw(canvas, bounds)

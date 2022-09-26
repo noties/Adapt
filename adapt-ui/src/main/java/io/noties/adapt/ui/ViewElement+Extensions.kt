@@ -12,6 +12,7 @@ import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.util.dip
 import kotlin.reflect.KMutableProperty0
 
 /**
@@ -24,8 +25,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property.set(this)
 }
 
-// TODO: a subclass of view won't be able to assign... for example,
-//  TextView is put in ViewElement, but actual view is a subclass..
 @JvmName("referenceElement")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<in ViewElement<out V, LP>>

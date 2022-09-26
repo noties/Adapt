@@ -8,6 +8,7 @@
     <color name="white">#fff</color>
     <color name="transparent">#00000000</color>
     <color name="orange">#fd8f3b</color>
+    <color name="black">#000000</color>
 
     <color name="page_indicator_container">#CC000000</color>
     <color name="page_indicator_selected">#40ffffff</color>

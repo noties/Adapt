@@ -21,67 +21,39 @@ fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Text(
     }.also(elements::add)
 }
 
-data class TextStyle(
-    val size: Int,
-    val color: ColorStateList,
-    @GravityInt val gravity: Int,
-    val font: Typeface?,
-    val fontStyle: Int = Typeface.NORMAL
-) {
-    companion object {
-
-        fun setSize(textView: TextView, size: Int) {
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size.toFloat())
-        }
-
-        fun setColor(textView: TextView, colorStateList: ColorStateList) {
-            textView.setTextColor(colorStateList)
-        }
-
-        fun setGravity(textView: TextView, @GravityInt gravity: Int) {
-            textView.gravity = gravity
-        }
-
-        fun setFont(textView: TextView, font: Typeface?, style: Int) {
-            textView.setTypeface(font, style)
-        }
-    }
-
-    fun applyTo(textView: TextView) {
-        setSize(textView, size)
-        setColor(textView, color)
-        setGravity(textView, gravity)
-        setFont(textView, font, fontStyle)
-    }
-}
-
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSize(
     size: Int,
 ): ViewElement<V, LP> = onView {
-    TextStyle.setSize(this, size)
+    setTextSize(TypedValue.COMPLEX_UNIT_SP, size.toFloat())
 }
 
+/**
+ * @see textColor(android.content.res.ColorStateList)
+ */
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
     @ColorInt color: Int
 ): ViewElement<V, LP> = textColor(ColorStateList.valueOf(color))
 
+/**
+ * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ */
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
     colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
-    TextStyle.setColor(this, colorStateList)
+    setTextColor(colorStateList)
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textGravity(
     @GravityInt gravity: Int
 ): ViewElement<V, LP> = onView {
-    TextStyle.setGravity(this, gravity)
+    this.gravity = gravity
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(
     font: Typeface? = null,
     fontStyle: Int = Typeface.NORMAL
 ): ViewElement<V, LP> = onView {
-    TextStyle.setFont(this, font, fontStyle)
+    setTypeface(font, fontStyle)
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(
@@ -105,10 +77,4 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
     text: CharSequence?
 ): ViewElement<V, LP> = onView {
     this.text = text
-}
-
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textStyle(
-    style: TextStyle
-): ViewElement<V, LP> = onView {
-    style.applyTo(this)
 }

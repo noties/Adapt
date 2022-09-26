@@ -22,7 +22,7 @@ import io.noties.adapt.ui.shape.Rectangle
 
 @AdaptSample(
     id = "20220612133759",
-    title = "Flexbox layout build with adapt-ui",
+    title = "Typed Flexbox layout build with adapt-ui extensions",
     tags = ["flexbox", "adapt-ui"]
 )
 class FlexboxUISample : SampleView() {
