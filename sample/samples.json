@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIElementLayoutSample",
+    "id": "20221006152015",
+    "title": "AdaptUI layout attributes",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "layout"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPagerSample",
     "id": "20221006102210",
     "title": "AdaptUI: Pager",
