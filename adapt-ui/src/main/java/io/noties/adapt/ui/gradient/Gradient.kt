@@ -23,18 +23,20 @@ enum class GradientEdge {
 abstract class Gradient {
     abstract fun createShader(bounds: Rect): Shader
 
-    protected fun positionOfEdge(edge: GradientEdge, bounds: Rect): Pair<Float, Float> {
-        val pair: Pair<Int, Int> = when (edge) {
-            GradientEdge.Leading -> bounds.left to bounds.centerY()
-            GradientEdge.Top -> bounds.centerX() to bounds.top
-            GradientEdge.Trailing -> bounds.right to bounds.centerY()
-            GradientEdge.Bottom -> bounds.centerX() to bounds.bottom
-            GradientEdge.LeadingTop -> bounds.left to bounds.top
-            GradientEdge.LeadingBottom -> bounds.left to bounds.bottom
-            GradientEdge.TopTrailing -> bounds.right to bounds.top
-            GradientEdge.BottomTrailing -> bounds.right to bounds.bottom
+    internal companion object {
+        fun positionOfEdge(edge: GradientEdge, bounds: Rect): Pair<Float, Float> {
+            val pair: Pair<Int, Int> = when (edge) {
+                GradientEdge.Leading -> bounds.left to bounds.centerY()
+                GradientEdge.Top -> bounds.centerX() to bounds.top
+                GradientEdge.Trailing -> bounds.right to bounds.centerY()
+                GradientEdge.Bottom -> bounds.centerX() to bounds.bottom
+                GradientEdge.LeadingTop -> bounds.left to bounds.top
+                GradientEdge.LeadingBottom -> bounds.left to bounds.bottom
+                GradientEdge.TopTrailing -> bounds.right to bounds.top
+                GradientEdge.BottomTrailing -> bounds.right to bounds.bottom
+            }
+            return pair.first.toFloat() to pair.second.toFloat()
         }
-        return pair.first.toFloat() to pair.second.toFloat()
     }
 }
 

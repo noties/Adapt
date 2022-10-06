@@ -8,6 +8,9 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.addChildren
 
+/**
+ * Element for [LinearLayout] in HORIZONTAL orientation
+ */
 @Suppress("FunctionName", "unused")
 fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.HStack(
     @GravityInt gravity: Int = Gravity.CENTER_VERTICAL,

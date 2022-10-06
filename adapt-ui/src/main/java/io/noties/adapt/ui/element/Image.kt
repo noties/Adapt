@@ -10,6 +10,10 @@ import androidx.annotation.DrawableRes
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 
+/**
+ * Element for [ImageView].
+ * By default uses [ImageView.ScaleType.CENTER_INSIDE] scaleType
+ */
 @Suppress("FunctionName", "unused")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> {
     return ViewElement<ImageView, LP> {
@@ -33,7 +37,10 @@ fun <LP : LayoutParams> ViewFactory<LP>.Image(
     bitmap: Bitmap?
 ): ViewElement<ImageView, LP> = Image().onView { setImageBitmap(bitmap) }
 
-
+/**
+ * Scale Type
+ * @see ImageView.setScaleType
+ */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     scaleType: ImageView.ScaleType
 ): ViewElement<V, LP> = onView {
@@ -44,4 +51,10 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
     imageTintList = ColorStateList.valueOf(color)
+}
+
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
+    colorStateList: ColorStateList
+): ViewElement<V, LP> = onView {
+    imageTintList = colorStateList
 }

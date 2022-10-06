@@ -7,6 +7,11 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.addChildren
 
+/**
+ * Element for [HorizontalScrollView].
+ * NB! this shares the condition to have only one direct child
+ * @see fillViewPort
+ */
 @Suppress("FunctionName", "unused")
 fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit

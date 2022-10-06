@@ -521,7 +521,6 @@ class Circle : Shape() {
         )
     }
 
-    // TODO: gravity
     override fun outlineShape(outline: Outline, bounds: Rect) {
         val radius = radius(bounds)
         // TODO: layout direction

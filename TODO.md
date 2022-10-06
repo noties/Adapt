@@ -1,6 +1,8 @@
 * explicit tags in sample (enum?), define colors for each
 
-- stateful shape
+- [ ] window insets
+- [ ] Int.unused in shape builder functions (where applicable)
+- [ ] shape rotation, scale
 
-- layout width|height when used with layoutWeight - anyway it is a proper way to define such a view
-- Int.unused in shape builder functions (where applicable)
+- [X] layout width|height when used with layoutWeight - anyway it is a proper way to define such a view
+  it is better to make weight explicit in `layout` function call for LinearLayout

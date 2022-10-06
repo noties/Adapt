@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.VISIBLE
+import android.view.ViewTreeObserver
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.GravityInt
@@ -63,6 +64,20 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.id(
     id: Int
 ): ViewElement<V, LP> = onView {
     setId(id)
+}
+
+/**
+ * Tag
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
+    tag: Any?,
+    key: Int? = null
+): ViewElement<V, LP> = onView {
+    if (key != null) {
+        setTag(key, tag)
+    } else {
+        setTag(tag)
+    }
 }
 
 /**
@@ -183,6 +198,40 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.alpha(
 }
 
 /**
+ * Scale
+ * @see View.setScaleX
+ * @see View.setScaleY
+ * @see scale
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scale(
+    xy: Float
+): ViewElement<V, LP> = scale(xy, xy)
+
+/**
+ * Scale
+ * @see View.setScaleX
+ * @see View.setScaleY
+ * @see scale
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scale(
+    x: Float? = null,
+    y: Float? = null
+): ViewElement<V, LP> = onView {
+    x?.let { scaleX = it }
+    y?.let { scaleY = it }
+}
+
+/**
+ * Rotation
+ * @see View.setRotation
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.rotate(
+    rotation: Float
+): ViewElement<V, LP> = onView {
+    this.rotation = rotation
+}
+
+/**
  * OnClick
  * @see View.setOnClickListener
  */
@@ -285,4 +334,28 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     //  (cannot set null)
     width?.dip?.also { minimumWidth = it }
     height?.dip?.also { minimumHeight = it }
+}
+
+/**
+ * An utility function to trigger called in on-pre drawing state,
+ * when view is measured and is going to be drawn on canvas
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewReady(
+    block: V.() -> Unit
+): ViewElement<V, LP> = onView {
+    val view = this
+    val vto = view.viewTreeObserver.takeIf { it.isAlive } ?: return@onView
+    vto.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+        override fun onPreDraw(): Boolean {
+
+            block(view)
+
+            view.viewTreeObserver
+                .takeIf { it.isAlive }
+                ?.removeOnPreDrawListener(this)
+
+            // do not block drawing
+            return true
+        }
+    })
 }
