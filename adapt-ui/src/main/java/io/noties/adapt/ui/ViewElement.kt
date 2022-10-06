@@ -10,8 +10,10 @@ class ViewElement<V : View, LP : LayoutParams>(
 
     lateinit var view: V
 
-    private val layoutBlocks: MutableList<LP.() -> Unit> = mutableListOf()
-    private val viewBlocks: MutableList<V.() -> Unit> = mutableListOf()
+    val isInitialized: Boolean get() = this::view.isInitialized
+
+    internal val layoutBlocks: MutableList<LP.() -> Unit> = mutableListOf()
+    internal val viewBlocks: MutableList<V.() -> Unit> = mutableListOf()
 
     fun init(context: Context): V {
         view = provider(context)
@@ -30,9 +32,7 @@ class ViewElement<V : View, LP : LayoutParams>(
         it.layoutBlocks.add(block)
     }
 
-    // hm, as we do not hold view, it might not be very helpful,
-    //  as we would need to keep referencing view additionally
-    fun render() {
+    fun render(clearBlocks: Boolean = true) {
 
         // does clearing make sense? would it be possible to use the same
         //  element to apply styling to multiple views?
@@ -48,7 +48,9 @@ class ViewElement<V : View, LP : LayoutParams>(
                 // trigger layout update
                 view.requestLayout()
 
-                it.clear()
+                if (clearBlocks) {
+                    it.clear()
+                }
             }
         }
 
@@ -59,10 +61,10 @@ class ViewElement<V : View, LP : LayoutParams>(
                 // invalidate to apply changes
                 view.invalidate()
 
-                it.clear()
+                if (clearBlocks) {
+                    it.clear()
+                }
             }
         }
     }
 }
-
-typealias AnyViewElement = ViewElement<*, *>

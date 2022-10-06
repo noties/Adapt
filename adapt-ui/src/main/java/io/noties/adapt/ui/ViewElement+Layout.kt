@@ -17,10 +17,10 @@ import io.noties.adapt.ui.util.dip
 @Retention(AnnotationRetention.SOURCE)
 annotation class LayoutDimension
 
-fun <V : View, TLP : ViewGroup.LayoutParams> ViewElement<V, TLP>.layout(
+fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.layout(
     @LayoutDimension width: Int,
     @LayoutDimension height: Int
-): ViewElement<V, TLP> = onLayout {
+): ViewElement<V, LP> = onLayout {
     // special values
     if (width == MATCH_PARENT || width == WRAP_CONTENT) {
         this.width = width

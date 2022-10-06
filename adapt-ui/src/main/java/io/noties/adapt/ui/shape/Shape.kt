@@ -772,7 +772,7 @@ class Capsule : Shape() {
 }
 
 // NB! it discards received paint (so, fill, nor stroke would function)
-class Asset(private val resource: Drawable) : Shape() {
+class Asset(val resource: Drawable) : Shape() {
 
     companion object {
         operator fun invoke(drawable: Drawable, block: Asset.() -> Unit = {}): Asset {

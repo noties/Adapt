@@ -1,10 +1,23 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPagerSample",
+    "id": "20221006102210",
+    "title": "AdaptUI: Pager",
+    "description": "Usage of \u003cdef\u003ePager\u003c/def\u003e element (ViewPager)",
+    "tags": [
+      "adapt-ui",
+      "view-pager"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeSample",
     "id": "20220926220755",
     "title": "AdaptUI, Shape usage",
     "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "shape"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemsSample",

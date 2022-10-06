@@ -30,8 +30,6 @@ fun <G : ViewGroup, LP : LayoutParams> ViewFactory.Companion.addChildren(
         g.addView(view)
 
         el.render()
-
-        view.requestLayout()
     }
 }
 

@@ -20,8 +20,6 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.dip
-import io.noties.adapt.ui.AnyViewElement
-import io.noties.adapt.ui.AnyViewFactory
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.addChildren
@@ -115,8 +113,7 @@ class AdaptUISample : SampleView() {
                         bindAdapt(AdaptViewGroup.init(this))
                     }
 //                    .myCustomStyle()
-            }
-                .layout(FILL, FILL)
+            }.layout(FILL, FILL)
         }
     }
 
@@ -160,7 +157,7 @@ class AdaptUISample : SampleView() {
 //        }
 //    }
 
-    private fun AnyViewElement.myCustomStyle() = this
+    private fun ViewElement<*, *>.myCustomStyle() = this
         .scrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         .overScrollMode(View.OVER_SCROLL_NEVER)
         .padding(101)
@@ -358,7 +355,7 @@ class AdaptUISample : SampleView() {
 
         // this would reduce layoutParams to ViewGroups, so only basic layout(width, height)
         //  would be configurable
-        private fun AnyViewFactory.test() =
+        private fun ViewFactory<*>.test() =
             Text("TEST")
                 .textSize(12)
                 .textColor(Color.WHITE)
@@ -367,7 +364,7 @@ class AdaptUISample : SampleView() {
 
         // this does not return anything, it is valid, but no further customization
         //  would be available
-        private fun AnyViewFactory.test2() {
+        private fun ViewFactory<*>.test2() {
             Text("WHATEVER")
                 .textSize(12)
                 .textColor(Color.RED)
@@ -636,7 +633,8 @@ class AdaptUISample : SampleView() {
 }
 
 @Suppress("ClassName")
-class __AdaptUISample(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
+    FrameLayout(context, attributeSet) {
     init {
         ViewFactory.addChildren<FrameLayout, LayoutParams>(this) {
             ZStack {
@@ -650,11 +648,13 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) : FrameLayou
                             size(24, 24, Gravity.END or Gravity.CENTER_VERTICAL)
                             translate(x = -16)
                         })
-                        fill(LinearGradient(
+                        fill(
+                            LinearGradient(
                                 GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
                                 Color.CYAN,
                                 Color.GREEN
-                        ))
+                            )
+                        )
                     })
                     .layoutMargin(16)
                     .elevation(8)

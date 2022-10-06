@@ -66,7 +66,7 @@ class ViewPagerSample : SampleView() {
                     .layoutMargin(top = 8)
                     .textSize(21)
 
-                Pager()
+                Element(::ViewPager)
                     .layout(FILL, 128)
                     .onView(::processViewPager)
                     .adaptViewGroup()

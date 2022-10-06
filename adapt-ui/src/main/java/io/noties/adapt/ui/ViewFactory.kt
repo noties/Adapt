@@ -2,7 +2,9 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup.LayoutParams
+import android.view.ViewGroup
+
+typealias LayoutParams = ViewGroup.LayoutParams
 
 class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
@@ -23,7 +25,3 @@ class ViewFactory<out LP : LayoutParams>(val context: Context) {
     // empty companion object to be used in extensions
     companion object
 }
-
-// `*` would match all
-// `ViewGroup.LayoutParams` would match ONLY `ViewGroup.LayoutParams`, not type children
-typealias AnyViewFactory = ViewFactory<*>

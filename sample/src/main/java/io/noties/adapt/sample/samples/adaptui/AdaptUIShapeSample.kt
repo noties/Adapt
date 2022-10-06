@@ -3,11 +3,13 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.annotation.AttrRes
 import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
@@ -46,7 +48,8 @@ import io.noties.adapt.ui.shape.StatefulShape
 @AdaptSample(
     id = "20220926220755",
     title = "AdaptUI, Shape usage",
-    description = "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle"
+    description = "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
+    tags = ["adapt-ui", "shape"]
 )
 class AdaptUIShapeSample : SampleView() {
 
@@ -78,6 +81,8 @@ class AdaptUIShapeSample : SampleView() {
                     gradients()
 
                     stateful()
+
+                    statefulSelectable()
 
                 }.noClip()
 
@@ -314,6 +319,36 @@ class AdaptUIShapeSample : SampleView() {
             .onClick { }
             .layoutMargin(top = 8)
             .layoutMargin(horizontal = 16)
+    }
+
+    private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.statefulSelectable() {
+        View()
+            .layout(FILL, 56)
+            .background(StatefulShape.drawable {
+                val drawable = resolveDrawableAttr(context, android.R.attr.selectableItemBackground)
+
+                val base = Rectangle {
+                    fill(Colors.orange)
+                }
+
+                setDefault(base)
+                setPressed(Asset(drawable!!))
+            })
+            .onClick {  }
+    }
+
+    internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
+        val array = context.obtainStyledAttributes(intArrayOf(attr))
+        try {
+            return array.getDrawable(0)
+        } catch (t: Throwable) {
+            if (Log.isLoggable("adapt-ui", Log.ERROR)) {
+                Log.e("adapt-ui", null, t)
+            }
+        } finally {
+            array.recycle()
+        }
+        return null
     }
 
     private fun drawableTinted(tintColor: Int): Drawable =

@@ -13,6 +13,7 @@ import androidx.annotation.GravityInt
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.resolveDefaultSelectableDrawable
 import kotlin.reflect.KMutableProperty0
 
 /**
@@ -25,9 +26,34 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property.set(this)
 }
 
+/**
+ * Stores the element itself in specified mutable property.
+ * Designed usage:
+ * ```kotlin
+ * newViewElement()
+ *   .reference(ref::element)
+ *
+ * // which is the same as
+ * newViewElement()
+ *   .also { ref.element = it }
+ * ```
+ *
+ * When element property represents a parent of a view, it would need to
+ * have a type with `out` parameter, for example:
+ *
+ * ```kotlin
+ * class Ref {
+ *   lateinit var element: ViewElement<out View, *>
+ * }
+ * val ref = Ref()
+ *
+ * Text() // ViewElement<TextView, *>
+ *   .reference(ref::element) // this works
+ * ```
+ */
 @JvmName("referenceElement")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
-    property: KMutableProperty0<in ViewElement<out V, LP>>
+    property: KMutableProperty0<in ViewElement<V, LP>>
 ): ViewElement<V, LP> = this.also { property.set(it) }
 
 /**
@@ -54,20 +80,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     background = drawable
 }
 
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable(): ViewElement<V, LP> =
-    onView {
-        val attrs = intArrayOf(android.R.attr.selectableItemBackground)
-        val array = context.obtainStyledAttributes(attrs)
-        try {
-            val drawable = array.getDrawable(0)
-            background = drawable
-        } finally {
-            array.recycle()
-        }
-    }
-
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(shape: Shape): ViewElement<V, LP> =
     background(shape.drawable())
+
+/**
+ * @see background(Int)
+ * @see background(Drawable?)
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable(): ViewElement<V, LP> =
+    onView {
+        background = resolveDefaultSelectableDrawable(context)
+    }
 
 /**
  * Foreground
@@ -86,6 +109,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     @GravityInt gravity: Int? = null
 ): ViewElement<V, LP> = foreground(shape.drawable(), gravity)
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable(): ViewElement<V, LP> =
+    onView {
+        foreground = resolveDefaultSelectableDrawable(context)
+    }
 
 /**
  * Padding
@@ -252,6 +281,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     width: Int? = null,
     height: Int? = null
 ): ViewElement<V, LP> = onView {
+    // there is no point of using `unused` here, as null would suffice
+    //  (cannot set null)
     width?.dip?.also { minimumWidth = it }
     height?.dip?.also { minimumHeight = it }
 }

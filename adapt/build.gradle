@@ -40,11 +40,9 @@ dependencies {
     compileOnly deps['x-recyclerview']
     compileOnly deps['x-viewpager']
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:3.8.0'
-
-    // https://github.com/robolectric/robolectric
-    testImplementation 'org.robolectric:robolectric:4.7.3'
+    testImplementation deps['junit4']
+    testImplementation deps['mockito']
+    testImplementation deps['robolectric']
 }
 
 apply from: '../publish.gradle'

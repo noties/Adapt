@@ -25,7 +25,7 @@ import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
-import io.noties.adapt.ui.onAdapt
+import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
 
@@ -47,9 +47,9 @@ class AdaptUIItemsSample : SampleView() {
 
                 VStack {
                 }.adaptViewGroup()
-                    .onAdapt {
-                        setItems(items)
-                    }
+                    .setItems(items)
+                // or
+                // .onAdapt { setItems(items) }
 
             }.layoutFill()
                 .fillViewPort()

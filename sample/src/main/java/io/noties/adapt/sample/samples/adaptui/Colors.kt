@@ -6,6 +6,7 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 
 object Colors {
+    val white: Int = get(R.color.white)
     val black: Int = get(R.color.black)
     val orange: Int = get(R.color.orange)
 

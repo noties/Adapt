@@ -10,9 +10,15 @@ import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewpager.AdaptViewPager
 
 abstract class AdaptElement<A : Adapt> {
-    abstract val adapt: A
+    lateinit var adapt: A
 
     val callbacks: MutableList<(A) -> Unit> = mutableListOf()
+
+    fun init(adapt: A) {
+        this.adapt = adapt
+        callbacks.forEach { it(adapt) }
+        callbacks.clear()
+    }
 }
 
 /**
@@ -21,12 +27,9 @@ abstract class AdaptElement<A : Adapt> {
 class AdaptViewGroupElement(
     private val configurator: (AdaptViewGroup.Configuration) -> Unit
 ) : AdaptElement<AdaptViewGroup>() {
-    override lateinit var adapt: AdaptViewGroup
-
     val onView: (ViewGroup) -> Unit
         get() = {
-            adapt = AdaptViewGroup.init(it, configurator)
-            callbacks.onEach { it(adapt) }
+            init(AdaptViewGroup.init(it, configurator))
         }
 }
 
@@ -44,12 +47,9 @@ fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewGro
 class AdaptViewPagerElement(
     private val configurator: (AdaptViewPager.Configuration) -> Unit
 ) : AdaptElement<AdaptViewPager>() {
-    override lateinit var adapt: AdaptViewPager
-
     val onView: (ViewPager) -> Unit
         get() = {
-            adapt = AdaptViewPager.init(it, configurator)
-            callbacks.onEach { it(adapt) }
+            init(AdaptViewPager.init(it, configurator))
         }
 }
 
@@ -67,12 +67,9 @@ fun <V : ViewPager, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewPag
 class AdaptRecyclerViewElement(
     private val configurator: (AdaptRecyclerView.Configuration) -> Unit
 ) : AdaptElement<AdaptRecyclerView>() {
-    override lateinit var adapt: AdaptRecyclerView
-
     val onView: (RecyclerView) -> Unit
         get() = {
-            adapt = AdaptRecyclerView.init(it, configurator)
-            callbacks.onEach { it(adapt) }
+            init(AdaptRecyclerView.init(it, configurator))
         }
 }
 
@@ -90,14 +87,11 @@ fun <V : RecyclerView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptRecy
 class AdaptViewPager2Element(
     private val configurator: (AdaptRecyclerView.Configuration) -> Unit
 ) : AdaptElement<AdaptRecyclerView>() {
-    override lateinit var adapt: AdaptRecyclerView
-
     val onView: (ViewPager2) -> Unit
         get() = {
-            adapt = AdaptRecyclerView.create(configurator)
+            val adapt = AdaptRecyclerView.create(configurator)
             it.adapter = adapt.adapter()
-
-            callbacks.onEach { it(adapt) }
+            init(adapt)
         }
 }
 

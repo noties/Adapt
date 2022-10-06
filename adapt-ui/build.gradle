@@ -29,15 +29,27 @@ android {
             withSourcesJar()
         }
     }
+
+    // even if you do not use resources, robolectric still requires this,
+    //  otherwise it would skip tests
+    testOptions.unitTests.includeAndroidResources = true
 }
 
 dependencies {
-    api 'androidx.annotation:annotation:1.3.0'
+    api 'androidx.annotation:annotation:1.5.0'
     api project(':adapt')
 
     compileOnly deps['x-recyclerview']
     compileOnly deps['x-viewpager']
     compileOnly deps['x-viewpager2']
+
+    testImplementation deps['junit4']
+    testImplementation deps['mockito']
+    testImplementation deps['robolectric']
+
+    testImplementation deps['x-recyclerview']
+    testImplementation deps['x-viewpager']
+    testImplementation deps['x-viewpager2']
 }
 
 apply from: '../publish.gradle'
