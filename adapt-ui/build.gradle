@@ -36,8 +36,9 @@ android {
 }
 
 dependencies {
-    api 'androidx.annotation:annotation:1.5.0'
     api project(':adapt')
+
+    api deps['x-annotations']
 
     compileOnly deps['x-recyclerview']
     compileOnly deps['x-viewpager']
@@ -50,6 +51,7 @@ dependencies {
     testImplementation deps['x-recyclerview']
     testImplementation deps['x-viewpager']
     testImplementation deps['x-viewpager2']
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
 
 apply from: '../publish.gradle'

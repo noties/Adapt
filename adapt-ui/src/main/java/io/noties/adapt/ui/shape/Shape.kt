@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
 abstract class Shape {
 
     companion object {
-        fun <S : Shape> drawable(shape: S, block: S.() -> Unit = {}): Drawable {
+        fun <S : Shape> drawable(shape: S, block: S.() -> Unit = {}): ShapeDrawable {
             block(shape)
             return ShapeDrawable(shape)
         }
@@ -40,6 +40,7 @@ abstract class Shape {
         to.width = this.width
         to.height = this.height
         to.gravity = this.gravity
+        to.rotation = this.rotation
         to.translateX = this.translateX
         to.translateY = this.translateY
         to.paddingLeading = this.paddingLeading
@@ -57,7 +58,7 @@ abstract class Shape {
         to.children.addAll(this.children.map { it.copy() })
     }
 
-    fun drawable(): Drawable = ShapeDrawable(this)
+    fun drawable(): ShapeDrawable = ShapeDrawable(this)
 
     fun visible(visible: Boolean): Shape = this.also {
         it.visible = visible
@@ -86,7 +87,15 @@ abstract class Shape {
     }
 
     fun gravity(@GravityInt gravity: Int?) = this.also {
-        gravity?.also { this.gravity = it }
+        this.gravity = gravity
+    }
+
+    /**
+     * Rotates shape around its center x and y coordinates by given angle in degrees.
+     * NB! this does not change actual bounds of the shape
+     */
+    fun rotate(degrees: Float?): Shape = this.also {
+        this.rotation = degrees
     }
 
     fun padding(all: Int): Shape = padding(all, all)
@@ -194,6 +203,8 @@ abstract class Shape {
 
     var gravity: Int? = null
 
+    var rotation: Float? = null
+
     var translateX: Dimension? = null
     var translateY: Dimension? = null
 
@@ -220,8 +231,7 @@ abstract class Shape {
     private val fillPaint: Paint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }
     private val strokePaint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }
 
-    private val fillRect = Rect()
-    private val strokeRect = Rect()
+    internal val fillRect = Rect()
 
     private var fillShaderCache: ShaderCache? = null
     private var strokeShaderCache: ShaderCache? = null
@@ -247,6 +257,10 @@ abstract class Shape {
             }
 
             fillRect(bounds)
+
+            rotation?.also {
+                canvas.rotate(it, fillRect.centerX().toFloat(), fillRect.centerY().toFloat())
+            }
 
             val alpha = this.alpha
 
@@ -326,14 +340,12 @@ abstract class Shape {
                     )
                 }
 
-                strokeRect.set(fillRect)
-
                 if (strokeGradient != null) {
                     val cache = strokeShaderCache
-                    if (cache != null && cache.gradient == strokeGradient && cache.bounds == strokeRect) {
+                    if (cache != null && cache.gradient == strokeGradient && cache.bounds == fillRect) {
                         strokePaint.shader = cache.shader
                     } else {
-                        fillShaderCache = ShaderCache(strokeGradient, strokeRect).also {
+                        strokeShaderCache = ShaderCache(strokeGradient, fillRect).also {
                             strokePaint.shader = it.shader
                         }
                     }
@@ -342,7 +354,7 @@ abstract class Shape {
                     strokeShaderCache = null
                 }
 
-                drawShape(canvas, strokeRect, strokePaint)
+                drawShape(canvas, fillRect, strokePaint)
             }
 
             children.forEach {
@@ -399,7 +411,7 @@ abstract class Shape {
 
     open fun outlineShape(outline: Outline, bounds: Rect) = Unit
 
-    private fun fillRect(bounds: Rect) {
+    internal fun fillRect(bounds: Rect) {
 
         val width = this.width?.resolve(bounds.width())
         val height = this.height?.resolve(bounds.height())
@@ -777,12 +789,14 @@ class Asset(val resource: Drawable) : Shape() {
         operator fun invoke(drawable: Drawable, block: Asset.() -> Unit = {}): Asset {
             return Asset(drawable).also { block(it) }
         }
+
+        const val defaultFillColor: Int = 0xFF000000.toInt()
     }
 
     init {
 
         // we need fill value in order to trigger drawing
-        fill(0xFF000000.toInt())
+        fill(defaultFillColor)
 
         // we need to report size, let's see if bounds are empty
         val density = Resources.getSystem().displayMetrics.density
@@ -801,7 +815,7 @@ class Asset(val resource: Drawable) : Shape() {
 
     override fun copy(block: Shape.() -> Unit): Shape = Asset(resource).also {
         this.copy(it)
-        block(this)
+        block(it)
     }
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
@@ -812,6 +826,11 @@ class Asset(val resource: Drawable) : Shape() {
 }
 
 class ShapeDrawable(val shape: Shape) : Drawable() {
+
+    fun invalidate(block: Shape.() -> Unit) {
+        block(shape)
+        invalidateSelf()
+    }
 
     override fun draw(canvas: Canvas) {
         shape.draw(canvas, bounds)

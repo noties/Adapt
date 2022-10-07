@@ -2,6 +2,7 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -14,6 +15,7 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.dip
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.ViewFactory
