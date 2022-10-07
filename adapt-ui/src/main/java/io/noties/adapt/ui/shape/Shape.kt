@@ -64,7 +64,8 @@ abstract class Shape {
         it.visible = visible
     }
 
-    // if null, then use bounds value
+    // if null, then use bounds value (if null is stored property, if null is passed to the function,
+    //  this argument is ignored)
     fun size(
         width: Int? = null,
         height: Int? = null,

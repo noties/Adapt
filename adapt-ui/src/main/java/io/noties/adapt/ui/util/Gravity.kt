@@ -2,14 +2,22 @@ package io.noties.adapt.ui.util
 
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
-import android.view.Gravity.CENTER_HORIZONTAL
-import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
 import android.view.Gravity.START
 import android.view.Gravity.TOP
+import androidx.annotation.GravityInt
 
-@Suppress("ClassName")
+/**
+ * Utility to specify [android.view.Gravity] in a type-safe manner
+ * without manual xor operation. `Gravity.CENTER OR Gravity.TOP` becomes
+ * `Gravity.center.top`.
+ * Direct child of Gravity allows further customization of opposite axis,
+ * so `Gravity.top` (y) has `.center`, `.leading` and `.trailing` (x).
+ * And `Gravity.leading` (x) has `.center`, `.top` and `.bottom` (y).
+ */
 interface Gravity {
+
+    @get:GravityInt
     val gravityValue: Int
 
     companion object {
@@ -18,54 +26,68 @@ interface Gravity {
         val top: __Meta.Top get() = __Meta.Top
         val trailing: __Meta.Trailing get() = __Meta.Trailing
         val bottom: __Meta.Bottom get() = __Meta.Bottom
+
+        fun raw(@GravityInt gravity: Int): Gravity = __Meta.Raw(gravity)
     }
 
+    @Suppress("ClassName")
     object __Meta {
 
+        interface HasCenterHorizontal : Gravity {
+            val center: Gravity get() = Raw(gravityValue or CENTER)
+        }
+
+        interface HasCenterVertical : Gravity {
+            val center: Gravity get() = Raw(gravityValue or CENTER)
+        }
+
         interface HasLeading : Gravity {
-            val leading: Gravity get() = Impl(gravityValue or START)
+            val leading: Gravity get() = Raw(gravityValue or START)
         }
 
         interface HasTop : Gravity {
-            val top: Gravity get() = Impl(gravityValue or TOP)
+            val top: Gravity get() = Raw(gravityValue or TOP)
         }
 
         interface HasTrailing : Gravity {
-            val trailing: Gravity get() = Impl(gravityValue or END)
+            val trailing: Gravity get() = Raw(gravityValue or END)
         }
 
         interface HasBottom : Gravity {
-            val bottom: Gravity get() = Impl(gravityValue or BOTTOM)
+            val bottom: Gravity get() = Raw(gravityValue or BOTTOM)
         }
 
-        object Leading : Gravity, HasTop, HasBottom {
+        object Leading : Gravity, HasTop, HasBottom, HasCenterVertical {
             override val gravityValue: Int
                 get() = START
         }
 
-        object Top : Gravity, HasLeading, HasTrailing {
+        object Top : Gravity, HasLeading, HasTrailing, HasCenterHorizontal {
             override val gravityValue: Int
                 get() = TOP
         }
 
-        object Trailing : Gravity, HasTop, HasBottom {
+        object Trailing : Gravity, HasTop, HasBottom, HasCenterVertical {
             override val gravityValue: Int
                 get() = END
         }
 
-        object Bottom : Gravity, HasLeading, HasTrailing {
+        object Bottom : Gravity, HasLeading, HasTrailing, HasCenterHorizontal {
             override val gravityValue: Int
                 get() = BOTTOM
         }
 
-        object Center : Gravity {
+        // It seems we do not need to specify CENTER_VERTICAL or CENTER_HORIZONTAL
+        //  as xor with CENTER yield proper results:
+        //  CENTER||START:8388627 CENTER_VERTICAL||START:8388627
+        //  CENTER||TOP:49 CENTER_HORIZONTAL||TOP:49
+        //  CENTER||END:8388629 CENTER_VERTICAL||END:8388629
+        //  CENTER||BOTTOM:81 CENTER_HORIZONTAL||BOTTOM:81
+        object Center : Gravity, HasLeading, HasTop, HasTrailing, HasBottom {
             override val gravityValue: Int
                 get() = CENTER
-
-            val vertical: Gravity get() = Impl(CENTER_VERTICAL)
-            val horizontal: Gravity get() = Impl(CENTER_HORIZONTAL)
         }
 
-        internal class Impl(override val gravityValue: Int) : Gravity
+        internal class Raw(override val gravityValue: Int) : Gravity
     }
 }
