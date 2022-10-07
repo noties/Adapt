@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.graphics.Color
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.flexbox.AlignContent
@@ -19,6 +18,7 @@ import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20220612133759",
@@ -54,7 +54,7 @@ class FlexboxUISample : SampleView() {
                     })
                     .layoutFlexWrapBefore(true)
                     .layoutFlexGrow(1F)
-                    .textGravity(Gravity.CENTER)
+                    .textGravity(Gravity.center)
 
                 Text("4")
                     .layoutFlexWrapBefore(true)

@@ -2,7 +2,6 @@ package io.noties.adapt.sample.samples.viewpager
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -21,7 +20,6 @@ import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToPadding
 import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.HStack
-import io.noties.adapt.ui.element.Pager
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
@@ -40,6 +38,7 @@ import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import kotlin.math.roundToInt
 
@@ -81,7 +80,7 @@ class ViewPagerSample : SampleView() {
 
                 Text("At bottom")
                     .padding(16)
-                    .textGravity(Gravity.CENTER)
+                    .textGravity(Gravity.center)
             }
         }
     }

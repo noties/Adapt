@@ -13,12 +13,11 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.view.Gravity
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
-import androidx.annotation.GravityInt
 import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -69,7 +68,7 @@ abstract class Shape {
     fun size(
         width: Int? = null,
         height: Int? = null,
-        @GravityInt gravity: Int? = null
+        gravity: Gravity? = null
     ): Shape {
         width?.also { this.width = Dimension.Exact(it) }
         height?.also { this.height = Dimension.Exact(it) }
@@ -80,14 +79,14 @@ abstract class Shape {
     fun sizeRelative(
         @FloatRange(from = 0.0, to = 1.0) width: Float? = null,
         @FloatRange(from = 0.0, to = 1.0) height: Float? = null,
-        @GravityInt gravity: Int? = null
+        gravity: Gravity? = null
     ): Shape = this.apply {
         width?.also { this.width = Dimension.Relative(it) }
         height?.also { this.height = Dimension.Relative(it) }
         gravity?.also { this.gravity = it }
     }
 
-    fun gravity(@GravityInt gravity: Int?) = this.also {
+    fun gravity(gravity: Gravity) = this.also {
         this.gravity = gravity
     }
 
@@ -202,7 +201,7 @@ abstract class Shape {
     var width: Dimension? = null
     var height: Dimension? = null
 
-    var gravity: Int? = null
+    var gravity: Gravity? = null
 
     var rotation: Float? = null
 
@@ -424,8 +423,8 @@ abstract class Shape {
             val h = height ?: bounds.height()
             val gravity = this.gravity
             if (gravity != null) {
-                Gravity.apply(
-                    gravity,
+                android.view.Gravity.apply(
+                    gravity.gravityValue,
                     w,
                     h,
                     bounds,
@@ -516,8 +515,8 @@ class Circle : Shape() {
         // TODO: layout direction
         val rect = gravity?.let {
             val side = radius * 2
-            Gravity.apply(
-                it,
+            android.view.Gravity.apply(
+                it.gravityValue,
                 side,
                 side,
                 bounds,
@@ -539,8 +538,8 @@ class Circle : Shape() {
         // TODO: layout direction
         val rect = gravity?.let {
             val side = radius * 2
-            Gravity.apply(
-                it,
+            android.view.Gravity.apply(
+                it.gravityValue,
                 side,
                 side,
                 bounds,

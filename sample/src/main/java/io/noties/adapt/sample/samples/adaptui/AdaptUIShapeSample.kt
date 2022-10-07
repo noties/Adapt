@@ -2,10 +2,8 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -15,7 +13,6 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.dip
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.ViewFactory
@@ -46,6 +43,7 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20220926220755",
@@ -109,7 +107,7 @@ class AdaptUIShapeSample : SampleView() {
             // Asset
             listOf(
                 Asset(drawableTinted(Colors.orange)) {
-                    gravity(Gravity.CENTER)
+                    gravity(Gravity.center)
                 },
                 Circle(),
                 Oval(),
@@ -152,18 +150,18 @@ class AdaptUIShapeSample : SampleView() {
 
                 add(Capsule()) {
                     fill(hex("#cccccc"))
-                    size(height = 56, gravity = Gravity.CENTER_VERTICAL)
+                    size(height = 56, gravity = Gravity.center)
                     padding(4)
 
                     // align to start
                     add(Asset(drawableTinted(Colors.black))) {
-                        size(24, 24, Gravity.CENTER_VERTICAL or Gravity.START)
+                        size(24, 24, Gravity.leading.center)
                         translate(x = 8)
                     }
 
                     // align to end
                     add(Asset(drawableTinted(Colors.black))) {
-                        size(24, 24, Gravity.CENTER_VERTICAL or Gravity.END)
+                        size(24, 24, Gravity.trailing.center)
                         translate(x = -8)
                     }
                 }
@@ -193,7 +191,7 @@ class AdaptUIShapeSample : SampleView() {
 
                 // translate
                 add(Rectangle()) {
-                    size(48, 48, Gravity.END or Gravity.BOTTOM)
+                    size(48, 48, Gravity.trailing.bottom)
                     // negative values as we start at bottom right
                     translateRelative(x = -0.25F, y = -0.25F)
                     fill(0x200000ff.toInt())
@@ -306,7 +304,7 @@ class AdaptUIShapeSample : SampleView() {
                     add(base.copy()) {
                         strokeColor = null
                         fill(Colors.black.withAlphaComponent(0.4F))
-                        gravity(Gravity.BOTTOM)
+                        gravity(Gravity.bottom)
                         padding(horizontal = -2)
                     }
                     add(base.copy()) {
@@ -336,7 +334,7 @@ class AdaptUIShapeSample : SampleView() {
                 setDefault(base)
                 setPressed(Asset(drawable!!))
             })
-            .onClick {  }
+            .onClick { }
     }
 
     internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {

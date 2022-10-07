@@ -6,7 +6,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.annotation.GravityInt
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 
 /**
@@ -84,9 +84,9 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight
  */
 @JvmName("linearLayoutGravity")
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
-    @GravityInt gravity: Int
+    gravity: Gravity
 ): ViewElement<V, LLP> = onLayout {
-    this.gravity = gravity
+    this.gravity = gravity.gravityValue
 }
 
 /**
@@ -94,9 +94,9 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravit
  */
 @JvmName("frameLayoutGravity")
 fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
-    @GravityInt gravity: Int
+    gravity: Gravity
 ): ViewElement<V, FLP> = onLayout {
-    this.gravity = gravity
+    this.gravity = gravity.gravityValue
 }
 
 /**

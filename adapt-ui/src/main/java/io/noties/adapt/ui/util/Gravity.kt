@@ -27,54 +27,70 @@ interface Gravity {
         val trailing: __Meta.Trailing get() = __Meta.Trailing
         val bottom: __Meta.Bottom get() = __Meta.Bottom
 
-        fun raw(@GravityInt gravity: Int): Gravity = __Meta.Raw(gravity)
+        fun raw(@GravityInt gravity: Int): Gravity = __Meta.Raw("raw", gravity)
     }
 
     @Suppress("ClassName")
     object __Meta {
 
-        interface HasCenterHorizontal : Gravity {
-            val center: Gravity get() = Raw(gravityValue or CENTER)
+        interface HasName {
+            val name: String
         }
 
-        interface HasCenterVertical : Gravity {
-            val center: Gravity get() = Raw(gravityValue or CENTER)
+        interface HasCenter : Gravity, HasName {
+            val center: Gravity get() = Raw("$name.center", gravityValue or CENTER)
         }
 
-        interface HasLeading : Gravity {
-            val leading: Gravity get() = Raw(gravityValue or START)
+        interface HasLeading : Gravity, HasName {
+            val leading: Gravity get() = Raw("$name.leading", gravityValue or START)
         }
 
-        interface HasTop : Gravity {
-            val top: Gravity get() = Raw(gravityValue or TOP)
+        interface HasTop : Gravity, HasName {
+            val top: Gravity get() = Raw("$name.top", gravityValue or TOP)
         }
 
-        interface HasTrailing : Gravity {
-            val trailing: Gravity get() = Raw(gravityValue or END)
+        interface HasTrailing : Gravity, HasName {
+            val trailing: Gravity get() = Raw("$name.trailing", gravityValue or END)
         }
 
-        interface HasBottom : Gravity {
-            val bottom: Gravity get() = Raw(gravityValue or BOTTOM)
+        interface HasBottom : Gravity, HasName {
+            val bottom: Gravity get() = Raw("$name.bottom", gravityValue or BOTTOM)
         }
 
-        object Leading : Gravity, HasTop, HasBottom, HasCenterVertical {
+        object Leading : Gravity, HasTop, HasBottom, HasCenter {
             override val gravityValue: Int
                 get() = START
+            override val name: String
+                get() = ".leading"
+
+            override fun toString(): String = __Meta.toString(this)
         }
 
-        object Top : Gravity, HasLeading, HasTrailing, HasCenterHorizontal {
+        object Top : Gravity, HasLeading, HasTrailing, HasCenter {
             override val gravityValue: Int
                 get() = TOP
+            override val name: String
+                get() = ".top"
+
+            override fun toString(): String = __Meta.toString(this)
         }
 
-        object Trailing : Gravity, HasTop, HasBottom, HasCenterVertical {
+        object Trailing : Gravity, HasTop, HasBottom, HasCenter {
             override val gravityValue: Int
                 get() = END
+            override val name: String
+                get() = ".trailing"
+
+            override fun toString(): String = __Meta.toString(this)
         }
 
-        object Bottom : Gravity, HasLeading, HasTrailing, HasCenterHorizontal {
+        object Bottom : Gravity, HasName, HasLeading, HasTrailing, HasCenter {
             override val gravityValue: Int
                 get() = BOTTOM
+            override val name: String
+                get() = ".bottom"
+
+            override fun toString(): String = __Meta.toString(this)
         }
 
         // It seems we do not need to specify CENTER_VERTICAL or CENTER_HORIZONTAL
@@ -83,11 +99,36 @@ interface Gravity {
         //  CENTER||TOP:49 CENTER_HORIZONTAL||TOP:49
         //  CENTER||END:8388629 CENTER_VERTICAL||END:8388629
         //  CENTER||BOTTOM:81 CENTER_HORIZONTAL||BOTTOM:81
-        object Center : Gravity, HasLeading, HasTop, HasTrailing, HasBottom {
+        object Center : Gravity, HasName, HasLeading, HasTop, HasTrailing, HasBottom {
             override val gravityValue: Int
                 get() = CENTER
+            override val name: String
+                get() = ".center"
+            override fun toString(): String = __Meta.toString(this)
         }
 
-        internal class Raw(override val gravityValue: Int) : Gravity
+        internal fun <T> toString(t: T): String where T : HasName, T : Gravity {
+            return "Gravity(${t.name}, ${t.gravityValue})"
+        }
+
+        internal class Raw(
+            override val name: String,
+            override val gravityValue: Int
+        ) : Gravity, HasName {
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+                other as Raw
+                if (gravityValue != other.gravityValue) return false
+                return true
+            }
+
+            override fun hashCode(): Int {
+                return gravityValue
+            }
+
+            override fun toString(): String = __Meta.toString(this)
+        }
     }
 }

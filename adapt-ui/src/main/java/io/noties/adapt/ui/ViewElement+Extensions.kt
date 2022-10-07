@@ -5,14 +5,13 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
-import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
-import androidx.annotation.GravityInt
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.resolveDefaultSelectableDrawable
 import kotlin.reflect.KMutableProperty0
@@ -113,16 +112,16 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     drawable: Drawable?,
-    @GravityInt gravity: Int? = null
+    gravity: Gravity? = null
 ): ViewElement<V, LP> = onView {
     foreground = drawable
-    gravity?.also { foregroundGravity = it }
+    gravity?.also { foregroundGravity = it.gravityValue }
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
-    @GravityInt gravity: Int? = null
+    gravity: Gravity? = null
 ): ViewElement<V, LP> = foreground(shape.drawable(), gravity)
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -232,20 +231,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.rotate(
 }
 
 /**
- * OnClick
- * @see View.setOnClickListener
- */
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
-    action: (() -> Unit)?
-): ViewElement<V, LP> = onView {
-    if (action == null) {
-        setOnClickListener(null)
-    } else {
-        setOnClickListener { action() }
-    }
-}
-
-/**
  * Elevation
  * @see View.setElevation
  */
@@ -269,6 +254,37 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
     x?.dip?.also { translationX = it.toFloat() }
     y?.dip?.also { translationY = it.toFloat() }
     z?.dip?.also { translationZ = it.toFloat() }
+}
+
+/**
+ * OnClick
+ * @see View.setOnClickListener
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
+    action: (() -> Unit)?
+): ViewElement<V, LP> = onView {
+    if (action == null) {
+        setOnClickListener(null)
+    } else {
+        setOnClickListener { action() }
+    }
+}
+
+/**
+ * OnLongClick
+ * @see View.OnLongClickListener
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
+    action: (() -> Unit)?
+): ViewElement<V, LP> = onView {
+    if (action == null) {
+        setOnLongClickListener(null)
+    } else {
+        setOnLongClickListener {
+            action()
+            true
+        }
+    }
 }
 
 /**
@@ -338,9 +354,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
 
 /**
  * An utility function to trigger called in on-pre drawing state,
- * when view is measured and is going to be drawn on canvas
+ * when view is measured and is going to be drawn on canvas.
+ * Useful when view dimensions (width and height) should be available (after measure,
+ * but before being drawn on screen)
  */
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewReady(
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
     block: V.() -> Unit
 ): ViewElement<V, LP> = onView {
     val view = this

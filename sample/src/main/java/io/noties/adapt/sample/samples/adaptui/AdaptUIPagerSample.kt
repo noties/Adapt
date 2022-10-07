@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -55,6 +54,7 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.util.Gravity
 import io.noties.debug.Debug
 import kotlin.math.abs
 
@@ -92,7 +92,7 @@ class AdaptUIPagerSample : SampleView() {
                 //  there could be multiple deselect callbacks
                 //  NB! this listener is registered when view is attached to a viewpager
                 Text("PAGE!!!")
-                    .textGravity(Gravity.CENTER)
+                    .textGravity(Gravity.center)
                     .textSize(48)
                     .textColor(Colors.black)
                     .also { element ->
@@ -117,7 +117,7 @@ class AdaptUIPagerSample : SampleView() {
                         .imageScaleType(ImageView.ScaleType.CENTER_CROP)
                         .layoutWeight(3F)
                     Text("This is text")
-                        .textGravity(Gravity.CENTER)
+                        .textGravity(Gravity.center)
                         .textColor(Colors.black)
                         .textSize(24) // already 24sp
                         .layout(FILL, 0)
@@ -197,7 +197,7 @@ class AdaptUIPagerSample : SampleView() {
         // persist decor element so we can obtain ViewPager - `decor.viewPager`
         lateinit var decor: ViewElement<out View, ViewPagerLayoutParams>
 
-        decor = HStack(Gravity.CENTER_VERTICAL) {
+        decor = HStack(Gravity.center) {
 
             previous = Text("<<")
                 .padding(16)
@@ -211,7 +211,7 @@ class AdaptUIPagerSample : SampleView() {
             text = Text()
                 .layout(0, WRAP)
                 .layoutWeight(1F)
-                .textGravity(Gravity.CENTER)
+                .textGravity(Gravity.center)
 
             next = Text(">>")
                 .padding(16)
@@ -223,7 +223,7 @@ class AdaptUIPagerSample : SampleView() {
                 }
 
         }.layout(FILL, 56)
-            .pagerDecor(Gravity.BOTTOM)
+            .pagerDecor(Gravity.bottom)
             .pagerOnPageChangedListener(object : ViewPagerOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     val count = pagesCount
@@ -260,7 +260,7 @@ class AdaptUIPagerSample : SampleView() {
     ): ViewElement<out View, ViewPagerLayoutParams> = ZStack {
         Text(title)
             .textColor(Color.RED)
-            .textGravity(Gravity.CENTER)
+            .textGravity(Gravity.center)
             .layoutFill()
             .background(color)
     }.pagerPageWidthRatio(pageWidthRatio)

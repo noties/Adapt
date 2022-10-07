@@ -6,9 +6,9 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.GravityInt
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 
 @Suppress("FunctionName")
@@ -44,9 +44,9 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textGravity(
-    @GravityInt gravity: Int
+    gravity: Gravity
 ): ViewElement<V, LP> = onView {
-    this.gravity = gravity
+    this.gravity = gravity.gravityValue
 }
 
 fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(

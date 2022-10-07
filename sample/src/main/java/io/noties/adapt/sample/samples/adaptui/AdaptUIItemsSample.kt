@@ -2,7 +2,6 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -28,6 +27,8 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20220926192547",
@@ -40,6 +41,7 @@ class AdaptUIItemsSample : SampleView() {
     override val layoutResId: Int = R.layout.view_sample_frame
 
     override fun render(view: View) {
+        Debug.i("ch: ${android.view.Gravity.CENTER_HORIZONTAL}, ${Gravity.center.top}")
         // just create a view
         // pass additional argument which would be accessible in the building block
         val child = ViewFactory.createView(view.context, this) { ref ->
@@ -84,7 +86,7 @@ class AdaptUIItemsSample : SampleView() {
 
                     add(base.copy()) {
                         // align to the right bottom corner
-                        gravity(Gravity.BOTTOM or Gravity.END)
+                        gravity(Gravity.bottom.trailing)
                         // move 8 dp from that corner
                         translate(-8, -8)
                     }

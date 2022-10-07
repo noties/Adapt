@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -68,6 +67,7 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.ColorStateListBuilder
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
 import java.util.Date
@@ -181,7 +181,7 @@ class AdaptUISample : SampleView() {
         // as `text` is static we use it directly here
         override fun ViewFactory<LayoutParams>.body() {
             Text("This is static text\nthat never changes")
-                .textGravity(Gravity.CENTER)
+                .textGravity(Gravity.center)
                 .textColor(Color.BLACK)
                 // 24 is SP, not pixels
                 .textSize(24)
@@ -216,7 +216,7 @@ class AdaptUISample : SampleView() {
                     }
 
                     add(Asset(context.getDrawable(R.drawable.ic_search_24)!!)) {
-                        gravity(Gravity.BOTTOM or Gravity.END)
+                        gravity(Gravity.bottom.trailing)
                         translate(-8, -8)
                         alpha(0.5F)
                         size(48, 48)
@@ -251,14 +251,14 @@ class AdaptUISample : SampleView() {
 
                         val base = Rectangle {
                             fill(Color.MAGENTA)
-                            sizeRelative(.75F, .75F, gravity = Gravity.BOTTOM or Gravity.END)
+                            sizeRelative(.75F, .75F, gravity = Gravity.trailing.bottom)
                             alpha(0.5F)
                         }
 
                         val circle = Circle {
                             fill(0xFF000000.toInt())
                             sizeRelative(0.25F, 0.25F)
-                            gravity(Gravity.START or Gravity.TOP)
+                            gravity(Gravity.leading.top)
                         }
 
                         add(base.copy {
@@ -268,13 +268,13 @@ class AdaptUISample : SampleView() {
                             add(base.copy {
                                 fill(Color.BLUE)
                                 add(circle.copy {
-                                    gravity(Gravity.CENTER)
+                                    gravity(Gravity.center)
                                 })
 
                                 add(base.copy {
                                     fill(Color.RED)
                                     add(circle.copy {
-                                        gravity(Gravity.END or Gravity.BOTTOM)
+                                        gravity(Gravity.trailing.bottom)
                                     })
                                 })
                             })
@@ -368,7 +368,7 @@ class AdaptUISample : SampleView() {
             Text("WHATEVER")
                 .textSize(12)
                 .textColor(Color.RED)
-                .textGravity(Gravity.END)
+                .textGravity(Gravity.trailing)
                 .padding(12)
                 .background(Color.BLACK)
         }
@@ -377,7 +377,7 @@ class AdaptUISample : SampleView() {
         //  for example, layoutWeight if used inside LinearLayout
         private fun <LP : LayoutParams> ViewFactory<LP>.paragraph() =
             Text("***")
-                .textGravity(Gravity.CENTER)
+                .textGravity(Gravity.center)
                 .textSize(48)
                 .padding(24)
                 .textColor(Color.GRAY)
@@ -396,7 +396,7 @@ class AdaptUISample : SampleView() {
             ZStack {
                 Text("This is button")
                     .textColor(Color.WHITE)
-                    .textGravity(Gravity.CENTER)
+                    .textGravity(Gravity.center)
                     .textFont(fontStyle = Typeface.BOLD)
                     .textSize(16)
                     .padding(horizontal = 16, vertical = 8)
@@ -436,24 +436,24 @@ class AdaptUISample : SampleView() {
                 add(RoundedRectangle(8)) {
                     fill(Color.BLACK)
                     stroke(Color.YELLOW, 8, 8, 2)
-                    size(100, 48, Gravity.END or Gravity.BOTTOM)
+                    size(100, 48, Gravity.trailing.bottom)
                 }
 
                 add(Rectangle()) {
                     fill(Color.WHITE)
                     stroke(Color.GRAY, 1, 8, 2)
-                    size(64, 64, Gravity.START or Gravity.CENTER_VERTICAL)
+                    size(64, 64, Gravity.leading.center)
 
                     add(Circle()) {
                         fill(Color.RED)
                         // would still be circle -> additionally moved to be centered (inside own bounds!)
                         // if gravity is specified with `size`, then gravity is applied inside parent bounds
-                        size(32, 32, Gravity.BOTTOM or Gravity.END)
+                        size(32, 32, Gravity.bottom.trailing)
                         padding(2)
 
                         add(Circle()) {
                             fill(Color.GREEN)
-                            size(16, 16, Gravity.START or Gravity.TOP)
+                            size(16, 16, Gravity.trailing.top)
                             padding(4)
                         }
                     }
@@ -555,12 +555,12 @@ class AdaptUISample : SampleView() {
 
                 add(RoundedRectangle(8)) {
                     fill(Color.RED)
-                    size(48, 48, Gravity.BOTTOM or Gravity.END)
+                    size(48, 48, Gravity.trailing.bottom)
                 }
 
                 add(Circle()) {
                     fill(Color.BLUE)
-                    size(48, 48, Gravity.START or Gravity.TOP)
+                    size(48, 48, Gravity.leading.top)
                     alpha(0.82F)
                 }
 
@@ -580,7 +580,7 @@ class AdaptUISample : SampleView() {
                 setPressed(base)
                 setDefault(Rectangle {
                     add(shape.copy()) {
-                        size(null, 32, Gravity.BOTTOM)
+                        size(null, 32, Gravity.bottom)
                         fill(Color.GREEN)
                     }
                     add(base)
@@ -613,7 +613,7 @@ class AdaptUISample : SampleView() {
                         fill(Color.GREEN)
                     })
                     add(control.copy {
-                        gravity(Gravity.END)
+                        gravity(Gravity.trailing)
                     })
 
                     stroke(Color.BLACK, 2)
@@ -640,12 +640,12 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
             ZStack {
                 Text("This is text!")
                     .textSize(20)
-                    .textGravity(Gravity.CENTER_HORIZONTAL)
+                    .textGravity(Gravity.center)
                     .padding(horizontal = 16 + 16 + 8, vertical = 12)
                     .background(RoundedRectangle(9) {
                         add(Circle {
                             fill(Color.YELLOW)
-                            size(24, 24, Gravity.END or Gravity.CENTER_VERTICAL)
+                            size(24, 24, Gravity.trailing.center)
                             translate(x = -16)
                         })
                         fill(
@@ -664,7 +664,7 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
                     .layout(FILL, FILL)
                     .background(Circle {
                         fill(RadialGradient(Color.MAGENTA, Color.YELLOW))
-                        gravity(Gravity.START or Gravity.TOP)
+                        gravity(Gravity.leading.top)
                         add(Rectangle {
                             stroke(Color.BLACK, 2)
                         })

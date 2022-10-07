@@ -10,6 +10,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 
 @Suppress("FunctionName", "unused")
@@ -161,10 +162,10 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedList
  * Marks a child of [ViewPager] as decor view (persist between pages)
  */
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
-    gravity: Int? = null
+    gravity: Gravity? = null
 ) = this.onLayout {
     isDecor = true
-    gravity?.also { this.gravity = it }
+    gravity?.also { this.gravity = it.gravityValue }
 }
 
 /**

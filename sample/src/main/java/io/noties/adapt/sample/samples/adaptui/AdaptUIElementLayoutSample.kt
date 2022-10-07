@@ -1,10 +1,8 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
@@ -32,6 +30,7 @@ import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221006152015",
@@ -101,7 +100,7 @@ class AdaptUIElementLayoutSample : SampleView() {
                             .layout(12, 12)
                             .layoutMargin(4)
                             // by default HStack has CENTER_VERTICAL
-                            .layoutGravity(Gravity.BOTTOM)
+                            .layoutGravity(Gravity.bottom)
                             .background(strokeBackground())
 
                     }.layout(FILL, 32)
@@ -124,21 +123,21 @@ class AdaptUIElementLayoutSample : SampleView() {
 
             Text("START|TOP")
                 .layoutWrap()
-                .layoutGravity(Gravity.START or Gravity.TOP)
+                .layoutGravity(Gravity.leading.top)
                 .layoutMargin(top = 8)
 
             Text("END|TOP")
                 .layoutWrap()
-                .layoutGravity(Gravity.END or Gravity.TOP)
+                .layoutGravity(Gravity.trailing.top)
                 .layoutMargin(trailing = 8)
 
             Text("CENTER")
                 .layoutWrap()
-                .layoutGravity(Gravity.CENTER)
+                .layoutGravity(Gravity.center)
 
             Text("CENTER_HORIZONTAL|BOTTOM")
                 .layoutWrap()
-                .layoutGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
+                .layoutGravity(Gravity.bottom.center)
                 .layoutMargin(bottom = 8)
 
         }.layout(FILL, 128)

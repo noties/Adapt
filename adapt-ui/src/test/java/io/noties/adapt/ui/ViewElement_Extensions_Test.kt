@@ -3,13 +3,13 @@ package io.noties.adapt.ui
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.util.Gravity
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -290,8 +290,8 @@ class ViewElement_Extensions_Test {
         val inputs = listOf(
             null to null,
             mock(Drawable::class.java) to null,
-            null to Gravity.CENTER,
-            mock(Drawable::class.java) to Gravity.BOTTOM
+            null to Gravity.center,
+            mock(Drawable::class.java) to Gravity.bottom
         )
 
         for ((drawable, gravity) in inputs) {
@@ -299,7 +299,8 @@ class ViewElement_Extensions_Test {
                 .foreground(drawable, gravity)
                 .renderView {
                     verify(this).foreground = eq(drawable)
-                    verify(this, mode(gravity)).foregroundGravity = value(gravity)
+                    verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
+                        gravity?.let { eq(it.gravityValue) } ?: anyInt()
                 }
         }
     }
@@ -310,7 +311,7 @@ class ViewElement_Extensions_Test {
 
         val inputs = listOf(
             shape to null,
-            shape to Gravity.END
+            shape to Gravity.trailing
         )
 
         for ((s, gravity) in inputs) {
@@ -319,7 +320,8 @@ class ViewElement_Extensions_Test {
                 .renderView {
                     val captor = ArgumentCaptor.forClass(Drawable::class.java)
                     verify(this).foreground = captor.capture()
-                    verify(this, mode(gravity)).foregroundGravity = value(gravity)
+                    verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
+                        gravity?.let { eq(it.gravityValue) } ?: anyInt()
 
                     Assert.assertTrue(
                         "Foreground is instance of ShapeDrawable, class:${captor.value::class.java.name}",

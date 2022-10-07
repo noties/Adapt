@@ -3,12 +3,12 @@ package io.noties.adapt.ui.shape
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Dimension.Exact
 import io.noties.adapt.ui.shape.Dimension.Relative
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
 import org.junit.Test
@@ -41,7 +41,7 @@ class Shape_Test {
             Input(Shape::visible, false),
             Input(Shape::width, Exact(42)),
             Input(Shape::height, Relative(0.25F)),
-            Input(Shape::gravity, Gravity.BOTTOM or Gravity.END),
+            Input(Shape::gravity, Gravity.bottom.trailing),
             Input(Shape::rotation, 45F),
             Input(Shape::translateX, Exact(-19)),
             Input(Shape::translateY, Relative(0.56F)),
@@ -192,15 +192,15 @@ class Shape_Test {
             Triple(null, null, null),
             Triple(1, null, null),
             Triple(null, 2, null),
-            Triple(null, null, 3),
-            Triple(4, 5, 6)
+            Triple(null, null, Gravity.bottom),
+            Triple(4, 5, Gravity.top.center)
         )
 
         for (input in inputs) {
             for (shape in shapes()) {
                 val width = Shape::width
                 val height = Shape::height
-                val gravity: KProperty1<Shape, Int?> = Shape::gravity
+                val gravity: KProperty1<Shape, Gravity?> = Shape::gravity
 
                 // by default null
                 shape.assertEquals(null, width)
@@ -223,15 +223,15 @@ class Shape_Test {
             Triple(null, null, null),
             Triple(1F, null, null),
             Triple(null, 2F, null),
-            Triple(null, null, 3),
-            Triple(4F, 5F, 6)
+            Triple(null, null, Gravity.bottom),
+            Triple(4F, 5F, Gravity.center)
         )
 
         for (input in inputs) {
             for (shape in shapes()) {
                 val width = Shape::width
                 val height = Shape::height
-                val gravity: KProperty1<Shape, Int?> = Shape::gravity
+                val gravity: KProperty1<Shape, Gravity?> = Shape::gravity
 
                 // by default null
                 shape.assertEquals(null, width)
@@ -253,8 +253,8 @@ class Shape_Test {
             // by default null
             shape.assertEquals(null, Shape::gravity)
 
-            shape.gravity(87)
-            shape.assertEquals(87, Shape::gravity)
+            shape.gravity(Gravity.trailing)
+            shape.assertEquals(Gravity.trailing, Shape::gravity)
         }
     }
 
@@ -612,7 +612,7 @@ class Shape_Test {
             shape.size(
                 10,
                 20,
-                Gravity.BOTTOM or Gravity.END
+                Gravity.bottom.trailing
             )
             shape.fillRect(rect)
             shape.assertEquals(
@@ -629,7 +629,7 @@ class Shape_Test {
             shape.size(
                 10,
                 20,
-                Gravity.BOTTOM or Gravity.END
+                Gravity.bottom.trailing
             )
             shape.padding(4)
             shape.fillRect(rect)
@@ -675,7 +675,7 @@ class Shape_Test {
         // no height - uses bounds
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
-            shape.size(25, gravity = Gravity.CENTER)
+            shape.size(25, gravity = Gravity.center)
             shape.fillRect(rect)
             shape.assertEquals(
                 Rect(
@@ -691,7 +691,7 @@ class Shape_Test {
         // no width - uses bounds
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
-            shape.size(height = 15, gravity = Gravity.BOTTOM)
+            shape.size(height = 15, gravity = Gravity.bottom)
             shape.fillRect(rect)
             shape.assertEquals(
                 Rect(

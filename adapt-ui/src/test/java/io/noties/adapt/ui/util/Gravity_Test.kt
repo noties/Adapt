@@ -18,42 +18,74 @@ import org.robolectric.annotation.Config
 class Gravity_Test {
 
     @Test
-    fun text() {
+    fun gravityValue() {
 
         val inputs = listOf(
-            Triple("center", Gravity.center, CENTER),
-            Triple("center.leading", Gravity.center.leading, CENTER or START),
-            Triple("center.top", Gravity.center.top, CENTER or TOP),
-            Triple("center.trailing", Gravity.center.trailing, CENTER or END),
-            Triple("center.bottom", Gravity.center.bottom, CENTER or BOTTOM),
+            Gravity.center to CENTER,
+            Gravity.center.leading to (CENTER or START),
+            Gravity.center.top to (CENTER or TOP),
+            Gravity.center.trailing to (CENTER or END),
+            Gravity.center.bottom to (CENTER or BOTTOM),
 
-            Triple("leading", Gravity.leading, START),
-            Triple("leading.top", Gravity.leading.top, START or TOP),
-            Triple("leading.center", Gravity.leading.center, START or CENTER),
-            Triple("leading.bottom", Gravity.leading.bottom, START or BOTTOM),
+            Gravity.leading to START,
+            Gravity.leading.top to (START or TOP),
+            Gravity.leading.center to (START or CENTER),
+            Gravity.leading.bottom to (START or BOTTOM),
 
-            Triple("top", Gravity.top, TOP),
-            Triple("top.leading", Gravity.top.leading, TOP or START),
-            Triple("top.center", Gravity.top.center, TOP or CENTER),
-            Triple("top.trailing", Gravity.top.trailing, TOP or END),
+            Gravity.top to TOP,
+            Gravity.top.leading to (TOP or START),
+            Gravity.top.center to (TOP or CENTER),
+            Gravity.top.trailing to (TOP or END),
 
-            Triple("trailing", Gravity.trailing, END),
-            Triple("trailing.top", Gravity.trailing.top, END or TOP),
-            Triple("trailing.center", Gravity.trailing.center, END or CENTER),
-            Triple("trailing.bottom", Gravity.trailing.bottom, END or BOTTOM),
+            Gravity.trailing to END,
+            Gravity.trailing.top to (END or TOP),
+            Gravity.trailing.center to (END or CENTER),
+            Gravity.trailing.bottom to (END or BOTTOM),
 
-            Triple("bottom", Gravity.bottom, BOTTOM),
-            Triple("bottom.leading", Gravity.bottom.leading, BOTTOM or START),
-            Triple("bottom.center", Gravity.bottom.center, BOTTOM or CENTER),
-            Triple("bottom.trailing", Gravity.bottom.trailing, BOTTOM or END),
+            Gravity.bottom to BOTTOM,
+            Gravity.bottom.leading to (BOTTOM or START),
+            Gravity.bottom.center to (BOTTOM or CENTER),
+            Gravity.bottom.trailing to (BOTTOM or END),
         )
 
         for (input in inputs) {
             assertEquals(
-                input.first,
-                input.third,
-                input.second.gravityValue,
+                input.first.toString(),
+                input.first.gravityValue,
+                input.second,
             )
+        }
+    }
+
+    @Test
+    fun equals() {
+        val inputs = listOf(
+            Gravity.leading.top to Gravity.top.leading,
+            Gravity.leading.center to Gravity.center.leading,
+            Gravity.leading.bottom to Gravity.bottom.leading,
+
+            Gravity.top.leading to Gravity.leading.top,
+            Gravity.top.center to Gravity.center.top,
+            Gravity.top.trailing to Gravity.trailing.top,
+
+            Gravity.trailing.top to Gravity.top.trailing,
+            Gravity.trailing.center to Gravity.center.trailing,
+            Gravity.trailing.bottom to Gravity.bottom.trailing,
+
+            Gravity.bottom.leading to Gravity.leading.bottom,
+            Gravity.bottom.center to Gravity.center.bottom,
+            Gravity.bottom.trailing to Gravity.trailing.bottom,
+
+            Gravity.center.leading to Gravity.leading.center,
+            Gravity.center.top to Gravity.top.center,
+            Gravity.center.trailing to Gravity.trailing.center,
+            Gravity.center.bottom to Gravity.bottom.center
+        )
+
+        for (input in inputs) {
+            assertEquals(input.first, input.second)
+            // check that raw equals with the same gravityValue
+            assertEquals(input.first, Gravity.raw(input.first.gravityValue))
         }
     }
 }

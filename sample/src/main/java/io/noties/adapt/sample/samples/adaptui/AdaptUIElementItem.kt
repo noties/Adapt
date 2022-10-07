@@ -2,7 +2,6 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
@@ -19,8 +18,10 @@ import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.util.Gravity
 
-class AdaptUIElementItem(val text: String) : ElementItem<AdaptUIElementItem.Ref>(hash(text), ::Ref) {
+class AdaptUIElementItem(val text: String) :
+    ElementItem<AdaptUIElementItem.Ref>(hash(text), ::Ref) {
     class Ref {
         lateinit var textView: TextView
     }
@@ -31,7 +32,7 @@ class AdaptUIElementItem(val text: String) : ElementItem<AdaptUIElementItem.Ref>
                 // already SP
                 .textSize(16)
                 .textColor(Colors.black)
-                .textGravity(Gravity.CENTER)
+                .textGravity(Gravity.center)
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)
                 .reference(references::textView)

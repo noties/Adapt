@@ -1,12 +1,12 @@
 package io.noties.adapt.ui
 
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
 import org.junit.Test
@@ -72,23 +72,23 @@ class ViewElement_Layout_Test {
 
     @Test
     fun `layoutGravity - linear`() {
-        val input = Gravity.BOTTOM or Gravity.END
+        val input = Gravity.bottom.trailing
         newElementOfTypeLayout<View, LinearLayout.LayoutParams>()
             .mockLayoutParams(LinearLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
-                Assert.assertEquals(input, (layoutParams as LinearLayout.LayoutParams).gravity)
+                Assert.assertEquals(input.gravityValue, (layoutParams as LinearLayout.LayoutParams).gravity)
             }
     }
 
     @Test
     fun `layoutGravity - frame`() {
-        val input = Gravity.BOTTOM or Gravity.END
+        val input = Gravity.bottom.trailing
         newElementOfTypeLayout<View, FrameLayout.LayoutParams>()
             .mockLayoutParams(FrameLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
-                Assert.assertEquals(input, (layoutParams as FrameLayout.LayoutParams).gravity)
+                Assert.assertEquals(input.gravityValue, (layoutParams as FrameLayout.LayoutParams).gravity)
             }
     }
 
