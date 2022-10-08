@@ -2,10 +2,12 @@ package io.noties.adapt.ui.element
 
 import android.content.res.ColorStateList
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.StringRes
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.util.Gravity
@@ -77,4 +79,34 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
     text: CharSequence?
 ): ViewElement<V, LP> = onView {
     this.text = text
+}
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
+    @StringRes textResId: Int
+): ViewElement<V, LP> = onView {
+    setText(textResId)
+}
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHint(
+    hint: CharSequence?
+): ViewElement<V, LP> = onView {
+    this.hint = hint
+}
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textEllipsize(
+    truncateAt: TextUtils.TruncateAt
+): ViewElement<V, LP> = onView {
+    this.ellipsize = truncateAt
+}
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textMaxLines(
+    maxLines: Int
+): ViewElement<V, LP> = onView {
+    this.maxLines = maxLines
+}
+
+fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSingleLine(
+    singleLine: Boolean = true
+): ViewElement<V, LP> = onView {
+    this.isSingleLine = singleLine
 }

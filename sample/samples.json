@@ -1,12 +1,23 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextSample",
+    "id": "20221008115412",
+    "title": "AdaptUI - Text \u0026 TextInput",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-text",
+      "ui-text-input"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIElementLayoutSample",
     "id": "20221006152015",
     "title": "AdaptUI layout attributes",
     "description": "",
     "tags": [
       "adapt-ui",
-      "layout"
+      "ui-layout"
     ]
   },
   {
@@ -16,7 +27,7 @@
     "description": "Usage of \u003cdef\u003ePager\u003c/def\u003e element (ViewPager)",
     "tags": [
       "adapt-ui",
-      "view-pager"
+      "ui-pager"
     ]
   },
   {
@@ -26,7 +37,7 @@
     "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
     "tags": [
       "adapt-ui",
-      "shape"
+      "ui-shape"
     ]
   },
   {

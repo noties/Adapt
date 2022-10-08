@@ -377,3 +377,24 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
         }
     })
 }
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
+    block: (view: V, attached: Boolean) -> Unit
+): ViewElement<V, LP> = onView {
+    this.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(v: View) {
+            notify(v, true)
+        }
+
+        override fun onViewDetachedFromWindow(v: View) {
+            notify(v, false)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun notify(v: View, attached: Boolean) {
+            (v as? V)?.also {
+                block(it, attached)
+            }
+        }
+    })
+}

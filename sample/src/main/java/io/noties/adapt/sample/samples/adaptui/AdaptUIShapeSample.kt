@@ -1,14 +1,16 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.animation.FloatEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.annotation.AttrRes
 import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
@@ -33,6 +35,7 @@ import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
+import io.noties.adapt.ui.onViewAttachedStateChanged
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
@@ -44,12 +47,13 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
+import kotlin.math.roundToInt
 
 @AdaptSample(
     id = "20220926220755",
     title = "AdaptUI, Shape usage",
     description = "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
-    tags = ["adapt-ui", "shape"]
+    tags = ["adapt-ui", "ui-shape"]
 )
 class AdaptUIShapeSample : SampleView() {
 
@@ -82,7 +86,7 @@ class AdaptUIShapeSample : SampleView() {
 
                     stateful()
 
-                    statefulSelectable()
+                    animated()
 
                 }.noClip()
 
@@ -321,34 +325,57 @@ class AdaptUIShapeSample : SampleView() {
             .layoutMargin(horizontal = 16)
     }
 
-    private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.statefulSelectable() {
-        View()
-            .layout(FILL, 56)
-            .background(StatefulShape.drawable {
-                val drawable = resolveDrawableAttr(context, android.R.attr.selectableItemBackground)
+    private fun ViewFactory<ViewGroup.MarginLayoutParams>.animated() {
 
-                val base = Rectangle {
-                    fill(Colors.orange)
+        val animator = ValueAnimator.ofFloat(0F, 1F)
+        animator.duration = 450L
+        animator.repeatCount = ValueAnimator.INFINITE
+        animator.repeatMode = ValueAnimator.REVERSE
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.setEvaluator(FloatEvaluator())
+
+        View()
+            .layout(FILL, 128)
+            .background(Shape.drawable(Rectangle()) {
+                stroke(Colors.black)
+
+                val corner = Circle {
+                    size(12, 12)
+                }
+                add(corner.copy()) {
+                    fill(Color.RED)
+                    gravity(Gravity.top.leading)
                 }
 
-                setDefault(base)
-                setPressed(Asset(drawable!!))
-            })
-            .onClick { }
-    }
+                add(corner.copy()) {
+                    fill(Color.GREEN)
+                    gravity(Gravity.bottom.trailing)
+                }
 
-    internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
-        val array = context.obtainStyledAttributes(intArrayOf(attr))
-        try {
-            return array.getDrawable(0)
-        } catch (t: Throwable) {
-            if (Log.isLoggable("adapt-ui", Log.ERROR)) {
-                Log.e("adapt-ui", null, t)
+                add(Rectangle()) {
+                    sizeRelative(0.5F)
+                    size(height = 24)
+                    fill(Color.BLUE)
+                    gravity(Gravity.center)
+                }
+
+            }.also { shapeDrawable ->
+                val target = 48
+                animator.addUpdateListener {
+                    val fraction = it.animatedFraction
+                    val value = (target * fraction).roundToInt()
+                    shapeDrawable.invalidate {
+                        padding(value)
+                    }
+                }
+            })
+            .onViewAttachedStateChanged { _, attached ->
+                if (attached) {
+                    animator.start()
+                } else {
+                    animator.cancel()
+                }
             }
-        } finally {
-            array.recycle()
-        }
-        return null
     }
 
     private fun drawableTinted(tintColor: Int): Drawable =

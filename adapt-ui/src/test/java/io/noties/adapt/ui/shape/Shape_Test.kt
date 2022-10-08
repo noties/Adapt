@@ -216,6 +216,8 @@ class Shape_Test {
         }
     }
 
+    // TODO: a combination of size (for ex width) and sizeRelative (for ex height)
+
     @Test
     fun sizeRelative() {
 

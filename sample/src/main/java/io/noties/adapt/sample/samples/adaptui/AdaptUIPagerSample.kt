@@ -62,7 +62,7 @@ import kotlin.math.abs
     id = "20221006102210",
     title = "AdaptUI: Pager",
     description = "Usage of <def>Pager</def> element (ViewPager)",
-    tags = ["adapt-ui", "view-pager"]
+    tags = ["adapt-ui", "ui-pager"]
 )
 class AdaptUIPagerSample : SampleView() {
     override val layoutResId: Int = R.layout.view_sample_frame

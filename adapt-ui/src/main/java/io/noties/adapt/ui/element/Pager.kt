@@ -1,6 +1,7 @@
 package io.noties.adapt.ui.element
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.FloatRange
@@ -41,22 +42,32 @@ fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Pager(
                 .partition { it.layoutParams.isDecor }
 
             // add decor views
-            decorItems.forEach { item ->
-                val decorView = item.element.init(context)
-                decorView.layoutParams = item.layoutParams
-                vp.addView(decorView)
-                item.element.render()
+            val decorListeners = decorItems
+                .onEach { item ->
+                    val decorView = item.element.init(context)
+                    decorView.layoutParams = item.layoutParams
+                    vp.addView(decorView)
+                    item.element.render()
 
-                // view-pager instance is initialized with onLayout, which take
-                //  value from layout-params
-                item.layoutParams.onPageChangeListener?.also(vp::addOnPageChangeListener)
+                    // view-pager instance is initialized with onLayout, which take
+                    //  value from layout-params
 
-                // decor view cannot be selected as a page
-                item.layoutParams.onPageSelectedListener = null
-            }
+                    // decor view cannot be selected as a page
+                    item.layoutParams.onPageSelectedListener = null
+                }
+                .mapNotNull {
+                    it.layoutParams.onPageChangeListener
+                }
 
             val adapter = PagerElementAdapter(items)
             vp.adapter = adapter
+
+            // trigger registered view page change listeners after adapter is initialized
+            decorListeners.forEach {
+                it
+                    .also { it.onPageSelected(vp.currentItem) }
+                    .also(vp::addOnPageChangeListener)
+            }
         }
     }.also(elements::add)
 }
@@ -154,6 +165,10 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedList
 ) = this.onView {
     onPageChangeListener?.also {
         it.viewPager = this
+        // deliver initial result, if we have adapter
+        if (adapter != null) {
+            it.onPageSelected(this.currentItem)
+        }
         addOnPageChangeListener(it)
     }
 }
