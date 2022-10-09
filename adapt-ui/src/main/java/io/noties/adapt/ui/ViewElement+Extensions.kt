@@ -3,9 +3,8 @@ package io.noties.adapt.ui
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewGroup.GONE
-import android.view.ViewGroup.VISIBLE
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.ColorInt
@@ -162,7 +161,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
  * @see View.setEnabled
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
-    enabled: Boolean
+    enabled: Boolean = true
 ): ViewElement<V, LP> = onView {
     isEnabled = enabled
 }
@@ -172,9 +171,18 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
  * @see View.setActivated
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
-    activated: Boolean
+    activated: Boolean = true
 ): ViewElement<V, LP> = onView {
     isActivated = activated
+}
+
+/**
+ * @see View.setSelected
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.selected(
+    selected: Boolean = true
+): ViewElement<V, LP> = onView {
+    isSelected = selected
 }
 
 /**
@@ -288,35 +296,14 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
     }
 }
 
-/**
- * ClipChildren
- * @see ViewGroup.setClipChildren
- */
-fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipChildren(
-    clipChildren: Boolean
+@RequiresApi(Build.VERSION_CODES.M)
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onScrollChanged(
+    action: (x: Int, y: Int) -> Unit
 ): ViewElement<V, LP> = onView {
-    this.clipChildren = clipChildren
+    setOnScrollChangeListener { _, scrollX, scrollY, _, _ ->
+        action(scrollX, scrollY)
+    }
 }
-
-/**
- * ClipToPadding
- * @see ViewGroup.setClipToPadding
- */
-fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipToPadding(
-    clipToPadding: Boolean
-): ViewElement<V, LP> = onView {
-    this.clipToPadding = clipToPadding
-}
-
-
-/**
- * NoClip
- * @see clipToPadding
- * @see clipChildren
- */
-fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noClip(): ViewElement<V, LP> =
-    this.clipChildren(false)
-        .clipToPadding(false)
 
 /**
  * OverScrollMode
@@ -351,6 +338,19 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     //  (cannot set null)
     width?.dip?.also { minimumWidth = it }
     height?.dip?.also { minimumHeight = it }
+}
+
+/**
+ * Focusable
+ * @see View.setFocusable
+ * @see View.setFocusableInTouchMode
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
+    focusable: Boolean = true,
+    focusableInTouchMode: Boolean = focusable
+): ViewElement<V, LP> = onView {
+    isFocusable = focusable
+    isFocusableInTouchMode = focusableInTouchMode
 }
 
 /**

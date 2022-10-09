@@ -1,5 +1,25 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample",
+    "id": "20221009162741",
+    "title": "AdaptUI - Accessibility",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-accessibility"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewGroupSample",
+    "id": "20221009161232",
+    "title": "AdaptUI - ViewGroup",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-viewgroup"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextSample",
     "id": "20221008115412",
     "title": "AdaptUI - Text \u0026 TextInput",

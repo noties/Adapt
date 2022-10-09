@@ -14,6 +14,7 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.accessibilityLabelFor
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.BreakStrategy
