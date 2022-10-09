@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.VISIBLE
 import android.view.ViewTreeObserver
+import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
@@ -397,4 +398,19 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
             }
         }
     })
+}
+
+/**
+ * Checks if specified SDK version is available (a device runs greater or equal SDK version
+ * than specified)
+ */
+@ChecksSdkIntAtLeast(parameter = 1, lambda = 2)
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
+    version: Int,
+    block: (ViewElement<V, LP>) -> Unit
+): ViewElement<V, LP> {
+    if (Build.VERSION.SDK_INT >= version) {
+        block(this)
+    }
+    return this
 }

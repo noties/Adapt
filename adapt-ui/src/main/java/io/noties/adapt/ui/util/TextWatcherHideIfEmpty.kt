@@ -13,7 +13,7 @@ class TextWatcherHideIfEmpty private constructor(private val textView: TextView)
 
     companion object {
 
-        private val id = R.id.adaptui_internal_text_watcher
+        internal val id = R.id.adaptui_internal_text_watcher
 
         fun init(textView: TextView) {
             val watcher = TextWatcherHideIfEmpty(textView)

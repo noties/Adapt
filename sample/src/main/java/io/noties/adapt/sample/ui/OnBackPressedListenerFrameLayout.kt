@@ -51,7 +51,7 @@ class OnBackPressedListenerFrameLayout(
         val isBack = KeyEvent.KEYCODE_BACK == event?.keyCode
         if (isBack) {
             val focus = activity?.currentFocus
-            if (focus != null) {
+            if (focus != null && focus != this) {
                 requestFocus()
                 return true
             }

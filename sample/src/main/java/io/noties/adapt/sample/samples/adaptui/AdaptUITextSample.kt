@@ -2,6 +2,7 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
@@ -15,27 +16,34 @@ import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.createView
+import io.noties.adapt.ui.element.BreakStrategy
+import io.noties.adapt.ui.element.HyphenationFrequency
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.TextInput
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textAllCaps
+import io.noties.adapt.ui.element.textBreakStrategy
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textEllipsize
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textHint
+import io.noties.adapt.ui.element.textHyphenationFrequency
 import io.noties.adapt.ui.element.textMaxLines
+import io.noties.adapt.ui.element.textOnTextChanged
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20221008115412",
@@ -99,6 +107,13 @@ class AdaptUITextSample : SampleView() {
             .textGravity(Gravity.center)
             .textSingleLine(true)
             .textMaxLines(1)
+            .ifAvailable(Build.VERSION_CODES.M) {
+                it.textHyphenationFrequency(HyphenationFrequency.full)
+                it.textBreakStrategy(BreakStrategy.highQuality)
+            }
+            .textOnTextChanged {
+                Debug.i("text:'$it'")
+            }
             .layoutMargin(16)
     }
 }
