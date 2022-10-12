@@ -613,6 +613,11 @@ class RoundedRectangle private constructor(private val radius: Float) : Shape() 
     }
 }
 
+/**
+ * NB! Outline (used when casting shadows via elevation or similar)
+ * on versions prior Q might not be correct, as android has a restriction on supplied
+ * path - it must be _convex_.
+ */
 class Corners private constructor(
     private val leadingTop: Float,
     private val topTrailing: Float,
@@ -669,8 +674,14 @@ class Corners private constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             outline.setPath(path)
         } else {
+            // the path must be _convex_. Restriction is lifted in Q,
+            //  but the function keeps the same name
             @Suppress("DEPRECATION")
-            outline.setConvexPath(path)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || path.isConvex) {
+                outline.setConvexPath(path)
+            } else {
+                outline.setRect(bounds)
+            }
         }
     }
 

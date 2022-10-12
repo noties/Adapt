@@ -17,7 +17,6 @@ import io.noties.adapt.ui.accessibilityLabelFor
 import io.noties.adapt.ui.accessibilityTraversalBefore
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.element.HStack
-import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.Spacer
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.TextInput
@@ -26,12 +25,9 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.focusable
 import io.noties.adapt.ui.ifAvailable
-import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
-import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221009162741",

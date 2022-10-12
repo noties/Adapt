@@ -227,7 +227,7 @@ class AdaptUIShapeSample : SampleView() {
                 .layout(FILL, 24)
                 .layoutMargin(leading = 8, trailing = 8)
                 .elevation(8)
-                .background(Capsule {
+                .background(Corners(bottomLeading = 8) {
                     fill(Colors.orange)
                 })
 

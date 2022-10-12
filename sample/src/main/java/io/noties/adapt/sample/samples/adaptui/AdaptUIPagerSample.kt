@@ -113,9 +113,8 @@ class AdaptUIPagerSample : SampleView() {
                 VStack {
                     Image(R.drawable.ic_search_24)
                         .imageTint(Colors.orange)
-                        .layout(FILL, 0)
+                        .layout(FILL, 0, 3F)
                         .imageScaleType(ImageView.ScaleType.CENTER_CROP)
-                        .layoutWeight(3F)
                     Text("This is text")
                         .textGravity(Gravity.center)
                         .textColor(Colors.black)
