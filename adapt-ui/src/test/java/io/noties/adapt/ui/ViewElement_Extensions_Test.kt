@@ -3,8 +3,10 @@ package io.noties.adapt.ui
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
@@ -15,6 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.any
 import org.mockito.Mockito.anyFloat
 import org.mockito.Mockito.anyInt
 import org.mockito.Mockito.eq
@@ -25,19 +28,13 @@ import org.mockito.Mockito.verify
 import org.mockito.verification.VerificationMode
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.util.ReflectionHelpers
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
 class ViewElement_Extensions_Test {
-
-//    @Before
-//    fun before() {
-//        // there is no way to set density explicitly?
-//        Shadows.shadowOf(Resources.getSystem()).also {
-//
-//        }
-//    }
 
     @Test
     fun minimumSize() {
@@ -127,9 +124,9 @@ class ViewElement_Extensions_Test {
             newElement()
                 .translation(x, y, z)
                 .renderView {
-                    verify(this, mode(x)).translationX = x?.toFloat()?.let { eq(it) } ?: anyFloat()
-                    verify(this, mode(y)).translationY = y?.toFloat()?.let { eq(it) } ?: anyFloat()
-                    verify(this, mode(z)).translationZ = z?.toFloat()?.let { eq(it) } ?: anyFloat()
+                    verify(this, mode(x)).translationX = value(x?.toFloat())
+                    verify(this, mode(y)).translationY = value(y?.toFloat())
+                    verify(this, mode(z)).translationZ = value(z?.toFloat())
                 }
         }
     }
@@ -187,6 +184,15 @@ class ViewElement_Extensions_Test {
                     verify(this).visibility = eq(visibility)
                 }
         }
+    }
+
+    @Test
+    fun selected() {
+        newElement()
+            .selected(true)
+            .renderView {
+                verify(this).isSelected = eq(true)
+            }
     }
 
     @Test
@@ -273,14 +279,15 @@ class ViewElement_Extensions_Test {
 
     @Test
     fun `padding - all`() {
+        val input = 812
         newElement()
-            .padding(812)
+            .padding(input)
             .renderView {
                 verify(this).setPaddingRelative(
-                    eq(812),
-                    eq(812),
-                    eq(812),
-                    eq(812)
+                    eq(input),
+                    eq(input),
+                    eq(input),
+                    eq(input)
                 )
             }
     }
@@ -300,7 +307,7 @@ class ViewElement_Extensions_Test {
                 .renderView {
                     verify(this).foreground = eq(drawable)
                     verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
-                        gravity?.let { eq(it.gravityValue) } ?: anyInt()
+                        gravity?.let { eq(it.value) } ?: anyInt()
                 }
         }
     }
@@ -321,7 +328,7 @@ class ViewElement_Extensions_Test {
                     val captor = ArgumentCaptor.forClass(Drawable::class.java)
                     verify(this).foreground = captor.capture()
                     verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
-                        gravity?.let { eq(it.gravityValue) } ?: anyInt()
+                        gravity?.let { eq(it.value) } ?: anyInt()
 
                     Assert.assertTrue(
                         "Foreground is instance of ShapeDrawable, class:${captor.value::class.java.name}",
@@ -426,6 +433,29 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
+    fun tag() {
+        // without key just setTag
+        // with key setTag(key, object)
+        val inputs = listOf(
+            null to "no-key",
+            3 to "with-key"
+        )
+
+        for (input in inputs) {
+            newElement()
+                .tag(input.second, input.first)
+                .renderView {
+                    val key = input.first
+                    if (key == null) {
+                        verify(this).tag = eq(input.second)
+                    } else {
+                        verify(this).setTag(eq(key), eq(input.second))
+                    }
+                }
+        }
+    }
+
+    @Test
     fun `reference - view - lateinit`() {
         class Ref {
             lateinit var view: View
@@ -520,6 +550,231 @@ class ViewElement_Extensions_Test {
         Assert.assertEquals(ref.element, ref.textElement)
     }
 
-    private fun mode(value: Int?): VerificationMode = if (value == null) never() else times(1)
+    @Test
+    fun `scale - xy`() {
+        val input = 543F
+        newElement()
+            .scale(input)
+            .renderView {
+                verify(this).scaleX = eq(input)
+                verify(this).scaleY = eq(input)
+            }
+    }
+
+    @Test
+    fun `scale - x & y`() {
+        val inputs = listOf(
+            null to null,
+            2F to null,
+            null to 3F,
+            4F to 5F
+        )
+
+        for ((x, y) in inputs) {
+            newElement()
+                .scale(x, y)
+                .renderView {
+                    verify(this, mode(x)).scaleX = value(x)
+                    verify(this, mode(y)).scaleY = value(y)
+                }
+        }
+    }
+
+    @Test
+    fun rotation() {
+        val input = 82F
+        newElement()
+            .rotate(input)
+            .renderView {
+                verify(this).rotation = eq(input)
+            }
+    }
+
+    @Test
+    fun onLongClick() {
+        val inputs = listOf(
+            null,
+            {}
+        )
+
+        for (input in inputs) {
+            newElement()
+                .onLongClick(input)
+                .renderView {
+                    verify(this).setOnLongClickListener(
+                        if (input == null) eq(null) else any(View.OnLongClickListener::class.java)
+                    )
+                }
+        }
+    }
+
+    @Test
+    fun onScrollChanged() {
+        val inputs: List<((x: Int, y: Int) -> Unit)?> = listOf(
+            null,
+            { _, _ -> }
+        )
+        for (input in inputs) {
+            newElement()
+                .onScrollChanged(input)
+                .renderView {
+                    verify(this).setOnScrollChangeListener(
+                        if (input == null) eq(null) else any(View.OnScrollChangeListener::class.java)
+                    )
+                }
+        }
+    }
+
+    @Test
+    fun `focusable - single`() {
+        // when focusableInTouch mode is omitted
+        // by default it uses the same value as focusable
+        val inputs = listOf(
+            false to (false to false),
+            true to (true to true)
+        )
+
+        for ((focusable, values) in inputs) {
+            newElement()
+                .focusable(focusable)
+                .renderView {
+                    val (f, fitm) = values
+                    verify(this).isFocusable = eq(f)
+                    verify(this).isFocusableInTouchMode = eq(fitm)
+                }
+        }
+    }
+
+    @Test
+    fun `focusable - both`() {
+        val inputs = listOf(
+            false to false,
+            false to true,
+            true to false,
+            true to true
+        )
+
+        for ((f, fitm) in inputs) {
+            newElement()
+                .focusable(f, fitm)
+                .renderView {
+                    verify(this).isFocusable = eq(f)
+                    verify(this).isFocusableInTouchMode = eq(fitm)
+                }
+        }
+    }
+
+    @Test
+    fun `onViewPreDraw - vto is not alive`() {
+        val vto = mock(ViewTreeObserver::class.java)
+        `when`(vto.isAlive).thenReturn(false)
+
+        val flag = AtomicBoolean()
+
+        newElement()
+            .also {
+                `when`(it.view.viewTreeObserver).thenReturn(vto)
+            }
+            .onViewPreDraw { flag.set(true) }
+            .renderView {
+                verify(
+                    vto,
+                    never()
+                ).addOnPreDrawListener(any(ViewTreeObserver.OnPreDrawListener::class.java))
+                Assert.assertFalse(flag.get())
+            }
+    }
+
+    @Test
+    fun onViewPreDraw() {
+        val vto = mock(ViewTreeObserver::class.java)
+        `when`(vto.isAlive).thenReturn(true)
+
+        val flag = AtomicBoolean()
+        val captor = ArgumentCaptor.forClass(ViewTreeObserver.OnPreDrawListener::class.java)
+
+        newElement()
+            .also {
+                `when`(it.view.viewTreeObserver).thenReturn(vto)
+            }
+            .onViewPreDraw { flag.set(true) }
+            .renderView {
+                verify(vto).addOnPreDrawListener(captor.capture())
+
+                val value = captor.value
+                Assert.assertNotNull(value)
+
+                val result = value.onPreDraw()
+                // listener should not block drawing
+                Assert.assertTrue(result)
+                // our supplied callback should be triggered
+                Assert.assertTrue(flag.get())
+
+                // listener must be unregistered
+                verify(vto).removeOnPreDrawListener(eq(value))
+            }
+    }
+
+    @Test
+    fun onViewAttachedStateChanged() {
+        class Ref(
+            var view: View? = null,
+            var attached: Boolean? = null,
+        )
+
+        lateinit var ref: Ref
+
+        newElement()
+            .onViewAttachedStateChanged { view, attached ->
+                ref = Ref(view, attached)
+            }
+            .renderView {
+                val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
+                verify(this).addOnAttachStateChangeListener(captor.capture())
+
+                val value = captor.value
+                Assert.assertNotNull(value)
+
+                value.onViewAttachedToWindow(this)
+                Assert.assertEquals(this, ref.view)
+                Assert.assertEquals(true, ref.attached)
+
+                val refId = System.identityHashCode(ref)
+
+                value.onViewDetachedFromWindow(this)
+
+                Assert.assertNotEquals(refId, System.identityHashCode(ref))
+                Assert.assertEquals(this, ref.view)
+                Assert.assertEquals(false, ref.attached)
+            }
+    }
+
+    @Test
+    fun ifAvailable() {
+        val sdk = Build.VERSION_CODES.M
+        ReflectionHelpers.setStaticField(Build.VERSION::class.java, "SDK_INT", sdk)
+        Assert.assertEquals(sdk, Build.VERSION.SDK_INT)
+
+        val inputs = listOf(
+            22 to true, // represents value less than device has (available)
+            23 to true, // represents the same value as device (available)
+            24 to false // represents value above device sdk int (not available)
+        )
+
+        for ((version, available) in inputs) {
+            val flag = AtomicBoolean()
+            newElement()
+                // run immediately, do not wait for view
+                .ifAvailable(version) {
+                    flag.set(true)
+                }
+
+            Assert.assertEquals(version.toString(), available, flag.get())
+        }
+    }
+
+    private fun <T> mode(value: T?): VerificationMode = if (value == null) never() else times(1)
+
     private fun value(value: Int?): Int = if (value == null) anyInt() else eq(value)
+    private fun value(value: Float?): Float = if (value == null) anyFloat() else eq(value)
 }

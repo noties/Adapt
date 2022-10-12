@@ -26,7 +26,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityDescription(
 }
 
 @JvmInline
-value class ImportantForAccessibility(val flag: Int) {
+value class ImportantForAccessibility(val value: Int) {
     companion object {
         val yes: ImportantForAccessibility get() = ImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES)
         val no: ImportantForAccessibility get() = ImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
@@ -49,7 +49,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
     importantForAccessibility: ImportantForAccessibility
 ): ViewElement<V, LP> = onView {
-    this.importantForAccessibility = importantForAccessibility.flag
+    this.importantForAccessibility = importantForAccessibility.value
 }
 
 /**
@@ -117,7 +117,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter
 }
 
 @JvmInline
-value class AccessibilityLiveRegion(val flag: Int) {
+value class AccessibilityLiveRegion(val value: Int) {
     companion object {
         val none: AccessibilityLiveRegion get() = AccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_NONE)
         val polite: AccessibilityLiveRegion get() = AccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE)
@@ -131,7 +131,7 @@ value class AccessibilityLiveRegion(val flag: Int) {
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLiveRegion(
     liveRegion: AccessibilityLiveRegion,
 ): ViewElement<V, LP> = onView {
-    accessibilityLiveRegion = liveRegion.flag
+    accessibilityLiveRegion = liveRegion.value
 }
 
 

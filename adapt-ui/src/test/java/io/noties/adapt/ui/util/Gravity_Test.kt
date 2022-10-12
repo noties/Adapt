@@ -51,7 +51,7 @@ class Gravity_Test {
         for (input in inputs) {
             assertEquals(
                 input.first.toString(),
-                input.first.gravityValue,
+                input.first.value,
                 input.second,
             )
         }
@@ -85,7 +85,7 @@ class Gravity_Test {
         for (input in inputs) {
             assertEquals(input.first, input.second)
             // check that raw equals with the same gravityValue
-            assertEquals(input.first, Gravity.raw(input.first.gravityValue))
+            assertEquals(input.first, Gravity.raw(input.first.value))
         }
     }
 }

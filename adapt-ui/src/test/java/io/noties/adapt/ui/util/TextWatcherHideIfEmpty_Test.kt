@@ -1,6 +1,8 @@
 package io.noties.adapt.ui.util
 
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.view.View
 import android.widget.TextView
 import org.junit.Assert
 import org.junit.Test
@@ -32,7 +34,7 @@ class TextWatcherHideIfEmpty_Test {
         verify(
             textView,
             never()
-        ).removeTextChangedListener(Mockito.any(TextWatcher::class.java))
+        ).removeTextChangedListener(any(TextWatcher::class.java))
     }
 
     @Test
@@ -53,6 +55,16 @@ class TextWatcherHideIfEmpty_Test {
         Assert.assertNotEquals(watcher, captor.value)
 
         verify(textView).setTag(eq(TextWatcherHideIfEmpty.id), eq(captor.value))
-        verify(textView).text = any(CharSequence::class.java)
+        verify(textView).text = eq(null)
+    }
+
+    @Test
+    fun watcher() {
+        val textView = mock(TextView::class.java)
+        val watcher = TextWatcherHideIfEmpty(textView)
+        watcher.afterTextChanged(null)
+        verify(textView).visibility = eq(View.GONE)
+        watcher.afterTextChanged(SpannableStringBuilder("not-empty"))
+        verify(textView).visibility = eq(View.VISIBLE)
     }
 }

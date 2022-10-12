@@ -7,6 +7,7 @@ import io.noties.adapt.ui.util.children
 /**
  * Enabled. Additionally can apply specified `enabled` to all children of the [ViewGroup] recursively,
  * as normally ViewGroup does not change the state of its children.
+ * @see View.setEnabled
  */
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.enabled(
     enabled: Boolean,
@@ -26,6 +27,7 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.enabled(
 /**
  * Activated. Additionally can apply specified `activated` to all children of this [ViewGroup] recursively,
  * as normally ViewGroup does not change the state of its children.
+ * @see View.setActivated
  */
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.activated(
     activated: Boolean,

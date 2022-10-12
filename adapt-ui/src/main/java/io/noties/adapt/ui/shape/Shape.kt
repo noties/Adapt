@@ -424,7 +424,7 @@ abstract class Shape {
             val gravity = this.gravity
             if (gravity != null) {
                 android.view.Gravity.apply(
-                    gravity.gravityValue,
+                    gravity.value,
                     w,
                     h,
                     bounds,
@@ -516,7 +516,7 @@ class Circle : Shape() {
         val rect = gravity?.let {
             val side = radius * 2
             android.view.Gravity.apply(
-                it.gravityValue,
+                it.value,
                 side,
                 side,
                 bounds,
@@ -539,7 +539,7 @@ class Circle : Shape() {
         val rect = gravity?.let {
             val side = radius * 2
             android.view.Gravity.apply(
-                it.gravityValue,
+                it.value,
                 side,
                 side,
                 bounds,

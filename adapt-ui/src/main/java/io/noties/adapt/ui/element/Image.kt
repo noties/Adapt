@@ -2,6 +2,7 @@ package io.noties.adapt.ui.element
 
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
@@ -15,27 +16,69 @@ import io.noties.adapt.ui.ViewFactory
  * By default uses [ImageView.ScaleType.CENTER_INSIDE] scaleType
  */
 @Suppress("FunctionName", "unused")
-fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> {
+fun <LP : LayoutParams> ViewFactory<LP>.Image(
+    scaleType: ImageView.ScaleType? = null
+): ViewElement<ImageView, LP> {
     return ViewElement<ImageView, LP> {
-        ImageView(it)
+        ElementViewFactory.Image(it).also { iv ->
+            iv.scaleType = scaleType ?: ImageView.ScaleType.CENTER_INSIDE
+        }
     }.also(elements::add)
-        .imageScaleType(ImageView.ScaleType.CENTER_INSIDE)
 }
 
+/**
+ * @see ImageView.setImageResource
+ */
 @Suppress("FunctionName", "unused")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(
+    @DrawableRes resourceId: Int,
+    scaleType: ImageView.ScaleType? = null
+): ViewElement<ImageView, LP> = Image(scaleType).image(resourceId)
+
+/**
+ * @see ImageView.setImageDrawable
+ */
+@Suppress("FunctionName", "unused")
+fun <LP : LayoutParams> ViewFactory<LP>.Image(
+    drawable: Drawable?,
+    scaleType: ImageView.ScaleType? = null
+): ViewElement<ImageView, LP> = Image(scaleType).image(drawable)
+
+/**
+ * @see ImageView.setImageBitmap
+ */
+@Suppress("FunctionName", "unused")
+fun <LP : LayoutParams> ViewFactory<LP>.Image(
+    bitmap: Bitmap?,
+    scaleType: ImageView.ScaleType? = null
+): ViewElement<ImageView, LP> = Image(scaleType).image(bitmap)
+
+/**
+ * @see ImageView.setImageResource
+ */
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
     @DrawableRes resourceId: Int
-): ViewElement<ImageView, LP> = Image().onView { setImageResource(resourceId) }
+): ViewElement<V, LP> = onView {
+    setImageResource(resourceId)
+}
 
-@Suppress("FunctionName", "unused")
-fun <LP : LayoutParams> ViewFactory<LP>.Image(
-    drawable: Drawable?
-): ViewElement<ImageView, LP> = Image().onView { setImageDrawable(drawable) }
+/**
+ * @see ImageView.setImageDrawable
+ */
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
+    drawable: Drawable?,
+): ViewElement<V, LP> = onView {
+    setImageDrawable(drawable)
+}
 
-@Suppress("FunctionName", "unused")
-fun <LP : LayoutParams> ViewFactory<LP>.Image(
-    bitmap: Bitmap?
-): ViewElement<ImageView, LP> = Image().onView { setImageBitmap(bitmap) }
+/**
+ * @see ImageView.setImageBitmap
+ */
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
+    bitmap: Bitmap?,
+): ViewElement<V, LP> = onView {
+    setImageBitmap(bitmap)
+}
 
 /**
  * Scale Type
@@ -47,14 +90,28 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     this.scaleType = scaleType
 }
 
+/**
+ * Null value for the `mode` argument would not set it, otherwise tint value becomes
+ * cleared according to the documentation.
+ * @see ImageView.setImageTintList
+ * @see ImageView.setImageTintMode
+ */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
-    @ColorInt color: Int
-): ViewElement<V, LP> = onView {
-    imageTintList = ColorStateList.valueOf(color)
-}
+    @ColorInt color: Int,
+    mode: PorterDuff.Mode? = null
+): ViewElement<V, LP> = imageTint(ColorStateList.valueOf(color), mode)
 
+/**
+ * Null value for the `mode` argument would not set it, otherwise tint value becomes
+ * cleared according to the documentation.
+ * @see ImageView.setImageTintList
+ * @see ImageView.setImageTintMode
+ * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
-    colorStateList: ColorStateList
+    colorStateList: ColorStateList,
+    mode: PorterDuff.Mode? = null
 ): ViewElement<V, LP> = onView {
     imageTintList = colorStateList
+    mode?.also { imageTintMode = it }
 }

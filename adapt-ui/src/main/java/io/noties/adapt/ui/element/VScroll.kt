@@ -12,12 +12,15 @@ fun <LP : LayoutParams> ViewFactory<LP>.VScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
 ): ViewElement<ScrollView, LP> {
     return ViewElement<ScrollView, LP> {
-        ScrollView(it).also { sv ->
+        ElementViewFactory.VScroll(it).also { sv ->
             ViewFactory.addChildren(sv, children)
         }
     }.also(elements::add)
 }
 
+/**
+ * @see ScrollView.setFillViewport
+ */
 fun <V : ScrollView, LP : LayoutParams> ViewElement<V, LP>.fillViewPort(
     fillViewPort: Boolean = true
 ): ViewElement<V, LP> = onView {

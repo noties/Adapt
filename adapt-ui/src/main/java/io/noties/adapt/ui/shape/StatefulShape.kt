@@ -1,13 +1,12 @@
 package io.noties.adapt.ui.shape
 
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
 
 class StatefulShape {
 
     companion object {
-        fun drawable(block: StatefulShape.() -> Unit): Drawable {
+        fun drawable(block: StatefulShape.() -> Unit): StateListDrawable {
             val instance = StatefulShape()
             block(instance)
             return instance.drawable()
@@ -17,13 +16,8 @@ class StatefulShape {
     private val entries = mutableListOf<Pair<IntArray, Shape>>()
     private var defaultEntry: Shape? = null
 
-    private var enterFadeDuration: Long? = null
-    private var exitFadeDuration: Long? = null
-
-    fun drawable(): Drawable {
+    fun drawable(): StateListDrawable {
         val drawable = StateListDrawable()
-        enterFadeDuration?.also { drawable.setEnterFadeDuration(it.toInt()) }
-        exitFadeDuration?.also { drawable.setExitFadeDuration(it.toInt()) }
         entries.forEach {
             drawable.addState(it.first, it.second.drawable())
         }
@@ -32,17 +26,6 @@ class StatefulShape {
             drawable.addState(StateSet.WILD_CARD, it.drawable())
         }
         return drawable
-    }
-
-    fun setFadeDuration(durationMillis: Long): StatefulShape =
-        this.setFadeDuration(durationMillis, durationMillis)
-
-    fun setFadeDuration(
-        enterMillis: Long? = null,
-        exitMillis: Long? = null
-    ): StatefulShape = this.also {
-        it.enterFadeDuration = enterMillis
-        it.exitFadeDuration = exitMillis
     }
 
     fun set(state: Int, shape: Shape): StatefulShape =

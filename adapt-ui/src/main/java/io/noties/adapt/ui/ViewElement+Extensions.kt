@@ -58,6 +58,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
 
 /**
  * Id
+ * @see View.setId
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.id(
     id: Int
@@ -67,6 +68,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.id(
 
 /**
  * Tag
+ * @see View.setTag
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
     tag: Any?,
@@ -81,6 +83,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
 
 /**
  * Background
+ * @see View.setBackgroundColor
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     @ColorInt color: Int
@@ -88,14 +91,22 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     setBackgroundColor(color)
 }
 
+/**
+ * @see View.setBackground
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     drawable: Drawable?
 ): ViewElement<V, LP> = onView {
     background = drawable
 }
 
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(shape: Shape): ViewElement<V, LP> =
-    background(shape.drawable())
+/**
+ * @see View.setBackground
+ * @see Shape.drawable
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
+    shape: Shape
+): ViewElement<V, LP> = background(shape.drawable())
 
 /**
  * @see background(Int)
@@ -108,6 +119,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
 
 /**
  * Foreground
+ * @see View.setForeground
+ * @see View.setForegroundGravity
  */
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
@@ -115,15 +128,23 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     gravity: Gravity? = null
 ): ViewElement<V, LP> = onView {
     foreground = drawable
-    gravity?.also { foregroundGravity = it.gravityValue }
+    gravity?.also { foregroundGravity = it.value }
 }
 
+/**
+ * @see View.setForeground
+ * @see View.setForegroundGravity
+ * @see Shape.drawable
+ */
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     gravity: Gravity? = null
 ): ViewElement<V, LP> = foreground(shape.drawable(), gravity)
 
+/**
+ * @see View.setForeground
+ */
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable(): ViewElement<V, LP> =
     onView {
@@ -132,16 +153,23 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable
 
 /**
  * Padding
+ * @see View.setPaddingRelative
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
     all: Int
 ): ViewElement<V, LP> = padding(all, all, all, all)
 
+/**
+ * @see View.setPaddingRelative
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
     horizontal: Int? = null,
     vertical: Int? = null
 ): ViewElement<V, LP> = padding(horizontal, vertical, horizontal, vertical)
 
+/**
+ * @see View.setPaddingRelative
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
     leading: Int? = null,
     top: Int? = null,
@@ -298,10 +326,14 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
 
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onScrollChanged(
-    action: (x: Int, y: Int) -> Unit
+    action: ((x: Int, y: Int) -> Unit)?
 ): ViewElement<V, LP> = onView {
-    setOnScrollChangeListener { _, scrollX, scrollY, _, _ ->
-        action(scrollX, scrollY)
+    if (action == null) {
+        setOnScrollChangeListener(null)
+    } else {
+        setOnScrollChangeListener { _, scrollX, scrollY, _, _ ->
+            action(scrollX, scrollY)
+        }
     }
 }
 
@@ -360,7 +392,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
  * but before being drawn on screen)
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
-    block: V.() -> Unit
+    block: (V) -> Unit
 ): ViewElement<V, LP> = onView {
     val view = this
     val vto = view.viewTreeObserver.takeIf { it.isAlive } ?: return@onView
@@ -379,6 +411,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
     })
 }
 
+/**
+ * `block` callback receives 3 arguments:
+ * + `view` - view that has callback registered
+ * + `attached` - boolean indicating the state, true - view becomes attached, false - detached
+ * @see View.addOnAttachStateChangeListener
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
     block: (view: V, attached: Boolean) -> Unit
 ): ViewElement<V, LP> = onView {
@@ -414,3 +452,8 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
     }
     return this
 }
+
+// TODO: in case of a custom factory we would need a way to simplify casting
+//  to this custom view (in case of additional functions and properties available)
+
+

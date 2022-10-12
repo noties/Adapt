@@ -8,23 +8,25 @@ import android.text.Layout
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.TypedValue
-import android.view.ViewGroup
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
+import kotlin.math.roundToInt
 
 @Suppress("FunctionName")
-fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Text(
+fun <LP : LayoutParams> ViewFactory<LP>.Text(
     text: CharSequence? = null
 ): ViewElement<TextView, LP> {
     // not only return, but we also need to add it to internal collection
     return ViewElement<TextView, LP> {
-        TextView(it).also { tv -> tv.text = text }
+        ElementViewFactory.Text(it).also { tv -> tv.text = text }
     }.also(elements::add)
 }
 
@@ -32,7 +34,7 @@ fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Text(
  * Text size, supplied value is in SP and will be automatically converted to pixels
  * @see TextView.setTextSize
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSize(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSize(
     size: Int,
 ): ViewElement<V, LP> = onView {
     setTextSize(TypedValue.COMPLEX_UNIT_SP, size.toFloat())
@@ -41,15 +43,17 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSize(
 /**
  * @see textColor(android.content.res.ColorStateList)
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
     @ColorInt color: Int
-): ViewElement<V, LP> = textColor(ColorStateList.valueOf(color))
+): ViewElement<V, LP> = onView {
+    setTextColor(color)
+}
 
 /**
  * @see io.noties.adapt.ui.util.ColorStateListBuilder
  * @see TextView.setTextColor
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
     colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
     setTextColor(colorStateList)
@@ -59,17 +63,17 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textColor(
  * Gravity
  * @see TextView.setGravity
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textGravity(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
     gravity: Gravity
 ): ViewElement<V, LP> = onView {
-    this.gravity = gravity.gravityValue
+    this.gravity = gravity.value
 }
 
 /**
  * Typeface
  * @see TextView.setTypeface
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     font: Typeface? = null,
     fontStyle: Int = Typeface.NORMAL
 ): ViewElement<V, LP> = onView {
@@ -80,7 +84,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textFont(
  * All caps
  * @see TextView.setAllCaps
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAllCaps(
     allCaps: Boolean = true
 ): ViewElement<V, LP> =
     onView {
@@ -90,23 +94,32 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textAllCaps(
 /**
  * Hides a TextView if it has null or empty text
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHideIfEmpty(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHideIfEmpty(
     hideIfEmpty: Boolean = true
 ): ViewElement<V, LP> =
     onView {
         TextWatcherHideIfEmpty.remove(this)
         if (hideIfEmpty) {
             TextWatcherHideIfEmpty.init(this)
+        } else {
+            // if false, then make view visible, it could be hidden before
+            visibility = View.VISIBLE
         }
     }
 
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
+/**
+ * @see TextView.setText
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
     text: CharSequence?
 ): ViewElement<V, LP> = onView {
     this.text = text
 }
 
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
+/**
+ * @see TextView.setText
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
     @StringRes textResId: Int
 ): ViewElement<V, LP> = onView {
     setText(textResId)
@@ -116,7 +129,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.text(
  * Hint
  * @see TextView.setHint
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHint(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
     hint: CharSequence?
 ): ViewElement<V, LP> = onView {
     this.hint = hint
@@ -126,7 +139,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHint(
  * Ellipsize
  * @see TextView.setEllipsize
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textEllipsize(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
     truncateAt: TextUtils.TruncateAt
 ): ViewElement<V, LP> = onView {
     this.ellipsize = truncateAt
@@ -136,7 +149,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textEllipsize
  * Maximum lines
  * @see TextView.setMaxLines
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textMaxLines(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textMaxLines(
     maxLines: Int
 ): ViewElement<V, LP> = onView {
     this.maxLines = maxLines
@@ -146,7 +159,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textMaxLines(
  * Single line
  * @see TextView.setSingleLine
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSingleLine(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSingleLine(
     singleLine: Boolean = true
 ): ViewElement<V, LP> = onView {
     this.isSingleLine = singleLine
@@ -157,7 +170,7 @@ fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textSingleLin
  */
 @RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
-value class HyphenationFrequency(val flag: Int) {
+value class HyphenationFrequency(val value: Int) {
     companion object {
         val none: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE)
         val normal: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL)
@@ -165,19 +178,23 @@ value class HyphenationFrequency(val flag: Int) {
     }
 }
 
+/**
+ * @see TextView.setHyphenationFrequency
+ */
 @RequiresApi(Build.VERSION_CODES.M)
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
     hyphenationFrequency: HyphenationFrequency
 ): ViewElement<V, LP> = onView {
-    this.hyphenationFrequency = hyphenationFrequency.flag
+    this.hyphenationFrequency = hyphenationFrequency.value
 }
 
 /**
  * BreakStrategy
+ * @see TextView.setBreakStrategy
  */
 @RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
-value class BreakStrategy(val flag: Int) {
+value class BreakStrategy(val value: Int) {
     companion object {
         val simple: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_SIMPLE)
         val balanced: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_BALANCED)
@@ -185,17 +202,49 @@ value class BreakStrategy(val flag: Int) {
     }
 }
 
+/**
+ * @see TextView.setBreakStrategy
+ */
 @RequiresApi(Build.VERSION_CODES.M)
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textBreakStrategy(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
     breakStrategy: BreakStrategy
 ): ViewElement<V, LP> = onView {
-    this.breakStrategy = breakStrategy.flag
+    this.breakStrategy = breakStrategy.value
+}
+
+/**
+ * Supplied values are in SP (so, 12 == 12.sp)
+ * @see TextView.setAutoSizeTextTypeUniformWithPresetSizes
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
+    textSizes: IntArray
+): ViewElement<V, LP> = onView {
+    setAutoSizeTextTypeUniformWithPresetSizes(textSizes, TypedValue.COMPLEX_UNIT_SP)
+}
+
+/**
+ * Supplied values are in SP. Maximum value by default uses current [TextView.getTextSize]
+ * @see TextView.setAutoSizeTextTypeUniformWithConfiguration
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
+    minimumTextSize: Int,
+    maximumTextSize: Int? = null,
+    stepGranularity: Int? = 1
+): ViewElement<V, LP> = onView {
+    setAutoSizeTextTypeUniformWithConfiguration(
+        minimumTextSize,
+        maximumTextSize ?: (textSize / resources.displayMetrics.scaledDensity).roundToInt(),
+        stepGranularity ?: 1,
+        TypedValue.COMPLEX_UNIT_SP
+    )
 }
 
 /**
  * Text changed [TextWatcher.afterTextChanged]
  */
-fun <V : TextView, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.textOnTextChanged(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textOnTextChanged(
     action: (CharSequence?) -> Unit
 ): ViewElement<V, LP> = onView {
     addTextChangedListener(object : TextWatcher {

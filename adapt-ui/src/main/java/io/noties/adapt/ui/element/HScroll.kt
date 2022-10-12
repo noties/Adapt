@@ -17,12 +17,15 @@ fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
 ): ViewElement<HorizontalScrollView, LP> {
     return ViewElement<HorizontalScrollView, LP> {
-        HorizontalScrollView(it).also { hsv ->
+        ElementViewFactory.HScroll(it).also { hsv ->
             ViewFactory.addChildren(hsv, children)
         }
     }.also(elements::add)
 }
 
+/**
+ * @see HorizontalScrollView.setFillViewport
+ */
 fun <V : HorizontalScrollView, LP : LayoutParams> ViewElement<V, LP>.fillViewPort(
     fillViewPort: Boolean = true
 ): ViewElement<V, LP> = onView {

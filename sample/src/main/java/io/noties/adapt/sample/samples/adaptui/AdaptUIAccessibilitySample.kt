@@ -17,18 +17,21 @@ import io.noties.adapt.ui.accessibilityLabelFor
 import io.noties.adapt.ui.accessibilityTraversalBefore
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.element.HStack
+import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.Spacer
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.TextInput
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
-import io.noties.adapt.ui.element.textOnTextChanged
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.focusable
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.layoutGravity
+import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221009162741",
@@ -51,16 +54,14 @@ class AdaptUIAccessibilitySample : SampleView() {
 
                         Text("Your name")
                             .padding(4)
-                            .layout(WRAP, WRAP)
-                            // TODO... input at this point is not available
-                            // TODO: maybe add a provider? () -> ViewElement|View
+                            .layoutWrap()
                             .accessibilityLabelFor { input }
 
                         Spacer()
 
                         input = TextInput(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME)
                             .textSize(16)
-                            .layout(WRAP, WRAP)
+                            .layoutWrap()
 
                     }.focusable(focusable = true, focusableInTouchMode = false)
                         .padding(horizontal = 16, vertical = 8)

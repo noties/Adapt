@@ -17,14 +17,16 @@ fun <G : ViewGroup, LP : LayoutParams> ViewFactory.Companion.addChildren(
     children: ViewFactory<LP>.() -> Unit
 ) {
 
-    val factory = ViewFactory<LP>(g.context)
+    val context = g.context
+    val factory = ViewFactory<LP>(context)
+
     children(factory)
 
     factory.elements.forEach { el ->
         @Suppress("UNCHECKED_CAST")
         el as ViewElement<View, LP>
 
-        val view = el.init(g.context)
+        val view = el.init(context)
 
         // now layoutParams are generated
         g.addView(view)

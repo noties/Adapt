@@ -18,7 +18,7 @@ import androidx.annotation.GravityInt
 interface Gravity {
 
     @get:GravityInt
-    val gravityValue: Int
+    val value: Int
 
     companion object {
         val center: __Meta.Center get() = __Meta.Center
@@ -38,27 +38,27 @@ interface Gravity {
         }
 
         interface HasCenter : Gravity, HasName {
-            val center: Gravity get() = Raw("$name.center", gravityValue or CENTER)
+            val center: Gravity get() = Raw("$name.center", value or CENTER)
         }
 
         interface HasLeading : Gravity, HasName {
-            val leading: Gravity get() = Raw("$name.leading", gravityValue or START)
+            val leading: Gravity get() = Raw("$name.leading", value or START)
         }
 
         interface HasTop : Gravity, HasName {
-            val top: Gravity get() = Raw("$name.top", gravityValue or TOP)
+            val top: Gravity get() = Raw("$name.top", value or TOP)
         }
 
         interface HasTrailing : Gravity, HasName {
-            val trailing: Gravity get() = Raw("$name.trailing", gravityValue or END)
+            val trailing: Gravity get() = Raw("$name.trailing", value or END)
         }
 
         interface HasBottom : Gravity, HasName {
-            val bottom: Gravity get() = Raw("$name.bottom", gravityValue or BOTTOM)
+            val bottom: Gravity get() = Raw("$name.bottom", value or BOTTOM)
         }
 
         object Leading : Gravity, HasTop, HasBottom, HasCenter {
-            override val gravityValue: Int
+            override val value: Int
                 get() = START
             override val name: String
                 get() = ".leading"
@@ -67,7 +67,7 @@ interface Gravity {
         }
 
         object Top : Gravity, HasLeading, HasTrailing, HasCenter {
-            override val gravityValue: Int
+            override val value: Int
                 get() = TOP
             override val name: String
                 get() = ".top"
@@ -76,7 +76,7 @@ interface Gravity {
         }
 
         object Trailing : Gravity, HasTop, HasBottom, HasCenter {
-            override val gravityValue: Int
+            override val value: Int
                 get() = END
             override val name: String
                 get() = ".trailing"
@@ -85,7 +85,7 @@ interface Gravity {
         }
 
         object Bottom : Gravity, HasName, HasLeading, HasTrailing, HasCenter {
-            override val gravityValue: Int
+            override val value: Int
                 get() = BOTTOM
             override val name: String
                 get() = ".bottom"
@@ -100,7 +100,7 @@ interface Gravity {
         //  CENTER||END:8388629 CENTER_VERTICAL||END:8388629
         //  CENTER||BOTTOM:81 CENTER_HORIZONTAL||BOTTOM:81
         object Center : Gravity, HasName, HasLeading, HasTop, HasTrailing, HasBottom {
-            override val gravityValue: Int
+            override val value: Int
                 get() = CENTER
             override val name: String
                 get() = ".center"
@@ -108,24 +108,24 @@ interface Gravity {
         }
 
         internal fun <T> toString(t: T): String where T : HasName, T : Gravity {
-            return "Gravity(${t.name}, ${t.gravityValue})"
+            return "Gravity(${t.name}, ${t.value})"
         }
 
         internal class Raw(
             override val name: String,
-            override val gravityValue: Int
+            override val value: Int
         ) : Gravity, HasName {
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (javaClass != other?.javaClass) return false
                 other as Raw
-                if (gravityValue != other.gravityValue) return false
+                if (value != other.value) return false
                 return true
             }
 
             override fun hashCode(): Int {
-                return gravityValue
+                return value
             }
 
             override fun toString(): String = __Meta.toString(this)
