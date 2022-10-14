@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUICastSample",
+    "id": "20221014142148",
+    "title": "AdaptUI, cast and ifCast sample",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample",
     "id": "20221009162741",
     "title": "AdaptUI - Accessibility",

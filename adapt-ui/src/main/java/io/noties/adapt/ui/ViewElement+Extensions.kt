@@ -453,7 +453,3 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
     return this
 }
 
-// TODO: in case of a custom factory we would need a way to simplify casting
-//  to this custom view (in case of additional functions and properties available)
-
-

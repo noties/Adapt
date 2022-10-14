@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -128,12 +127,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
     private void prepareAdaptView(@NonNull AdaptView adaptView) {
         hideStickyView();
 
-        adaptView.view().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                adaptViewInvalidated = true;
-            }
-        });
+        adaptView.view().getViewTreeObserver().addOnGlobalLayoutListener(() -> adaptViewInvalidated = true);
     }
 
 
@@ -183,7 +177,7 @@ public class StickyItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        int position = holder.getAdapterPosition();
+        int position = holder.getBindingAdapterPosition();
         Item<?> item = null;
 
         while (position >= 0) {

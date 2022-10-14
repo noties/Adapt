@@ -2,13 +2,13 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
-import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.eq
 import org.mockito.Mockito.mock
@@ -16,9 +16,10 @@ import org.mockito.Mockito.verify
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
-class ViewElementTest {
+class ViewElement_Test {
 
     @Test
     fun init() {
@@ -55,12 +56,12 @@ class ViewElementTest {
         val element = newElement()
             .onView { alpha = 0.42F }
             .onView { isEnabled = false }
-        Assert.assertEquals(2, element.viewBlocks.size)
+        assertEquals(2, element.viewBlocks.size)
 
         element.render()
 
         // view blocks are cleared and view has applied properties
-        Assert.assertEquals(0, element.viewBlocks.size)
+        assertEquals(0, element.viewBlocks.size)
 
         verify(element.view).alpha = eq(0.42F)
         verify(element.view).isEnabled = eq(false)
@@ -72,16 +73,43 @@ class ViewElementTest {
             .onLayout { width = 88 }
             .onLayout { height = 9182 }
 
-        Assert.assertEquals(2, element.layoutBlocks.size)
+        assertEquals(2, element.layoutBlocks.size)
 
         val lp = LayoutParams(-1, -1)
         doReturn(lp).`when`(element.view).layoutParams
 
         element.render()
 
-        Assert.assertEquals(0, element.layoutBlocks.size)
+        assertEquals(0, element.layoutBlocks.size)
 
-        Assert.assertEquals(88, lp.width)
-        Assert.assertEquals(9182, lp.height)
+        assertEquals(88, lp.width)
+        assertEquals(9182, lp.height)
+    }
+
+    @Test
+    fun isRendering() {
+        // when inside rendering block, variable should be true
+        val results = mutableListOf<Boolean>()
+
+        lateinit var element: ViewElement<out View, *>
+        element = newElement()
+            .onLayout {
+                results.add(element.isRendering)
+            }
+            .onView {
+                results.add(element.isRendering)
+            }
+
+        // no rendering happens
+        assertFalse(element.isRendering)
+        // results are not populated, render is not yet called
+        assertEquals(0, results.size)
+
+        element.render()
+
+        assertEquals(
+            listOf(true, true),
+            results
+        )
     }
 }

@@ -9,6 +9,8 @@ object Colors {
     val white: Int = get(R.color.white)
     val black: Int = get(R.color.black)
     val orange: Int = get(R.color.orange)
+    val primary: Int = get(R.color.primary)
+    val accent: Int = get(R.color.accent)
 
     private fun get(@ColorRes colorResId: Int): Int =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

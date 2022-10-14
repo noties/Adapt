@@ -4,13 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.graphics.ColorUtils
 import io.noties.adapt.Item
-import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.background
@@ -44,7 +43,7 @@ class AdaptUIItemsSample : SampleView() {
         Debug.i("ch: ${android.view.Gravity.CENTER_HORIZONTAL}, ${Gravity.center.top}")
         // just create a view
         // pass additional argument which would be accessible in the building block
-        val child = ViewFactory.createView(view.context, this) { ref ->
+        val child = ViewFactory.createView(view.context) {
             VScroll {
 
                 VStack {
@@ -111,10 +110,9 @@ class AdaptUIItemsSample : SampleView() {
     }
 }
 
-@Suppress("ClassName")
-class __AdaptUIItemsSample(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+@Suppress("ClassName", "unused")
+class __AdaptUIItemsSample(context: Context, attrs: AttributeSet?) : PreviewLayout(context, attrs) {
     init {
-        App.mock(context)
         AdaptUIItemsSample().render(this)
     }
 }

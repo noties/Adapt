@@ -52,6 +52,7 @@ class AdaptUIViewGroupSample : SampleView() {
 
             val group = ZStack {
                 Text("This is text")
+                    .padding(16)
                     .textColor(ColorStateListBuilder.create {
                         setEnabled(Colors.orange)
                         setDefault(Colors.black)

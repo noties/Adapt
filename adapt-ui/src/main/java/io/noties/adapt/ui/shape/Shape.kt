@@ -19,7 +19,6 @@ import androidx.annotation.FloatRange
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 abstract class Shape {
@@ -674,85 +673,26 @@ class Corners private constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             outline.setPath(path)
         } else {
-            // the path must be _convex_. Restriction is lifted in Q,
-            //  but the function keeps the same name
             @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || path.isConvex) {
-                outline.setConvexPath(path)
-            } else {
-                outline.setRect(bounds)
-            }
+            outline.setConvexPath(path)
         }
     }
 
     private fun buildPath(bounds: Rect) {
         path.reset()
 
-        val halfX = bounds.centerX().toFloat()
-        val halfY = bounds.centerY().toFloat()
+        rectF.set(bounds)
 
-        val left = bounds.left.toFloat()
-        val top = bounds.top.toFloat()
-        val right = bounds.right.toFloat()
-        val bottom = bounds.bottom.toFloat()
-
-        val maxRadius = min(bounds.width(), bounds.height()) / 2F
-
-        fun radius(value: Float): Float? {
-            val radius = min(value, maxRadius)
-            return if (radius > 0) {
-                radius
-            } else null
-        }
-
-        // leading
-        path.moveTo(left, halfY)
-
-        val leadingTop = radius(this.leadingTop)
-        if (leadingTop != null) {
-            val d = leadingTop * 2F
-            rectF.set(left, top, left + d, top + d)
-            path.lineTo(left, top + leadingTop)
-            path.arcTo(rectF, 180F, 90F)
-        } else {
-            path.lineTo(left, top)
-        }
-        path.lineTo(halfX, top)
-
-        val topTrailing = radius(this.topTrailing)
-        if (topTrailing != null) {
-            val d = topTrailing * 2F
-            rectF.set(right - d, top, right, top + d)
-            path.lineTo(right - topTrailing, top)
-            path.arcTo(rectF, 270F, 90F)
-        } else {
-            path.lineTo(right, top)
-        }
-        path.lineTo(right, halfY)
-
-        val trailingBottom = radius(this.trailingBottom)
-        if (trailingBottom != null) {
-            val d = trailingBottom * 2F
-            rectF.set(right - d, bottom - d, right, bottom)
-            path.lineTo(right, bottom - d)
-            path.arcTo(rectF, 0F, 90F)
-        } else {
-            path.lineTo(right, bottom)
-        }
-
-        path.lineTo(halfX, bottom)
-
-        val bottomLeading = radius(this.bottomLeading)
-        if (bottomLeading != null) {
-            val d = bottomLeading * 2F
-            rectF.set(left, bottom - d, left + d, bottom)
-            path.lineTo(left + bottomLeading, bottom)
-            path.arcTo(rectF, 90F, 90F)
-        } else {
-            path.lineTo(left, bottom)
-        }
-        path.lineTo(left, halfY)
-        path.close()
+        path.addRoundRect(
+            rectF,
+            floatArrayOf(
+                leadingTop, leadingTop,
+                topTrailing, topTrailing,
+                trailingBottom, trailingBottom,
+                bottomLeading, bottomLeading
+            ),
+            Path.Direction.CW
+        )
     }
 }
 

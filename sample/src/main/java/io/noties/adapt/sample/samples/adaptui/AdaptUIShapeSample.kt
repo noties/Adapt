@@ -15,6 +15,7 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.ViewFactory
@@ -68,8 +69,8 @@ class AdaptUIShapeSample : SampleView() {
         (view as ViewGroup).addView(child)
     }
 
-    fun createView(context: Context): View {
-        return ViewFactory.createView(context, this) { ref ->
+    private fun createView(context: Context): View {
+        return ViewFactory.createView(context) {
             VScroll {
                 VStack {
 
@@ -182,7 +183,7 @@ class AdaptUIShapeSample : SampleView() {
                 // relative to bounds size, half of width and 1/4 of height
                 add(Rectangle()) {
                     sizeRelative(0.5F, 0.25F)
-                    fill(0x20ff0000.toInt())
+                    fill(0x20ff0000)
                 }
 
                 // relative padding
@@ -190,7 +191,7 @@ class AdaptUIShapeSample : SampleView() {
                     // half of available dimensions is padding -> rest is content
                     paddingRelative(0.25F)
 
-                    fill(0x2000ff00.toInt())
+                    fill(0x2000ff00)
                 }
 
                 // translate
@@ -198,7 +199,7 @@ class AdaptUIShapeSample : SampleView() {
                     size(48, 48, Gravity.trailing.bottom)
                     // negative values as we start at bottom right
                     translateRelative(x = -0.25F, y = -0.25F)
-                    fill(0x200000ff.toInt())
+                    fill(0x200000ff)
                 }
             })
     }
@@ -384,11 +385,9 @@ class AdaptUIShapeSample : SampleView() {
         }
 }
 
-@Suppress("ClassName")
-class __AdaptUIShapeSample(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
+@Suppress("ClassName", "unused")
+class __AdaptUIShapeSample(context: Context, attrs: AttributeSet?) : PreviewLayout(context, attrs) {
     init {
-        App.mock(context)
-
         AdaptUIShapeSample().render(this)
     }
 }

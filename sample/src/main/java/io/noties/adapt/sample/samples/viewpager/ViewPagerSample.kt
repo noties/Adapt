@@ -13,7 +13,6 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
@@ -68,7 +67,7 @@ class ViewPagerSample : SampleView() {
                 Element(::ViewPager)
                     .layout(FILL, 128)
                     .onView(::processViewPager)
-                    .adaptViewGroup()
+                    .adaptViewPager()
                     .setItems(items)
 
                 Text("Wrap height")
@@ -166,18 +165,6 @@ class ViewPagerSample : SampleView() {
         override fun bind(holder: Holder<Ref>) {
             holder.references.textView.text = text
             holder.itemView().isSelected = isSelected
-
-            holder.references.textElement
-                .padding(listOf(0, 4, 8, 16).shuffled().first())
-//                .textSize(listOf(16, 20, 24).shuffled().first())
-//                .textGravity(
-//                    listOf(
-//                        Gravity.START,
-//                        Gravity.CENTER_HORIZONTAL,
-//                        Gravity.END
-//                    ).shuffled().first()
-//                )
-                .render()
 
             val parent = holder.itemView().parent as? ViewGroup
             val handler = TransitionChangeHandler.createTransitionOnParent()

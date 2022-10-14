@@ -7,7 +7,7 @@ import io.noties.adapt.sample.App
 
 abstract class PreviewLayout(
     context: Context,
-    attributeSet: AttributeSet
+    attributeSet: AttributeSet?
 ) : FrameLayout(context, attributeSet) {
     init {
         App.mock(context)

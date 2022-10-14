@@ -19,21 +19,18 @@ import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
+import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textSize
-import io.noties.adapt.ui.enabled
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.layoutWrap
-import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.shape.StatefulShape
-import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
@@ -54,7 +51,9 @@ class AdaptUIElementLayoutSample : SampleView() {
                     Header("LinearLayout attributes")
                     LinearLayoutSample()
 
-                    Header("FrameLayout attributes")
+                    ZStack {
+                        Header("FrameLayout attributes")
+                    }.layout(FILL, 128)
                     FrameLayoutSample()
                 }
             }
@@ -64,6 +63,7 @@ class AdaptUIElementLayoutSample : SampleView() {
     @Suppress("FunctionName")
     private fun ViewFactory<LayoutParams>.Header(text: String) {
         Text(text)
+            .text(text)
             .textFont(Typeface.DEFAULT_BOLD)
             .textSize(16)
             .textColor(Colors.black)

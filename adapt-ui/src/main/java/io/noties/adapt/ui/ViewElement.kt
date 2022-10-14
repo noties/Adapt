@@ -12,6 +12,9 @@ class ViewElement<V : View, LP : LayoutParams>(
 
     val isInitialized: Boolean get() = this::view.isInitialized
 
+    var isRendering: Boolean = true
+        private set
+
     internal val layoutBlocks: MutableList<LP.() -> Unit> = mutableListOf()
     internal val viewBlocks: MutableList<V.() -> Unit> = mutableListOf()
 
@@ -33,6 +36,7 @@ class ViewElement<V : View, LP : LayoutParams>(
     }
 
     fun render(clearBlocks: Boolean = true) {
+        isRendering = true
 
         // does clearing make sense? would it be possible to use the same
         //  element to apply styling to multiple views?
@@ -66,5 +70,7 @@ class ViewElement<V : View, LP : LayoutParams>(
                 }
             }
         }
+
+        isRendering = false
     }
 }
