@@ -15,15 +15,11 @@ import io.noties.adapt.ui.ViewFactory
  * Element for [ImageView].
  * By default uses [ImageView.ScaleType.CENTER_INSIDE] scaleType
  */
-@Suppress("FunctionName", "unused")
+@Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(
     scaleType: ImageView.ScaleType? = null
-): ViewElement<ImageView, LP> {
-    return ViewElement<ImageView, LP> {
-        ElementViewFactory.Image(it).also { iv ->
-            iv.scaleType = scaleType ?: ImageView.ScaleType.CENTER_INSIDE
-        }
-    }.also(elements::add)
+): ViewElement<ImageView, LP> = Element(ElementViewFactory.Image) {
+    it.scaleType = scaleType ?: ImageView.ScaleType.CENTER_INSIDE
 }
 
 /**

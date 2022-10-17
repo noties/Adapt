@@ -5,23 +5,19 @@ import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 
 /**
  * Element for [HorizontalScrollView].
  * NB! this shares the condition to have only one direct child
  * @see fillViewPort
  */
-@Suppress("FunctionName", "unused")
+@Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
-): ViewElement<HorizontalScrollView, LP> {
-    return ViewElement<HorizontalScrollView, LP> {
-        ElementViewFactory.HScroll(it).also { hsv ->
-            ViewFactory.addChildren(hsv, children)
-        }
-    }.also(elements::add)
-}
+): ViewElement<HorizontalScrollView, LP> = ElementGroup(
+    ElementViewFactory.HScroll::invoke,
+    children
+)
 
 /**
  * @see HorizontalScrollView.setFillViewport

@@ -9,6 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.RETURNS_MOCKS
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.eq
 import org.mockito.Mockito.mock
@@ -91,8 +92,10 @@ class ViewElement_Test {
         // when inside rendering block, variable should be true
         val results = mutableListOf<Boolean>()
 
-        lateinit var element: ViewElement<out View, *>
-        element = newElement()
+        lateinit var element: ViewElement<View, LayoutParams>
+
+        element = ViewElement<View, LayoutParams> { mock(View::class.java, RETURNS_MOCKS) }
+            .also { it.init(mock(Context::class.java)) }
             .onLayout {
                 results.add(element.isRendering)
             }
@@ -101,7 +104,7 @@ class ViewElement_Test {
             }
 
         // no rendering happens
-        assertFalse(element.isRendering)
+        assertFalse("element.isRendering", element.isRendering)
         // results are not populated, render is not yet called
         assertEquals(0, results.size)
 

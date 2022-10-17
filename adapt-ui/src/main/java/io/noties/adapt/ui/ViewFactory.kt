@@ -8,13 +8,13 @@ typealias LayoutParams = ViewGroup.LayoutParams
 
 class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
-    @Suppress("PropertyName", "unused")
+    @Suppress("PropertyName")
     val FILL: Int
         get() {
             return LayoutParams.MATCH_PARENT
         }
 
-    @Suppress("PropertyName", "unused")
+    @Suppress("PropertyName")
     val WRAP: Int
         get() {
             return LayoutParams.WRAP_CONTENT

@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import io.noties.adapt.Adapt
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.viewgroup.AdaptViewGroup
+import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.viewpager.AdaptViewPager
 
 abstract class AdaptElement<A : Adapt> {
@@ -37,6 +38,14 @@ fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewGro
     configurator: (AdaptViewGroup.Configuration) -> Unit = {}
 ): AdaptElement<AdaptViewGroup> {
     val element = AdaptViewGroupElement(configurator)
+    onView(element.onView)
+    return element
+}
+
+fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewGroup(
+    changeHandler: TransitionChangeHandler
+): AdaptElement<AdaptViewGroup> {
+    val element = AdaptViewGroupElement { it.changeHandler(changeHandler) }
     onView(element.onView)
     return element
 }

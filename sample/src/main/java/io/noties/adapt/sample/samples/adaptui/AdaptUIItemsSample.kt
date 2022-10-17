@@ -27,7 +27,8 @@ import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.util.Gravity
-import io.noties.debug.Debug
+import io.noties.adapt.viewgroup.TransitionChangeHandler
+import io.noties.adapt.wrapper.OnBindWrapper
 
 @AdaptSample(
     id = "20220926192547",
@@ -40,14 +41,13 @@ class AdaptUIItemsSample : SampleView() {
     override val layoutResId: Int = R.layout.view_sample_frame
 
     override fun render(view: View) {
-        Debug.i("ch: ${android.view.Gravity.CENTER_HORIZONTAL}, ${Gravity.center.top}")
         // just create a view
         // pass additional argument which would be accessible in the building block
         val child = ViewFactory.createView(view.context) {
             VScroll {
 
                 VStack {
-                }.adaptViewGroup()
+                }.adaptViewGroup(TransitionChangeHandler.create())
                     .setItems(items)
                 // or
                 // .onAdapt { setItems(items) }
@@ -63,7 +63,14 @@ class AdaptUIItemsSample : SampleView() {
         get() = listOf(
             AdaptUIElementItem("This is element item"),
             AdaptUIElementItemNoRef(1L),
-            AdaptUIElementItem("Could this be not a text?")
+            AdaptUIElementItem("Could this be not a text?"),
+            AdaptUIElementItemNoRef(2L),
+            AdaptUIElementItem("Naah").wrap(OnBindWrapper.init { holder ->
+                holder.itemView().setOnClickListener {
+                    val items = holder.adapt().items().shuffled()
+                    holder.adapt().setItems(items)
+                }
+            }),
         )
 
     // can be used for static layouts that do not change based on arguments passed

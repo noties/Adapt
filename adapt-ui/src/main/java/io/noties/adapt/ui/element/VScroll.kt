@@ -5,18 +5,14 @@ import android.widget.FrameLayout
 import android.widget.ScrollView
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 
-@Suppress("FunctionName", "unused")
+@Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.VScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
-): ViewElement<ScrollView, LP> {
-    return ViewElement<ScrollView, LP> {
-        ElementViewFactory.VScroll(it).also { sv ->
-            ViewFactory.addChildren(sv, children)
-        }
-    }.also(elements::add)
-}
+): ViewElement<ScrollView, LP> = ElementGroup(
+    ElementViewFactory.VScroll::invoke,
+    children
+)
 
 /**
  * @see ScrollView.setFillViewport

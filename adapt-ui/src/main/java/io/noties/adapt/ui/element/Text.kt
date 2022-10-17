@@ -23,12 +23,10 @@ import kotlin.math.roundToInt
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Text(
     text: CharSequence? = null
-): ViewElement<TextView, LP> {
-    // not only return, but we also need to add it to internal collection
-    return ViewElement<TextView, LP> {
-        ElementViewFactory.Text(it).also { tv -> tv.text = text }
-    }.also(elements::add)
+): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
+    text?.also { tv.text = it }
 }
+
 
 /**
  * Text size, supplied value is in SP and will be automatically converted to pixels

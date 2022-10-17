@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample",
+    "id": "20221016113609",
+    "title": "AdaptUI - extensions to style or customize elements",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUICastSample",
     "id": "20221014142148",
     "title": "AdaptUI, cast and ifCast sample",

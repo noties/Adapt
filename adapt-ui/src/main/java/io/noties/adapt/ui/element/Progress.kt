@@ -13,9 +13,7 @@ import io.noties.adapt.ui.ViewFactory
  */
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Progress(): ViewElement<ProgressBar, LP> =
-    ViewElement<ProgressBar, LP> {
-        ElementViewFactory.Progress(it)
-    }.also(elements::add)
+    Element(ElementViewFactory.Progress)
 
 /**
  * @see ProgressBar.setIndeterminateTintList

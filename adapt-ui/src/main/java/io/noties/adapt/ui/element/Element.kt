@@ -13,4 +13,12 @@ import io.noties.adapt.ui.ViewFactory
 @Suppress("FunctionName")
 fun <V : View, LP : LayoutParams> ViewFactory<LP>.Element(
     provider: (Context) -> V
-): ViewElement<V, LP> = ViewElement<V, LP>(provider).also(elements::add)
+): ViewElement<V, LP> = Element(provider) {}
+
+@Suppress("FunctionName")
+fun <V : View, LP : LayoutParams> ViewFactory<LP>.Element(
+    provider: (Context) -> V,
+    configurator: (V) -> Unit
+): ViewElement<V, LP> = ViewElement<V, LP> {
+    provider(it).also(configurator)
+}.also(elements::add)

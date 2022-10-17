@@ -12,11 +12,6 @@ import io.noties.adapt.ui.ViewFactory
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.TextInput(
     inputType: Int? = null
-): ViewElement<EditText, LP> =
-    ViewElement<EditText, LP> { context ->
-        ElementViewFactory.TextInput(context).also { et ->
-            inputType?.also {
-                et.inputType = it
-            }
-        }
-    }.also(elements::add)
+): ViewElement<EditText, LP> = Element(ElementViewFactory.TextInput) { et ->
+    inputType?.also { et.inputType = it }
+}

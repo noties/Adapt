@@ -2,7 +2,6 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup.LayoutParams
 
 class ViewElement<V : View, LP : LayoutParams>(
     private val provider: (Context) -> V
@@ -12,7 +11,7 @@ class ViewElement<V : View, LP : LayoutParams>(
 
     val isInitialized: Boolean get() = this::view.isInitialized
 
-    var isRendering: Boolean = true
+    var isRendering: Boolean = false
         private set
 
     internal val layoutBlocks: MutableList<LP.() -> Unit> = mutableListOf()
@@ -72,5 +71,10 @@ class ViewElement<V : View, LP : LayoutParams>(
         }
 
         isRendering = false
+    }
+
+    fun render(clearBlocks: Boolean = true, block: (ViewElement<V, LP>) -> Unit) {
+        block(this)
+        render(clearBlocks)
     }
 }
