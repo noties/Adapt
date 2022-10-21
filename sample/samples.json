@@ -98,15 +98,6 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewFixedItemFactorySample",
-    "id": "20220610171905",
-    "title": "FixedItemFactory",
-    "description": "Predefined set fo items to use for better performance on significant collections of items",
-    "tags": [
-      "recyclerview"
-    ]
-  },
-  {
     "javaClassName": "io.noties.adapt.sample.samples.viewpager.ViewPagerSample",
     "id": "20220610113434",
     "title": "ViewPager (androidx.viewpager)",

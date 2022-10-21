@@ -7,9 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.noties.adapt.Adapt;
+import io.noties.adapt.AdaptException;
 import io.noties.adapt.Item;
 import io.noties.adapt.util.ListUtils;
 
@@ -45,30 +48,10 @@ public class AdaptRecyclerView implements Adapt {
          */
         @NonNull
         Configuration dataSetChangeHandler(@NonNull DataSetChangeHandler dataSetChangeHandler);
-
-        /**
-         * By default {@link DynamicItemFactory} is used
-         *
-         * @since $UNRELEASED;
-         */
-        @NonNull
-        Configuration itemFactory(@NonNull ItemFactory itemFactory);
     }
 
     public interface Configurator {
         void configure(@NonNull Configuration configuration);
-    }
-
-    /**
-     * Item factory that is responsible for creation of item view
-     *
-     * @since $UNRELEASED;
-     */
-    public interface ItemFactory {
-        void onNewItems(@NonNull List<Item<?>> items);
-
-        @NonNull
-        Item<?> itemToCreateViewFrom(int viewType);
     }
 
     @NonNull
@@ -128,16 +111,17 @@ public class AdaptRecyclerView implements Adapt {
 
     private final RecyclerView recyclerView;
     private final ConfigurationImpl configuration;
-    private final Adapter<? extends RecyclerView.ViewHolder> adapter;
+    private final AdapterImpl adapter;
 
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
         @NonNull
         @Override
         public RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items) {
 
-            configuration.itemFactory.onNewItems(items);
-
             AdaptRecyclerView.this.items = items;
+
+            // this is where we clear currently built factory and start filling it again
+            adapter.clearFactory();
 
             return adapter();
         }
@@ -199,6 +183,8 @@ public class AdaptRecyclerView implements Adapt {
 
     private class AdapterImpl extends Adapter<ItemViewHolder> {
 
+        private final Map<Integer, Item<?>> factory = new HashMap<>();
+
         private LayoutInflater inflater;
 
         @NonNull
@@ -209,14 +195,19 @@ public class AdaptRecyclerView implements Adapt {
         @NonNull
         @Override
         public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final Item<?> firstItem = configuration.itemFactory.itemToCreateViewFrom(viewType);
+            final Item<?> item = factory.get(viewType);
+            if (item == null) {
+                throw AdaptException.create(
+                        "Item with a viewType:" + viewType + " not found, factory:" + factory
+                );
+            }
 
             LayoutInflater inflater = this.inflater;
             if (inflater == null) {
                 this.inflater = inflater = LayoutInflater.from(parent.getContext());
             }
 
-            final Item.Holder holder = firstItem.createHolder(inflater, parent);
+            final Item.Holder holder = item.createHolder(inflater, parent);
             holder.setAdapt(AdaptRecyclerView.this);
 
             return new ItemViewHolder(holder);
@@ -238,7 +229,13 @@ public class AdaptRecyclerView implements Adapt {
 
         @Override
         public int getItemViewType(int position) {
-            return items.get(position).viewType();
+            // lazily fill the factory
+            final Item<?> item = items.get(position);
+            final int viewType = item.viewType();
+            if (factory.get(viewType) == null) {
+                factory.put(viewType, item);
+            }
+            return viewType;
         }
 
         @Override
@@ -251,13 +248,16 @@ public class AdaptRecyclerView implements Adapt {
         public Item<?> getItem(int position) {
             return items.get(position);
         }
+
+        void clearFactory() {
+            factory.clear();
+        }
     }
 
     private static class ConfigurationImpl implements Configuration {
 
         boolean hasStableIds = true;
         DataSetChangeHandler dataSetChangeHandler = NotifyDataSetChangedHandler.create();
-        ItemFactory itemFactory = new DynamicItemFactory();
 
         @NonNull
         @Override
@@ -270,13 +270,6 @@ public class AdaptRecyclerView implements Adapt {
         @Override
         public Configuration dataSetChangeHandler(@NonNull DataSetChangeHandler dataSetChangeHandler) {
             this.dataSetChangeHandler = dataSetChangeHandler;
-            return this;
-        }
-
-        @NonNull
-        @Override
-        public Configuration itemFactory(@NonNull ItemFactory itemFactory) {
-            this.itemFactory = itemFactory;
             return this;
         }
     }
