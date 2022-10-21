@@ -23,6 +23,7 @@ import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
 

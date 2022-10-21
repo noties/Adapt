@@ -104,7 +104,19 @@ interface Gravity {
                 get() = CENTER
             override val name: String
                 get() = ".center"
+
             override fun toString(): String = __Meta.toString(this)
+
+            val horizontal: Gravity
+                get() = Raw(
+                    "$name.horizontal",
+                    android.view.Gravity.CENTER_HORIZONTAL
+                )
+            val vertical: Gravity
+                get() = Raw(
+                    "$name.vertical",
+                    android.view.Gravity.CENTER_VERTICAL
+                )
         }
 
         internal fun <T> toString(t: T): String where T : HasName, T : Gravity {

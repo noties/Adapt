@@ -1,5 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
+import java.util.Locale
 
 @AdaptSample(
     id = "20221016113609",
@@ -39,7 +42,6 @@ class AdaptUIExtensionsSample : SampleView() {
         get() = R.layout.view_sample_frame
 
     override fun render(view: View) {
-
         ViewFactory.addChildren(view as ViewGroup) {
             VScroll {
                 VStack {

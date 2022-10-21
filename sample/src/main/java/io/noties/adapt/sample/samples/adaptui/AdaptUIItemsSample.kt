@@ -17,7 +17,7 @@ import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
-import io.noties.adapt.ui.element.fillViewPort
+import io.noties.adapt.ui.element.scrollFillViewPort
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.item.ElementItemNoRef
@@ -26,6 +26,7 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.wrapper.OnBindWrapper
@@ -53,7 +54,7 @@ class AdaptUIItemsSample : SampleView() {
                 // .onAdapt { setItems(items) }
 
             }.layoutFill()
-                .fillViewPort()
+                .scrollFillViewPort()
         }
 
         (view as ViewGroup).addView(child)
@@ -85,17 +86,17 @@ class AdaptUIItemsSample : SampleView() {
                         size(8, 8)
                     }
 
-                    add(base.copy()) {
+                    add(base.copy {
                         // in the middle of the view
                         translateRelative(0.5F, 0.5F)
-                    }
+                    })
 
-                    add(base.copy()) {
+                    add(base.copy {
                         // align to the right bottom corner
                         gravity(Gravity.bottom.trailing)
                         // move 8 dp from that corner
                         translate(-8, -8)
-                    }
+                    })
 
                     add(Rectangle {
                         size(24, 12)

@@ -115,7 +115,7 @@ class Shape_Test {
         assertShapeProperties(base)
 
         for (shape in shapes) {
-            base.copy(shape)
+            base.copyTo(shape)
 
             // assert shape
             assertShapeProperties(shape)

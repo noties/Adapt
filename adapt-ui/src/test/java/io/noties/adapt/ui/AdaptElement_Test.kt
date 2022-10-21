@@ -1,6 +1,7 @@
 package io.noties.adapt.ui
 
 import android.content.Context
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -9,6 +10,7 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
+import io.noties.adapt.view.AdaptView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewpager.AdaptViewPager
 import org.junit.Assert
@@ -29,6 +31,7 @@ class AdaptElement_Test {
     fun viewGroup() {
 
         class Ref {
+            var adaptView: AdaptView? = null
             var adaptViewGroup: AdaptViewGroup? = null
             var adaptViewPager: AdaptViewPager? = null
             var adaptRecyclerView: AdaptRecyclerView? = null
@@ -39,6 +42,10 @@ class AdaptElement_Test {
 
         ViewFactory.createView(context) {
             ZStack {
+                ZStack { }
+                    .adaptView()
+                    .reference(ref::adaptView)
+
                 VStack {}
                     .adaptViewGroup()
                     .reference(ref::adaptViewGroup)
@@ -56,6 +63,9 @@ class AdaptElement_Test {
                     .reference(ref::adaptViewPager2)
             }
         }
+
+        Assert.assertNotNull(ref.adaptView)
+        Assert.assertEquals(FrameLayout::class.java, ref.adaptView!!.viewGroup()::class.java)
 
         Assert.assertNotNull(ref.adaptViewGroup)
         Assert.assertEquals(LinearLayout::class.java, ref.adaptViewGroup!!.viewGroup()::class.java)

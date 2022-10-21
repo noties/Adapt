@@ -44,7 +44,7 @@ class VScroll_Test {
     fun fillViewPort() {
         val input = false
         newElementOfType<ScrollView>()
-            .fillViewPort(input)
+            .scrollFillViewPort(input)
             .renderView {
                 Mockito.verify(this).isFillViewport = eq(input)
             }

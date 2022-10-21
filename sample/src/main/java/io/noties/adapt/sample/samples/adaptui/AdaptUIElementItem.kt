@@ -43,7 +43,7 @@ class AdaptUIElementItem(val text: String) :
     }
 
     override fun bind(holder: Holder<Ref>) {
-        with(holder.references) {
+        with(holder.ref) {
             textView.text = text
         }
     }

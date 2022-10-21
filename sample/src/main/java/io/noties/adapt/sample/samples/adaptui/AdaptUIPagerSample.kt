@@ -54,6 +54,7 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 import io.noties.debug.Debug
 import kotlin.math.abs

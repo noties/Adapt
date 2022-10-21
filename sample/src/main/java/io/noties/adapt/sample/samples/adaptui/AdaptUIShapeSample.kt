@@ -5,19 +5,19 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.createView
@@ -26,10 +26,12 @@ import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.elevation
+import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
+import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
@@ -42,11 +44,15 @@ import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.Line
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.shape.ShapeDrawableRef
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
+import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.Gravity
 import kotlin.math.roundToInt
 
@@ -88,6 +94,8 @@ class AdaptUIShapeSample : SampleView() {
                     stateful()
 
                     animated()
+
+                    references()
 
                 }.noClip()
 
@@ -153,23 +161,23 @@ class AdaptUIShapeSample : SampleView() {
 
                 // add an asset
 
-                add(Capsule()) {
+                add(Capsule {
                     fill(hex("#cccccc"))
                     size(height = 56, gravity = Gravity.center)
                     padding(4)
 
                     // align to start
-                    add(Asset(drawableTinted(Colors.black))) {
+                    add(Asset(drawableTinted(Colors.black)) {
                         size(24, 24, Gravity.leading.center)
                         translate(x = 8)
-                    }
+                    })
 
                     // align to end
-                    add(Asset(drawableTinted(Colors.black))) {
+                    add(Asset(drawableTinted(Colors.black)) {
                         size(24, 24, Gravity.trailing.center)
                         translate(x = -8)
-                    }
-                }
+                    })
+                })
             })
     }
 
@@ -178,29 +186,45 @@ class AdaptUIShapeSample : SampleView() {
             .layout(FILL, 128)
             .background(Rectangle {
                 stroke(Colors.orange)
-                padding(2)
+                padding(12)
+
+                add(Line {
+                    fromRelative(0F, 0F)
+                    toRelative(1F, 1F)
+                    stroke(
+                        LinearGradient(
+                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                            Colors.accent,
+                            Colors.primary
+                        ),
+//                        Colors.black,
+                        4,
+                        16,
+                        2
+                    )
+                })
 
                 // relative to bounds size, half of width and 1/4 of height
-                add(Rectangle()) {
+                add(Rectangle {
                     sizeRelative(0.5F, 0.25F)
                     fill(0x20ff0000)
-                }
+                })
 
                 // relative padding
-                add(Rectangle()) {
+                add(Rectangle {
                     // half of available dimensions is padding -> rest is content
                     paddingRelative(0.25F)
 
                     fill(0x2000ff00)
-                }
+                })
 
                 // translate
-                add(Rectangle()) {
+                add(Rectangle {
                     size(48, 48, Gravity.trailing.bottom)
                     // negative values as we start at bottom right
                     translateRelative(x = -0.25F, y = -0.25F)
                     fill(0x200000ff)
-                }
+                })
             })
     }
 
@@ -294,7 +318,7 @@ class AdaptUIShapeSample : SampleView() {
         }.layout(FILL, 100)
     }
 
-    // allows creation of statful shapes
+    // allows creation of stateful shapes
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.stateful() {
         View()
             .layout(FILL, 56)
@@ -306,15 +330,15 @@ class AdaptUIShapeSample : SampleView() {
                 }
 
                 setDefault(Rectangle {
-                    add(base.copy()) {
-                        strokeColor = null
+                    add(base.copy {
+                        stroke = null
                         fill(Colors.black.withAlphaComponent(0.4F))
                         gravity(Gravity.bottom)
                         padding(horizontal = -2)
-                    }
-                    add(base.copy()) {
+                    })
+                    add(base.copy {
                         padding(top = 2, bottom = 8)
-                    }
+                    })
                 })
 
                 setPressed(base.copy {
@@ -337,37 +361,44 @@ class AdaptUIShapeSample : SampleView() {
 
         View()
             .layout(FILL, 128)
-            .background(Shape.drawable(Rectangle()) {
-                stroke(Colors.black)
+            .background(Shape.drawable(RoundedRectangle(12) {
+                stroke(
+                    LinearGradient(
+                        GradientEdge.Leading to GradientEdge.Trailing,
+                        Colors.orange,
+                        Colors.primary
+                    ),
+                    width = 2,
+//                    dashWidth = 12
+                )
 
                 val corner = Circle {
                     size(12, 12)
                 }
-                add(corner.copy()) {
+                add(corner.copy {
                     fill(Color.RED)
                     gravity(Gravity.top.leading)
-                }
+                })
 
-                add(corner.copy()) {
+                add(corner.copy {
                     fill(Color.GREEN)
                     gravity(Gravity.bottom.trailing)
-                }
+                })
 
-                add(Rectangle()) {
+                add(Rectangle {
                     sizeRelative(0.5F)
                     size(height = 24)
                     fill(Color.BLUE)
                     gravity(Gravity.center)
-                }
+                })
 
-            }.also { shapeDrawable ->
+            }).also { shapeDrawable ->
                 val target = 48
                 animator.addUpdateListener {
                     val fraction = it.animatedFraction
                     val value = (target * fraction).roundToInt()
-                    shapeDrawable.invalidate {
-                        padding(value)
-                    }
+                    shapeDrawable.shape.padding(value)
+                    shapeDrawable.invalidateSelf()
                 }
             })
             .onViewAttachedStateChanged { _, attached ->
@@ -375,6 +406,51 @@ class AdaptUIShapeSample : SampleView() {
                     animator.start()
                 } else {
                     animator.cancel()
+                }
+            }
+    }
+
+    private fun ViewFactory<LayoutParams>.references() {
+        // a special Shape.drawable function to accept `references`
+        //  which could be retrieved later
+
+        class Ref {
+            lateinit var gradient: Shape
+        }
+
+        // in order to invalidate a shape we would need to reference ShapeDrawable
+        lateinit var drawable: ShapeDrawableRef<Ref>
+
+        View()
+            .layout(FILL, 128)
+            .background(Shape.drawable(Rectangle(), Ref()) { ref ->
+
+                add(Circle {
+                    fill(Colors.orange)
+                    gravity(Gravity.center)
+                })
+
+                add(Rectangle {
+                    // also possible to call reference here
+                    reference(ref::gradient)
+
+                    fill(
+                        LinearGradient(
+                            GradientEdge.Top to GradientEdge.Bottom,
+                            Colors.accent, Colors.primary
+                        )
+                    )
+                    size(height = 16, gravity = Gravity.bottom)
+
+                }.reference(ref::gradient))
+
+            }.also { drawable = it })
+            .ifAvailable(Build.VERSION_CODES.M) {
+                it.foregroundDefaultSelectable()
+            }
+            .onClick {
+                drawable.invalidate {
+                    gradient.visible(!gradient.visible)
                 }
             }
     }

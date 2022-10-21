@@ -7,6 +7,7 @@ import android.graphics.Shader
 import android.graphics.SweepGradient
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import io.noties.adapt.ui.util.toHexColor
 import kotlin.math.max
 
 enum class GradientEdge {
@@ -60,6 +61,10 @@ class LinearGradient(
             Shader.TileMode.CLAMP
         )
     }
+
+    override fun toString(): String {
+        return "Gradient.LinearGradient(edges=$edges, startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()})"
+    }
 }
 
 // If `edge` is null - gradient comes from the center,
@@ -92,6 +97,10 @@ class RadialGradient(
             Shader.TileMode.CLAMP
         )
     }
+
+    override fun toString(): String {
+        return "Gradient.RadialGradient(startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()}, edge=$edge, startColorRatio=$startColorRatio)"
+    }
 }
 
 class SweepGradient(
@@ -111,5 +120,9 @@ class SweepGradient(
             startColor,
             endColor
         )
+    }
+
+    override fun toString(): String {
+        return "Gradient.SweepGradient(startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()}, edge=$edge)"
     }
 }

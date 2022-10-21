@@ -34,7 +34,7 @@ import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
-import io.noties.adapt.ui.element.fillViewPort
+import io.noties.adapt.ui.element.scrollFillViewPort
 import io.noties.adapt.ui.element.textAllCaps
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
@@ -66,6 +66,7 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.AdaptViewGroup
@@ -201,7 +202,7 @@ class AdaptUISample : SampleView() {
                     )
 
                     // add copy of self to stroke with padding
-                    add(copy()) {
+                    add(copy {
                         fill(null)
                         stroke(
                             LinearGradient(
@@ -213,14 +214,16 @@ class AdaptUISample : SampleView() {
                             16
                         )
                         padding(2)
-                    }
+                    }.also {
+                        Debug.i(it)
+                    })
 
-                    add(Asset(context.getDrawable(R.drawable.ic_search_24)!!)) {
+                    add(Asset(context.getDrawable(R.drawable.ic_search_24)!!) {
                         gravity(Gravity.bottom.trailing)
                         translate(-8, -8)
                         alpha(0.5F)
                         size(48, 48)
-                    }
+                    })
                 })
                 .elevation(12)
         }
@@ -293,7 +296,7 @@ class AdaptUISample : SampleView() {
         }
 
         override fun bind(holder: Holder<References>) {
-            with(holder.references) {
+            with(holder.ref) {
                 textView.text = text
             }
         }
@@ -337,7 +340,7 @@ class AdaptUISample : SampleView() {
                         square(Color.MAGENTA)
                     }.layout(WRAP, WRAP)
 
-                }.fillViewPort(true)
+                }.scrollFillViewPort(true)
                     .overScrollMode(View.OVER_SCROLL_ALWAYS)
 
                 paragraph()
@@ -384,7 +387,7 @@ class AdaptUISample : SampleView() {
                 .background(Color.CYAN)
 
         override fun bind(holder: Holder<References>) {
-            with(holder.references) {
+            with(holder.ref) {
                 titleView.text = title
                 valueView.text = value
             }
@@ -433,31 +436,31 @@ class AdaptUISample : SampleView() {
                 fill(Color.CYAN)
                 padding(8)
 
-                add(RoundedRectangle(8)) {
+                add(RoundedRectangle(8) {
                     fill(Color.BLACK)
                     stroke(Color.YELLOW, 8, 8, 2)
                     size(100, 48, Gravity.trailing.bottom)
-                }
+                })
 
-                add(Rectangle()) {
+                add(Rectangle {
                     fill(Color.WHITE)
                     stroke(Color.GRAY, 1, 8, 2)
                     size(64, 64, Gravity.leading.center)
 
-                    add(Circle()) {
+                    add(Circle {
                         fill(Color.RED)
                         // would still be circle -> additionally moved to be centered (inside own bounds!)
                         // if gravity is specified with `size`, then gravity is applied inside parent bounds
                         size(32, 32, Gravity.bottom.trailing)
                         padding(2)
 
-                        add(Circle()) {
+                        add(Circle {
                             fill(Color.GREEN)
                             size(16, 16, Gravity.trailing.top)
                             padding(4)
-                        }
-                    }
-                }
+                        })
+                    })
+                })
             }
     }
 
@@ -553,16 +556,16 @@ class AdaptUISample : SampleView() {
         private val iconShape: Shape
             get() = Rectangle {
 
-                add(RoundedRectangle(8)) {
+                add(RoundedRectangle(8) {
                     fill(Color.RED)
                     size(48, 48, Gravity.trailing.bottom)
-                }
+                })
 
-                add(Circle()) {
+                add(Circle {
                     fill(Color.BLUE)
                     size(48, 48, Gravity.leading.top)
                     alpha(0.82F)
-                }
+                })
 
                 padding(4)
             }
@@ -575,14 +578,14 @@ class AdaptUISample : SampleView() {
 
             background = StatefulShape.drawable {
                 val base = shape.copy {
-                    padding(bottom = distance + (paddingBottom?.resolve(0) ?: 0))
+                    padding(bottom = distance + (padding?.bottom?.resolve(0) ?: 0))
                 }
                 setPressed(base)
                 setDefault(Rectangle {
-                    add(shape.copy()) {
+                    add(shape.copy {
                         size(null, 32, Gravity.bottom)
                         fill(Color.GREEN)
-                    }
+                    })
                     add(base)
                 })
             }
@@ -620,11 +623,11 @@ class AdaptUISample : SampleView() {
                 })
 
                 setDefault(Rectangle {
-                    add(Rectangle()) {
+                    add(Rectangle {
                         padding(1)
                         padding(leading = 12)
                         fill(Color.RED)
-                    }
+                    })
                     add(control.copy())
                     stroke(Color.BLACK, 2)
                 })

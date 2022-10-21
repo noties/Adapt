@@ -37,7 +37,9 @@ import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20221014142148",
@@ -88,6 +90,37 @@ class AdaptUICastSample : SampleView() {
                             isIf
                         )
                     }
+
+                    // it is still possible to do `unsafe` cast
+                    //  which can fail with a ClassCastException
+                    //  when casting fails, but error message won't be
+                    //  very helpful as it won't point to the actual
+                    //  call there this happened
+
+                    Element { CheckBox(it) as TextView }
+                        .text("Unsafe cast (success)")
+                        .textSize(16)
+                        .padding(16)
+                        .also { element ->
+                            element.onClick {
+                                (element as ViewElement<CheckBox, *>).render {
+                                    it.checked(true)
+                                }
+                            }
+                        }
+
+                    Button("Unsafe cast (fail)")
+                        .also { element ->
+                            element.onClick {
+                                try {
+                                    (element as ViewElement<CheckBox, *>).render {
+                                        it.checked(true)
+                                    }
+                                } catch (t: ClassCastException) {
+                                    Debug.e(t, "Casting had failed")
+                                }
+                            }
+                        }
                 }
             }
         }
@@ -140,6 +173,7 @@ class AdaptUICastSample : SampleView() {
 //                .checked(true)
 
             Button("Cast")
+                .padding(16)
                 .onClick {
                     // because we have exited the render callback, we need to explicitly call it
                     if (isIf) {

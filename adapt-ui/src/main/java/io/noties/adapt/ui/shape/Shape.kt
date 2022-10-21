@@ -1,39 +1,51 @@
 package io.noties.adapt.ui.shape
 
-import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.DashPathEffect
 import android.graphics.Outline
 import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.PixelFormat
 import android.graphics.Rect
-import android.graphics.RectF
-import android.graphics.drawable.Drawable
-import android.os.Build
+import android.graphics.Shader
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.toHexColor
 import kotlin.math.roundToInt
+import kotlin.reflect.KProperty1
 
+// A new shape: Path (provide path building)
+// TODO: test, copy method returns a new instance and block
+// TODO: test padding exact/relative combined ok (padding copied)
 abstract class Shape {
 
     companion object {
-        fun <S : Shape> drawable(shape: S, block: S.() -> Unit = {}): ShapeDrawable {
-            block(shape)
+        fun drawable(shape: Shape): ShapeDrawable {
             return ShapeDrawable(shape)
+        }
+
+        fun <S : Shape, R : Any> drawable(
+            shape: S,
+            references: R,
+            block: S.(R) -> Unit
+        ): ShapeDrawableRef<R> {
+            block(shape, references)
+            return ShapeDrawableRef(shape, references)
         }
     }
 
-    // cannot have abstract data class
-    abstract fun copy(block: Shape.() -> Unit = {}): Shape
+    /**
+     * `clone` creates a new instance of a shape. In order to create a customized
+     * copy the [copy] function should be used
+     */
+    abstract fun clone(): Shape
 
-    fun copy(to: Shape) {
+    abstract fun toStringProperties(): String
+
+    fun copyTo(to: Shape) {
         to.visible = this.visible
         to.width = this.width
         to.height = this.height
@@ -41,18 +53,10 @@ abstract class Shape {
         to.rotation = this.rotation
         to.translateX = this.translateX
         to.translateY = this.translateY
-        to.paddingLeading = this.paddingLeading
-        to.paddingTop = this.paddingTop
-        to.paddingTrailing = this.paddingTrailing
-        to.paddingBottom = this.paddingBottom
+        to.padding = this.padding?.copy()
         to.alpha = this.alpha
-        to.fillColor = this.fillColor
-        to.fillGradient = this.fillGradient
-        to.strokeColor = this.strokeColor
-        to.strokeWidth = this.strokeWidth
-        to.strokeDashWidth = this.strokeDashWidth
-        to.strokeDashGap = this.strokeDashGap
-        to.strokeGradient = this.strokeGradient
+        to.fill = this.fill?.copy()
+        to.stroke = this.stroke?.copy()
         to.children.addAll(this.children.map { it.copy() })
     }
 
@@ -110,10 +114,12 @@ abstract class Shape {
         trailing: Int? = null,
         bottom: Int? = null
     ): Shape {
-        leading?.also { this.paddingLeading = Dimension.Exact(it) }
-        top?.also { this.paddingTop = Dimension.Exact(it) }
-        trailing?.also { this.paddingTrailing = Dimension.Exact(it) }
-        bottom?.also { this.paddingBottom = Dimension.Exact(it) }
+        padding = (padding ?: Padding()).apply {
+            leading?.also { this.leading = Dimension.Exact(it) }
+            top?.also { this.top = Dimension.Exact(it) }
+            trailing?.also { this.trailing = Dimension.Exact(it) }
+            bottom?.also { this.bottom = Dimension.Exact(it) }
+        }
         return this
     }
 
@@ -131,11 +137,14 @@ abstract class Shape {
         @FloatRange(from = 0.0, to = 1.0) top: Float? = null,
         @FloatRange(from = 0.0, to = 1.0) trailing: Float? = null,
         @FloatRange(from = 0.0, to = 1.0) bottom: Float? = null
-    ): Shape = this.apply {
-        leading?.also { this.paddingLeading = Dimension.Relative(it) }
-        top?.also { this.paddingTop = Dimension.Relative(it) }
-        trailing?.also { this.paddingTrailing = Dimension.Relative(it) }
-        bottom?.also { this.paddingBottom = Dimension.Relative(it) }
+    ): Shape {
+        padding = (padding ?: Padding()).apply {
+            leading?.also { this.leading = Dimension.Relative(it) }
+            top?.also { this.top = Dimension.Relative(it) }
+            trailing?.also { this.trailing = Dimension.Relative(it) }
+            bottom?.also { this.bottom = Dimension.Relative(it) }
+        }
+        return this
     }
 
     fun translate(x: Int? = null, y: Int? = null): Shape = this.apply {
@@ -156,12 +165,18 @@ abstract class Shape {
         return this
     }
 
-    fun fill(@ColorInt color: Int): Shape = this.apply {
-        this.fillColor = color
+    fun fill(@ColorInt color: Int): Shape = this.also {
+        this.fill = (fill ?: Fill()).apply {
+            this.color = color
+            this.gradient = null
+        }
     }
 
-    fun fill(gradient: Gradient?) = this.also {
-        this.fillGradient = gradient
+    fun fill(gradient: Gradient?): Shape = this.also {
+        this.fill = (fill ?: Fill()).apply {
+            this.gradient = gradient
+            this.color = null
+        }
     }
 
     fun stroke(
@@ -169,12 +184,15 @@ abstract class Shape {
         width: Int? = 1,
         dashWidth: Int? = null,
         dashGap: Int? = null
-    ): Shape {
-        this.strokeColor = color
-        width?.also { this.strokeWidth = it }
-        dashWidth?.also { this.strokeDashWidth = it }
-        dashGap?.also { this.strokeDashGap = it }
-        return this
+    ): Shape = this.also {
+        stroke = (stroke ?: Stroke())
+            .apply {
+                this.color = color
+                this.gradient = null
+                width?.also { this.width = it }
+                dashWidth?.also { this.dashWidth = it }
+                dashGap?.also { this.dashGap = it }
+            }
     }
 
     fun stroke(
@@ -182,17 +200,42 @@ abstract class Shape {
         width: Int? = null,
         dashWidth: Int? = null,
         dashGap: Int? = null
-    ) = this.also {
-        this.strokeGradient = gradient
-        width?.also { this.strokeWidth = it }
-        dashWidth?.also { this.strokeDashWidth = it }
-        dashGap?.also { this.strokeDashGap = it }
+    ): Shape = this.also {
+        stroke = (stroke ?: Stroke()).apply {
+            this.color = null
+            this.gradient = gradient
+            width?.also { this.width = it }
+            dashWidth?.also { this.dashWidth = it }
+            dashGap?.also { this.dashGap = it }
+        }
     }
 
-    fun <S : Shape> add(shape: S, block: S.() -> Unit = {}): Shape {
+    fun add(shape: Shape): Shape = this.also {
         children.add(shape)
-        block(shape)
-        return this
+    }
+
+    override fun toString(): String {
+        // cannot infer type without explicit type (because fun and var share the same names)
+        @Suppress("RemoveExplicitTypeArguments")
+        val properties = listOf<KProperty1<Shape, Any?>>(
+            Shape::visible,
+            Shape::width,
+            Shape::height,
+            Shape::gravity,
+            Shape::rotation,
+            Shape::translateX,
+            Shape::translateY,
+            Shape::padding,
+            Shape::alpha,
+            Shape::fill,
+            Shape::stroke,
+            Shape::children
+        ).map { it.name to it.get(this) }
+            .filter { it.second != null }
+            .joinToString(", ") {
+                "${it.first}=${it.second}"
+            }
+        return "Shape.${this::class.java.simpleName}(${toStringProperties()}){$properties}"
     }
 
     var visible: Boolean = true
@@ -207,33 +250,18 @@ abstract class Shape {
     var translateX: Dimension? = null
     var translateY: Dimension? = null
 
-    var paddingLeading: Dimension? = null
-    var paddingTop: Dimension? = null
-    var paddingTrailing: Dimension? = null
-    var paddingBottom: Dimension? = null
+    var padding: Padding? = null
 
-    // applied to both fill and stroke and children (?)
+    // applied to both fill and stroke and children
     var alpha: Float? = null
 
-    var fillColor: Int? = null
-    var fillGradient: Gradient? = null
+    var fill: Fill? = null
 
-    var strokeColor: Int? = null
-    var strokeWidth: Int? = null
-    var strokeDashWidth: Int? = null
-    var strokeDashGap: Int? = null
-
-    var strokeGradient: Gradient? = null
+    var stroke: Stroke? = null
 
     val children: MutableList<Shape> = mutableListOf()
 
-    private val fillPaint: Paint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }
-    private val strokePaint by lazy(LazyThreadSafetyMode.NONE) { Paint(Paint.ANTI_ALIAS_FLAG) }
-
     internal val fillRect = Rect()
-
-    private var fillShaderCache: ShaderCache? = null
-    private var strokeShaderCache: ShaderCache? = null
 
     fun draw(canvas: Canvas, bounds: Rect) {
 
@@ -249,7 +277,6 @@ abstract class Shape {
 
             if (offsetX != null || offsetY != null) {
                 canvas.translate(
-                    // TODO: layout direction
                     offsetX?.toFloat() ?: 0F,
                     offsetY?.toFloat() ?: 0F
                 )
@@ -261,100 +288,11 @@ abstract class Shape {
                 canvas.rotate(it, fillRect.centerX().toFloat(), fillRect.centerY().toFloat())
             }
 
+            fill?.draw(canvas, this, fillRect)
+
+            stroke?.draw(canvas, this, fillRect)
+
             val alpha = this.alpha
-
-            val fillColor = this.fillColor
-            val fillGradient = this.fillGradient
-            // we fill if we have color OR gradient
-            if ((fillGradient != null)
-                || (fillColor != null && fillColor != 0)
-            ) {
-
-                fillPaint.style = Paint.Style.FILL
-
-                if (fillColor != null) {
-                    fillPaint.color = fillColor
-                }
-
-                // important to check if there is alpha, otherwise, a color with alpha component
-                //  would be drawn without alpha (solid)
-                if (alpha != null) {
-                    fillPaint.alpha = (fillPaint.alpha * alpha).roundToInt()
-                }
-
-                // Gradient + Shader
-                // actual gradient object (must be the same)
-                // actual bounds used, because on new bounds new shader must be created
-                if (fillGradient != null) {
-                    // if fillPaint.shader != equal our
-                    val cache = fillShaderCache
-                    if (cache != null
-                        && cache.gradient == fillGradient && fillRect == cache.bounds
-                    ) {
-                        // check that gradient and bounds are the same
-                        fillPaint.shader = cache.shader
-                    } else {
-                        // create new cache instance
-                        fillShaderCache = ShaderCache(
-                            fillGradient,
-                            fillRect
-                        ).also {
-                            fillPaint.shader = it.shader
-                        }
-                    }
-                } else {
-                    fillPaint.shader = null
-                    fillShaderCache = null
-                }
-
-                drawShape(canvas, fillRect, fillPaint)
-            }
-
-            val strokeColor = this.strokeColor
-            val strokeWidth = this.strokeWidth ?: 1
-            val strokeGradient = this.strokeGradient
-
-            if ((strokeColor != null || strokeGradient != null)
-                && strokeColor != 0 && strokeWidth != 0
-            ) {
-                strokePaint.strokeWidth = strokeWidth.dip.toFloat()
-                strokePaint.style = Paint.Style.STROKE
-                if (strokeColor != null) {
-                    strokePaint.color = strokeColor
-                }
-
-                if (alpha != null) {
-                    strokePaint.alpha = (strokePaint.alpha * alpha).roundToInt()
-                }
-
-                val dashWidth = this.strokeDashWidth?.dip
-                if (dashWidth != null) {
-                    val dashGap = this.strokeDashGap?.dip ?: dashWidth / 4
-                    strokePaint.pathEffect = DashPathEffect(
-                        floatArrayOf(
-                            dashWidth.toFloat(),
-                            dashGap.toFloat()
-                        ),
-                        0F
-                    )
-                }
-
-                if (strokeGradient != null) {
-                    val cache = strokeShaderCache
-                    if (cache != null && cache.gradient == strokeGradient && cache.bounds == fillRect) {
-                        strokePaint.shader = cache.shader
-                    } else {
-                        strokeShaderCache = ShaderCache(strokeGradient, fillRect).also {
-                            strokePaint.shader = it.shader
-                        }
-                    }
-                } else {
-                    strokePaint.shader = null
-                    strokeShaderCache = null
-                }
-
-                drawShape(canvas, fillRect, strokePaint)
-            }
 
             children.forEach {
                 val childAlpha = it.alpha
@@ -404,7 +342,7 @@ abstract class Shape {
         // if we specify 1F then outline would optimize shadow and draw it only for visible
         // parts, otherwise it executes a more advanced calculation
         outline.alpha =
-            alpha ?: (fillColor?.takeIf { Color.alpha(it) < 255 }?.toFloat())
+            alpha ?: (fill?.color?.takeIf { Color.alpha(it) < 255 }?.toFloat())
                     ?: 1F
     }
 
@@ -428,7 +366,7 @@ abstract class Shape {
                     h,
                     bounds,
                     fillRect,
-                    // TODO: the layout direction
+                    // MARK! Layout direction
                     View.LAYOUT_DIRECTION_LTR
                 )
             } else {
@@ -448,363 +386,224 @@ abstract class Shape {
 
         // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
-        // TODO: layout direction?
-        paddingLeading?.resolve(bounds.width())?.also { fillRect.left += it }
-        paddingTop?.resolve(bounds.height())?.also { fillRect.top += it }
-        paddingTrailing?.resolve(bounds.width())?.also { fillRect.right -= it }
-        paddingBottom?.resolve(bounds.height())?.also { fillRect.bottom -= it }
+        padding?.set(fillRect)
     }
 
-    private class ShaderCache(
-        val gradient: Gradient,
-        bounds: Rect
+    private class ShaderCache {
+        private val bounds = Rect()
+
+        private var shader: Shader? = null
+        private var gradient: Gradient? = null
+
+        fun shader(gradient: Gradient?, bounds: Rect, paint: Paint) {
+            // if received gradient is null
+            if (gradient == null) {
+                this.shader = null
+                this.gradient = null
+                paint.shader = null
+                return
+            }
+
+            if (gradient == this.gradient
+                && bounds == this.bounds
+                && paint.shader == shader
+            ) {
+                return
+            }
+
+            this.gradient = gradient
+            this.bounds.set(bounds)
+
+            gradient.createShader(bounds).also {
+                this.shader = it
+                paint.shader = it
+            }
+        }
+    }
+
+    class Padding(
+        var leading: Dimension? = null,
+        var top: Dimension? = null,
+        var trailing: Dimension? = null,
+        var bottom: Dimension? = null,
     ) {
-        val bounds = Rect(bounds)
-        val shader = gradient.createShader(bounds)
+        fun set(bounds: Rect) {
+            // in case we have size specified... we apply padding to specified size?
+            //  not the whole bounds? So, we have 24x24, and padding 2, this makes available
+            //  width 20 (24 - 2 -2) and height 20 (24 - 2 - 2), instead of checking initial
+            //  bounds, which can take the full bounds (like 100 by 100)
+            val w = bounds.width()
+            val h = bounds.height()
+            // padding is applied to internal, so, we have width and height,
+            //  and padding is applied in inner space
+            // MARK! Layout direction
+            leading?.resolve(w)?.also { bounds.left += it }
+            top?.resolve(h)?.also { bounds.top += it }
+            trailing?.resolve(w)?.also { bounds.right -= it }
+            bottom?.resolve(h)?.also { bounds.bottom -= it }
+        }
+
+        fun copy(block: Padding.() -> Unit = {}): Padding =
+            Padding(leading, top, trailing, bottom).also(block)
+
+        override fun toString(): String {
+            val properties = listOf(
+                ::leading,
+                ::top,
+                ::trailing,
+                ::bottom
+            ).map { it.name to it.get() }
+                .filter { it.second != null }
+                .joinToString(", ") {
+                    "${it.first}=${it.second}"
+                }
+            return "Padding($properties)"
+        }
+    }
+
+    class Fill(
+        var color: Int? = null,
+        var gradient: Gradient? = null
+    ) {
+        private val shaderCache = ShaderCache()
+
+        private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun copy(block: Fill.() -> Unit = {}): Fill = Fill(color, gradient).also(block)
+
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+            val fillColor = this.color ?: 0
+            val fillGradient = this.gradient
+
+            // we fill if we have color OR gradient
+            if (fillGradient != null || fillColor != 0) {
+
+                fillPaint.style = Paint.Style.FILL
+
+                if (fillColor != 0) {
+                    fillPaint.color = fillColor
+                }
+
+                // important to check if there is alpha, otherwise, a color with alpha component
+                //  would be drawn without alpha (solid)
+                val alpha = shape.alpha
+                if (alpha != null) {
+                    fillPaint.alpha = (fillPaint.alpha * alpha).roundToInt()
+                }
+
+                shaderCache.shader(gradient, bounds, fillPaint)
+
+                shape.drawShape(canvas, bounds, fillPaint)
+            }
+        }
+
+        override fun toString(): String {
+            val properties = listOf(
+                ::color to color?.toHexColor(),
+                ::gradient to gradient
+            ).map {
+                it.first.name to it.second
+            }.filter { it.second != null }
+                .joinToString(", ") {
+                    "${it.first}=${it.second}"
+                }
+            return "Shape.Fill($properties)"
+        }
+    }
+
+    class Stroke(
+        var color: Int? = null,
+        var width: Int? = null,
+        var dashWidth: Int? = null,
+        var dashGap: Int? = null,
+        var gradient: Gradient? = null,
+    ) {
+        private val shaderCache = ShaderCache()
+        private val effectCache = DashEffectCache()
+
+        private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun copy(block: Stroke.() -> Unit = {}): Stroke = Stroke(
+            color,
+            width,
+            dashWidth,
+            dashGap,
+            gradient
+        ).also(block)
+
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+            val strokeColor = this.color ?: 0
+            val strokeWidth = this.width ?: 1
+            val strokeGradient = this.gradient
+
+            if (strokeWidth > 0 && (strokeColor != 0 || strokeGradient != null)) {
+                strokePaint.strokeWidth = strokeWidth.dip.toFloat()
+                strokePaint.style = Paint.Style.STROKE
+
+                if (strokeColor != 0) {
+                    strokePaint.color = strokeColor
+                }
+
+                val alpha = shape.alpha
+                if (alpha != null) {
+                    strokePaint.alpha = (strokePaint.alpha * alpha).roundToInt()
+                }
+
+                effectCache.effect(this, strokePaint)
+
+                shaderCache.shader(gradient, bounds, strokePaint)
+
+                shape.drawShape(canvas, bounds, strokePaint)
+            }
+        }
+
+        override fun toString(): String {
+            val colorProperty = (::color to { color?.toHexColor() })
+                .let { it.first.name to it.second.invoke() }
+            val properties = listOf(colorProperty) + (listOf(
+                ::width,
+                ::dashWidth,
+                ::dashGap,
+                ::gradient
+            ).map {
+                it.name to it.get()
+            }).filter { it.second != null }
+                .joinToString(", ") {
+                    "${it.first}=${it.second}"
+                }
+            return "Shape.Stroke($properties)"
+        }
+
+        private class DashEffectCache {
+            private var lastDashWidth: Int? = null
+            private var lastDashGap: Int? = null
+
+            fun effect(stroke: Stroke, paint: Paint) {
+                val dashWidth = stroke.dashWidth?.dip
+                if (dashWidth != null) {
+                    val dashGap = stroke.dashGap?.dip ?: dashWidth / 4
+                    if (lastDashWidth != dashWidth
+                        || lastDashGap != dashGap
+                        || paint.pathEffect == null
+                    ) {
+                        lastDashWidth = dashWidth
+                        lastDashGap = dashGap
+                        paint.pathEffect = DashPathEffect(
+                            floatArrayOf(dashWidth.toFloat(), dashGap.toFloat()),
+                            0F
+                        )
+                    } // else it should be the same
+
+                } else {
+                    // clear dash path effect
+                    if (paint.pathEffect != null) {
+                        paint.pathEffect = null
+                    }
+
+                    this.lastDashGap = null
+                    this.lastDashWidth = null
+                }
+            }
+        }
     }
 }
-
-class Oval : Shape() {
-
-    companion object {
-        operator fun invoke(block: Oval.() -> Unit): Oval {
-            val shape = Oval()
-            block(shape)
-            return shape
-        }
-    }
-
-    private val rectF = RectF()
-
-    override fun copy(block: Shape.() -> Unit): Shape = Oval().also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        rectF.set(bounds)
-        canvas.drawOval(rectF, paint)
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        outline.setOval(bounds)
-    }
-}
-
-class Circle : Shape() {
-
-    companion object {
-        operator fun invoke(block: Circle.() -> Unit): Circle {
-            val shape = Circle()
-            block(shape)
-            return shape
-        }
-    }
-
-    private val rect = Rect()
-
-    override fun copy(block: Shape.() -> Unit): Shape = Circle().also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        val radius = radius(bounds)
-
-        // TODO: layout direction
-        val rect = gravity?.let {
-            val side = radius * 2
-            android.view.Gravity.apply(
-                it.value,
-                side,
-                side,
-                bounds,
-                rect
-            )
-            rect
-        } ?: bounds
-
-        canvas.drawCircle(
-            rect.centerX().toFloat(),
-            rect.centerY().toFloat(),
-            radius.toFloat(),
-            paint
-        )
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        val radius = radius(bounds)
-        // TODO: layout direction
-        val rect = gravity?.let {
-            val side = radius * 2
-            android.view.Gravity.apply(
-                it.value,
-                side,
-                side,
-                bounds,
-                rect
-            )
-            rect
-        } ?: bounds
-        val centerX = rect.centerX()
-        val centerY = rect.centerY()
-        outline.setOval(
-            centerX - radius,
-            centerY - radius,
-            centerX + radius,
-            centerY + radius
-        )
-    }
-
-    private fun radius(bounds: Rect): Int = Math.min(bounds.width(), bounds.height()) / 2
-}
-
-class Rectangle : Shape() {
-
-    companion object {
-        operator fun invoke(block: Rectangle.() -> Unit): Rectangle {
-            val shape = Rectangle()
-            block(shape)
-            return shape
-        }
-    }
-
-    override fun copy(block: Shape.() -> Unit): Shape = Rectangle().also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        canvas.drawRect(bounds, paint)
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        outline.setRect(bounds)
-    }
-}
-
-class RoundedRectangle private constructor(private val radius: Float) : Shape() {
-
-    constructor(radius: Int) : this(radius.dip.toFloat())
-
-    companion object {
-        operator fun invoke(radius: Int, block: RoundedRectangle.() -> Unit): RoundedRectangle {
-            val shape = RoundedRectangle(radius)
-            block(shape)
-            return shape
-        }
-    }
-
-    private val rectF = RectF()
-
-    override fun copy(block: Shape.() -> Unit): Shape = RoundedRectangle(radius).also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        rectF.set(bounds)
-        canvas.drawRoundRect(rectF, radius, radius, paint)
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        outline.setRoundRect(bounds, radius)
-    }
-}
-
-/**
- * NB! Outline (used when casting shadows via elevation or similar)
- * on versions prior Q might not be correct, as android has a restriction on supplied
- * path - it must be _convex_.
- */
-class Corners private constructor(
-    private val leadingTop: Float,
-    private val topTrailing: Float,
-    private val trailingBottom: Float,
-    private val bottomLeading: Float
-) : Shape() {
-
-    constructor(
-        leadingTop: Int? = null,
-        topTrailing: Int? = null,
-        trailingBottom: Int? = null,
-        bottomLeading: Int? = null
-    ) : this(
-        leadingTop?.dip?.toFloat() ?: 0F,
-        topTrailing?.dip?.toFloat() ?: 0F,
-        trailingBottom?.dip?.toFloat() ?: 0F,
-        bottomLeading?.dip?.toFloat() ?: 0F
-    )
-
-    companion object {
-        operator fun invoke(
-            leadingTop: Int? = null,
-            topTrailing: Int? = null,
-            trailingBottom: Int? = null,
-            bottomLeading: Int? = null,
-            block: Corners.() -> Unit
-        ): Corners {
-            val shape = Corners(leadingTop, topTrailing, trailingBottom, bottomLeading)
-            block(shape)
-            return shape
-        }
-    }
-
-    private val path = Path()
-    private val rectF = RectF()
-
-    override fun copy(block: Shape.() -> Unit): Shape =
-        Corners(
-            leadingTop, topTrailing, trailingBottom, bottomLeading
-        ).also {
-            this.copy(it)
-            block(it)
-        }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        buildPath(bounds)
-
-        canvas.drawPath(path, paint)
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        buildPath(bounds)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            outline.setPath(path)
-        } else {
-            @Suppress("DEPRECATION")
-            outline.setConvexPath(path)
-        }
-    }
-
-    private fun buildPath(bounds: Rect) {
-        path.reset()
-
-        rectF.set(bounds)
-
-        path.addRoundRect(
-            rectF,
-            floatArrayOf(
-                leadingTop, leadingTop,
-                topTrailing, topTrailing,
-                trailingBottom, trailingBottom,
-                bottomLeading, bottomLeading
-            ),
-            Path.Direction.CW
-        )
-    }
-}
-
-class Capsule : Shape() {
-
-    companion object {
-        operator fun invoke(block: Capsule.() -> Unit): Capsule {
-            val shape = Capsule()
-            block(shape)
-            return shape
-        }
-    }
-
-    private val rectF = RectF()
-
-    override fun copy(block: Shape.() -> Unit): Shape = Capsule().also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        val radius = radius(bounds)
-
-        rectF.set(bounds)
-
-        canvas.drawRoundRect(
-            rectF,
-            radius,
-            radius,
-            paint
-        )
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        outline.setRoundRect(bounds, radius(bounds))
-    }
-
-    private fun radius(bounds: Rect): Float = Math.min(bounds.width(), bounds.height()) / 2F
-}
-
-// NB! it discards received paint (so, fill, nor stroke would function)
-class Asset(val resource: Drawable) : Shape() {
-
-    companion object {
-        operator fun invoke(drawable: Drawable, block: Asset.() -> Unit = {}): Asset {
-            return Asset(drawable).also { block(it) }
-        }
-
-        const val defaultFillColor: Int = 0xFF000000.toInt()
-    }
-
-    init {
-
-        // we need fill value in order to trigger drawing
-        fill(defaultFillColor)
-
-        // we need to report size, let's see if bounds are empty
-        val density = Resources.getSystem().displayMetrics.density
-
-        fun value(intrinsic: Int?): Int? = intrinsic
-            ?.takeIf { it > 0 }
-            ?.let { (it / density).toInt() }
-
-        val w = value(resource.intrinsicWidth)
-        val h = value(resource.intrinsicHeight)
-
-        if (w != null && h != null) {
-            size(w, h)
-        }
-    }
-
-    override fun copy(block: Shape.() -> Unit): Shape = Asset(resource).also {
-        this.copy(it)
-        block(it)
-    }
-
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        resource.bounds = bounds
-        resource.alpha = paint.alpha
-        resource.draw(canvas)
-    }
-}
-
-class ShapeDrawable(val shape: Shape) : Drawable() {
-
-    fun invalidate(block: Shape.() -> Unit) {
-        block(shape)
-        invalidateSelf()
-    }
-
-    override fun draw(canvas: Canvas) {
-        shape.draw(canvas, bounds)
-    }
-
-    override fun getIntrinsicWidth(): Int {
-        // NB! relative dimension would not report intrinsic value (we have no reference)
-        return shape.width?.resolve(0) ?: super.getIntrinsicWidth()
-    }
-
-    override fun getIntrinsicHeight(): Int {
-        // NB! relative dimension would not report intrinsic value (we have no reference)
-        return shape.height?.resolve(0) ?: super.getIntrinsicHeight()
-    }
-
-    override fun setAlpha(alpha: Int) = Unit
-    override fun setColorFilter(colorFilter: ColorFilter?) = Unit
-
-    @Suppress("OVERRIDE_DEPRECATION")
-    override fun getOpacity(): Int = PixelFormat.OPAQUE
-
-    override fun getOutline(outline: Outline) {
-        shape.outline(outline, bounds)
-    }
-}
-

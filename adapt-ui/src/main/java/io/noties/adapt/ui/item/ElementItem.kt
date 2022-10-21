@@ -13,19 +13,19 @@ import io.noties.adapt.ui.createView
  */
 abstract class ElementItem<R>(
     id: Long,
-    private val referencesFactory: () -> R
+    private val refFactory: () -> R
 ) : Item<ElementItem.Holder<R>>(id) {
 
-    class Holder<R>(view: View, val references: R) : Item.Holder(view)
+    class Holder<R>(view: View, val ref: R) : Item.Holder(view)
 
-    abstract fun ViewFactory<LayoutParams>.body(references: R)
+    abstract fun ViewFactory<LayoutParams>.body(ref: R)
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder<R> {
-        val references: R = referencesFactory()
+        val ref: R = refFactory()
         val view = ViewFactory.createView(
             parent.context,
-            references
+            ref
         ) { body(it) }
-        return Holder(view, references)
+        return Holder(view, ref)
     }
 }

@@ -9,7 +9,7 @@ import io.noties.adapt.ui.ViewFactory
 abstract class ElementItemNoRef(id: Long) : ElementItem<Unit>(id, {}) {
     abstract fun ViewFactory<ViewGroup.LayoutParams>.body()
 
-    override fun ViewFactory<ViewGroup.LayoutParams>.body(references: Unit) = body()
+    override fun ViewFactory<ViewGroup.LayoutParams>.body(ref: Unit) = body()
 
     // For item without references bind seems to be optional
     override fun bind(holder: Holder<Unit>) = Unit

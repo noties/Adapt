@@ -41,7 +41,7 @@ class HScroll_Test {
     @Test
     fun `fillViewPort - default`() {
         newElementOfType<HorizontalScrollView>()
-            .fillViewPort()
+            .scrollFillViewPort()
             .renderView {
                 verify(this).isFillViewport = eq(true)
             }
@@ -51,7 +51,7 @@ class HScroll_Test {
     fun fillViewPort() {
         val input = false
         newElementOfType<HorizontalScrollView>()
-            .fillViewPort(false)
+            .scrollFillViewPort(false)
             .renderView {
                 verify(this).isFillViewport = eq(input)
             }

@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import io.noties.adapt.Adapt
+import io.noties.adapt.Item
 import io.noties.adapt.recyclerview.AdaptRecyclerView
+import io.noties.adapt.view.AdaptView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.viewpager.AdaptViewPager
@@ -21,6 +23,30 @@ abstract class AdaptElement<A : Adapt> {
         callbacks.clear()
     }
 }
+
+/**
+ * AdaptView
+ */
+class AdaptViewElement(
+    private val configurator: (AdaptView.Configuration) -> Unit
+) : AdaptElement<AdaptView>() {
+    val onView: (ViewGroup) -> Unit
+        get() = {
+            init(AdaptView.init(it, configurator))
+        }
+}
+
+fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
+    configurator: (AdaptView.Configuration) -> Unit = {}
+): AdaptElement<AdaptView> {
+    val element = AdaptViewElement(configurator)
+    onView(element.onView)
+    return element
+}
+
+fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
+    item: Item<*>
+): AdaptElement<AdaptView> = adaptView { it.item(item) }
 
 /**
  * AdaptViewGroup
@@ -44,10 +70,8 @@ fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewGro
 
 fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptViewGroup(
     changeHandler: TransitionChangeHandler
-): AdaptElement<AdaptViewGroup> {
-    val element = AdaptViewGroupElement { it.changeHandler(changeHandler) }
-    onView(element.onView)
-    return element
+): AdaptElement<AdaptViewGroup> = adaptViewGroup {
+    it.changeHandler(changeHandler)
 }
 
 /**

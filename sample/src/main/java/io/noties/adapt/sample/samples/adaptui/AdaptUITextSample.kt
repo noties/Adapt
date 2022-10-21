@@ -14,7 +14,6 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.accessibilityLabelFor
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.BreakStrategy
@@ -43,6 +42,7 @@ import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 import io.noties.debug.Debug
 

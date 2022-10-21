@@ -9,7 +9,7 @@ import io.noties.adapt.ui.ViewFactory
 /**
  * Element for [HorizontalScrollView].
  * NB! this shares the condition to have only one direct child
- * @see fillViewPort
+ * @see scrollFillViewPort
  */
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
@@ -22,7 +22,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
 /**
  * @see HorizontalScrollView.setFillViewport
  */
-fun <V : HorizontalScrollView, LP : LayoutParams> ViewElement<V, LP>.fillViewPort(
+fun <V : HorizontalScrollView, LP : LayoutParams> ViewElement<V, LP>.scrollFillViewPort(
     fillViewPort: Boolean = true
 ): ViewElement<V, LP> = onView {
     isFillViewport = fillViewPort

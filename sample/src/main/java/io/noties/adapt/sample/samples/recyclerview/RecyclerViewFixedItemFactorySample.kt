@@ -82,7 +82,7 @@ class RecyclerViewFixedItemFactorySample : SampleView() {
         }
 
         override fun bind(holder: Holder<Ref>) {
-            holder.references.textView.text = text
+            holder.ref.textView.text = text
         }
     }
 }

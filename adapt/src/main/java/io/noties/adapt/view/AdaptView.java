@@ -95,7 +95,7 @@ public class AdaptView implements Adapt {
 
         } else {
             // we still need to create a mock view, so later we can add real one at the correct place
-            view = new View(viewGroup.getContext());
+            view = newEmptyView();
             viewGroup.addView(view);
         }
 
@@ -136,12 +136,7 @@ public class AdaptView implements Adapt {
         if (item == null) {
             // if we have no item at this point, then there is no need to create a new mocked view
             if (currentItem != null) {
-                // just put mocked view
-                final View view = new View(viewGroup.getContext());
-                // provide explicit layout size to be 0, otherwise can be treated
-                //  by some layouts as MATCH/MATCH
-                view.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-                this.view = replaceView(view);
+                this.view = replaceView(newEmptyView());
             }
         } else {
 
@@ -164,6 +159,15 @@ public class AdaptView implements Adapt {
 
     public void notifyChanged() {
         setItem(item());
+    }
+
+    @NonNull
+    private View newEmptyView() {
+        final View view = new View(viewGroup.getContext());
+        // provide explicit layout size to be 0, otherwise can be treated
+        //  by some layouts as MATCH/MATCH
+        view.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+        return view;
     }
 
     private void createHolder(@NonNull Item<?> item) {

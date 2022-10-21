@@ -2,6 +2,8 @@ package io.noties.adapt.ui.util
 
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_HORIZONTAL
+import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
 import android.view.Gravity.START
 import android.view.Gravity.TOP
@@ -26,6 +28,8 @@ class Gravity_Test {
             Gravity.center.top to (CENTER or TOP),
             Gravity.center.trailing to (CENTER or END),
             Gravity.center.bottom to (CENTER or BOTTOM),
+            Gravity.center.horizontal to (CENTER_HORIZONTAL),
+            Gravity.center.vertical to (CENTER_VERTICAL),
 
             Gravity.leading to START,
             Gravity.leading.top to (START or TOP),
