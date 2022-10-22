@@ -46,6 +46,7 @@ dependencies {
 
     testImplementation deps['junit4']
     testImplementation deps['mockito']
+    testImplementation deps['mockito-kotlin']
     testImplementation deps['robolectric']
 
     testImplementation deps['x-recyclerview']

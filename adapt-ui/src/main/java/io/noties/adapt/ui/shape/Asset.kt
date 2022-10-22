@@ -40,8 +40,6 @@ class Asset(
             val resource = drawable.mutate().also { it.setTintList(colorStateList) }
             return Asset(resource, block)
         }
-
-        const val defaultFillColor: Int = 0xFF000000.toInt()
     }
 
     init {

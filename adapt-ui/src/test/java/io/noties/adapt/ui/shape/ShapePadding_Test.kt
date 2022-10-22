@@ -25,7 +25,11 @@ class ShapePadding_Test {
         val padding = Shape.Padding()
         for (input in inputs) {
             // create copy
-            val out = padding.set(Rect(input))
+            val out = padding.let {
+                val rect = input.copy()
+                it.copy { it.set(rect) }
+                rect
+            }
             Assert.assertEquals(
                 "$padding, ${input.toShortString()}",
                 input,
@@ -41,6 +45,7 @@ class ShapePadding_Test {
         Assert.assertEquals(1F, density)
 
         val rect = Rect(8, 16, 32, 64)
+        Assert.assertEquals(rect, rect.copy())
 
         val w = rect.width()
         val h = rect.height()
@@ -91,9 +96,13 @@ class ShapePadding_Test {
         )
 
         for ((padding, bounds) in inputs) {
-            val out = padding.set(rect.copy())
+            val out = padding.copy().let {
+                val r = rect.copy()
+                it.set(r)
+                r
+            }
             Assert.assertEquals(
-                "$padding, ${rect.toShortString()}",
+                "$padding, ${rect.toShortString()} - ${out.toShortString()}",
                 bounds,
                 out
             )

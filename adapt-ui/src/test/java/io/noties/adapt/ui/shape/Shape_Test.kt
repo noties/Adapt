@@ -1,23 +1,31 @@
 package io.noties.adapt.ui.shape
 
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.gradient.GradientEdge
+import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Dimension.Exact
 import io.noties.adapt.ui.shape.Dimension.Relative
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.eq
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verifyNoInteractions
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.concurrent.atomic.AtomicBoolean
@@ -45,18 +53,24 @@ class Shape_Test {
             Input(Shape::rotation, 45F),
             Input(Shape::translateX, Exact(-19)),
             Input(Shape::translateY, Relative(0.56F)),
-            Input(Shape::paddingLeading, Exact(2)),
-            Input(Shape::paddingTop, Relative(1.12F)),
-            Input(Shape::paddingTrailing, Exact(100)),
-            Input(Shape::paddingBottom, Relative(-0.29F)),
+            Input(Shape::padding, Shape.Padding(Exact(1), Relative(2F), Exact(3), Relative(0.5F))),
             Input(Shape::alpha, 88F),
-            Input(Shape::fillColor, 777),
-            Input(Shape::fillGradient, SweepGradient(12, 999)),
-            Input(Shape::strokeColor, 1000),
-            Input(Shape::strokeWidth, 9),
-            Input(Shape::strokeDashWidth, 6),
-            Input(Shape::strokeDashGap, -1),
-            Input(Shape::strokeGradient, RadialGradient(12, 211))
+            Input(
+                Shape::fill,
+                Shape.Fill(
+                    8765,
+                    LinearGradient(GradientEdge.Trailing to GradientEdge.Bottom, 87, 78)
+                )
+            ),
+            Input(
+                Shape::stroke, Shape.Stroke(
+                    9172,
+                    99,
+                    1,
+                    10,
+                    SweepGradient(1231243, 8776)
+                )
+            ),
         )
         val inputChildren = Input(
             Shape::children,
@@ -216,8 +230,6 @@ class Shape_Test {
         }
     }
 
-    // TODO: a combination of size (for ex width) and sizeRelative (for ex height)
-
     @Test
     fun sizeRelative() {
 
@@ -250,6 +262,20 @@ class Shape_Test {
     }
 
     @Test
+    fun `size - mix`() {
+        // verify density
+        Assert.assertEquals(1F, Resources.getSystem().displayMetrics.density)
+
+        val shape = Circle {
+            size(width = 12)
+            sizeRelative(height = 0.5F)
+        }
+
+        shape.assertEquals(Exact(12), Shape::width)
+        shape.assertEquals(Relative(0.5F), Shape::height)
+    }
+
+    @Test
     fun gravity() {
         for (shape in shapes()) {
             // by default null
@@ -272,139 +298,175 @@ class Shape_Test {
     @Test
     fun `padding - all`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.padding(88)
 
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
             val expected = Exact(88)
-            shape.assertEquals(expected, s)
-            shape.assertEquals(expected, t)
-            shape.assertEquals(expected, e)
-            shape.assertEquals(expected, b)
+            padding.assertEquals(expected, s)
+            padding.assertEquals(expected, t)
+            padding.assertEquals(expected, e)
+            padding.assertEquals(expected, b)
         }
     }
 
     @Test
     fun `padding - vh`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.padding(12, 24)
 
             val h = Exact(12)
             val v = Exact(24)
-            shape.assertEquals(h, s)
-            shape.assertEquals(v, t)
-            shape.assertEquals(h, e)
-            shape.assertEquals(v, b)
+
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
+            padding.assertEquals(h, s)
+            padding.assertEquals(v, t)
+            padding.assertEquals(h, e)
+            padding.assertEquals(v, b)
         }
     }
 
     @Test
     fun `padding - individual`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.padding(12, 24, 48, 96)
 
-            shape.assertEquals(Exact(12), s)
-            shape.assertEquals(Exact(24), t)
-            shape.assertEquals(Exact(48), e)
-            shape.assertEquals(Exact(96), b)
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
+            padding.assertEquals(Exact(12), s)
+            padding.assertEquals(Exact(24), t)
+            padding.assertEquals(Exact(48), e)
+            padding.assertEquals(Exact(96), b)
         }
     }
 
     @Test
     fun `paddingRelative - all`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.paddingRelative(0.87F)
 
             val expected = Relative(0.87F)
-            shape.assertEquals(expected, s)
-            shape.assertEquals(expected, t)
-            shape.assertEquals(expected, e)
-            shape.assertEquals(expected, b)
+
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
+            padding.assertEquals(expected, s)
+            padding.assertEquals(expected, t)
+            padding.assertEquals(expected, e)
+            padding.assertEquals(expected, b)
         }
     }
 
     @Test
     fun `paddingRelative - vh`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.paddingRelative(0.87F, 0.25F)
 
             val h = Relative(0.87F)
             val v = Relative(0.25F)
-            shape.assertEquals(h, s)
-            shape.assertEquals(v, t)
-            shape.assertEquals(h, e)
-            shape.assertEquals(v, b)
+
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
+            padding.assertEquals(h, s)
+            padding.assertEquals(v, t)
+            padding.assertEquals(h, e)
+            padding.assertEquals(v, b)
         }
     }
 
     @Test
     fun `paddingRelative - individual`() {
         for (shape in shapes()) {
-            val s = Shape::paddingLeading
-            val t = Shape::paddingTop
-            val e = Shape::paddingTrailing
-            val b = Shape::paddingBottom
-
-            shape.assertEquals(null, s)
-            shape.assertEquals(null, t)
-            shape.assertEquals(null, e)
-            shape.assertEquals(null, b)
+            val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
+            shape.assertEquals(null, p)
 
             shape.paddingRelative(0.87F, 0.25F, 0.1F, 0F)
 
-            shape.assertEquals(Relative(0.87F), s)
-            shape.assertEquals(Relative(0.25F), t)
-            shape.assertEquals(Relative(0.1F), e)
-            shape.assertEquals(Relative(0F), b)
+            val s = Shape.Padding::leading
+            val t = Shape.Padding::top
+            val e = Shape.Padding::trailing
+            val b = Shape.Padding::bottom
+
+            val padding = shape.padding
+            Assert.assertNotNull(padding)
+
+            padding!!
+
+            padding.assertEquals(Relative(0.87F), s)
+            padding.assertEquals(Relative(0.25F), t)
+            padding.assertEquals(Relative(0.1F), e)
+            padding.assertEquals(Relative(0F), b)
         }
+    }
+
+    @Test
+    fun `padding - mix`() {
+        val shape = Capsule {
+            padding(leading = 1, top = 2)
+            paddingRelative(trailing = 0.3F, bottom = 0.4F)
+        }
+
+        val padding = shape.padding!!
+
+        padding.assertEquals(Exact(1), Shape.Padding::leading)
+        padding.assertEquals(Exact(2), Shape.Padding::top)
+        padding.assertEquals(Relative(0.3F), Shape.Padding::trailing)
+        padding.assertEquals(Relative(0.4F), Shape.Padding::bottom)
     }
 
     @Test
@@ -463,23 +525,29 @@ class Shape_Test {
         // NB! asset applies a fill color, otherwise it won't be drawn
         for (shape in shapes()) {
             if (shape is Asset) {
-                shape.assertEquals(Asset.defaultFillColor, Shape::fillColor)
+                val fill = shape.fill
+                fill!!.assertEquals(Shape.defaultFillColor, Shape.Fill::color)
             } else {
-                shape.assertEquals(null, Shape::fillColor)
+                shape.assertEquals(null, Shape::fill)
             }
 
             shape.fill(99)
-            shape.assertEquals(99, Shape::fillColor)
+            shape.fill!!.assertEquals(99, Shape.Fill::color)
         }
     }
 
     @Test
     fun `fill - gradient`() {
         for (shape in shapes()) {
-            shape.assertEquals(null, Shape::fillGradient)
+            if (shape is Asset) {
+                val fill = shape.fill!!
+                fill.assertEquals(Shape.defaultFillColor, Shape.Fill::color)
+            } else {
+                shape.assertEquals(null, Shape::fill)
+            }
             val gradient = RadialGradient(12, 24)
             shape.fill(gradient)
-            shape.assertEquals(gradient, Shape::fillGradient)
+            shape.fill!!.assertEquals(gradient, Shape.Fill::gradient)
         }
     }
 
@@ -487,7 +555,7 @@ class Shape_Test {
     fun `stroke - color`() {
         class Input(
             val color: Int,
-            val strokeWidth: Int? = null,
+            val width: Int? = null,
             val dashWidth: Int? = null,
             val dashGap: Int? = null
         )
@@ -502,22 +570,21 @@ class Shape_Test {
 
         for (input in inputs) {
             for (shape in shapes()) {
-                val color = Shape::strokeColor
-                val strokeWidth = Shape::strokeWidth
-                val dashWidth = Shape::strokeDashWidth
-                val dashGap = Shape::strokeDashGap
+                shape.assertEquals(null, Shape::stroke)
 
-                shape.assertEquals(null, color)
-                shape.assertEquals(null, strokeWidth)
-                shape.assertEquals(null, dashWidth)
-                shape.assertEquals(null, dashGap)
+                shape.stroke(input.color, input.width, input.dashWidth, input.dashGap)
 
-                shape.stroke(input.color, input.strokeWidth, input.dashWidth, input.dashGap)
+                val color = Shape.Stroke::color
+                val width = Shape.Stroke::width
+                val dashWidth = Shape.Stroke::dashWidth
+                val dashGap = Shape.Stroke::dashGap
 
-                shape.assertEquals(input.color, color)
-                shape.assertEquals(input.strokeWidth, strokeWidth)
-                shape.assertEquals(input.dashWidth, dashWidth)
-                shape.assertEquals(input.dashGap, dashGap)
+                val stroke = shape.stroke!!
+
+                stroke.assertEquals(input.color, color)
+                stroke.assertEquals(input.width, width)
+                stroke.assertEquals(input.dashWidth, dashWidth)
+                stroke.assertEquals(input.dashGap, dashGap)
             }
         }
     }
@@ -527,37 +594,37 @@ class Shape_Test {
 
         class Input(
             val gradient: Gradient = SweepGradient(112, 911),
-            val strokeWidth: Int? = null,
+            val width: Int? = null,
             val dashWidth: Int? = null,
             val dashGap: Int? = null
         )
 
         val inputs = listOf(
             Input(),
-            Input(strokeWidth = 3),
+            Input(width = 3),
             Input(dashWidth = 5),
             Input(dashGap = 7),
-            Input(strokeWidth = 9, dashWidth = 10, dashGap = 11)
+            Input(width = 9, dashWidth = 10, dashGap = 11)
         )
 
         for (input in inputs) {
             for (shape in shapes()) {
-                val gradient = Shape::strokeGradient
-                val strokeWidth = Shape::strokeWidth
-                val dashWidth = Shape::strokeDashWidth
-                val dashGap = Shape::strokeDashGap
 
-                shape.assertEquals(null, gradient)
-                shape.assertEquals(null, strokeWidth)
-                shape.assertEquals(null, dashWidth)
-                shape.assertEquals(null, dashGap)
+                shape.assertEquals(null, Shape::stroke)
 
-                shape.stroke(input.gradient, input.strokeWidth, input.dashWidth, input.dashGap)
+                shape.stroke(input.gradient, input.width, input.dashWidth, input.dashGap)
 
-                shape.assertEquals(input.gradient, gradient)
-                shape.assertEquals(input.strokeWidth, strokeWidth)
-                shape.assertEquals(input.dashWidth, dashWidth)
-                shape.assertEquals(input.dashGap, dashGap)
+                val gradient = Shape.Stroke::gradient
+                val width = Shape.Stroke::width
+                val dashWidth = Shape.Stroke::dashWidth
+                val dashGap = Shape.Stroke::dashGap
+
+                val stroke = shape.stroke!!
+
+                stroke.assertEquals(input.gradient, gradient)
+                stroke.assertEquals(input.width, width)
+                stroke.assertEquals(input.dashWidth, dashWidth)
+                stroke.assertEquals(input.dashGap, dashGap)
             }
         }
     }
@@ -710,7 +777,7 @@ class Shape_Test {
     @Test
     fun `draw - not-visible`() {
         // when it is not visible, it is not drawn
-        val canvas = mock(Canvas::class.java)
+        val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
         val shape = Rectangle().fill(6) // set fill color, so shape is drawn
 
@@ -722,7 +789,7 @@ class Shape_Test {
 
     @Test
     fun `draw - translate`() {
-        val canvas = mock(Canvas::class.java)
+        val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
         val shape = Oval().fill(3)
 
@@ -737,7 +804,7 @@ class Shape_Test {
 
     @Test
     fun `draw - translateRelative`() {
-        val canvas = mock(Canvas::class.java)
+        val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
         val shape = Capsule().fill(-19)
 
@@ -752,7 +819,7 @@ class Shape_Test {
 
     @Test
     fun `draw - rotate`() {
-        val canvas = mock(Canvas::class.java)
+        val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
         val shape = RoundedRectangle(12).fill(-1908)
 
@@ -766,6 +833,102 @@ class Shape_Test {
         )
     }
 
+    @Test
+    fun `draw - children`() {
+        // children are drawn
+        val children = (0 until 5)
+            .map { mockt<Shape> { on { this.alpha } doReturn null } }
+
+        val shape = Oval {
+            children.forEach(this::add)
+        }
+
+        shape.draw(mockt(), mockt())
+
+        children.forEach {
+            verify(it).draw(any(), any())
+        }
+    }
+
+    @Test
+    fun `draw - children - alpha`() {
+        // if parent has alpha then it would be combined with child alpha
+        // if child resulting alpha is 0, we do not draw it
+
+        // alpha of parent shape
+        val inputs = listOf(
+            1F,
+            0.5F,
+            0.25F,
+            0F
+        )
+
+        for (input in inputs) {
+            val children = listOf(
+                mockt<Shape> {
+                    on { this.alpha } doReturn 1F
+                },
+                mockt {
+                    on { this.alpha } doReturn 0.5F
+                },
+                mockt {
+                    on { this.alpha } doReturn 0.25F
+                }
+            )
+
+            val shape = Rectangle {
+                children.forEach { add(it) }
+                alpha(input)
+            }
+
+            shape.draw(mockt(), mockt())
+
+            for (child in children) {
+                val expectedAlpha = (child.alpha ?: 1F) * (shape.alpha ?: 1F)
+                if (0F == expectedAlpha) {
+                    verify(child, never()).draw(any(), any())
+                } else {
+                    verify(child).draw(any(), any())
+
+                    val captor = argumentCaptor<Float>()
+                    verify(child, times(2)).alpha = captor.capture()
+                    // first expected alpha is set, then initial value is applied back (after drawing)
+                    Assert.assertEquals(
+                        listOf(expectedAlpha, child.alpha!!),
+                        captor.allValues
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `draw - children - visible=false`() {
+        // when parent is visible=false no children are drawn
+        val children = (0 until 5)
+            .map { mockt<Shape> { on { this.alpha } doReturn 1F } }
+
+        val shape = Rectangle {
+            children.forEach { add(it) }
+
+            // mark as non visible
+            visible(false)
+        }
+        Assert.assertFalse(shape.visible)
+
+        val canvas = mockt<Canvas>()
+
+        shape.draw(canvas, mockt())
+
+        // verify no calls to canvas draw methods were issued
+        verifyNoInteractions(canvas)
+
+        // verify each child was not called to draw when invisible
+        children.forEach {
+            verifyNoInteractions(it)
+        }
+    }
+
     private fun shapes() = listOf(
         Asset(ColorDrawable(99)),
         Capsule(),
@@ -776,7 +939,7 @@ class Shape_Test {
         RoundedRectangle(17)
     )
 
-    private fun <T : Any?> Shape.assertEquals(expected: T, property: KProperty1<Shape, T>) {
+    private fun <R : Any, T : Any?> R.assertEquals(expected: T, property: KProperty1<in R, T>) {
         Assert.assertEquals(
             this::class.java.simpleName + "." + property.name,
             expected,

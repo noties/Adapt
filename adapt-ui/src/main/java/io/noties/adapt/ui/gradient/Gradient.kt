@@ -7,7 +7,7 @@ import android.graphics.Shader
 import android.graphics.SweepGradient
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
-import io.noties.adapt.ui.util.toHexColor
+import io.noties.adapt.ui.util.toHexString
 import kotlin.math.max
 
 enum class GradientEdge {
@@ -63,7 +63,7 @@ class LinearGradient(
     }
 
     override fun toString(): String {
-        return "Gradient.LinearGradient(edges=$edges, startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()})"
+        return "Gradient.LinearGradient(edges=$edges, startColor=${startColor.toHexString()}, endColor=${endColor.toHexString()})"
     }
 }
 
@@ -99,7 +99,7 @@ class RadialGradient(
     }
 
     override fun toString(): String {
-        return "Gradient.RadialGradient(startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()}, edge=$edge, startColorRatio=$startColorRatio)"
+        return "Gradient.RadialGradient(startColor=${startColor.toHexString()}, endColor=${endColor.toHexString()}, edge=$edge, startColorRatio=$startColorRatio)"
     }
 }
 
@@ -123,6 +123,6 @@ class SweepGradient(
     }
 
     override fun toString(): String {
-        return "Gradient.SweepGradient(startColor=${startColor.toHexColor()}, endColor=${endColor.toHexColor()}, edge=$edge)"
+        return "Gradient.SweepGradient(startColor=${startColor.toHexString()}, endColor=${endColor.toHexString()}, edge=$edge)"
     }
 }

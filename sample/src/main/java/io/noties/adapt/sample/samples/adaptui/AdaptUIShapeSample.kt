@@ -270,6 +270,8 @@ class AdaptUIShapeSample : SampleView() {
 
                     padding(4)
 
+                    alpha(0.5F)
+
                     fill(
                         LinearGradient(
                             GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
