@@ -91,6 +91,8 @@ class AdaptUIShapeSample : SampleView() {
 
                     gradients()
 
+                    rotation()
+
                     stateful()
 
                     animated()
@@ -173,7 +175,7 @@ class AdaptUIShapeSample : SampleView() {
                     })
 
                     // align to end
-                    add(Asset(drawableTinted(Colors.black)) {
+                    add(Asset(drawableTinted(Colors.orange)) {
                         size(24, 24, Gravity.trailing.center)
                         translate(x = -8)
                     })
@@ -318,6 +320,32 @@ class AdaptUIShapeSample : SampleView() {
                 })
 
         }.layout(FILL, 100)
+    }
+
+    private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.rotation() {
+        View()
+            .layout(FILL, 128)
+            .background(Rectangle {
+                val base = Rectangle {
+                    sizeRelative(0.5F, 0.5F)
+                    gravity(Gravity.bottom.trailing)
+                    padding(8)
+                }
+                val colors = listOf(Colors.orange, Colors.black, Colors.accent, Colors.primary)
+                listOf(0F, 25F, 85F, 110F, 150F, 189F, 250F)
+                    .withIndex()
+                    .forEach { (i, degree) ->
+                        add(base.copy {
+                            rotate(degree)
+                            stroke(colors[i % colors.size])
+                        })
+                        add(base.copy {
+                            rotate(degree)
+                            gravity(Gravity.leading.top)
+                            stroke(colors[i % colors.size])
+                        })
+                    }
+            })
     }
 
     // allows creation of stateful shapes

@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
-import android.transition.Transition
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
@@ -13,11 +12,9 @@ import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Dimension.Exact
 import io.noties.adapt.ui.shape.Dimension.Relative
 import io.noties.adapt.ui.testutil.mockt
-import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
-import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -803,9 +800,13 @@ class Shape_Test {
                 fillRect,
                 shape.fillRect
             )
+            // NB! translation does not take into account bounds.left or bounds.top
+            //  it just sends value to the canvas. This is done because, for example,
+            //  there is a negative translation with gravity.end - adding bounds.left
+            //  would result in wrong placement
             verify(canvas).translate(
-                eq(2 + 3F),
-                eq(2 + 4F)
+                eq(3F),
+                eq(4F)
             )
         }
     }

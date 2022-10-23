@@ -528,8 +528,12 @@ abstract class Shape {
             // NB! we resolve x and y based on width/height, but we
             //  can receive bounds with left||top != 0, so we
             //  need to adjust for that values also
-            val translationX = x?.resolve(bounds.width())?.plus(bounds.left)?.toFloat() ?: 0F
-            val translationY = y?.resolve(bounds.height())?.plus(bounds.top)?.toFloat() ?: 0F
+            // UPD: NAH! if size is specified with gravity, for example - end,
+            //  we must not add bounds.left.. in fact.. we do we add it anyway?
+            //  value is resolved based on proper dimensions, so just passing that
+            //  values to canvas should be fine
+            val translationX = x?.resolve(bounds.width())?.toFloat() ?: 0F
+            val translationY = y?.resolve(bounds.height())?.toFloat() ?: 0F
             if (translationX != 0F || translationY != 0F) {
                 canvas.translate(translationX, translationY)
             }
