@@ -60,7 +60,10 @@ abstract class Shape {
         to.children.addAll(this.children.map { it.copy() })
     }
 
-    fun drawable(): ShapeDrawable = ShapeDrawable(this)
+    /**
+     * Creates new drawable with this shape as root
+     */
+    fun toDrawable(): ShapeDrawable = ShapeDrawable(this)
 
     fun visible(visible: Boolean): Shape = this.also {
         it.visible = visible
@@ -239,10 +242,14 @@ abstract class Shape {
         children.add(shape)
     }
 
+    fun remove(shape: Shape) = this.also {
+        children.remove(shape)
+    }
+
     override fun toString(): String {
         // cannot infer type without explicit type (because fun and var share the same names)
         @Suppress("RemoveExplicitTypeArguments")
-        val properties = listOf<KProperty1<Shape, Any?>>(
+        val properties = (listOf<KProperty1<Shape, Any?>>(
             Shape::visible,
             Shape::width,
             Shape::height,
@@ -252,9 +259,8 @@ abstract class Shape {
             Shape::padding,
             Shape::alpha,
             Shape::fill,
-            Shape::stroke,
-            Shape::children
-        ).map { it.name to it.get(this) }
+            Shape::stroke
+        ).map { it.name to it.get(this) } + listOf("children" to children.takeIf { it.isNotEmpty() }))
             .filter { it.second != null }
             .joinToString(", ") {
                 "${it.first}=${it.second}"
@@ -286,7 +292,11 @@ abstract class Shape {
 
     open val children: MutableList<Shape> = mutableListOf()
 
-    internal val fillRect = Rect()
+    internal val drawRect = Rect()
+    internal val outlineRect = Rect()
+
+    // TODO: is it fine to expose our rect? should we defensively copy it?
+    fun drawRect(): Rect = drawRect
 
     open fun draw(canvas: Canvas, bounds: Rect) {
 
@@ -300,23 +310,23 @@ abstract class Shape {
         }
 
         // prepare bounds
-        fillRect(bounds)
+        fillRect(bounds, drawRect)
 
         // if bounds are empty after padding w/h modification - do not draw
-        if (fillRect.isEmpty) {
+        if (drawRect.isEmpty) {
             return
         }
 
         val save = canvas.save()
         try {
 
-            translation?.draw(canvas, fillRect)
+            translation?.draw(canvas, drawRect)
 
-            rotation?.draw(canvas, fillRect)
+            rotation?.draw(canvas, drawRect)
 
-            fill?.draw(canvas, this, fillRect)
+            fill?.draw(canvas, this, drawRect)
 
-            stroke?.draw(canvas, this, fillRect)
+            stroke?.draw(canvas, this, drawRect)
 
             val alpha = this.alpha
 
@@ -331,7 +341,7 @@ abstract class Shape {
                     it.alpha = childDrawAlpha
 
                     // draw the shape
-                    it.draw(canvas, fillRect)
+                    it.draw(canvas, drawRect)
 
                     // restore initial value
                     it.alpha = childAlpha
@@ -352,23 +362,23 @@ abstract class Shape {
             return
         }
 
-        fillRect(bounds)
+        fillRect(bounds, outlineRect)
 
         translation?.x
             ?.resolve(bounds.width())
             ?.also {
-                fillRect.left += it
-                fillRect.right += it
+                outlineRect.left += it
+                outlineRect.right += it
             }
 
         translation?.y
             ?.resolve(bounds.height())
             ?.also {
-                fillRect.top += it
-                fillRect.bottom += it
+                outlineRect.top += it
+                outlineRect.bottom += it
             }
 
-        outlineShape(outline, fillRect)
+        outlineShape(outline, outlineRect)
 
         // if we have generic alpha -> use it
         //  if we have fill colors and it has alpha -> use it, else just 1F
@@ -383,7 +393,7 @@ abstract class Shape {
 
     open fun outlineShape(outline: Outline, bounds: Rect) = Unit
 
-    internal fun fillRect(bounds: Rect) {
+    internal fun fillRect(bounds: Rect, rect: Rect) {
 
         val width = this.width?.resolve(bounds.width())
         val height = this.height?.resolve(bounds.height())
@@ -400,14 +410,14 @@ abstract class Shape {
                     w,
                     h,
                     bounds,
-                    fillRect,
+                    rect,
                     // MARK! Layout direction
                     View.LAYOUT_DIRECTION_LTR
                 )
             } else {
                 val left = bounds.left
                 val top = bounds.top
-                fillRect.set(
+                rect.set(
                     left,
                     top,
                     left + w,
@@ -416,12 +426,12 @@ abstract class Shape {
             }
 
         } else {
-            fillRect.set(bounds)
+            rect.set(bounds)
         }
 
         // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
-        padding?.set(fillRect)
+        padding?.set(rect)
     }
 
     internal class ShaderCache {
@@ -719,6 +729,8 @@ abstract class Shape {
         }
     }
 
+    // We could make them dimensions, but we would need to have a reference for them
+    //  and it is not clear which width or height to use
     class Stroke(
         var color: Int? = null,
         var width: Int? = null,
@@ -729,7 +741,9 @@ abstract class Shape {
         private val shaderCache = ShaderCache()
         private val effectCache = DashEffectCache()
 
-        private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+        }
 
         fun copy(block: Stroke.() -> Unit = {}): Stroke = Stroke(
             color,
@@ -740,29 +754,42 @@ abstract class Shape {
         ).also(block)
 
         fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
-            val strokeColor = this.color ?: 0
             val strokeWidth = this.width ?: 1
+
+            // if we have no stroke, do not draw
+            if (strokeWidth < 1) {
+                return
+            }
+
+            val strokeColor = this.color ?: 0
             val strokeGradient = this.gradient
 
-            if (strokeWidth > 0 && (strokeColor != 0 || strokeGradient != null)) {
-                strokePaint.strokeWidth = strokeWidth.dip.toFloat()
-                strokePaint.style = Paint.Style.STROKE
+            val hasColor = strokeColor != 0
+            val hasGradient = strokeGradient != null
 
-                if (strokeColor != 0) {
-                    strokePaint.color = strokeColor
-                }
-
-                val alpha = shape.alpha
-                if (alpha != null) {
-                    strokePaint.alpha = (strokePaint.alpha * alpha).roundToInt()
-                }
-
-                effectCache.effect(this, strokePaint)
-
-                shaderCache.shader(gradient, bounds, strokePaint)
-
-                shape.drawShape(canvas, bounds, strokePaint)
+            // if we have no color and gradient - do not draw
+            if (!hasColor && !hasGradient) {
+                return
             }
+
+            strokePaint.strokeWidth = strokeWidth.dip.toFloat()
+            strokePaint.color = if (hasColor) strokeColor else defaultFillColor
+
+            val alpha = shape.alpha
+            if (alpha != null) {
+                strokePaint.alpha = (strokePaint.alpha * alpha).roundToInt()
+            }
+
+            // if paint has no alpha - do not draw
+            if (strokePaint.alpha == 0) {
+                return
+            }
+
+            effectCache.effect(this, strokePaint)
+
+            shaderCache.shader(gradient, bounds, strokePaint)
+
+            shape.drawShape(canvas, bounds, strokePaint)
         }
 
         override fun toString(): String {

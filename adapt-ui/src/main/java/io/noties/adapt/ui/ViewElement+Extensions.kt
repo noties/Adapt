@@ -102,11 +102,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 
 /**
  * @see View.setBackground
- * @see Shape.drawable
+ * @see Shape.toDrawable
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     shape: Shape
-): ViewElement<V, LP> = background(shape.drawable())
+): ViewElement<V, LP> = background(shape.toDrawable())
 
 /**
  * @see background(Int)
@@ -134,13 +134,13 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
 /**
  * @see View.setForeground
  * @see View.setForegroundGravity
- * @see Shape.drawable
+ * @see Shape.toDrawable
  */
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     gravity: Gravity? = null
-): ViewElement<V, LP> = foreground(shape.drawable(), gravity)
+): ViewElement<V, LP> = foreground(shape.toDrawable(), gravity)
 
 /**
  * @see View.setForeground

@@ -178,7 +178,7 @@ class Shape_Test {
     fun `drawable - instance`() {
         val inputs = shapes()
         for (input in inputs) {
-            val drawable = input.drawable()
+            val drawable = input.toDrawable()
             Assert.assertEquals(
                 input::class.java.simpleName,
                 input,
@@ -644,8 +644,8 @@ class Shape_Test {
 
         for (shape in shapes()) {
             val rect = Rect(0, 0, 109, 765)
-            shape.fillRect(rect)
-            shape.assertEquals(rect, Shape::fillRect)
+            shape.fillRect(rect, shape.drawRect)
+            shape.assertEquals(rect, Shape::drawRect)
         }
     }
 
@@ -659,10 +659,10 @@ class Shape_Test {
                 trailing = 3,
                 bottom = 4
             )
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(1.dip, 2.dip, 100 - 3.dip, 200 - 4.dip),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -675,10 +675,10 @@ class Shape_Test {
                 25,
                 77
             )
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(0, 0, 25, 77),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -692,10 +692,10 @@ class Shape_Test {
                 20,
                 Gravity.bottom.trailing
             )
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(100 - 10.dip, 200 - 20.dip, 100, 200),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -710,7 +710,7 @@ class Shape_Test {
                 Gravity.bottom.trailing
             )
             shape.padding(4)
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(
                     100 - (10 - 4).dip,
@@ -718,7 +718,7 @@ class Shape_Test {
                     100 - 4.dip,
                     200 - 4.dip
                 ),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -729,10 +729,10 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(25)
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(0, 0, 25, 200),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
 
@@ -740,10 +740,10 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(height = 15)
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(0, 0, 100, 15),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -754,7 +754,7 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(25, gravity = Gravity.center)
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(
                     (100 - 25.dip) / 2,
@@ -762,7 +762,7 @@ class Shape_Test {
                     (100 + 25.dip) / 2,
                     200 // should take full height
                 ),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
 
@@ -770,7 +770,7 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(height = 15, gravity = Gravity.bottom)
-            shape.fillRect(rect)
+            shape.fillRect(rect, shape.drawRect)
             shape.assertEquals(
                 Rect(
                     0, // should take full width
@@ -778,7 +778,7 @@ class Shape_Test {
                     100, // should take full width
                     200
                 ),
-                Shape::fillRect
+                Shape::drawRect
             )
         }
     }
@@ -796,9 +796,9 @@ class Shape_Test {
                 .also { it.translation = translation }
                 .draw(canvas, rect)
             Assert.assertEquals(
-                "fillRect:$fillRect shape.fillRect:${shape.fillRect}",
+                "fillRect:$fillRect shape.drawRect:${shape.drawRect}",
                 fillRect,
-                shape.fillRect
+                shape.drawRect
             )
             // NB! translation does not take into account bounds.left or bounds.top
             //  it just sends value to the canvas. This is done because, for example,
@@ -826,9 +826,9 @@ class Shape_Test {
                 .also { it.rotation = rotation }
                 .draw(canvas, rect)
             Assert.assertEquals(
-                "fillRect$fillRect shape.fillRect:${shape.fillRect}",
+                "fillRect$fillRect shape.drawRect:${shape.drawRect}",
                 fillRect,
-                shape.fillRect
+                shape.drawRect
             )
             verify(canvas).rotate(
                 eq(1F),
@@ -1083,6 +1083,30 @@ class Shape_Test {
         // verify each child was not called to draw when invisible
         children.forEach {
             verifyNoInteractions(it)
+        }
+    }
+
+    @Test
+    fun add() {
+        for (shape in shapes()) {
+            val child = Rectangle()
+            Assert.assertEquals(shape.children.toString(), 0, shape.children.size)
+            shape.add(child)
+            Assert.assertEquals(
+                listOf(child),
+                shape.children
+            )
+        }
+    }
+
+    @Test
+    fun remove() {
+        for (shape in shapes()) {
+            val child = Circle()
+            shape.add(child)
+            Assert.assertEquals(listOf(child), shape.children)
+            shape.remove(child)
+            Assert.assertEquals(listOf<Shape>(), shape.children)
         }
     }
 

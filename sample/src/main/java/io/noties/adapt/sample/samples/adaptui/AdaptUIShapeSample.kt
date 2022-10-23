@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.adaptui.ExploreAdaptUIShapeTransition.animate
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
@@ -479,11 +480,21 @@ class AdaptUIShapeSample : SampleView() {
                 it.foregroundDefaultSelectable()
             }
             .onClick {
-                drawable.invalidate {
-                    gradient.visible(!gradient.visible)
+                drawable.animate {
+                    val (alpha, x) = if (flag) {
+                        1F to 0F
+                    } else {
+                        0F to 1F
+                    }
+                    ref.gradient
+                        .alpha(alpha)
+                        .translateRelative(x = x)
+                    flag = !flag
                 }
             }
     }
+
+    private var flag = true
 
     private fun drawableTinted(tintColor: Int): Drawable =
         context.getDrawable(R.drawable.ic_search_24)!!.also {
