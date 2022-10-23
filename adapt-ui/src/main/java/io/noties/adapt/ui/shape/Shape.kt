@@ -18,10 +18,6 @@ import kotlin.math.roundToInt
 import kotlin.reflect.KProperty1
 
 // A new shape: Path (provide path building)
-// TODO: test, copy method returns a new instance and block
-// TODO: test padding exact/relative combined ok (padding copied)
-
-// KBM: cannot open just for tests
 abstract class Shape {
 
     companion object {
@@ -55,9 +51,8 @@ abstract class Shape {
         to.width = this.width
         to.height = this.height
         to.gravity = this.gravity
-        to.rotation = this.rotation
-        to.translateX = this.translateX
-        to.translateY = this.translateY
+        to.rotation = this.rotation?.copy()
+        to.translation = this.translation?.copy()
         to.padding = this.padding?.copy()
         to.alpha = this.alpha
         to.fill = this.fill?.copy()
@@ -99,11 +94,32 @@ abstract class Shape {
     }
 
     /**
-     * Rotates shape around its center x and y coordinates by given angle in degrees.
-     * NB! this does not change actual bounds of the shape
+     * Rotation.
+     * By default rotates around bounds centerX and centerY
+     * @see rotateRelative
      */
-    fun rotate(degrees: Float?): Shape = this.also {
-        this.rotation = degrees
+    fun rotate(
+        degrees: Float?,
+        centerX: Int? = null,
+        centerY: Int? = null
+    ): Shape = this.also {
+        this.rotation = (rotation ?: Rotation()).apply {
+            this.degrees = degrees
+            centerX?.also { this.centerX = Dimension.Exact(it) }
+            centerY?.also { this.centerY = Dimension.Exact(it) }
+        }
+    }
+
+    fun rotateRelative(
+        degrees: Float?,
+        centerX: Float? = null,
+        centerY: Float? = null
+    ): Shape = this.also {
+        this.rotation = (rotation ?: Rotation()).apply {
+            this.degrees = degrees
+            centerX?.also { this.centerX = Dimension.Relative(it) }
+            centerY?.also { this.centerY = Dimension.Relative(it) }
+        }
     }
 
     fun padding(all: Int): Shape = padding(all, all)
@@ -152,23 +168,26 @@ abstract class Shape {
         return this
     }
 
-    fun translate(x: Int? = null, y: Int? = null): Shape = this.apply {
-        x?.also { this.translateX = Dimension.Exact(it) }
-        y?.also { this.translateY = Dimension.Exact(it) }
+    fun translate(x: Int? = null, y: Int? = null): Shape = this.also {
+        this.translation = (translation ?: Translation()).apply {
+            x?.also { this.x = Dimension.Exact(it) }
+            y?.also { this.y = Dimension.Exact(it) }
+        }
     }
 
     fun translateRelative(
         @FloatRange(from = -1.0, to = 1.0) x: Float? = null,
         @FloatRange(from = -1.0, to = 1.0) y: Float? = null
-    ): Shape = this.apply {
-        x?.also { this.translateX = Dimension.Relative(it) }
-        y?.also { this.translateY = Dimension.Relative(it) }
+    ): Shape = this.also {
+        this.translation = (translation ?: Translation()).apply {
+            x?.also { this.x = Dimension.Relative(it) }
+            y?.also { this.y = Dimension.Relative(it) }
+        }
     }
 
-    // TODO: clamp value
-    fun alpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Shape {
-        this.alpha = alpha
-        return this
+    @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
+    fun alpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Shape = this.also {
+        this.alpha = Math.max(0F, Math.min(1F, alpha))
     }
 
     fun fill(@ColorInt color: Int): Shape = this.also {
@@ -229,8 +248,7 @@ abstract class Shape {
             Shape::height,
             Shape::gravity,
             Shape::rotation,
-            Shape::translateX,
-            Shape::translateY,
+            Shape::translation,
             Shape::padding,
             Shape::alpha,
             Shape::fill,
@@ -244,7 +262,7 @@ abstract class Shape {
         return "Shape.${this::class.java.simpleName}(${toStringProperties()}){$properties}"
     }
 
-    // TODO: should we keep them open after mockito-kotlin?
+    //NB! all properties are `open` in order to be mocked in tests
 
     open var visible: Boolean = true
 
@@ -253,12 +271,11 @@ abstract class Shape {
 
     open var gravity: Gravity? = null
 
-    open var rotation: Float? = null
-
-    open var translateX: Dimension? = null
-    open var translateY: Dimension? = null
-
     open var padding: Padding? = null
+
+    open var translation: Translation? = null
+
+    open var rotation: Rotation? = null
 
     // applied to both fill and stroke and children
     open var alpha: Float? = null
@@ -277,26 +294,25 @@ abstract class Shape {
             return
         }
 
+        // if received empty bounds
+        if (bounds.isEmpty) {
+            return
+        }
+
+        // prepare bounds
+        fillRect(bounds)
+
+        // if bounds are empty after padding w/h modification - do not draw
+        if (fillRect.isEmpty) {
+            return
+        }
+
         val save = canvas.save()
         try {
 
-            val offsetX = this.translateX?.resolve(bounds.width())
-            val offsetY = this.translateY?.resolve(bounds.height())
+            translation?.draw(canvas, fillRect)
 
-            if (offsetX != null || offsetY != null) {
-                canvas.translate(
-                    offsetX?.toFloat() ?: 0F,
-                    offsetY?.toFloat() ?: 0F
-                )
-            }
-
-            // TODO: if bounds are empty we should not draw?
-            //  what if child has negative values? as we do not clip...
-            fillRect(bounds)
-
-            rotation?.also {
-                canvas.rotate(it, fillRect.centerX().toFloat(), fillRect.centerY().toFloat())
-            }
+            rotation?.draw(canvas, fillRect)
 
             fill?.draw(canvas, this, fillRect)
 
@@ -338,18 +354,19 @@ abstract class Shape {
 
         fillRect(bounds)
 
-        val (x, y) = translateX?.resolve(bounds.width()) to translateY?.resolve(bounds.height())
+        translation?.x
+            ?.resolve(bounds.width())
+            ?.also {
+                fillRect.left += it
+                fillRect.right += it
+            }
 
-        if (x != null) {
-            fillRect.left += x
-            fillRect.right += x
-        }
-
-        // NB! we need to update both top+bottom for translation
-        if (y != null) {
-            fillRect.top += y
-            fillRect.bottom += y
-        }
+        translation?.y
+            ?.resolve(bounds.height())
+            ?.also {
+                fillRect.top += it
+                fillRect.bottom += it
+            }
 
         outlineShape(outline, fillRect)
 
@@ -358,9 +375,10 @@ abstract class Shape {
         // actually.. if fill color is 0, then we must also assume no transparency
         // if we specify 1F then outline would optimize shadow and draw it only for visible
         // parts, otherwise it executes a more advanced calculation
-        outline.alpha =
-            alpha ?: (fill?.color?.takeIf { Color.alpha(it) < 255 }?.toFloat())
-                    ?: 1F
+        outline.alpha = alpha ?: (fill?.color
+            ?.let(Color::alpha)
+            ?.let { it / 255F }
+            ?: 1F)
     }
 
     open fun outlineShape(outline: Outline, bounds: Rect) = Unit
@@ -498,6 +516,109 @@ abstract class Shape {
             result = 31 * result + (trailing?.hashCode() ?: 0)
             result = 31 * result + (bottom?.hashCode() ?: 0)
             return result
+        }
+    }
+
+    class Translation(
+        var x: Dimension? = null,
+        var y: Dimension? = null
+    ) {
+
+        fun draw(canvas: Canvas, bounds: Rect) {
+            // NB! we resolve x and y based on width/height, but we
+            //  can receive bounds with left||top != 0, so we
+            //  need to adjust for that values also
+            val translationX = x?.resolve(bounds.width())?.plus(bounds.left)?.toFloat() ?: 0F
+            val translationY = y?.resolve(bounds.height())?.plus(bounds.top)?.toFloat() ?: 0F
+            if (translationX != 0F || translationY != 0F) {
+                canvas.translate(translationX, translationY)
+            }
+        }
+
+        fun copy(block: Translation.() -> Unit = {}) = Translation(x, y).also(block)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Translation
+
+            if (x != other.x) return false
+            if (y != other.y) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = x?.hashCode() ?: 0
+            result = 31 * result + (y?.hashCode() ?: 0)
+            return result
+        }
+
+        override fun toString(): String {
+            val properties = listOf(
+                ::x,
+                ::y
+            ).map { it.name to it.get() }
+                .filter { it.second != null }
+                .joinToString(", ") {
+                    "${it.first}=${it.second}"
+                }
+            return "Shape.Translation($properties)"
+        }
+    }
+
+    class Rotation(
+        var degrees: Float? = null,
+        var centerX: Dimension? = null,
+        var centerY: Dimension? = null
+    ) {
+
+        fun draw(canvas: Canvas, bounds: Rect) {
+            val degrees = this.degrees ?: return
+            // NB! received bounds can have left||top != 0, we need to adjust
+            //  centerX and centerY according to it (only if value is present, otherwise
+            //  rect.centerX and centerY should return proper values)
+            val cx = centerX?.resolve(bounds.width())?.plus(bounds.left)?.toFloat()
+                ?: bounds.centerX().toFloat()
+            val cy = centerY?.resolve(bounds.height())?.plus(bounds.top)?.toFloat()
+                ?: bounds.centerY().toFloat()
+            canvas.rotate(degrees, cx, cy)
+        }
+
+        fun copy(block: Rotation.() -> Unit = {}) = Rotation(degrees, centerX, centerY).also(block)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Rotation
+
+            if (degrees != other.degrees) return false
+            if (centerX != other.centerX) return false
+            if (centerY != other.centerY) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = degrees?.hashCode() ?: 0
+            result = 31 * result + (centerX?.hashCode() ?: 0)
+            result = 31 * result + (centerY?.hashCode() ?: 0)
+            return result
+        }
+
+        override fun toString(): String {
+            val properties = listOf(
+                ::degrees,
+                ::centerX,
+                ::centerY
+            ).map { it.name to it.get() }
+                .filter { it.second != null }
+                .joinToString(", ") {
+                    "${it.first}=${it.second}"
+                }
+            return "Shape.Rotation($properties)"
         }
     }
 

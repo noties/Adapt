@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.transition.Transition
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
@@ -12,9 +13,11 @@ import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Dimension.Exact
 import io.noties.adapt.ui.shape.Dimension.Relative
 import io.noties.adapt.ui.testutil.mockt
+import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
+import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -50,9 +53,8 @@ class Shape_Test {
             Input(Shape::width, Exact(42)),
             Input(Shape::height, Relative(0.25F)),
             Input(Shape::gravity, Gravity.bottom.trailing),
-            Input(Shape::rotation, 45F),
-            Input(Shape::translateX, Exact(-19)),
-            Input(Shape::translateY, Relative(0.56F)),
+            Input(Shape::rotation, Shape.Rotation(259F, Exact(1), Relative(1F))),
+            Input(Shape::translation, Shape.Translation(Exact(8), Relative(9F))),
             Input(Shape::padding, Shape.Padding(Exact(1), Relative(2F), Exact(3), Relative(0.5F))),
             Input(Shape::alpha, 88F),
             Input(
@@ -287,15 +289,6 @@ class Shape_Test {
     }
 
     @Test
-    fun rotate() {
-        for (shape in shapes()) {
-            shape.assertEquals(null, Shape::rotation)
-            shape.rotate(180F)
-            shape.assertEquals(180F, Shape::rotation)
-        }
-    }
-
-    @Test
     fun `padding - all`() {
         for (shape in shapes()) {
             val p: KMutableProperty1<Shape, Shape.Padding?> = Shape::padding
@@ -477,15 +470,17 @@ class Shape_Test {
             null to 911,
             1092 to 2
         )
+
         for (input in inputs) {
             for (shape in shapes()) {
-                shape.assertEquals(null, Shape::translateX)
-                shape.assertEquals(null, Shape::translateY)
+                shape.assertEquals(null, Shape::translation)
 
                 shape.translate(input.first, input.second)
 
-                shape.assertEquals(input.first?.let(::Exact), Shape::translateX)
-                shape.assertEquals(input.second?.let(::Exact), Shape::translateY)
+                val translation = shape.translation!!
+
+                translation.assertEquals(input.first?.let(::Exact), Shape.Translation::x)
+                translation.assertEquals(input.second?.let(::Exact), Shape.Translation::y)
             }
         }
     }
@@ -500,13 +495,14 @@ class Shape_Test {
         )
         for (input in inputs) {
             for (shape in shapes()) {
-                shape.assertEquals(null, Shape::translateX)
-                shape.assertEquals(null, Shape::translateY)
+                shape.assertEquals(null, Shape::translation)
 
                 shape.translateRelative(input.first, input.second)
 
-                shape.assertEquals(input.first?.let(::Relative), Shape::translateX)
-                shape.assertEquals(input.second?.let(::Relative), Shape::translateY)
+                val translation = shape.translation!!
+
+                translation.assertEquals(input.first?.let(::Relative), Shape.Translation::x)
+                translation.assertEquals(input.second?.let(::Relative), Shape.Translation::y)
             }
         }
     }
@@ -517,6 +513,22 @@ class Shape_Test {
             shape.assertEquals(null, Shape::alpha)
             shape.alpha(0.5F)
             shape.assertEquals(0.5F, Shape::alpha)
+        }
+    }
+
+    @Test
+    fun `alpha - clamped`() {
+        val inputs = listOf(
+            -0.1F to 0F,
+            -1000F to 0F,
+            1.1F to 1F,
+            1000F to 1F
+        )
+        for (input in inputs) {
+            for (shape in shapes()) {
+                shape.alpha(input.first)
+                shape.assertEquals(input.second, Shape::alpha)
+            }
         }
     }
 
@@ -775,6 +787,105 @@ class Shape_Test {
     }
 
     @Test
+    fun `translate - bounds`() {
+        // translate must use own bounds (after size is resolved)
+        val rect = Rect(0, 0, 10, 20)
+        val fillRect = Rect(2, 2, 8, 18)
+
+        for (shape in shapes()) {
+            val canvas = mockt<Canvas>()
+            val translation = Shape.Translation(Exact(3), Relative(0.25F))
+            shape.padding(2)
+                .also { it.translation = translation }
+                .draw(canvas, rect)
+            Assert.assertEquals(
+                "fillRect:$fillRect shape.fillRect:${shape.fillRect}",
+                fillRect,
+                shape.fillRect
+            )
+            verify(canvas).translate(
+                eq(2 + 3F),
+                eq(2 + 4F)
+            )
+        }
+    }
+
+    @Test
+    fun `rotate - bounds`() {
+        // rotate must use own bounds (after size is resolved)
+
+        val rect = Rect(0, 0, 10, 20)
+        val fillRect = Rect(2, 2, 8, 18) // after 2 padding
+
+        // rotation object receives fillRect bounds, not initial received bounds
+        for (shape in shapes()) {
+            val canvas = mockt<Canvas>()
+            val rotation = Shape.Rotation(1F, Exact(0), Relative(1F))
+            shape.padding(2)
+                .also { it.rotation = rotation }
+                .draw(canvas, rect)
+            Assert.assertEquals(
+                "fillRect$fillRect shape.fillRect:${shape.fillRect}",
+                fillRect,
+                shape.fillRect
+            )
+            verify(canvas).rotate(
+                eq(1F),
+                eq(2 + 0F),
+                eq(2 + 16F)
+            )
+        }
+    }
+
+    @Test
+    fun rotate() {
+        val inputs = listOf(
+            Triple(1F, null, null),
+            Triple(2F, 3, null),
+            Triple(4F, null, 5),
+            Triple(6F, 7, 8)
+        )
+        for (input in inputs) {
+            for (shape in shapes()) {
+                shape.assertEquals(null, Shape::rotation)
+                shape.rotate(
+                    input.first,
+                    input.second,
+                    input.third
+                )
+                val rotation = shape.rotation!!
+                rotation.assertEquals(input.first, Shape.Rotation::degrees)
+                rotation.assertEquals(input.second?.let(::Exact), Shape.Rotation::centerX)
+                rotation.assertEquals(input.third?.let(::Exact), Shape.Rotation::centerY)
+            }
+        }
+    }
+
+    @Test
+    fun rotateRelative() {
+        val inputs = listOf(
+            Triple(1F, null, null),
+            Triple(2F, 3F, null),
+            Triple(4F, null, 5F),
+            Triple(6F, 7F, 8F)
+        )
+        for (input in inputs) {
+            for (shape in shapes()) {
+                shape.assertEquals(null, Shape::rotation)
+                shape.rotateRelative(
+                    input.first,
+                    input.second,
+                    input.third
+                )
+                val rotation = shape.rotation!!
+                rotation.assertEquals(input.first, Shape.Rotation::degrees)
+                rotation.assertEquals(input.second?.let(::Relative), Shape.Rotation::centerX)
+                rotation.assertEquals(input.third?.let(::Relative), Shape.Rotation::centerY)
+            }
+        }
+    }
+
+    @Test
     fun `draw - not-visible`() {
         // when it is not visible, it is not drawn
         val canvas = mockt<Canvas>()
@@ -785,6 +896,51 @@ class Shape_Test {
         shape.draw(canvas, bounds)
 
         Mockito.verifyNoInteractions(canvas)
+    }
+
+    @Test
+    fun `draw - empty bounds`() {
+        val canvas = mockt<Canvas>()
+        val bounds = Rect(0, 0, 0, 0)
+        val shape = Circle().fill(1234)
+
+        Assert.assertTrue(bounds.toShortString(), bounds.isEmpty)
+
+        shape.draw(canvas, bounds)
+
+        verifyNoInteractions(canvas)
+    }
+
+    @Test
+    fun `draw - empty bounds after padding`() {
+        // received bounds are not empty, but further modifications makes fillRect empty
+        val canvas = mockt<Canvas>()
+        val rect = Rect(0, 0, 10, 10)
+        Assert.assertFalse(rect.toShortString(), rect.isEmpty)
+
+        val shape = RoundedRectangle(8)
+            .fill(98712)
+            .padding(11)
+
+        shape.draw(canvas, rect)
+
+        verifyNoInteractions(canvas)
+    }
+
+    @Test
+    fun `draw - empty bounds after size`() {
+        // received bounds are not empty, but further modifications makes fillRect empty
+        val canvas = mockt<Canvas>()
+        val rect = Rect(0, 0, 1000, 1000)
+        Assert.assertFalse(rect.toShortString(), rect.isEmpty)
+
+        val shape = RoundedRectangle(8)
+            .fill(765)
+            .size(0, 0)
+
+        shape.draw(canvas, rect)
+
+        verifyNoInteractions(canvas)
     }
 
     @Test
@@ -812,8 +968,8 @@ class Shape_Test {
         shape.draw(canvas, bounds)
 
         verify(canvas, times(1)).translate(
-            eq(shape.translateX?.resolve(bounds.width())!!.toFloat()),
-            eq(shape.translateY?.resolve(bounds.height())!!.toFloat())
+            eq(shape.translation?.x?.resolve(bounds.width())!!.toFloat()),
+            eq(shape.translation?.y?.resolve(bounds.height())!!.toFloat())
         )
     }
 
@@ -843,7 +999,7 @@ class Shape_Test {
             children.forEach(this::add)
         }
 
-        shape.draw(mockt(), mockt())
+        shape.draw(mockt(), Rect(0, 0, 100, 100))
 
         children.forEach {
             verify(it).draw(any(), any())
@@ -881,7 +1037,7 @@ class Shape_Test {
                 alpha(input)
             }
 
-            shape.draw(mockt(), mockt())
+            shape.draw(mockt(), Rect(1, 2, 5, 8))
 
             for (child in children) {
                 val expectedAlpha = (child.alpha ?: 1F) * (shape.alpha ?: 1F)
