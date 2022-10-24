@@ -46,7 +46,7 @@ class Shape_Test {
         )
 
         val inputs = listOf(
-            Input(Shape::visible, false),
+            Input(Shape::hidden, false),
             Input(Shape::width, Exact(42)),
             Input(Shape::height, Relative(0.25F)),
             Input(Shape::gravity, Gravity.bottom.trailing),
@@ -178,7 +178,7 @@ class Shape_Test {
     fun `drawable - instance`() {
         val inputs = shapes()
         for (input in inputs) {
-            val drawable = input.toDrawable()
+            val drawable = input.newDrawable()
             Assert.assertEquals(
                 input::class.java.simpleName,
                 input,
@@ -188,13 +188,13 @@ class Shape_Test {
     }
 
     @Test
-    fun visible() {
+    fun hidden() {
         for (shape in shapes()) {
-            // by default `true`
-            shape.assertEquals(true, Shape::visible)
+            // by default `null` (which means false)
+            shape.assertEquals(null, Shape::hidden)
 
-            shape.visible(false)
-            shape.assertEquals(false, Shape::visible)
+            shape.hidden(true)
+            shape.assertEquals(true, Shape::hidden)
         }
     }
 
@@ -893,7 +893,7 @@ class Shape_Test {
         val bounds = Rect(0, 0, 100, 100)
         val shape = Rectangle().fill(6) // set fill color, so shape is drawn
 
-        shape.visible(false)
+        shape.hidden(true)
         shape.draw(canvas, bounds)
 
         Mockito.verifyNoInteractions(canvas)
@@ -1069,9 +1069,9 @@ class Shape_Test {
             children.forEach { add(it) }
 
             // mark as non visible
-            visible(false)
+            hidden()
         }
-        Assert.assertFalse(shape.visible)
+        Assert.assertTrue(shape.hidden!!)
 
         val canvas = mockt<Canvas>()
 

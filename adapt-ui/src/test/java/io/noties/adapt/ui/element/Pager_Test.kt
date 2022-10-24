@@ -309,8 +309,8 @@ class Pager_Test {
                 verify(this).setPageMarginDrawable(captor.capture())
 
                 val d = captor.value
-                assertTrue(d is ShapeDrawable)
-                assertEquals(shape, (d as ShapeDrawable).shape)
+                assertTrue(d is ShapeDrawable<*>)
+                assertEquals(shape, (d as ShapeDrawable<*>).shape)
             }
     }
 

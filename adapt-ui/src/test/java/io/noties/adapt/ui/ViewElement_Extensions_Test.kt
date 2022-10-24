@@ -332,7 +332,7 @@ class ViewElement_Extensions_Test {
 
                     Assert.assertTrue(
                         "Foreground is instance of ShapeDrawable, class:${captor.value::class.java.name}",
-                        captor.value is ShapeDrawable
+                        captor.value is ShapeDrawable<*>
                     )
                 }
         }
@@ -385,7 +385,7 @@ class ViewElement_Extensions_Test {
 
                 Assert.assertTrue(
                     "Background drawable is instance of ShapeDrawable, class:${captor.value::class.java.name}",
-                    captor.value is ShapeDrawable
+                    captor.value is ShapeDrawable<*>
                 )
             }
     }

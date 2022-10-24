@@ -19,11 +19,11 @@ class StatefulShape {
     fun drawable(): StateListDrawable {
         val drawable = StateListDrawable()
         entries.forEach {
-            drawable.addState(it.first, it.second.toDrawable())
+            drawable.addState(it.first, it.second.newDrawable())
         }
         // must be applied last... otherwise it will be used for all states
         defaultEntry?.also {
-            drawable.addState(StateSet.WILD_CARD, it.toDrawable())
+            drawable.addState(StateSet.WILD_CARD, it.newDrawable())
         }
         return drawable
     }

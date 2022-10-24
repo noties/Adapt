@@ -12,7 +12,7 @@ class Rectangle(block: Rectangle.() -> Unit = {}) : Shape() {
     }
 
     override fun clone(): Rectangle = Rectangle()
-    override fun toStringProperties(): String = ""
+    override fun toStringDedicatedProperties(): String = ""
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         canvas.drawRect(bounds, paint)

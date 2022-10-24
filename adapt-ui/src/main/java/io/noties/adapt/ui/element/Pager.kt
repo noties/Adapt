@@ -183,7 +183,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
 fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
     margin: Int,
     marginShape: Shape
-) = pagerPageMargin(margin, marginShape.toDrawable())
+) = pagerPageMargin(margin, marginShape.newDrawable())
 
 
 @JvmName("pagerOnPageChangeListenerViewPager")

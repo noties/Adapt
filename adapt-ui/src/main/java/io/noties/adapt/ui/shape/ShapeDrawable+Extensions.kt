@@ -6,6 +6,11 @@ fun <S : Shape> S.reference(property: KMutableProperty0<in S>): Shape = this.als
     property.set(it)
 }
 
-fun <D : ShapeDrawable> D.reference(property: KMutableProperty0<in D>): D = this.also {
+fun <R, D : ShapeDrawable<R>> D.reference(property: KMutableProperty0<in D>): D = this.also {
     property.set(it)
+}
+
+fun <R: Any, D : ShapeDrawable<R>> D.invalidate(block: R.() -> Unit) {
+    block(ref)
+    invalidateSelf()
 }

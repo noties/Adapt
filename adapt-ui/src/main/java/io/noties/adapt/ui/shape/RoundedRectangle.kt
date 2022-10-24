@@ -20,12 +20,7 @@ class RoundedRectangle(
     private val cornerRadius: Float get() = radius.dip.toFloat()
 
     override fun clone(): RoundedRectangle = RoundedRectangle(radius)
-    override fun toStringProperties(): String {
-        return ::radius
-            .let { it.name to it.get() }
-            .takeIf { it.second != 0 }
-            ?.let { "${it.first}=${it.second}" } ?: ""
-    }
+    override fun toStringDedicatedProperties(): String = "radius=$radius"
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         rectF.set(bounds)

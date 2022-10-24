@@ -15,7 +15,7 @@ class Oval(block: Oval.() -> Unit = {}) : Shape() {
     private val rectF = RectF()
 
     override fun clone(): Oval = Oval()
-    override fun toStringProperties(): String = ""
+    override fun toStringDedicatedProperties(): String = ""
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         rectF.set(bounds)

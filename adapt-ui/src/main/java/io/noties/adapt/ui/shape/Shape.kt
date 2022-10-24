@@ -14,24 +14,27 @@ import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
+import io.noties.adapt.ui.util.toStringProperties
+import io.noties.adapt.ui.util.toStringPropertiesDefault
 import kotlin.math.roundToInt
-import kotlin.reflect.KProperty1
 
 // A new shape: Path (provide path building)
 abstract class Shape {
 
     companion object {
-        fun drawable(shape: Shape): ShapeDrawable {
-            return ShapeDrawable(shape)
+        fun <S : Shape> drawable(
+            shape: S,
+            block: S.() -> Unit = {}
+        ): ShapeDrawableNoRef {
+            return ShapeDrawable(shape.also(block))
         }
 
         fun <S : Shape, R : Any> drawable(
             shape: S,
-            references: R,
+            ref: R,
             block: S.(R) -> Unit
-        ): ShapeDrawableRef<R> {
-            block(shape, references)
-            return ShapeDrawableRef(shape, references)
+        ): ShapeDrawable<R> {
+            return ShapeDrawable(shape, ref, block)
         }
 
         // default color, black with 255 (1F) alpha
@@ -44,10 +47,11 @@ abstract class Shape {
      */
     abstract fun clone(): Shape
 
-    abstract fun toStringProperties(): String
+    // a subclass should emit dedicated properties
+    abstract fun toStringDedicatedProperties(): String
 
     fun copyTo(to: Shape) {
-        to.visible = this.visible
+        to.hidden = this.hidden
         to.width = this.width
         to.height = this.height
         to.gravity = this.gravity
@@ -63,10 +67,10 @@ abstract class Shape {
     /**
      * Creates new drawable with this shape as root
      */
-    fun toDrawable(): ShapeDrawable = ShapeDrawable(this)
+    fun newDrawable(): ShapeDrawableNoRef = ShapeDrawable(this)
 
-    fun visible(visible: Boolean): Shape = this.also {
-        it.visible = visible
+    fun hidden(hidden: Boolean = true): Shape = this.also {
+        it.hidden = hidden.takeIf { b -> b }
     }
 
     // if null, then use bounds value (if null is stored property, if null is passed to the function,
@@ -247,30 +251,30 @@ abstract class Shape {
     }
 
     override fun toString(): String {
-        // cannot infer type without explicit type (because fun and var share the same names)
-        @Suppress("RemoveExplicitTypeArguments")
-        val properties = (listOf<KProperty1<Shape, Any?>>(
-            Shape::visible,
-            Shape::width,
-            Shape::height,
-            Shape::gravity,
-            Shape::rotation,
-            Shape::translation,
-            Shape::padding,
-            Shape::alpha,
-            Shape::fill,
-            Shape::stroke
-        ).map { it.name to it.get(this) } + listOf("children" to children.takeIf { it.isNotEmpty() }))
-            .filter { it.second != null }
-            .joinToString(", ") {
-                "${it.first}=${it.second}"
+        val properties = toStringProperties {
+            it(
+                ::hidden,
+                ::width,
+                ::height,
+                ::gravity,
+                ::rotation,
+                ::translation,
+                ::padding,
+                ::alpha,
+                ::fill,
+                ::stroke,
+                ::drawRect
+            )
+            it(::children) {
+                it.takeIf { c -> c.isNotEmpty() }
             }
-        return "Shape.${this::class.java.simpleName}(${toStringProperties()}){$properties}"
+        }
+        return "Shape.${this::class.java.simpleName}(${toStringDedicatedProperties()}){$properties}"
     }
 
     //NB! all properties are `open` in order to be mocked in tests
 
-    open var visible: Boolean = true
+    open var hidden: Boolean? = null
 
     open var width: Dimension? = null
     open var height: Dimension? = null
@@ -295,12 +299,12 @@ abstract class Shape {
     internal val drawRect = Rect()
     internal val outlineRect = Rect()
 
-    // TODO: is it fine to expose our rect? should we defensively copy it?
     fun drawRect(): Rect = drawRect
 
     open fun draw(canvas: Canvas, bounds: Rect) {
 
-        if (!visible) {
+        // shape is hidden, no draw
+        if (true == hidden) {
             return
         }
 
@@ -357,7 +361,7 @@ abstract class Shape {
 
     fun outline(outline: Outline, bounds: Rect) {
 
-        if (!visible) {
+        if (true == hidden) {
             outline.setEmpty()
             return
         }
@@ -492,18 +496,13 @@ abstract class Shape {
         fun copy(block: Padding.() -> Unit = {}): Padding =
             Padding(leading, top, trailing, bottom).also(block)
 
-        override fun toString(): String {
-            val properties = listOf(
+        override fun toString(): String = toStringPropertiesDefault(this) {
+            it(
                 ::leading,
                 ::top,
                 ::trailing,
                 ::bottom
-            ).map { it.name to it.get() }
-                .filter { it.second != null }
-                .joinToString(", ") {
-                    "${it.first}=${it.second}"
-                }
-            return "Padding($properties)"
+            )
         }
 
         override fun equals(other: Any?): Boolean {
@@ -569,16 +568,8 @@ abstract class Shape {
             return result
         }
 
-        override fun toString(): String {
-            val properties = listOf(
-                ::x,
-                ::y
-            ).map { it.name to it.get() }
-                .filter { it.second != null }
-                .joinToString(", ") {
-                    "${it.first}=${it.second}"
-                }
-            return "Shape.Translation($properties)"
+        override fun toString(): String = toStringPropertiesDefault(this) {
+            it(::x, ::y)
         }
     }
 
@@ -622,17 +613,8 @@ abstract class Shape {
             return result
         }
 
-        override fun toString(): String {
-            val properties = listOf(
-                ::degrees,
-                ::centerX,
-                ::centerY
-            ).map { it.name to it.get() }
-                .filter { it.second != null }
-                .joinToString(", ") {
-                    "${it.first}=${it.second}"
-                }
-            return "Shape.Rotation($properties)"
+        override fun toString(): String = toStringPropertiesDefault(this) {
+            it(::degrees, ::centerX, ::centerY)
         }
     }
 
@@ -697,17 +679,9 @@ abstract class Shape {
             shape.drawShape(canvas, bounds, fillPaint)
         }
 
-        override fun toString(): String {
-            val properties = listOf(
-                ::color to color?.toHexString(),
-                ::gradient to gradient
-            ).map {
-                it.first.name to it.second
-            }.filter { it.second != null }
-                .joinToString(", ") {
-                    "${it.first}=${it.second}"
-                }
-            return "Shape.Fill($properties)"
+        override fun toString(): String = toStringPropertiesDefault(this) {
+            it(::color) { it?.toHexString() }
+            it(::gradient)
         }
 
         override fun equals(other: Any?): Boolean {
@@ -792,21 +766,9 @@ abstract class Shape {
             shape.drawShape(canvas, bounds, strokePaint)
         }
 
-        override fun toString(): String {
-            val colorProperty = (::color to { color?.toHexString() })
-                .let { it.first.name to it.second.invoke() }
-            val properties = listOf(colorProperty) + (listOf(
-                ::width,
-                ::dashWidth,
-                ::dashGap,
-                ::gradient
-            ).map {
-                it.name to it.get()
-            }).filter { it.second != null }
-                .joinToString(", ") {
-                    "${it.first}=${it.second}"
-                }
-            return "Shape.Stroke($properties)"
+        override fun toString(): String = toStringPropertiesDefault(this) {
+            it(::color) { it?.toHexString() }
+            it(::width, ::dashWidth, ::dashGap, ::gradient)
         }
 
         override fun equals(other: Any?): Boolean {

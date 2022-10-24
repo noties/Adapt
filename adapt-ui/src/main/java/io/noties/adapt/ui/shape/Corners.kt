@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Build
 import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.toStringProperties
 
 /**
  *
@@ -27,17 +28,8 @@ class Corners(
     private val cache = Cache()
 
     override fun clone(): Corners = Corners(leadingTop, topTrailing, trailingBottom, bottomLeading)
-    override fun toStringProperties(): String {
-        return listOf(
-            ::leadingTop,
-            ::topTrailing,
-            ::trailingBottom,
-            ::bottomLeading
-        ).map { it.name to it.get() }
-            .filter { it.second != 0 }
-            .joinToString(", ") {
-                "${it.first}=${it.second}"
-            }
+    override fun toStringDedicatedProperties(): String = toStringProperties {
+        it(::leadingTop, ::topTrailing, ::trailingBottom, ::bottomLeading)
     }
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {

@@ -5,6 +5,7 @@ import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
+import io.noties.adapt.ui.util.toStringProperties
 
 // TODO: test that properties are copied
 class Line(
@@ -50,17 +51,8 @@ class Line(
         it.toY = toY
     }
 
-    override fun toStringProperties(): String {
-        return listOf(
-            ::fromX,
-            ::fromY,
-            ::toX,
-            ::toY
-        ).map { it.name to it.get() }
-            .filter { it.second != null }
-            .joinToString(", ") {
-                "${it.first}=${it.second}"
-            }
+    override fun toStringDedicatedProperties(): String = toStringProperties {
+        it(::fromX, ::fromY, ::toX, ::toY)
     }
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {

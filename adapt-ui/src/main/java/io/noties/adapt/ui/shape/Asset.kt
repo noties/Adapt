@@ -67,7 +67,7 @@ class Asset(
         drawable.constantState?.newDrawable()?.mutate() ?: drawable
     )
 
-    override fun toStringProperties(): String = "drawable=$drawable"
+    override fun toStringDedicatedProperties(): String = "drawable=$drawable"
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         drawable.bounds = bounds

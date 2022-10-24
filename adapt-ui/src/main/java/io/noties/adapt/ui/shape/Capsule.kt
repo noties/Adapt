@@ -15,7 +15,7 @@ class Capsule(block: Capsule.() -> Unit = {}) : Shape() {
     private val rectF = RectF()
 
     override fun clone(): Capsule = Capsule()
-    override fun toStringProperties(): String = ""
+    override fun toStringDedicatedProperties(): String = ""
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         val radius = radius(bounds)

@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.shape
 
+import android.graphics.Canvas
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
@@ -7,10 +8,12 @@ import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Shape.Stroke
 import io.noties.adapt.ui.testutil.ShadowPaint
+import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.verifyNoInteractions
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
@@ -121,23 +124,38 @@ class ShapeStroke_Test {
 
     @Test
     fun `draw - noop`() {
-//        // when there is no color and no gradient, fill won't trigger drawing
-//        val inputs = listOf(
-//            Shape.Fill(null, null),
-//            Shape.Fill(0, null)
-//        )
-//
-//        for (input in inputs) {
-//            val shape = mock<Shape>()
-//
-//            input.draw(mock(), shape, mock())
-//
-//            verify(shape, never()).drawShape(
-//                any(),
-//                any(),
-//                any()
-//            )
-//        }
+        // when width < 1 -> no draw
+        // when color == null AND gradient == null -> no draw
+
+        val inputs = listOf(
+            Stroke(),
+            Stroke(width = null, color = 567, dashGap = 1, dashWidth = 27),
+            Stroke(width = null, gradient = mockt()),
+            Stroke(width = 10, color = null),
+            Stroke(width = 123, gradient = null)
+        )
+
+        for (input in inputs) {
+            val canvas = mockt<Canvas>()
+            input.draw(canvas, Oval(), mockt())
+            verifyNoInteractions(canvas)
+        }
+    }
+
+    @Test
+    fun `draw - noop - shape-alpha`() {
+        // when resulting alpha would be 0 -> no draw
+        val stroke = Stroke(width = 1, color = 0xFFff0000.toInt())
+        val shape = Rectangle().alpha(0F)
+        val canvas = mockt<Canvas>()
+        stroke.draw(canvas, shape, mockt())
+
+        verifyNoInteractions(canvas)
+    }
+
+    @Test
+    fun `draw - noop - color-alpha`() {
+        // when stroke paint color alpha is 0 -> no draw
     }
 
     @Test

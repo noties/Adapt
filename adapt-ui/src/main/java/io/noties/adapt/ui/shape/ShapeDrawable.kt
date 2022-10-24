@@ -5,13 +5,28 @@ import android.graphics.ColorFilter
 import android.graphics.Outline
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
-import kotlin.reflect.KMutableProperty0
 
+typealias ShapeDrawableNoRef = ShapeDrawable<Unit>
 
-// TODO: make this shapedrawablenoref
-open class ShapeDrawable(
-    val shape: Shape
+open class ShapeDrawable<R : Any> private constructor(
+    val shape: Shape,
+    val ref: R
 ) : Drawable() {
+
+    companion object {
+
+        operator fun invoke(
+            shape: Shape
+        ): ShapeDrawableNoRef = ShapeDrawable(shape, Unit)
+
+        operator fun <S : Shape, T : Any> invoke(
+            shape: S,
+            ref: T,
+            block: S.(T) -> Unit
+        ): ShapeDrawable<T> = ShapeDrawable(shape, ref).also {
+            block(shape, ref)
+        }
+    }
 
     override fun draw(canvas: Canvas) {
         shape.draw(canvas, bounds)

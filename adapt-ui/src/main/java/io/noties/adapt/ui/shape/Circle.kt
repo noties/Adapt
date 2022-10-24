@@ -14,7 +14,7 @@ class Circle(block: Circle.() -> Unit = {}) : Shape() {
     private val rect = Rect()
 
     override fun clone(): Circle = Circle()
-    override fun toStringProperties(): String = ""
+    override fun toStringDedicatedProperties(): String = ""
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
         val radius = radius(bounds)

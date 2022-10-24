@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -45,16 +46,18 @@ import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.Dimension
 import io.noties.adapt.ui.shape.Line
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
-import io.noties.adapt.ui.shape.ShapeDrawableRef
+import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
 import kotlin.math.roundToInt
 
 @AdaptSample(
@@ -447,10 +450,11 @@ class AdaptUIShapeSample : SampleView() {
 
         class Ref {
             lateinit var gradient: Shape
+            var added: Shape? = null
         }
 
         // in order to invalidate a shape we would need to reference ShapeDrawable
-        lateinit var drawable: ShapeDrawableRef<Ref>
+        lateinit var drawable: ShapeDrawable<Ref>
 
         View()
             .layout(FILL, 128)
@@ -481,17 +485,47 @@ class AdaptUIShapeSample : SampleView() {
             }
             .onClick {
                 drawable.animate {
-                    val (alpha, x) = if (flag) {
-                        1F to 0F
+                    Debug.i(shape)
+                    if (flag) {
+                        ref.gradient
+                            .alpha(0.5F)
+                            .translate(x = 128, y = -48)
+                            .apply {
+                                add(Circle {
+                                    fill(Colors.orange)
+                                    padding(2)
+                                    reference(ref::added)
+                                })
+                            }
                     } else {
-                        0F to 1F
+                        ref.gradient
+                            .alpha(1F)
+                            .translateRelative(x = 0.1F, y = 0F).apply {
+                                ref.added?.also { remove(it) }
+                            }
                     }
-                    ref.gradient
-                        .alpha(alpha)
-                        .translateRelative(x = x)
                     flag = !flag
                 }
             }
+
+//        if (true) {
+//            val inputs = listOf(
+//                null to null,
+//                Dimension.Exact(1) to null,
+//                null to Dimension.Exact(2),
+//                Dimension.Relative(0.5F) to null,
+//                null to Dimension.Relative(0.7F),
+//                Dimension.Exact(5) to Dimension.Relative(10F)
+//            )
+//            for ((start, target) in inputs) {
+//                val s = when {
+//                    start is Dimension.Exact? && target is Dimension.Exact? -> "Exact"
+//                    start is Dimension.Relative? && target is Dimension.Relative? -> "Relative"
+//                    else -> "Mix"
+//                }
+//                println("start:$start target:$target s:$s")
+//            }
+//        }
     }
 
     private var flag = true
