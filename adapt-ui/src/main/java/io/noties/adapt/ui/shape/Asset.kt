@@ -11,7 +11,6 @@ import androidx.annotation.ColorInt
 import kotlin.math.roundToInt
 
 // NB! it discards received paint (so, fill, nor stroke would function)
-// TODO: test
 class Asset(
     val drawable: Drawable,
     block: Asset.() -> Unit = {}

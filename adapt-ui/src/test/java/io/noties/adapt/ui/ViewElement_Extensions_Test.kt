@@ -75,42 +75,6 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
-    fun clipToPadding() {
-        listOf(true, false)
-            .forEach {
-                newElementOfType<ViewGroup>()
-                    .clipToPadding(it)
-                    .renderView {
-                        verify(this).clipToPadding = eq(it)
-                    }
-            }
-
-    }
-
-    @Test
-    fun clipChildren() {
-        listOf(true, false)
-            .forEach {
-                newElementOfType<ViewGroup>()
-                    .clipChildren(it)
-                    .renderView {
-                        verify(this).clipChildren = eq(it)
-                    }
-            }
-    }
-
-    // a combination, creates 2 view blocks
-    @Test
-    fun noClip() {
-        newElementOfType<ViewGroup>()
-            .noClip()
-            .renderView {
-                verify(this).clipChildren = eq(false)
-                verify(this).clipToPadding = eq(false)
-            }
-    }
-
-    @Test
     fun translation() {
         val inputs = listOf(
             Triple(null, null, null),

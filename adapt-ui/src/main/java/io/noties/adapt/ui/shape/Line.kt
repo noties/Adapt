@@ -7,7 +7,6 @@ import android.graphics.Path
 import android.graphics.Rect
 import io.noties.adapt.ui.util.toStringProperties
 
-// TODO: test that properties are copied
 class Line(
     block: Line.() -> Unit = {}
 ) : Shape() {

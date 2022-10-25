@@ -1,6 +1,8 @@
 package io.noties.adapt.ui.shape
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
@@ -9,13 +11,23 @@ import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Shape.Stroke
 import io.noties.adapt.ui.testutil.ShadowPaint
 import io.noties.adapt.ui.testutil.mockt
+import io.noties.adapt.ui.testutil.value
+import io.noties.adapt.ui.testutil.withAlpha
+import io.noties.adapt.ui.util.toHexString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.math.roundToInt
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
@@ -127,16 +139,18 @@ class ShapeStroke_Test {
         // when width < 1 -> no draw
         // when color == null AND gradient == null -> no draw
 
+        // stroke uses default value for stroke -> 1
         val inputs = listOf(
             Stroke(),
-            Stroke(width = null, color = 567, dashGap = 1, dashWidth = 27),
-            Stroke(width = null, gradient = mockt()),
+            Stroke(width = 0, color = 567, dashGap = 1, dashWidth = 27),
+            Stroke(width = 0, gradient = mockt()),
             Stroke(width = 10, color = null),
             Stroke(width = 123, gradient = null)
         )
 
         for (input in inputs) {
             val canvas = mockt<Canvas>()
+            // important to use real object, not mock in order to see if canvas was called
             input.draw(canvas, Oval(), mockt())
             verifyNoInteractions(canvas)
         }
@@ -146,6 +160,7 @@ class ShapeStroke_Test {
     fun `draw - noop - shape-alpha`() {
         // when resulting alpha would be 0 -> no draw
         val stroke = Stroke(width = 1, color = 0xFFff0000.toInt())
+        // important to use real object, not mock in order to see if canvas was called
         val shape = Rectangle().alpha(0F)
         val canvas = mockt<Canvas>()
         stroke.draw(canvas, shape, mockt())
@@ -156,120 +171,116 @@ class ShapeStroke_Test {
     @Test
     fun `draw - noop - color-alpha`() {
         // when stroke paint color alpha is 0 -> no draw
+        val stroke = Stroke(0x00FFFFFF, 99)
+        // important to use real object, not mock in order to see if canvas was called
+        val shape = Oval().alpha(1F)
+        val canvas = mockt<Canvas>()
+        stroke.draw(canvas, shape, mockt())
+        verifyNoInteractions(canvas)
     }
 
     @Test
     fun `draw - color`() {
-//        // if color is present, it should draw
-//        val input = 0xFF123456.toInt()
-//
-//        val fill = Shape.Fill(input, null)
-//        val shape = mock<Shape> {
-//            on { alpha } doReturn null
-//        }
-//
-//        fill.draw(mock(), shape, mock())
-//
-//        val captor = argumentCaptor<Paint>()
-//        verify(shape).drawShape(
-//            any(),
-//            any(),
-//            captor.capture()
-//        )
-//
-//        val paint = captor.value
-//
-//        assertNull(shape.alpha)
-//
-//        assertEquals("paint.style", Paint.Style.FILL, paint.style)
-//        assertEquals("paint.color", input, paint.color)
-//        assertEquals("paint.alpha", 255, paint.alpha)
+        val inputs = listOf(
+            0xFF000000.toInt(),
+            0x80cccccc.toInt(),
+            0x00ffffff.toInt()
+        )
+
+        for (input in inputs) {
+            val stroke = Stroke(input)
+            val canvas = mockt<Canvas>()
+            val shape = mockt<Shape> {
+                on { this.alpha } doReturn 1F
+            }
+
+            stroke.draw(canvas, shape, mockt())
+
+            if (Color.alpha(input) == 0) {
+                verify(shape, never()).drawShape(any(), any(), any())
+            } else {
+                val captor = argumentCaptor<Paint>()
+                verify(shape).drawShape(
+                    eq(canvas),
+                    any(),
+                    captor.capture()
+                )
+
+                assertEquals(input.toHexString(), captor.value.color.toHexString())
+            }
+        }
     }
 
     @Test
     fun `draw - color - alpha`() {
-//        val inputs = listOf(
-//            0xFF123456.toInt(),
-//            0x80987654.toInt(),
-//            0x00ffffff
-//        )
-//
-//        val alphas = listOf(
-//            1F,
-//            0.5F,
-//            0.33F,
-//            0.095F,
-//            0F
-//        )
-//
-//        for (input in inputs) {
-//            for (alpha in alphas) {
-//
-//                val fill = Shape.Fill(input, null)
-//                val shape = mock<Shape> {
-//                    on { this.alpha } doReturn alpha
-//                }
-//
-//                fill.draw(mock(), shape, mock())
-//
-//                val colorAlpha = Color.alpha(input)
-//                val shapeAlpha = (colorAlpha * alpha).roundToInt()
-//
-//                if (shapeAlpha == 0) {
-//                    verify(shape, never()).drawShape(any(), any(), any())
-//                } else {
-//
-//                    val captor = argumentCaptor<Paint>()
-//                    verify(shape).drawShape(any(), any(), captor.capture())
-//
-//                    val paint = captor.value
-//
-//                    // if alpha was applied to paint, it would automatically adjust alpha channel?
-//                    assertEquals("paint.style", Paint.Style.FILL, paint.style)
-//                    assertEquals(
-//                        "paint.color",
-//                        input.withAlpha(shapeAlpha).toHexString(),
-//                        paint.color.toHexString()
-//                    )
-//                    assertEquals("paint.alpha", shapeAlpha, paint.alpha)
-//                }
-//            }
-//        }
+        val inputs = listOf(
+            0xFF000000.toInt(),
+            0x80cccccc.toInt(),
+            0x00ffffff.toInt()
+        )
+
+        val alphas = listOf(
+            1F,
+            0.75F,
+            0.5F,
+            0.1F,
+            0.05F,
+            0.001F,
+            0F
+        )
+
+        for (input in inputs) {
+            for (alpha in alphas) {
+                val stroke = Stroke(input)
+                val canvas = mockt<Canvas>()
+                val shape = mockt<Shape> {
+                    on { this.alpha } doReturn alpha
+                }
+
+                stroke.draw(canvas, shape, mockt())
+
+                val expectedAlpha = (255 * ((Color.alpha(input) / 255F) * alpha)).roundToInt()
+
+                if (expectedAlpha == 0) {
+                    verify(shape, never()).drawShape(any(), any(), any())
+                } else {
+                    val captor = argumentCaptor<Paint>()
+                    verify(shape).drawShape(
+                        eq(canvas),
+                        any(),
+                        captor.capture()
+                    )
+
+                    assertEquals(
+                        input.withAlpha(expectedAlpha).toHexString(),
+                        captor.value.color.toHexString()
+                    )
+                    assertEquals(
+                        expectedAlpha,
+                        captor.value.alpha
+                    )
+                }
+            }
+        }
     }
 
     @Test
     fun `draw - gradient - alpha`() {
-//        val alphas = listOf(
-//            0F,
-//            0.25F,
-//            0.5F,
-//            1F
-//        )
-//
-//        for (alpha in alphas) {
-//            val shape = mock<Shape> {
-//                on { this.alpha } doReturn alpha
-//            }
-//            val gradient = mock<Gradient>(defaultAnswer = Mockito.RETURNS_MOCKS)
-//            val fill = Shape.Fill(null, gradient)
-//            fill.draw(mock(), shape, mock())
-//
-//            if (0F == alpha) {
-//                verify(shape, never()).drawShape(any(), any(), any())
-//            } else {
-//                val captor = argumentCaptor<Paint>()
-//                verify(shape).drawShape(any(), any(), captor.capture())
-//
-//                val paint = captor.value
-//                assertEquals(
-//                    Shape.defaultFillColor.withAlpha((alpha * 255).roundToInt()).toHexString(),
-//                    paint.color.toHexString()
-//                )
-//                assertEquals((255 * alpha).roundToInt(), paint.alpha)
-//
-//                verify(gradient).createShader(any())
-//                assertNotNull("paint.shader", paint.shader)
-//            }
-//        }
+        val gradient = SweepGradient(1982, 891)
+        val input = 0.25F
+        val stroke = Stroke(gradient = gradient)
+        val shape = mockt<Shape> {
+            on { this.alpha } doReturn input
+        }
+        stroke.draw(mockt(), shape, mockt())
+
+        val captor = argumentCaptor<Paint>()
+        verify(shape).drawShape(
+            any(),
+            any(),
+            captor.capture()
+        )
+
+        assertEquals((255 * input).roundToInt(), captor.value.alpha)
     }
 }

@@ -34,5 +34,6 @@ class Capsule(block: Capsule.() -> Unit = {}) : Shape() {
         outline.setRoundRect(bounds, radius(bounds))
     }
 
-    private fun radius(bounds: Rect): Float = Math.min(bounds.width(), bounds.height()) / 2F
+    @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
+    internal fun radius(bounds: Rect): Float = Math.min(bounds.width(), bounds.height()) / 2F
 }
