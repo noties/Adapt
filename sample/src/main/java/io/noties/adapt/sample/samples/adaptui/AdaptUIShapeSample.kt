@@ -178,7 +178,7 @@ class AdaptUIShapeSample : SampleView() {
 
                     // align to start
                     add(Asset(drawableTinted(Colors.black)) {
-                        size(24, 24, Gravity.leading.center)
+                        size(36, 36, Gravity.leading.center)
                         translate(x = 8)
                     })
 

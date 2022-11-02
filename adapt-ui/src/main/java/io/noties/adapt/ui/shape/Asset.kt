@@ -19,15 +19,11 @@ class Asset(
     var drawable: Drawable
         private set
 
-    init {
-        this.drawable = drawable
-        block(this)
-    }
-
     // empty companion object in case an extension for Asset would be created
     companion object {}
 
     init {
+        this.drawable = drawable
 
         // we need fill value in order to trigger drawing
         fill(defaultFillColor)
@@ -45,6 +41,10 @@ class Asset(
         if (w != null && h != null) {
             size(w, h)
         }
+
+        // NB! important to call after our initialization in order
+        //  to customize asset (for example size)
+        block(this)
     }
 
     fun tint(@ColorInt color: Int) = this.apply {
