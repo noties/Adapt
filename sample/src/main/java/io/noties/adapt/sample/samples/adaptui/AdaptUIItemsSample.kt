@@ -108,7 +108,7 @@ class AdaptUIItemsSample : SampleView() {
                     //  but it too can have values specified
                     fill(
                         LinearGradient(
-                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
                             ColorUtils.setAlphaComponent(Colors.orange, 80),
                             ColorUtils.setAlphaComponent(Colors.black, 80)
                         )

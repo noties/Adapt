@@ -7,10 +7,11 @@ import android.graphics.Rect
 
 /**
  * Creates a circle shape that could be fit fully in bounds. By design will be less than supplied
- * bounds. For example, if bounds are `Rect(0, 0, 100, 20)` then Circle would take
- * `Rect(0, 0, 20, 20)`. If [Shape.gravity] is specified Circle would follow it. So,
+ * bounds. By default circle is centered inside supplied bounds.
+ * For example, if bounds are `Rect(0, 0, 100, 20)` then Circle would be drawn at
+ * `Rect(40, 0, 60, 20)`. If [Shape.gravity] is specified Circle would follow it. So,
  * if `gravity = Gravity.center` Circle would take `Rect(40, 0, 60, 20)` (centered
- * inside supplied bounds)
+ * inside supplied bounds - default). `Gravity.trailing` -> `Rect(80, 0, 100, 20)`, etc
  */
 class Circle(block: Circle.() -> Unit = {}) : Shape() {
 
@@ -47,8 +48,7 @@ class Circle(block: Circle.() -> Unit = {}) : Shape() {
         )
     }
 
-    // TODO: does it make sense to make gravity by default is center?
-    private fun buildRect(bounds: Rect, radius: Int): Rect {
+    internal fun buildRect(bounds: Rect, radius: Int): Rect {
         // MARK! Layout direction
         return gravity?.let {
             val side = radius * 2

@@ -27,10 +27,10 @@ class Asset_Test {
     @Test
     fun clone() {
         val drawable = mockt<Drawable>()
-        val asset = Asset(drawable)
+        val asset: Shape = Asset(drawable)
         val clone = asset.clone()
         assertEquals(Asset::class.java, clone::class.java)
-        assertEquals(drawable, clone.drawable)
+        assertEquals(drawable, (clone as Asset).drawable)
     }
 
     @Test
@@ -122,7 +122,9 @@ class Asset_Test {
             on { mutate() } doReturn mock
         }
         val color = 97271
-        val asset = Asset.tinted(drawable, color)
+        val asset = Asset(drawable) {
+            tint(color)
+        }
         assertEquals(drawable, asset.drawable)
         verify(drawable).mutate()
         verify(drawable).setTint(eq(color))
@@ -134,7 +136,9 @@ class Asset_Test {
         val drawable = mockt<Drawable> {
             on { mutate() } doReturn mock
         }
-        val asset = Asset.tinted(drawable, csl)
+        val asset = Asset(drawable) {
+            tint(csl)
+        }
         assertEquals(drawable, asset.drawable)
         verify(drawable).mutate()
         verify(drawable).setTintList(eq(csl))

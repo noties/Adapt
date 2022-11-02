@@ -2,6 +2,7 @@ package io.noties.adapt.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.SystemClock
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -299,11 +300,32 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
     action: (() -> Unit)?
+): ViewElement<V, LP> = onClick(true, action = action)
+
+/**
+ * OnClick
+ * @see View.setOnClickListener
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
+    debounce: Boolean = true,
+    debounceMillis: Long = 450L,
+    action: (() -> Unit)?
 ): ViewElement<V, LP> = onView {
     if (action == null) {
         setOnClickListener(null)
     } else {
-        setOnClickListener { action() }
+        if (debounce) {
+            var lastClickMillis = 0L
+            setOnClickListener {
+                val now = SystemClock.uptimeMillis()
+                if (now - lastClickMillis > debounceMillis) {
+                    lastClickMillis = now
+                    action()
+                }
+            }
+        } else {
+            setOnClickListener { action() }
+        }
     }
 }
 
@@ -449,6 +471,20 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
 ): ViewElement<V, LP> {
     if (Build.VERSION.SDK_INT >= version) {
         block(this)
+    }
+    return this
+}
+
+@ChecksSdkIntAtLeast(parameter = 1, lambda = 2)
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
+    version: Int,
+    block: (ViewElement<V, LP>) -> Unit,
+    `else`: (ViewElement<V, LP>) -> Unit
+): ViewElement<V, LP> {
+    if (Build.VERSION.SDK_INT >= version) {
+        block(this)
+    } else {
+        `else`(this)
     }
     return this
 }

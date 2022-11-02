@@ -195,7 +195,7 @@ class AdaptUISample : SampleView() {
 
                     fill(
                         LinearGradient(
-                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
                             Color.YELLOW,
                             Color.RED
                         )
@@ -653,7 +653,7 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
                         })
                         fill(
                             LinearGradient(
-                                GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                                GradientEdge.TopLeading to GradientEdge.BottomTrailing,
                                 Color.CYAN,
                                 Color.GREEN
                             )

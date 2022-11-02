@@ -12,34 +12,20 @@ import kotlin.math.roundToInt
 
 // NB! it discards received paint (so, fill, nor stroke would function)
 class Asset(
-    val drawable: Drawable,
+    drawable: Drawable,
     block: Asset.() -> Unit = {}
 ) : Shape() {
 
+    var drawable: Drawable
+        private set
+
     init {
+        this.drawable = drawable
         block(this)
     }
 
-    companion object {
-
-        fun tinted(
-            drawable: Drawable,
-            @ColorInt tintColor: Int,
-            block: Asset.() -> Unit = {}
-        ): Asset {
-            val resource = drawable.mutate().also { it.setTint(tintColor) }
-            return Asset(resource, block)
-        }
-
-        fun tinted(
-            drawable: Drawable,
-            colorStateList: ColorStateList,
-            block: Asset.() -> Unit = {}
-        ): Asset {
-            val resource = drawable.mutate().also { it.setTintList(colorStateList) }
-            return Asset(resource, block)
-        }
-    }
+    // empty companion object in case an extension for Asset would be created
+    companion object {}
 
     init {
 
@@ -59,6 +45,14 @@ class Asset(
         if (w != null && h != null) {
             size(w, h)
         }
+    }
+
+    fun tint(@ColorInt color: Int) = this.apply {
+        drawable = drawable.mutate().also { it.setTint(color) }
+    }
+
+    fun tint(colorStateList: ColorStateList) = this.apply {
+        drawable = drawable.mutate().also { it.setTintList(colorStateList) }
     }
 
     override fun clone(): Asset = Asset(

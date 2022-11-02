@@ -25,6 +25,18 @@ class Corners(
         block(this)
     }
 
+    fun corners(
+        leadingTop: Int? = null,
+        topTrailing: Int? = null,
+        trailingBottom: Int? = null,
+        bottomLeading: Int? = null
+    ) = this.also {
+        leadingTop?.also { this.leadingTop = it }
+        topTrailing?.also { this.topTrailing = it }
+        trailingBottom?.also { this.trailingBottom = it }
+        bottomLeading?.also { this.bottomLeading = it }
+    }
+
     private val cache = Cache()
 
     override fun clone(): Corners = Corners(leadingTop, topTrailing, trailingBottom, bottomLeading)

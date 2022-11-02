@@ -22,7 +22,7 @@ class Capsule_Test {
 
     @Test
     fun clone() {
-        val capsule = Capsule()
+        val capsule: Shape = Capsule()
         val cloned = capsule.clone()
         assertEquals(Capsule::class.java, cloned::class.java)
     }

@@ -1,6 +1,7 @@
 package io.noties.adapt.ui.element
 
 import android.content.res.ColorStateList
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
 import android.text.Editable
@@ -16,8 +17,10 @@ import androidx.annotation.StringRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
+import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
 @Suppress("FunctionName")
@@ -26,7 +29,6 @@ fun <LP : LayoutParams> ViewFactory<LP>.Text(
 ): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
     text?.also { tv.text = it }
 }
-
 
 /**
  * Text size, supplied value is in SP and will be automatically converted to pixels
@@ -57,6 +59,51 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
     setTextColor(colorStateList)
 }
 
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
+    gradient: Gradient
+): ViewElement<V, LP> = onView {
+    val view = this
+
+    val shaderBounds = Rect()
+    val rect = Rect()
+
+    fun deliver() {
+        rect.set(
+            view.paddingLeft,
+            view.paddingTop,
+            view.width - view.paddingRight,
+            view.height - view.paddingBottom
+        )
+
+        if (shaderBounds != rect && !rect.isEmpty) {
+            shaderBounds.set(rect)
+            view.paint.shader = gradient.createShader(shaderBounds)
+            view.invalidate()
+        }
+    }
+
+    view.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> deliver() }
+
+    // deliver right away if dimensions are already present
+    if (view.width > 0 && view.height > 0) {
+        deliver()
+    }
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textShadow(
+    radius: Int,
+    @ColorInt color: Int? = null,
+    dx: Int? = null,
+    dy: Int? = null
+): ViewElement<V, LP> = onView {
+    setShadowLayer(
+        radius.dip.toFloat(),
+        dx?.dip?.toFloat() ?: 0F,
+        dy?.dip?.toFloat() ?: 0F,
+        color ?: this.currentTextColor
+    )
+}
+
 /**
  * Gravity
  * @see TextView.setGravity
@@ -76,6 +123,32 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     fontStyle: Int = Typeface.NORMAL
 ): ViewElement<V, LP> = onView {
     setTypeface(font, fontStyle)
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBold(
+): ViewElement<V, LP> = onView {
+    val tp = typeface
+    val style = tp?.style?.let { it or Typeface.BOLD } ?: Typeface.BOLD
+    setTypeface(tp, style)
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textItalic(
+): ViewElement<V, LP> = onView {
+    val tp = typeface
+    val style = tp?.style?.let { it or Typeface.ITALIC } ?: Typeface.ITALIC
+    setTypeface(tp, style)
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textUnderline(
+    underline: Boolean = true
+): ViewElement<V, LP> = onView {
+    paint.isUnderlineText = underline
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStrikeThrough(
+    strikeThrough: Boolean = true
+): ViewElement<V, LP> = onView {
+    paint.isStrikeThruText = strikeThrough
 }
 
 /**
@@ -237,6 +310,12 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
         stepGranularity ?: 1,
         TypedValue.COMPLEX_UNIT_SP
     )
+}
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSelectable(
+    selectable: Boolean = true
+): ViewElement<V, LP> = onView {
+    setTextIsSelectable(selectable)
 }
 
 /**

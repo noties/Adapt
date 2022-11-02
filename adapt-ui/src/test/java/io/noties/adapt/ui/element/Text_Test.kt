@@ -3,10 +3,12 @@ package io.noties.adapt.ui.element
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.TextPaint
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.style.BackgroundColorSpan
@@ -17,10 +19,14 @@ import android.view.View
 import android.widget.TextView
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.createView
+import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
+import io.noties.adapt.ui.testutil.mockt
+import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.dip
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -33,6 +39,10 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.eq
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.never
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -375,6 +385,186 @@ class Text_Test {
                 assertNotNull(text)
                 assertEquals(input, text)
             }
+    }
+
+    @Test
+    fun textGradient() {
+        val gradient = mockt<Gradient>()
+        val paint = mockt<TextPaint>()
+
+        newTextElement()
+            .textGradient(gradient)
+            .also {
+                whenever(it.view.paint).thenReturn(paint)
+            }
+            .renderView {
+                // at this point nothing happens, as view has no dimensions
+                verify(gradient, never()).createShader(any())
+
+                val captor = argumentCaptor<View.OnLayoutChangeListener>()
+                verify(this).addOnLayoutChangeListener(captor.capture())
+
+                whenever(this.paddingLeft).thenReturn(1)
+                whenever(this.paddingTop).thenReturn(2)
+                whenever(this.paddingRight).thenReturn(3)
+                whenever(this.paddingBottom).thenReturn(4)
+
+                whenever(this.width).thenReturn(50)
+                whenever(this.height).thenReturn(60)
+
+                val listener = captor.value
+                listener.onLayoutChange(this, 0, 0, 0, 0, 0, 0, 0, 0)
+
+                val boundsCaptor = argumentCaptor<Rect>()
+                verify(gradient).createShader(boundsCaptor.capture())
+                assertEquals(
+                    Rect(0 ,0, 50, 60).also {
+                        it.left += paddingLeft
+                        it.top += paddingTop
+                        it.right -= paddingRight
+                        it.bottom -= paddingBottom
+                    },
+                    boundsCaptor.value
+                )
+            }
+    }
+
+    @Test
+    fun textShadow() {
+        class Input(
+            val radius: Int,
+            val color: Int?,
+            val dx: Int?,
+            val dy: Int?
+        )
+
+        val inputs = listOf(
+            Input(1, null, null, null),
+            Input(2, 3, null, null),
+            Input(4, 5, 6, null),
+            Input(7, 8, 9, 10)
+        )
+
+        for (input in inputs) {
+            newTextElement()
+                .textShadow(input.radius, input.color, input.dx, input.dy)
+                .renderView {
+                    val xy = argumentCaptor<Float>()
+                    val c = argumentCaptor<Int>()
+
+                    // fails with InvalidUseOfMatchersException if eq is used..
+                    verify(this).setShadowLayer(
+                        org.mockito.kotlin.eq(input.radius.dip.toFloat()),
+                        xy.capture(),
+                        xy.capture(),
+                        c.capture(),
+                    )
+                    assertEquals(
+                        listOf(input.dx ?: 0, input.dy ?: 0).map { it.dip.toFloat() },
+                        xy.allValues
+                    )
+                    assertEquals(
+                        input.color ?: currentHintTextColor,
+                        c.value
+                    )
+                }
+        }
+    }
+
+    @Test
+    fun textBold() {
+        val inputs = listOf(
+            null to null,
+            mockt<Typeface>() to Typeface.ITALIC
+        )
+
+        for ((typeface, style) in inputs) {
+            newTextElement()
+                .also {
+                    if (typeface != null) {
+                        whenever(typeface.style).thenReturn(style)
+                    }
+                    whenever(it.view.typeface).thenReturn(typeface)
+                }
+                .textBold()
+                .renderView {
+                    val expectedStyle = (style ?: 0) or Typeface.BOLD
+                    verify(this).setTypeface(
+                        org.mockito.kotlin.eq(typeface),
+                        org.mockito.kotlin.eq(expectedStyle)
+                    )
+                }
+        }
+    }
+
+    @Test
+    fun textItalic() {
+        val inputs = listOf(
+            null to null,
+            mockt<Typeface>() to Typeface.BOLD
+        )
+
+        for ((typeface, style) in inputs) {
+            newTextElement()
+                .also {
+                    if (typeface != null) {
+                        whenever(typeface.style).thenReturn(style)
+                    }
+                    whenever(it.view.typeface).thenReturn(typeface)
+                }
+                .textItalic()
+                .renderView {
+                    val expectedStyle = (style ?: 0) or Typeface.ITALIC
+                    verify(this).setTypeface(
+                        org.mockito.kotlin.eq(typeface),
+                        org.mockito.kotlin.eq(expectedStyle)
+                    )
+                }
+        }
+    }
+
+    @Test
+    fun textUnderline() {
+        val inputs = listOf(true, false)
+        for (input in inputs) {
+            val paint = mockt<TextPaint>()
+            newTextElement()
+                .also {
+                    whenever(it.view.paint).thenReturn(paint)
+                }
+                .textUnderline(input)
+                .renderView {
+                    verify(paint).isUnderlineText = org.mockito.kotlin.eq(input)
+                }
+        }
+    }
+
+    @Test
+    fun textStrikeThrough() {
+        val inputs = listOf(true, false)
+        for (input in inputs) {
+            val paint = mockt<TextPaint>()
+            newTextElement()
+                .also {
+                    whenever(it.view.paint).thenReturn(paint)
+                }
+                .textStrikeThrough(input)
+                .renderView {
+                    verify(paint).isStrikeThruText = org.mockito.kotlin.eq(input)
+                }
+        }
+    }
+
+    @Test
+    fun textSelectable() {
+        val inputs = listOf(true, false)
+        for (input in inputs) {
+            newTextElement()
+                .textSelectable(input)
+                .renderView {
+                    verify(this).setTextIsSelectable(org.mockito.kotlin.eq(input))
+                }
+        }
     }
 
     private fun newTextElement() = newElementOfType<TextView>()

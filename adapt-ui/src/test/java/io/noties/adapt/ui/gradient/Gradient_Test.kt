@@ -31,8 +31,8 @@ class Gradient_Test {
                     GradientEdge.Top -> 2 to 0
                     GradientEdge.Trailing -> 4 to 2
                     GradientEdge.Bottom -> 2 to 4
-                    GradientEdge.LeadingTop -> 0 to 0
-                    GradientEdge.LeadingBottom -> 0 to 4
+                    GradientEdge.TopLeading -> 0 to 0
+                    GradientEdge.BottomLeading -> 0 to 4
                     GradientEdge.TopTrailing -> 4 to 0
                     GradientEdge.BottomTrailing -> 4 to 4
                 }

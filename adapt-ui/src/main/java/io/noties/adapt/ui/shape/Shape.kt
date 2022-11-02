@@ -357,7 +357,7 @@ abstract class Shape {
         }
     }
 
-    internal abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint)
+    abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint)
 
     fun outline(outline: Outline, bounds: Rect) {
 

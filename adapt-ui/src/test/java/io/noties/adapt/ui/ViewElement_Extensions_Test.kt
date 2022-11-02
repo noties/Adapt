@@ -11,6 +11,7 @@ import android.widget.TextView
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import org.junit.Assert
 import org.junit.Test
@@ -25,11 +26,15 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.verification.VerificationMode
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowSystemClock
 import org.robolectric.util.ReflectionHelpers
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
@@ -120,6 +125,59 @@ class ViewElement_Extensions_Test {
                         Assert.assertNull("null input", captor.value)
                     } else {
                         Assert.assertNotNull("not null input", captor.value)
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun `onClick - debounce`() {
+        class Action(val counter: AtomicInteger = AtomicInteger(0)) {
+            val count: Int get() = counter.get()
+            fun click() {
+                counter.incrementAndGet()
+            }
+        }
+
+        val inputs: List<Triple<Boolean, Long, Action?>> = listOf(
+            Triple(true, 100L, null),
+            Triple(false, 1000L, Action()),
+            Triple(true, 10L, Action())
+        )
+
+        for ((debounce, debounceMillis, action) in inputs) {
+            newElement()
+                .onClick(debounce, debounceMillis, action?.let { it::click })
+                .renderView {
+                    if (action == null) {
+                        verify(this).setOnClickListener(org.mockito.kotlin.eq(null))
+                    } else {
+                        val captor = argumentCaptor<View.OnClickListener>()
+                        verify(this).setOnClickListener(captor.capture())
+
+                        val listener = captor.value
+                        if (!debounce) {
+                            // each trigger would call action - no logic
+                            listener.onClick(this)
+                            listener.onClick(this)
+                            listener.onClick(this)
+
+                            Assert.assertEquals(3, action.count)
+                        } else {
+
+                            listener.onClick(this)
+                            listener.onClick(this)
+                            Assert.assertEquals(1, action.count)
+
+                            // thread.sleep does not affect SystemClock,
+                            //  but this is even better (no code execution delya)
+                            ShadowSystemClock.advanceBy(debounceMillis + 1, TimeUnit.MILLISECONDS)
+
+                            listener.onClick(this)
+                            listener.onClick(this)
+                            // at this point only 2 actions should be delivered
+                            Assert.assertEquals(2, action.count)
+                        }
                     }
                 }
         }

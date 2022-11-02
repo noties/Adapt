@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -42,11 +41,11 @@ import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onViewAttachedStateChanged
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.shape.Arc
 import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.Dimension
 import io.noties.adapt.ui.shape.Line
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
@@ -91,6 +90,10 @@ class AdaptUIShapeSample : SampleView() {
 
                     relativeValues()
 
+//                    path()
+
+                    arc()
+
                     elevated()
 
                     gradients()
@@ -121,13 +124,14 @@ class AdaptUIShapeSample : SampleView() {
             })
 
 
-        // first row with asset, circle, oval and rectangle
+        // first row with asset, arc, circle, oval and rectangle
         HStack {
             // Asset
             listOf(
                 Asset(drawableTinted(Colors.orange)) {
                     gravity(Gravity.center)
                 },
+                Arc(240F, -300F),
                 Circle(),
                 Oval(),
                 Rectangle()
@@ -199,7 +203,7 @@ class AdaptUIShapeSample : SampleView() {
                     toRelative(1F, 1F)
                     stroke(
                         LinearGradient(
-                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
+                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
                             Colors.accent,
                             Colors.primary
                         ),
@@ -267,63 +271,150 @@ class AdaptUIShapeSample : SampleView() {
     }
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.gradients() {
-        HStack {
-
-            View()
-                .layout(0, FILL)
-                .layoutWeight(1F)
-                .background(Rectangle {
-
-                    padding(4)
-
-                    alpha(0.5F)
-
-                    fill(
-                        LinearGradient(
-                            GradientEdge.LeadingTop to GradientEdge.BottomTrailing,
-                            Colors.orange.withAlphaComponent(0.75F),
-                            Colors.black.withAlphaComponent(0.75F)
+        val linearGradients: List<Shape> = listOf(
+            Rectangle {
+                alpha(0.5F)
+                fill(
+                    LinearGradient(
+                        GradientEdge.TopLeading to GradientEdge.BottomTrailing,
+                        Colors.orange.withAlphaComponent(0.75F),
+                        Colors.black.withAlphaComponent(0.75F)
+                    )
+                )
+                stroke(
+                    LinearGradient(
+                        GradientEdge.TopTrailing to GradientEdge.BottomLeading,
+                        Colors.black,
+                        Colors.orange
+                    ), 4
+                )
+            },
+            Arc(225F, -270F) {
+                fill(
+                    LinearGradient(
+                        GradientEdge.Top to GradientEdge.BottomTrailing,
+                        intArrayOf(Colors.black, Colors.primary, Colors.accent, Colors.orange)
+                    )
+                )
+            },
+            RoundedRectangle(8) {
+                fill(
+                    LinearGradient(
+                        GradientEdge.Leading to GradientEdge.Trailing,
+                        listOf(
+                            Colors.black to 0.1F,
+                            Colors.primary to 0.5F,
+                            Colors.accent to 0.6F,
+                            Colors.orange to 1F
                         )
                     )
-
-                    stroke(
-                        LinearGradient(
-                            GradientEdge.TopTrailing to GradientEdge.LeadingBottom,
-                            Colors.black,
-                            Colors.orange
-                        ), 4
-                    )
-                })
-
-            View()
-                .layout(0, FILL)
-                .layoutWeight(1F)
-                .background(Circle {
-                    fill(
-                        RadialGradient(
-                            Colors.orange.withAlphaComponent(0.75F),
-                            Colors.black,
-                            // allows specifying starting edge
-//                        GradientEdge.LeadingBottom,
-//                        0.75F
-                        )
-                    )
-                })
-
-            View()
-                .layout(0, FILL)
-                .layoutWeight(1F)
-                .background(RoundedRectangle(8) {
-                    padding(4)
-                    fill(
-                        SweepGradient(
+                )
+            },
+            Circle {
+                fill(
+                    LinearGradient(
+                        GradientEdge.Top to GradientEdge.Bottom,
+                        intArrayOf(
                             Colors.orange,
-                            Colors.black
+                            Colors.black,
+                            Colors.primary,
+                            Colors.orange
                         )
                     )
-                })
+                )
+            }
+        )
 
-        }.layout(FILL, 100)
+        val radialGradients = listOf(
+            Rectangle {
+                fill(
+                    RadialGradient(
+                        Colors.orange,
+                        Colors.black
+                    )
+                )
+            },
+            Circle {
+                fill(
+                    RadialGradient(
+                        intArrayOf(Colors.orange, Colors.accent, Colors.primary, Colors.black)
+                    )
+                )
+            },
+            Corners(leadingTop = 48) {
+                fill(
+                    RadialGradient(
+                        listOf(
+                            Colors.black to 0.1F,
+                            Colors.primary to 0.5F,
+                            Colors.accent to 0.6F,
+                            Colors.orange to 1F
+                        ),
+                        edge = GradientEdge.Top
+                    )
+                )
+            },
+            Capsule {
+                sizeRelative(height = 0.5F, gravity = Gravity.center)
+                fill(
+                    RadialGradient(
+                        listOf(
+                            Colors.orange to 0.1F,
+                            Colors.accent to 0.4F,
+                            Colors.primary to 0.75F,
+                            Colors.orange to 1F
+                        ),
+                        GradientEdge.Leading
+                    )
+                )
+            }
+        )
+
+        val sweepGradients = listOf(
+            Circle {
+                fill(
+                    SweepGradient(
+                        Colors.orange,
+                        Colors.primary
+                    )
+                )
+            },
+            RoundedRectangle(24) {
+                padding(8)
+                stroke(
+                    SweepGradient(
+                        intArrayOf(Colors.orange, Colors.primary, Colors.accent, Colors.black)
+                    ),
+                    16
+                )
+            },
+            Rectangle {
+                fill(SweepGradient(
+                    listOf(
+                        Colors.orange to 0.1F,
+                        Colors.accent to 0.2F,
+                        Colors.primary to 0.7F,
+                        Colors.black to 1F
+                    )
+                ))
+            }
+        )
+
+        VStack {
+
+            listOf(linearGradients, radialGradients, sweepGradients)
+                .forEach { shapes ->
+                    HStack {
+                        shapes.forEach {
+                            View()
+                                .layout(0, FILL, 1F)
+                                .layoutMargin(2)
+                                .background(it)
+                        }
+                    }.layout(FILL, 100)
+                }
+        }
+
     }
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.rotation() {
@@ -484,6 +575,7 @@ class AdaptUIShapeSample : SampleView() {
                 it.foregroundDefaultSelectable()
             }
             .onClick {
+                // NB! experiment only to see if we can make automatic transitions
                 drawable.animate {
                     Debug.i(shape)
                     if (flag) {
@@ -507,28 +599,79 @@ class AdaptUIShapeSample : SampleView() {
                     flag = !flag
                 }
             }
-
-//        if (true) {
-//            val inputs = listOf(
-//                null to null,
-//                Dimension.Exact(1) to null,
-//                null to Dimension.Exact(2),
-//                Dimension.Relative(0.5F) to null,
-//                null to Dimension.Relative(0.7F),
-//                Dimension.Exact(5) to Dimension.Relative(10F)
-//            )
-//            for ((start, target) in inputs) {
-//                val s = when {
-//                    start is Dimension.Exact? && target is Dimension.Exact? -> "Exact"
-//                    start is Dimension.Relative? && target is Dimension.Relative? -> "Relative"
-//                    else -> "Mix"
-//                }
-//                println("start:$start target:$target s:$s")
-//            }
-//        }
     }
 
     private var flag = true
+
+    private fun ViewFactory<LayoutParams>.arc() {
+        View()
+            .layout(FILL, 150)
+            .background(Rectangle {
+                add(Rectangle {
+                    size(128, 128, Gravity.leading.center)
+                    padding(8)
+                    stroke(Colors.black.withAlphaComponent(0.2F), 2, 2, 2)
+
+                    add(Arc(0F, 90F) {
+                        fill(Colors.orange)
+                    })
+                    add(Arc(90F, 90F) {
+                        fill(Colors.primary)
+                    })
+                    add(Arc(180F, 90F) {
+                        fill(
+                            LinearGradient(
+                                GradientEdge.Top to GradientEdge.Bottom,
+                                Colors.accent,
+                                Colors.black
+                            )
+                        )
+                        translate(-5, -4)
+                    })
+                    add(Arc(270F, 90F) {
+                        stroke(Colors.black, 2)
+                        padding(1)
+                    })
+                })
+
+                add(Rectangle {
+                    padding(leading = 132, trailing = 1)
+                    stroke(Colors.black, 1)
+
+                    val colors = listOf(Colors.orange, Colors.black, Colors.accent, Colors.primary)
+
+                    listOf(
+                        0F to 120F,
+                        120F to 132F,
+                        132F to 180F,
+                        180F to 190F,
+                        190F to 220F,
+                        220F to 300F,
+//                        300F to 320F, // missing
+                        320F to 360F
+                    ).withIndex()
+                        .forEach { (i, v) ->
+                            add(Arc(v.first, v.second - v.first) {
+                                fill(colors[i % colors.size])
+                                padding(2)
+                            })
+                        }
+                })
+            })
+    }
+
+    private fun ViewFactory<LayoutParams>.path() {
+        View()
+            .layout(FILL, 128)
+            .background(ExploreShapePath.Path {
+                stroke(Colors.black, 2)
+
+                move(0, 0)
+                line(24, 24)
+                quad(12 to 48, 48 to 48)
+                line(96, 48)
+            })
+    }
 
     private fun drawableTinted(tintColor: Int): Drawable =
         context.getDrawable(R.drawable.ic_search_24)!!.also {

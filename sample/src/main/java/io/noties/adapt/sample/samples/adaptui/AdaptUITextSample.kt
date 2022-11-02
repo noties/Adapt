@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -24,18 +23,23 @@ import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textAllCaps
+import io.noties.adapt.ui.element.textAutoSize
 import io.noties.adapt.ui.element.textBreakStrategy
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textEllipsize
-import io.noties.adapt.ui.element.textFont
+import io.noties.adapt.ui.element.textGradient
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textHint
 import io.noties.adapt.ui.element.textHyphenationFrequency
 import io.noties.adapt.ui.element.textMaxLines
 import io.noties.adapt.ui.element.textOnTextChanged
-import io.noties.adapt.ui.element.textSingleLine
+import io.noties.adapt.ui.element.textSelectable
+import io.noties.adapt.ui.element.textShadow
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.gradient.GradientEdge
+import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
@@ -97,21 +101,43 @@ class AdaptUITextSample : SampleView() {
         Text("Can be sent via constructor")
             .text("Or as an argument")
             .text(R.string.app_name)
+            .text("A very very very long long text text 3456789")
             .textColor(Colors.orange)
+            .textGradient(
+                RadialGradient(
+                    Colors.orange,
+                    Colors.primary,
+                )
+            )
+            .textShadow(4)
             // value is SP, so it would be automatically converted to proper value
             .textSize(42)
-            .textFont(Typeface.DEFAULT_BOLD, Typeface.BOLD)
+//            .textFont(Typeface.DEFAULT_BOLD, Typeface.BOLD)
+//            .textItalic()
+//            .textBold()
+//            .textUnderline()
+//            .textStrikeThrough()
             // if supplied text is null or empty, this TextView is going to be GONE
             .textHideIfEmpty()
             .textAllCaps()
             .textEllipsize(TextUtils.TruncateAt.END)
             .textGravity(Gravity.center)
-            .textSingleLine(true)
+            .textSelectable()
+//            .textSingleLine(true)
             .textMaxLines(1)
             .ifAvailable(Build.VERSION_CODES.M) {
                 it.textHyphenationFrequency(HyphenationFrequency.full)
                 it.textBreakStrategy(BreakStrategy.highQuality)
             }
+            .ifAvailable(
+                Build.VERSION_CODES.O,
+                {
+                    it.textAutoSize(8)
+                },
+                {
+                    // not available, else branch
+                }
+            )
             .textOnTextChanged {
                 Debug.i("text:'$it'")
             }
