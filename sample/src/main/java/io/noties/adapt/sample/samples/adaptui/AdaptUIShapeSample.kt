@@ -574,31 +574,31 @@ class AdaptUIShapeSample : SampleView() {
             .ifAvailable(Build.VERSION_CODES.M) {
                 it.foregroundDefaultSelectable()
             }
-            .onClick {
-                // NB! experiment only to see if we can make automatic transitions
-                drawable.animate {
-                    Debug.i(shape)
-                    if (flag) {
-                        ref.gradient
-                            .alpha(0.5F)
-                            .translate(x = 128, y = -48)
-                            .apply {
-                                add(Circle {
-                                    fill(Colors.orange)
-                                    padding(2)
-                                    reference(ref::added)
-                                })
-                            }
-                    } else {
-                        ref.gradient
-                            .alpha(1F)
-                            .translateRelative(x = 0.1F, y = 0F).apply {
-                                ref.added?.also { remove(it) }
-                            }
-                    }
-                    flag = !flag
-                }
-            }
+//            .onClick {
+//                // NB! experiment only to see if we can make automatic transitions
+//                drawable.animate {
+//                    Debug.i(shape)
+//                    if (flag) {
+//                        ref.gradient
+//                            .alpha(0.5F)
+//                            .translate(x = 128, y = -48)
+//                            .apply {
+//                                add(Circle {
+//                                    fill(Colors.orange)
+//                                    padding(2)
+//                                    reference(ref::added)
+//                                })
+//                            }
+//                    } else {
+//                        ref.gradient
+//                            .alpha(1F)
+//                            .translateRelative(x = 0.1F, y = 0F).apply {
+//                                ref.added?.also { remove(it) }
+//                            }
+//                    }
+//                    flag = !flag
+//                }
+//            }
     }
 
     private var flag = true
