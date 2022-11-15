@@ -7,10 +7,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.FrameLayout
+import android.widget.TextView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.accessibilityDescription
@@ -112,6 +115,20 @@ class AdaptUIAccessibilitySample : SampleView() {
         }
     }
 }
+
+// take original reference, obtain parent,
+// replace this one with required new view
+//fun <V: TextView, LP: LayoutParams> ViewElement<V, LP>.textMarquee(
+//
+//): ViewElement<V, LP> = onView {
+//    val frame = FrameLayout(context)
+//    frame.layoutParams = layoutParams
+//    val parent = this.parent as ViewGroup
+//    val index = parent.indexOfChild(this)
+//    parent.removeViewAt(index)
+//    frame.addView(this)
+//    parent.addView(frame, index)
+//}
 
 @Suppress("ClassName", "unused")
 class __AdaptUIAccessibilitySample(context: Context, attributeSet: AttributeSet) :

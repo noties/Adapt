@@ -1,5 +1,8 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] investigate the size... inline onView? and most of the extsniosn?
+- [ ] createView, move to view factory, cannot import?
+- [ ] text hint color
 - [ ] window insets
 - [ ] Int.unused in shape builder functions (where applicable)
 - [ ] shape, stroke width, stroke gap and stroke dash to be relative?

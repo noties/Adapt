@@ -143,4 +143,25 @@ class Asset_Test {
         verify(drawable).mutate()
         verify(drawable).setTintList(eq(csl))
     }
+
+    @Test
+    fun `init - block applied after`() {
+        // verify that customization block is called after own init
+        //  (asset sets intrinsic size automatically)
+
+        val drawable = mockt<Drawable> {
+            on { this.intrinsicWidth } doReturn 2
+            on { this.intrinsicHeight } doReturn 3
+        }
+
+        val assetNoBlock = Asset(drawable)
+        assertEquals(2, (assetNoBlock.width as Dimension.Exact).value)
+        assertEquals(3, (assetNoBlock.height as Dimension.Exact).value)
+
+        val asset = Asset(drawable) {
+            size(4, 5)
+        }
+        assertEquals(4, (asset.width as Dimension.Exact).value)
+        assertEquals(5, (asset.height as Dimension.Exact).value)
+    }
 }
