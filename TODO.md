@@ -1,5 +1,6 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] a project without view pager would fail, as viewelementfactory would not be able to resolve it
 - [ ] investigate the size... inline onView? and most of the extsniosn?
 - [ ] createView, move to view factory, cannot import?
 - [ ] text hint color
