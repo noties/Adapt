@@ -408,6 +408,15 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
 }
 
 /**
+ * @see View.setClipToOutline
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
+    clipToOutline: Boolean = true
+): ViewElement<V, LP> = onView {
+    this.clipToOutline = clipToOutline
+}
+
+/**
  * An utility function to trigger called in on-pre drawing state,
  * when view is measured and is going to be drawn on canvas.
  * Useful when view dimensions (width and height) should be available (after measure,

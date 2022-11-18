@@ -687,6 +687,16 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
+    fun clipToOutline() {
+        val input = true
+        newElement()
+            .clipToOutline(input)
+            .renderView {
+                verify(this).clipToOutline = eq(input)
+            }
+    }
+
+    @Test
     fun `onViewPreDraw - vto is not alive`() {
         val vto = mock(ViewTreeObserver::class.java)
         `when`(vto.isAlive).thenReturn(false)
