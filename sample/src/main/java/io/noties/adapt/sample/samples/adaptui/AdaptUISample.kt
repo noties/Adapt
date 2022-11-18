@@ -5,10 +5,10 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -19,6 +19,7 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.dip
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.addChildren
@@ -108,15 +109,36 @@ class AdaptUISample : SampleView() {
         // ScrollView + LinearLayout (VScroll + VStack)
         ViewFactory.addChildren(viewGroup) {
             VScroll {
-                VStack { /*no op*/ }
-                    .layout(FILL, WRAP)
-                    .onView {
-                        bindAdapt(AdaptViewGroup.init(this))
+                ZStack {
+
+                    VStack { /*no op*/ }
+                        .layout(FILL, WRAP)
+                        .onView {
+                            bindAdapt(AdaptViewGroup.init(this))
+                        }
+
+                }.onView {
+                    val view = TextView(context).also {
+                        it.text = "withAttrs"
                     }
+                    val s = SystemClock.elapsedRealtimeNanos()
+                    ExploreAttributeSet.withAttrs(this, view)
+                    val e = SystemClock.elapsedRealtimeNanos()
+                    Debug.e("'%s': %d ms, %d ns", view.text, (e - s) / 1000_000L, (e - s))
+                }.onView {
+                    val view = TextView(context).also {
+                        it.text = "defaultLayoutParams"
+                    }
+                    val s = SystemClock.elapsedRealtimeNanos()
+                    ExploreAttributeSet.withDefaultLayoutParams(this, view)
+                    val e = SystemClock.elapsedRealtimeNanos()
+                    Debug.e("'%s': %d ms, %d ns", view.text, (e - s) / 1000_000L, (e - s))
+                }
 //                    .myCustomStyle()
             }.layout(FILL, FILL)
         }
     }
+
 
 //    private fun fillTest(viewGroup: ViewGroup) {
 //
@@ -245,7 +267,7 @@ class AdaptUISample : SampleView() {
         private fun <LP : LayoutParams> ViewFactory<LP>.Label(): ViewElement<LabelView, LayoutParams> =
             ViewElement<LabelView, LayoutParams> { LabelView(it) }.also(elements::add)
 
-        override fun ViewFactory<LayoutParams>.body(references: References) {
+        override fun ViewFactory<LayoutParams>.body(ref: References) {
             VStack {
                 View()
                     // 128 is already dp
@@ -286,10 +308,10 @@ class AdaptUISample : SampleView() {
                 Element(::Button)
                     .textSize(17)
                     .textFont(null, Typeface.BOLD)
-                    .reference(references::textView)
-                    .reference(references::textViewNullable)
-                    .also { references.textViewElement = it }
-                    .reference(references::textViewElement)
+                    .reference(ref::textView)
+                    .reference(ref::textViewNullable)
+                    .also { ref.textViewElement = it }
+                    .reference(ref::textViewElement)
                     .textHideIfEmpty()
                     .padding(8)
             }.noClip()
@@ -309,7 +331,7 @@ class AdaptUISample : SampleView() {
             lateinit var valueView: TextView
         }
 
-        override fun ViewFactory<LayoutParams>.body(references: References) {
+        override fun ViewFactory<LayoutParams>.body(ref: References) {
             VStack {
                 test()
                 test2()
@@ -321,14 +343,14 @@ class AdaptUISample : SampleView() {
 
                 HStack {
                     Text()
-                        .reference(references::titleView)
+                        .reference(ref::titleView)
                     Spacer()
                     View()
                         .layout(1, 16)
                         .background(Color.GREEN)
                     Spacer()
                     Text()
-                        .reference(references::valueView)
+                        .reference(ref::valueView)
                 }
 
                 HScroll {

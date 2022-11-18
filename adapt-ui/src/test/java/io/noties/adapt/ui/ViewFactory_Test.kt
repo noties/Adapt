@@ -8,6 +8,7 @@ import android.widget.TextView
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], qualifiers = "xxhdpi")
-class ViewFactory_Extensions_Test {
+class ViewFactory_Test {
 
     private lateinit var context: Context
 
@@ -95,6 +96,22 @@ class ViewFactory_Extensions_Test {
         val lp = view.layoutParams
         Assert.assertEquals(LayoutParams.MATCH_PARENT, lp.width)
         Assert.assertEquals(LayoutParams.WRAP_CONTENT, lp.height)
+    }
+
+    @Test
+    fun `createView - layoutParams`() {
+        val layoutParams = ViewGroup.MarginLayoutParams(10, 20)
+        // if created view has layout params -> use them, do not set default ones
+        val view = ViewFactory.createViewWithParams(
+            context,
+            layoutParams
+        ) {
+            Text()
+        }
+
+        val lp = view.layoutParams
+        assertEquals(layoutParams.width, lp.width)
+        assertEquals(layoutParams.height, lp.height)
     }
 
     @Test

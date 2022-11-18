@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 
 /**
  * `PLP` represent _parent_ LayoutParams
@@ -21,7 +20,7 @@ fun <VG : ViewGroup, PLP : LayoutParams, CLP : LayoutParams> ViewFactory<PLP>.El
     configure(viewGroup)
     ViewFactory.addChildren(viewGroup, children)
     viewGroup
-}.also(elements::add)
+}.also { elements.add(it) }
 
 @Suppress("FunctionName")
 fun <VG : ViewGroup, PLP : LayoutParams, CLP : LayoutParams> ViewFactory<PLP>.ElementGroup(

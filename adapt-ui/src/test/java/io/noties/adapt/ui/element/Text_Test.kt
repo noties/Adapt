@@ -18,7 +18,6 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
@@ -418,7 +417,7 @@ class Text_Test {
                 val boundsCaptor = argumentCaptor<Rect>()
                 verify(gradient).createShader(boundsCaptor.capture())
                 assertEquals(
-                    Rect(0 ,0, 50, 60).also {
+                    Rect(0, 0, 50, 60).also {
                         it.left += paddingLeft
                         it.top += paddingTop
                         it.right -= paddingRight

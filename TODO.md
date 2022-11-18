@@ -1,6 +1,9 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] castLayout when inside an adapt item is not working, as by default just viewgroup params are set
+- [ ] clipToOutline to allow clipping view by using the shape
 - [ ] a project without view pager would fail, as viewelementfactory would not be able to resolve it
+- [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?
 - [ ] createView, move to view factory, cannot import?
 - [ ] text hint color
@@ -15,3 +18,5 @@
 - [X] shape rotation
 - [?] asset with stroke.. as there are a lot of drawables.. the task bec
 - [x] view, additional lifecycle callbacks, like onAttach, onDetach, onViewPreDraw, etc
+- [-] addTo in ViewElement, tests and validate all properly initialy it, referencing factory
+  can be confusing, moreover it can lead to unexpected results

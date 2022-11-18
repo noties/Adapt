@@ -2,6 +2,7 @@ package io.noties.adapt.ui.util
 
 import kotlin.reflect.KProperty0
 
+// TODO: remove toString implementations to use inline text instead of properties
 @JvmInline
 internal value class ToStringPropertiesBuilder(
     val properties: MutableList<Pair<String, Any?>>

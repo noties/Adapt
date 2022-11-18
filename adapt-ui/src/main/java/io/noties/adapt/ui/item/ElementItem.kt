@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import io.noties.adapt.Item
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.createView
 
 /**
  * @since $UNRELEASED;
  */
-abstract class ElementItem<R>(
+abstract class ElementItem<R : Any>(
     id: Long,
     private val refFactory: () -> R
 ) : Item<ElementItem.Holder<R>>(id) {
@@ -20,6 +19,7 @@ abstract class ElementItem<R>(
 
     abstract fun ViewFactory<LayoutParams>.body(ref: R)
 
+    // TODO: allow providing default layout params
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder<R> {
         val ref: R = refFactory()
         val view = ViewFactory.createView(

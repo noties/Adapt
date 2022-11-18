@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import io.noties.adapt.ui.testutil.mockt
+import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -149,14 +150,17 @@ class Asset_Test {
         // verify that customization block is called after own init
         //  (asset sets intrinsic size automatically)
 
+        val (w, h) = 2 to 3
+
+        // NB! intrinsic size is represented by platform pixels
         val drawable = mockt<Drawable> {
-            on { this.intrinsicWidth } doReturn 2
-            on { this.intrinsicHeight } doReturn 3
+            on { this.intrinsicWidth } doReturn w.dip
+            on { this.intrinsicHeight } doReturn h.dip
         }
 
         val assetNoBlock = Asset(drawable)
-        assertEquals(2, (assetNoBlock.width as Dimension.Exact).value)
-        assertEquals(3, (assetNoBlock.height as Dimension.Exact).value)
+        assertEquals(w, (assetNoBlock.width as Dimension.Exact).value)
+        assertEquals(h, (assetNoBlock.height as Dimension.Exact).value)
 
         val asset = Asset(drawable) {
             size(4, 5)
