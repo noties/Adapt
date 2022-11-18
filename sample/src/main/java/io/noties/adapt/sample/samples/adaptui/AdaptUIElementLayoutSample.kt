@@ -11,7 +11,6 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text

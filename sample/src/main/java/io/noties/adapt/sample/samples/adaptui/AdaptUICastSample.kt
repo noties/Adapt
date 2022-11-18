@@ -15,7 +15,6 @@ import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.castLayout
 import io.noties.adapt.ui.castView

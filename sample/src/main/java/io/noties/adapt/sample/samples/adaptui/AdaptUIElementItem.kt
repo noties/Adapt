@@ -26,7 +26,7 @@ class AdaptUIElementItem(val text: String) :
         lateinit var textView: TextView
     }
 
-    override fun ViewFactory<ViewGroup.LayoutParams>.body(references: Ref) {
+    override fun ViewFactory<ViewGroup.LayoutParams>.body(ref: Ref) {
         VStack {
             Text()
                 // already SP
@@ -35,7 +35,7 @@ class AdaptUIElementItem(val text: String) :
                 .textGravity(Gravity.center)
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)
-                .reference(references::textView)
+                .reference(ref::textView)
         }.background(RoundedRectangle(8) {
             stroke(Colors.black, 2, 8, 2)
             padding(8)

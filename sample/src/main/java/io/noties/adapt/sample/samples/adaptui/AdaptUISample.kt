@@ -5,7 +5,6 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipChildren
 import io.noties.adapt.ui.clipToPadding
@@ -109,31 +107,11 @@ class AdaptUISample : SampleView() {
         // ScrollView + LinearLayout (VScroll + VStack)
         ViewFactory.addChildren(viewGroup) {
             VScroll {
-                ZStack {
-
-                    VStack { /*no op*/ }
-                        .layout(FILL, WRAP)
-                        .onView {
-                            bindAdapt(AdaptViewGroup.init(this))
-                        }
-
-                }.onView {
-                    val view = TextView(context).also {
-                        it.text = "withAttrs"
+                VStack { /*no op*/ }
+                    .layout(FILL, WRAP)
+                    .onView {
+                        bindAdapt(AdaptViewGroup.init(this))
                     }
-                    val s = SystemClock.elapsedRealtimeNanos()
-                    ExploreAttributeSet.withAttrs(this, view)
-                    val e = SystemClock.elapsedRealtimeNanos()
-                    Debug.e("'%s': %d ms, %d ns", view.text, (e - s) / 1000_000L, (e - s))
-                }.onView {
-                    val view = TextView(context).also {
-                        it.text = "defaultLayoutParams"
-                    }
-                    val s = SystemClock.elapsedRealtimeNanos()
-                    ExploreAttributeSet.withDefaultLayoutParams(this, view)
-                    val e = SystemClock.elapsedRealtimeNanos()
-                    Debug.e("'%s': %d ms, %d ns", view.text, (e - s) / 1000_000L, (e - s))
-                }
 //                    .myCustomStyle()
             }.layout(FILL, FILL)
         }

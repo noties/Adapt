@@ -14,7 +14,6 @@ import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.BreakStrategy
 import io.noties.adapt.ui.element.HyphenationFrequency
 import io.noties.adapt.ui.element.Text
@@ -37,8 +36,6 @@ import io.noties.adapt.ui.element.textOnTextChanged
 import io.noties.adapt.ui.element.textSelectable
 import io.noties.adapt.ui.element.textShadow
 import io.noties.adapt.ui.element.textSize
-import io.noties.adapt.ui.gradient.GradientEdge
-import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill

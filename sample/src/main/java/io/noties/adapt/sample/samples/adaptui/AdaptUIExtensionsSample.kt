@@ -1,6 +1,5 @@
 package io.noties.adapt.sample.samples.adaptui
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import io.noties.adapt.sample.samples.adaptui.TextStyles.textStylePrimary
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
@@ -28,8 +26,6 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.util.Gravity
-import io.noties.debug.Debug
-import java.util.Locale
 
 @AdaptSample(
     id = "20221016113609",

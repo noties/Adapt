@@ -9,7 +9,6 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.item.ElementItemNoRef

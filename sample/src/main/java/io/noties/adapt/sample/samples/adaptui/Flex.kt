@@ -12,7 +12,6 @@ import com.google.android.flexbox.JustifyContent
 import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.addChildren
 
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Flex(

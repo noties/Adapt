@@ -14,7 +14,6 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewPager
-import io.noties.adapt.ui.addChildren
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToPadding
 import io.noties.adapt.ui.element.Element
@@ -128,7 +127,7 @@ class ViewPagerSample : SampleView() {
 
         var isSelected = false
 
-        override fun ViewFactory<ViewGroup.LayoutParams>.body(references: Ref) {
+        override fun ViewFactory<ViewGroup.LayoutParams>.body(ref: Ref) {
             HStack {
 
                 View()
@@ -142,8 +141,8 @@ class ViewPagerSample : SampleView() {
                     .textColor(Color.BLACK)
                     .textFont(fontStyle = Typeface.BOLD)
                     .layoutMargin(leading = 8)
-                    .reference(references::textView)
-                    .reference(references::textElement)
+                    .reference(ref::textView)
+                    .reference(ref::textElement)
 //                    .also { references.textElement = it }
 
             }.layout(FILL, FILL)

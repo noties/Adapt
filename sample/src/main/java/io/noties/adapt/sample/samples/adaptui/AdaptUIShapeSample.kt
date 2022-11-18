@@ -14,14 +14,12 @@ import android.widget.LinearLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.ExploreAdaptUIShapeTransition.animate
 import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
@@ -56,7 +54,6 @@ import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.Gravity
-import io.noties.debug.Debug
 import kotlin.math.roundToInt
 
 @AdaptSample(

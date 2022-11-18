@@ -13,7 +13,6 @@ import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.createView
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
