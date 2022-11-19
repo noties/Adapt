@@ -21,4 +21,4 @@ fun <V : View, LP : LayoutParams> ViewFactory<LP>.Element(
     configurator: (V) -> Unit
 ): ViewElement<V, LP> = ViewElement<V, LP> {
     provider(it).also(configurator)
-}.also { elements.add(it) }
+}.also { add(it) }

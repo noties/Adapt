@@ -20,8 +20,11 @@ class ViewFactory<out LP : LayoutParams>(val context: Context) {
             return LayoutParams.WRAP_CONTENT
         }
 
-    var elements: MutableList<ViewElement<out View, *>> = mutableListOf()
+    val elements: MutableList<ViewElement<out View, *>> = mutableListOf()
 
+    fun add(element: ViewElement<*, *>) {
+        elements.add(element)
+    }
 
     companion object {
 

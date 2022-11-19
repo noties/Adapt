@@ -20,7 +20,7 @@ fun <VG : ViewGroup, PLP : LayoutParams, CLP : LayoutParams> ViewFactory<PLP>.El
     configure(viewGroup)
     ViewFactory.addChildren(viewGroup, children)
     viewGroup
-}.also { elements.add(it) }
+}.also { add(it) }
 
 @Suppress("FunctionName")
 fun <VG : ViewGroup, PLP : LayoutParams, CLP : LayoutParams> ViewFactory<PLP>.ElementGroup(
