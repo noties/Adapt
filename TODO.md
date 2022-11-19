@@ -21,3 +21,8 @@
 - [x] clipToOutline to allow clipping view by using the shape
 - [x] castLayout when inside an adapt item is not working, as by default just viewgroup params are
   set because by default element-item is using default parameters provided by view-factory
+  
+
+Size of adapt-ui release binary
+- `421KB` with toString and properties
+- `366KB` with static toString in shape and gradient
