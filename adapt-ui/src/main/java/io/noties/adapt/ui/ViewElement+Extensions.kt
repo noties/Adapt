@@ -408,6 +408,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
 }
 
 /**
+ * Allows clipping a [View] by outline-provider. For example,
+ * when a background drawable is set, by default it is used to
+ * create an outline. Most of the shapes ([Shape]) do initialize
+ * an outline, so they would work too. The exception is to use _simple_
+ * shapes (cannot use path) - see [View.setClipToOutline] for more info
  * @see View.setClipToOutline
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(

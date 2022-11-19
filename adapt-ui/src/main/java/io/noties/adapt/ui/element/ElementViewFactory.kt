@@ -10,19 +10,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.viewpager.widget.ViewPager
-import io.noties.adapt.ui.element.ElementViewFactory.HScroll
-import io.noties.adapt.ui.element.ElementViewFactory.HStack
-import io.noties.adapt.ui.element.ElementViewFactory.Image
-import io.noties.adapt.ui.element.ElementViewFactory.Pager
-import io.noties.adapt.ui.element.ElementViewFactory.Progress
-import io.noties.adapt.ui.element.ElementViewFactory.Spacer
-import io.noties.adapt.ui.element.ElementViewFactory.Text
-import io.noties.adapt.ui.element.ElementViewFactory.TextInput
-import io.noties.adapt.ui.element.ElementViewFactory.VScroll
-import io.noties.adapt.ui.element.ElementViewFactory.VStack
-import io.noties.adapt.ui.element.ElementViewFactory.View
-import io.noties.adapt.ui.element.ElementViewFactory.ZStack
 
 /**
  * Factories for all elements
@@ -43,7 +30,7 @@ object ElementViewFactory {
     lateinit var HScroll: (Context) -> HorizontalScrollView
     lateinit var HStack: (Context) -> LinearLayout
     lateinit var Image: (Context) -> ImageView
-    lateinit var Pager: (Context) -> ViewPager
+    lateinit var Pager: (Context) -> androidx.viewpager.widget.ViewPager
     lateinit var Progress: (Context) -> ProgressBar
     lateinit var Spacer: (Context) -> View
     lateinit var Text: (Context) -> TextView
@@ -58,17 +45,17 @@ object ElementViewFactory {
     }
 
     fun reset() {
-        HScroll = ::HorizontalScrollView
-        HStack = ::LinearLayout
-        Image = ::ImageView
-        Pager = ::ViewPager
-        Progress = ::ProgressBar
-        Spacer = ::View
-        Text = ::TextView
-        TextInput = ::EditText
-        View = ::View
-        VScroll = ::ScrollView
-        VStack = ::LinearLayout
-        ZStack = ::FrameLayout
+        HScroll = { HorizontalScrollView(it) }
+        HStack = { LinearLayout(it) }
+        Image = { ImageView(it) }
+        Pager = { androidx.viewpager.widget.ViewPager(it) }
+        Progress = { ProgressBar(it) }
+        Spacer = { android.view.View(it) }
+        Text = { TextView(it) }
+        TextInput = { EditText(it) }
+        View = { android.view.View(it) }
+        VScroll = { ScrollView(it) }
+        VStack = { LinearLayout(it) }
+        ZStack = { FrameLayout(it) }
     }
 }

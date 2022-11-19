@@ -5,7 +5,6 @@ import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
-import io.noties.adapt.ui.util.toStringProperties
 
 class Line(
     block: Line.() -> Unit = {}
@@ -50,8 +49,8 @@ class Line(
         it.toY = toY
     }
 
-    override fun toStringDedicatedProperties(): String = toStringProperties {
-        it(::fromX, ::fromY, ::toX, ::toY)
+    override fun toStringDedicatedProperties(): String {
+        return "fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY"
     }
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {

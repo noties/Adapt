@@ -7,7 +7,6 @@ import android.graphics.Shader
 import android.graphics.SweepGradient
 import androidx.annotation.ColorInt
 import io.noties.adapt.ui.util.toHexString
-import io.noties.adapt.ui.util.toStringPropertiesDefault
 import kotlin.math.min
 
 enum class GradientEdge {
@@ -112,11 +111,8 @@ class LinearGradient internal constructor(
         )
     }
 
-    override fun toString(): String = toStringPropertiesDefault(this) {
-        it(::edges)
-        it(::colors) { it.map { color -> color.toHexString() } }
-        it(::positions) { it?.map { f -> f } }
-        it(::mode)
+    override fun toString(): String {
+        return "LinearGradient(edges=$edges, colors=${colors.map { it.toHexString() }}, positions=${positions?.contentToString()}, mode=$mode)"
     }
 }
 
@@ -197,11 +193,8 @@ class RadialGradient internal constructor(
         )
     }
 
-    override fun toString(): String = toStringPropertiesDefault(this) {
-        it(::colors) { it.map { c -> c.toHexString() } }
-        it(::positions) { it?.map { p -> p } }
-        it(::edge)
-        it(::mode)
+    override fun toString(): String {
+        return "RadialGradient(colors=${colors.map { it.toHexString() }}, positions=${positions?.contentToString()}, edge=$edge, mode=$mode)"
     }
 }
 
@@ -263,9 +256,7 @@ class SweepGradient internal constructor(
         )
     }
 
-    override fun toString(): String = toStringPropertiesDefault(this) {
-        it(::colors) { it.map { c -> c.toHexString() } }
-        it(::positions) { it?.map { f -> f } }
-        it(::edge)
+    override fun toString(): String {
+        return "SweepGradient(colors=${colors.map { it.toHexString() }}, positions=${positions?.contentToString()}, edge=$edge)"
     }
 }

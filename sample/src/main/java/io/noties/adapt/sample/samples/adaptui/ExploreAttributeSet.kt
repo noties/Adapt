@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.util.createLayoutParams
 import org.xmlpull.v1.XmlPullParser
 
 // In order to make a view-group generate default layout parameters we need AttributeSet
@@ -16,7 +17,7 @@ import org.xmlpull.v1.XmlPullParser
 object ExploreAttributeSet {
 
     private fun attrs(context: Context): AttributeSet? {
-        val xml = context.resources.getXml(R.xml.default_layout)
+        val xml = context.resources.getXml(R.xml.internal_adaptui_default_layout_params)
 
         // manually advance until start tag is present
         var eventType = xml.eventType
@@ -44,9 +45,7 @@ object ExploreAttributeSet {
     }
 
     fun withAttrs(viewGroup: ViewGroup, view: View) {
-        val attrs = attrs(viewGroup.context)
-        val lp = viewGroup.generateLayoutParams(attrs)
-        view.layoutParams = lp
+        view.layoutParams = viewGroup.createLayoutParams()
         viewGroup.addView(view)
     }
 }

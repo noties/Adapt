@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
-import io.noties.adapt.ui.util.toStringProperties
 
 class Arc(
     var startAngle: Float,
@@ -31,8 +30,8 @@ class Arc(
 
     override fun clone(): Arc = Arc(startAngle, sweepAngle, useCenter)
 
-    override fun toStringDedicatedProperties(): String = toStringProperties {
-        it(::startAngle, ::sweepAngle, ::useCenter)
+    override fun toStringDedicatedProperties(): String {
+        return "startAngle=$startAngle, sweepAngle=$sweepAngle, useCenter=$useCenter"
     }
 
     override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {

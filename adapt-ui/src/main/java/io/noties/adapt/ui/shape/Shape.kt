@@ -14,11 +14,8 @@ import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
-import io.noties.adapt.ui.util.toStringProperties
-import io.noties.adapt.ui.util.toStringPropertiesDefault
 import kotlin.math.roundToInt
 
-// A new shape: Path (provide path building)
 abstract class Shape {
 
     companion object {
@@ -250,28 +247,6 @@ abstract class Shape {
         children.remove(shape)
     }
 
-    override fun toString(): String {
-        val properties = toStringProperties {
-            it(
-                ::hidden,
-                ::width,
-                ::height,
-                ::gravity,
-                ::rotation,
-                ::translation,
-                ::padding,
-                ::alpha,
-                ::fill,
-                ::stroke,
-                ::drawRect
-            )
-            it(::children) {
-                it.takeIf { c -> c.isNotEmpty() }
-            }
-        }
-        return "Shape.${this::class.java.simpleName}(${toStringDedicatedProperties()}){$properties}"
-    }
-
     //NB! all properties are `open` in order to be mocked in tests
 
     open var hidden: Boolean? = null
@@ -390,7 +365,7 @@ abstract class Shape {
         // if we specify 1F then outline would optimize shadow and draw it only for visible
         // parts, otherwise it executes a more advanced calculation
         outline.alpha = alpha ?: (fill?.color
-            ?.let(Color::alpha)
+            ?.let { Color.alpha(it) }
             ?.let { it / 255F }
             ?: 1F)
     }
@@ -436,6 +411,10 @@ abstract class Shape {
         // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
         padding?.set(rect)
+    }
+
+    final override fun toString(): String {
+        return "Shape.${this::class.java.simpleName}(${toStringDedicatedProperties()}){hidden=$hidden, width=$width, height=$height, gravity=$gravity, padding=$padding, translation=$translation, rotation=$rotation, alpha=$alpha, fill=$fill, stroke=$stroke, children=$children, drawRect=$drawRect}"
     }
 
     internal class ShaderCache {
@@ -496,14 +475,6 @@ abstract class Shape {
         fun copy(block: Padding.() -> Unit = {}): Padding =
             Padding(leading, top, trailing, bottom).also(block)
 
-        override fun toString(): String = toStringPropertiesDefault(this) {
-            it(
-                ::leading,
-                ::top,
-                ::trailing,
-                ::bottom
-            )
-        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -525,6 +496,10 @@ abstract class Shape {
             result = 31 * result + (trailing?.hashCode() ?: 0)
             result = 31 * result + (bottom?.hashCode() ?: 0)
             return result
+        }
+
+        override fun toString(): String {
+            return "Padding(leading=$leading, top=$top, trailing=$trailing, bottom=$bottom)"
         }
     }
 
@@ -568,8 +543,8 @@ abstract class Shape {
             return result
         }
 
-        override fun toString(): String = toStringPropertiesDefault(this) {
-            it(::x, ::y)
+        override fun toString(): String {
+            return "Translation(x=$x, y=$y)"
         }
     }
 
@@ -613,8 +588,8 @@ abstract class Shape {
             return result
         }
 
-        override fun toString(): String = toStringPropertiesDefault(this) {
-            it(::degrees, ::centerX, ::centerY)
+        override fun toString(): String {
+            return "Rotation(degrees=$degrees, centerX=$centerX, centerY=$centerY)"
         }
     }
 
@@ -679,11 +654,6 @@ abstract class Shape {
             shape.drawShape(canvas, bounds, fillPaint)
         }
 
-        override fun toString(): String = toStringPropertiesDefault(this) {
-            it(::color) { it?.toHexString() }
-            it(::gradient)
-        }
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -700,6 +670,10 @@ abstract class Shape {
             var result = color ?: 0
             result = 31 * result + (gradient?.hashCode() ?: 0)
             return result
+        }
+
+        override fun toString(): String {
+            return "Fill(color=${color?.toHexString()}, gradient=$gradient)"
         }
     }
 
@@ -766,11 +740,6 @@ abstract class Shape {
             shape.drawShape(canvas, bounds, strokePaint)
         }
 
-        override fun toString(): String = toStringPropertiesDefault(this) {
-            it(::color) { it?.toHexString() }
-            it(::width, ::dashWidth, ::dashGap, ::gradient)
-        }
-
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -793,6 +762,10 @@ abstract class Shape {
             result = 31 * result + (dashGap ?: 0)
             result = 31 * result + (gradient?.hashCode() ?: 0)
             return result
+        }
+
+        override fun toString(): String {
+            return "Stroke(color=${color?.toHexString()}, width=$width, dashWidth=$dashWidth, dashGap=$dashGap, gradient=$gradient)"
         }
 
         private class DashEffectCache {
