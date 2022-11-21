@@ -16,7 +16,8 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.enabled(
     if (applyToChildren) {
         fun enable(view: View) {
             view.isEnabled = enabled
-            (view as? ViewGroup)?.children?.forEach(::enable)
+            //noinspection NewApi
+            (view as? ViewGroup)?.children?.forEach { enable(it) }
         }
         enable(this)
     } else {
@@ -36,7 +37,8 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.activated(
     if (applyToChildren) {
         fun activate(view: View) {
             view.isActivated = activated
-            (view as? ViewGroup)?.children?.forEach(::activate)
+            //noinspection NewApi
+            (view as? ViewGroup)?.children?.forEach { activate((it)) }
         }
         activate(this)
     } else {

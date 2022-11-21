@@ -94,6 +94,7 @@ class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
             children(factory)
 
+            //noinspection NewApi
             factory.elements.forEach { el ->
                 @Suppress("UNCHECKED_CAST")
                 el as ViewElement<View, LP>

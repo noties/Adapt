@@ -19,6 +19,8 @@ abstract class AdaptElement<A : Adapt> {
 
     fun init(adapt: A) {
         this.adapt = adapt
+        // it is not _new api_, it is kotlin version
+        //noinspection NewApi
         callbacks.forEach { it(adapt) }
         callbacks.clear()
     }

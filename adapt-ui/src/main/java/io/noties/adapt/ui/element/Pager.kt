@@ -38,6 +38,8 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
                     val lp = ViewPagerLayoutParams()
                     lp.viewPager = vp
                     // sync provided values with our layout params, do not call `render` here
+                    // not _new api_, kotlin version which has the same name
+                    //noinspection NewApi
                     element.layoutBlocks.forEach { it(lp) }
                     PagerItem(element, lp)
                 }
@@ -65,13 +67,14 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
             vp.adapter = adapter
 
             // trigger registered view page change listeners after adapter is initialized
-            decorListeners.forEach {
-                it
+            //noinspection NewApi
+            decorListeners.forEach { listener ->
+                listener
                     .also { it.onPageSelected(vp.currentItem) }
-                    .also(vp::addOnPageChangeListener)
+                    .also { vp.addOnPageChangeListener(it) }
             }
         }
-    }.also(elements::add)
+    }.also { add(it) }
 }
 
 typealias ViewPagerOnPageSelectedListener = (selected: Boolean) -> Unit
@@ -267,7 +270,7 @@ internal class PagerElementAdapter(val items: List<PagerItem>) : PagerAdapter() 
 
                 val vp = container as ViewPager
 
-                item.layoutParams.onPageChangeListener?.also(vp::addOnPageChangeListener)
+                item.layoutParams.onPageChangeListener?.also { vp.addOnPageChangeListener(it) }
 
                 item.layoutParams.onPageSelectedListener?.also { listener ->
                     vp.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {

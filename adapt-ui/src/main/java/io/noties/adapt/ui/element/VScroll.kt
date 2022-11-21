@@ -10,7 +10,7 @@ import io.noties.adapt.ui.ViewFactory
 fun <LP : LayoutParams> ViewFactory<LP>.VScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
 ): ViewElement<ScrollView, LP> = ElementGroup(
-    ElementViewFactory.VScroll::invoke,
+    ElementViewFactory.VScroll,
     children
 )
 

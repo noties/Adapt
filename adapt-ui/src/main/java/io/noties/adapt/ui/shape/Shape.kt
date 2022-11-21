@@ -309,6 +309,7 @@ abstract class Shape {
 
             val alpha = this.alpha
 
+            //noinspection NewApi
             children.forEach {
                 val childAlpha = it.alpha
                 val childDrawAlpha = (childAlpha ?: 1F) * (alpha ?: 1F)

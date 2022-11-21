@@ -30,8 +30,9 @@ class ShapeDrawable_Extensions_Test {
         drawable.invalidate {
             called.set(true)
             assertEquals(ref, this)
-            verify(callback).invalidateDrawable(eq(drawable))
         }
+        // verify callback after `invalidate` block (invalidation happens after invoking it)
+        verify(callback).invalidateDrawable(eq(drawable))
         assertEquals("called", true, called.get())
     }
 }

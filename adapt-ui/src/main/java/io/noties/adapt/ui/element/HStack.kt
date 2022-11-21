@@ -14,7 +14,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.HStack(
     gravity: Gravity = Gravity.center.leading,
     children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
 ): ViewElement<LinearLayout, LP> = ElementGroup(
-    ElementViewFactory.HStack::invoke,
+    ElementViewFactory.HStack,
     {
         it.orientation = LinearLayout.HORIZONTAL
         it.gravity = gravity.value

@@ -15,7 +15,7 @@ import io.noties.adapt.ui.ViewFactory
 fun <LP : LayoutParams> ViewFactory<LP>.HScroll(
     children: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
 ): ViewElement<HorizontalScrollView, LP> = ElementGroup(
-    ElementViewFactory.HScroll::invoke,
+    ElementViewFactory.HScroll,
     children
 )
 

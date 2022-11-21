@@ -17,7 +17,7 @@ class TextWatcherHideIfEmpty internal constructor(private val textView: TextView
 
         fun init(textView: TextView) {
 
-            (textView.getTag(id) as? TextWatcher)?.also(textView::removeTextChangedListener)
+            (textView.getTag(id) as? TextWatcher)?.also { textView.removeTextChangedListener(it) }
 
             val watcher = TextWatcherHideIfEmpty(textView)
             textView.addTextChangedListener(watcher)
