@@ -6,10 +6,9 @@ android {
     buildToolsVersion config['build-tools']
 
     defaultConfig {
+        namespace 'io.noties.adapt'
         minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
-        versionCode 1
-        versionName version
 
         // latest set of updates to build system (gradle, android-gradle plugin)
         //  stopped placing this value in `BuildConfig`, add manually
