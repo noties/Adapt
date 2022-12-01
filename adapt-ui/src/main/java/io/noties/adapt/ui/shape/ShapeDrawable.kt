@@ -5,6 +5,7 @@ import android.graphics.ColorFilter
 import android.graphics.Outline
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
+import kotlin.math.roundToInt
 
 typealias ShapeDrawableNoRef = ShapeDrawable<Unit>
 
@@ -19,12 +20,8 @@ open class ShapeDrawable<R : Any> private constructor(
             shape: Shape
         ): ShapeDrawableNoRef = ShapeDrawable(shape, Unit)
 
-        operator fun <S : Shape, T : Any> invoke(
-            shape: S,
-            ref: T,
-            block: S.(T) -> Unit
-        ): ShapeDrawable<T> = ShapeDrawable(shape, ref).also {
-            block(shape, ref)
+        operator fun <S : Shape, R : Any> invoke(ref: R, block: (R) -> S): ShapeDrawable<R> {
+            return ShapeDrawable(block(ref), ref)
         }
     }
 
@@ -42,7 +39,14 @@ open class ShapeDrawable<R : Any> private constructor(
         return shape.height?.resolve(0) ?: super.getIntrinsicHeight()
     }
 
-    override fun setAlpha(alpha: Int) = Unit
+    override fun getAlpha(): Int {
+        return shape.alpha?.let { (it * 255).roundToInt() } ?: 255
+    }
+
+    override fun setAlpha(alpha: Int) {
+        shape.alpha(alpha / 255F)
+    }
+
     override fun setColorFilter(colorFilter: ColorFilter?) = Unit
 
     @Suppress("OVERRIDE_DEPRECATION")

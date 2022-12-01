@@ -11,12 +11,14 @@ import android.widget.TextView
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyFloat
@@ -803,6 +805,16 @@ class ViewElement_Extensions_Test {
 
             Assert.assertEquals(version.toString(), available, flag.get())
         }
+    }
+
+    @Test
+    fun onElementView() {
+        val callbacks: ViewElement<View, LayoutParams>.() -> Unit = mockt()
+        val element = newElement()
+            .onElementView(callbacks)
+        verify(callbacks, org.mockito.kotlin.never()).invoke(org.mockito.kotlin.any())
+        element.render()
+        verify(callbacks, times(1)).invoke(org.mockito.kotlin.eq(element))
     }
 
     private fun <T> mode(value: T?): VerificationMode = if (value == null) never() else times(1)

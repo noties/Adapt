@@ -13,6 +13,17 @@ components on Android. A single-file component reduces context switches, allows 
 modification of view building blocks meanwhile giving an immediate feedback with the help of the
 preview. It keeps the loop running without the breaks.
 
+the problem is actually that SwiftUI is a complexity-hiding abstraction.
+No a complexity-hiding abstraction, if it does not work, go to the native view layer directly.
+Almost disappearing framework? Can be used to create view, create and update or just update?... no, this
+is not true, we cannot update without being created, well, in theory, we could use an Element and pass it a view, but
+this is crazy
+
+Copying when needed a minor change, non extensible, no configurable, values are limited to be provided by xml,
+make a padding `@dimen/content_padding + @dimen/additional_padding` is impossible leads to generating 
+more layers of indirection
+Comment a line in XML - error, cannot do it
+
 Moreover, with AdaptUI does not make commitment.. It does not require a special compiler - all it is
 using is Kotlin code. All it operates on - native Android views. It does provide conveniences on top
 of native views, but does not restrict access. You still can access a view underneath, create own

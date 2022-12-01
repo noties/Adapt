@@ -386,14 +386,16 @@ class AdaptUIShapeSample : SampleView() {
                 )
             },
             Rectangle {
-                fill(SweepGradient(
-                    listOf(
-                        Colors.orange to 0.1F,
-                        Colors.accent to 0.2F,
-                        Colors.primary to 0.7F,
-                        Colors.black to 1F
+                fill(
+                    SweepGradient(
+                        listOf(
+                            Colors.orange to 0.1F,
+                            Colors.accent to 0.2F,
+                            Colors.primary to 0.7F,
+                            Colors.black to 1F
+                        )
                     )
-                ))
+                )
             }
         )
 
@@ -483,7 +485,7 @@ class AdaptUIShapeSample : SampleView() {
 
         View()
             .layout(FILL, 128)
-            .background(Shape.drawable(RoundedRectangle(12) {
+            .background(RoundedRectangle(12) {
                 stroke(
                     LinearGradient(
                         GradientEdge.Leading to GradientEdge.Trailing,
@@ -514,15 +516,16 @@ class AdaptUIShapeSample : SampleView() {
                     gravity(Gravity.center)
                 })
 
-            }).also { shapeDrawable ->
-                val target = 48
-                animator.addUpdateListener {
-                    val fraction = it.animatedFraction
-                    val value = (target * fraction).roundToInt()
-                    shapeDrawable.shape.padding(value)
-                    shapeDrawable.invalidateSelf()
-                }
-            })
+            }.newDrawable()
+                .also { shapeDrawable ->
+                    val target = 48
+                    animator.addUpdateListener {
+                        val fraction = it.animatedFraction
+                        val value = (target * fraction).roundToInt()
+                        shapeDrawable.shape.padding(value)
+                        shapeDrawable.invalidateSelf()
+                    }
+                })
             .onViewAttachedStateChanged { _, attached ->
                 if (attached) {
                     animator.start()
@@ -546,28 +549,50 @@ class AdaptUIShapeSample : SampleView() {
 
         View()
             .layout(FILL, 128)
-            .background(Shape.drawable(Rectangle(), Ref()) { ref ->
+            .background(ShapeDrawable(Ref()) { ref ->
+                Rectangle {
+                    add(Circle {
+                        fill(Colors.orange)
+                        gravity(Gravity.center)
+                    })
 
-                add(Circle {
-                    fill(Colors.orange)
-                    gravity(Gravity.center)
-                })
+                    add(Rectangle {
+                        // also possible to call reference here
+                        reference(ref::gradient)
 
-                add(Rectangle {
-                    // also possible to call reference here
-                    reference(ref::gradient)
-
-                    fill(
-                        LinearGradient(
-                            GradientEdge.Top to GradientEdge.Bottom,
-                            Colors.accent, Colors.primary
+                        fill(
+                            LinearGradient(
+                                GradientEdge.Top to GradientEdge.Bottom,
+                                Colors.accent, Colors.primary
+                            )
                         )
-                    )
-                    size(height = 16, gravity = Gravity.bottom)
+                        size(height = 16, gravity = Gravity.bottom)
 
-                }.reference(ref::gradient))
-
+                    }.reference(ref::gradient))
+                }
             }.also { drawable = it })
+//            .background(Shape.drawable(Rectangle(), Ref()) { ref ->
+//
+//                add(Circle {
+//                    fill(Colors.orange)
+//                    gravity(Gravity.center)
+//                })
+//
+//                add(Rectangle {
+//                    // also possible to call reference here
+//                    reference(ref::gradient)
+//
+//                    fill(
+//                        LinearGradient(
+//                            GradientEdge.Top to GradientEdge.Bottom,
+//                            Colors.accent, Colors.primary
+//                        )
+//                    )
+//                    size(height = 16, gravity = Gravity.bottom)
+//
+//                }.reference(ref::gradient))
+//
+//            }.also { drawable = it })
             .ifAvailable(Build.VERSION_CODES.M) {
                 it.foregroundDefaultSelectable()
             }

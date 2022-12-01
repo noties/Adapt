@@ -19,21 +19,6 @@ import kotlin.math.roundToInt
 abstract class Shape {
 
     companion object {
-        fun <S : Shape> drawable(
-            shape: S,
-            block: S.() -> Unit = {}
-        ): ShapeDrawableNoRef {
-            return ShapeDrawable(shape.also(block))
-        }
-
-        fun <S : Shape, R : Any> drawable(
-            shape: S,
-            ref: R,
-            block: S.(R) -> Unit
-        ): ShapeDrawable<R> {
-            return ShapeDrawable(shape, ref, block)
-        }
-
         // default color, black with 255 (1F) alpha
         const val defaultFillColor: Int = 0xFF000000.toInt()
     }
@@ -776,7 +761,7 @@ abstract class Shape {
             fun effect(stroke: Stroke, paint: Paint) {
                 val dashWidth = stroke.dashWidth?.dip
                 if (dashWidth != null) {
-                    val dashGap = stroke.dashGap?.dip ?: dashWidth / 4
+                    val dashGap = stroke.dashGap?.dip ?: (dashWidth / 4)
                     if (lastDashWidth != dashWidth
                         || lastDashGap != dashGap
                         || paint.pathEffect == null

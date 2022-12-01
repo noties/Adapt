@@ -82,7 +82,7 @@ fun <RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
         val cause = Throwable()
         // castLayout must use onLayout -> so any further modification of the layoutParams
         //  would happen after we validate them
-        onLayout {
+        onLayoutParams {
             if (!matches()) deliver(cause)
         }
     }
@@ -122,7 +122,7 @@ fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
     }
 
     val element = this
-    return onLayout {
+    return onLayoutParams {
         // here we are inside rendering phase, post to view, to customize and render
         if (matches()) {
             element.view.post { deliver() }

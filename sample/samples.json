@@ -1,5 +1,12 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIFlexInteractiveSample",
+    "id": "20221126000447",
+    "title": "AdaptUI - Flex interactive guide",
+    "description": "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
+    "tags": []
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample",
     "id": "20221016113609",
     "title": "AdaptUI - extensions to style or customize elements",

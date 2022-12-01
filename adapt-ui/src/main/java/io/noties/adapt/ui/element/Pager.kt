@@ -40,7 +40,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
                     // sync provided values with our layout params, do not call `render` here
                     // not _new api_, kotlin version which has the same name
                     //noinspection NewApi
-                    element.layoutBlocks.forEach { it(lp) }
+                    element.layoutParamsBlocks.forEach { it(lp) }
                     PagerItem(element, lp)
                 }
                 .partition { it.layoutParams.isDecor }
@@ -208,7 +208,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedList
  */
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
     gravity: Gravity? = null
-) = onLayout {
+) = onLayoutParams {
     isDecor = true
     gravity?.also { this.gravity = it.value }
 }
@@ -219,7 +219,7 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
  */
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerPageWidthRatio(
     @FloatRange(from = 0.0, to = 1.0) ratio: Float?
-) = onLayout {
+) = onLayoutParams {
     ratio?.also { pageWidthRatio = it }
 }
 
@@ -233,7 +233,7 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerPageWidthRatio(
 @JvmName("pagerOnPageChangeListenerWithAdapterPage")
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageChangedListener(
     onPageChangeListener: ViewPagerOnPageChangeListener?
-) = onLayout {
+) = onLayoutParams {
     this.onPageChangeListener = onPageChangeListener?.also {
         it.viewPager = viewPager
     }
@@ -241,7 +241,7 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageChangedListener(
 
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageSelectedListener(
     onPageSelectedListener: ViewPagerOnPageSelectedListener?
-) = onLayout {
+) = onLayoutParams {
     this.onPageSelectedListener = onPageSelectedListener
 }
 

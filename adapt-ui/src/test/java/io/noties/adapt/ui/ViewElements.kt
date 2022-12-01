@@ -39,3 +39,12 @@ internal inline fun <reified LP : LayoutParams> obtainView2(block: (ViewFactory<
         it.render()
     }.view
 }
+
+fun <V : View> ViewElement<V, LayoutParams>.mockLayoutParams() = mockLayoutParams(
+    LayoutParams(0, 0)
+)
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.mockLayoutParams(params: LP) =
+    this.also {
+        Mockito.`when`(view.layoutParams).thenReturn(params)
+    }

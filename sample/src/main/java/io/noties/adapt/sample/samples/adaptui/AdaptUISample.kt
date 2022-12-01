@@ -250,7 +250,7 @@ class AdaptUISample : SampleView() {
                 View()
                     // 128 is already dp
                     .layout(FILL, 128)
-                    .background(Shape.drawable(Rectangle {
+                    .background(Rectangle {
 
                         val base = Rectangle {
                             fill(Color.MAGENTA)
@@ -282,7 +282,7 @@ class AdaptUISample : SampleView() {
                                 })
                             })
                         })
-                    }))
+                    })
                 Element(::Button)
                     .textSize(17)
                     .textFont(null, Typeface.BOLD)

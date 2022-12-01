@@ -19,7 +19,7 @@ import io.noties.adapt.ui.util.dip
 fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.layout(
     width: Int,
     height: Int
-): ViewElement<V, LP> = onLayout {
+): ViewElement<V, LP> = onLayoutParams {
     // special values
     if (width == MATCH_PARENT || width == WRAP_CONTENT) {
         this.width = width
@@ -62,7 +62,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layout(
     return this.also {
         (it as ViewElement<V, out LayoutParams>).layout(width, height)
         weight?.also { w ->
-            it.onLayout { this.weight = w }
+            it.onLayoutParams { this.weight = w }
         }
     }
 }
@@ -75,7 +75,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layout(
  */
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight(
     weight: Float
-): ViewElement<V, LLP> = onLayout {
+): ViewElement<V, LLP> = onLayoutParams {
     this.weight = weight
 }
 
@@ -85,7 +85,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight
 @JvmName("linearLayoutGravity")
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
     gravity: Gravity
-): ViewElement<V, LLP> = onLayout {
+): ViewElement<V, LLP> = onLayoutParams {
     this.gravity = gravity.value
 }
 
@@ -95,7 +95,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravit
 @JvmName("frameLayoutGravity")
 fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
     gravity: Gravity
-): ViewElement<V, FLP> = onLayout {
+): ViewElement<V, FLP> = onLayoutParams {
     this.gravity = gravity.value
 }
 
@@ -129,7 +129,7 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     top: Int? = null,
     trailing: Int? = null,
     bottom: Int? = null
-) = onLayout {
+) = onLayoutParams {
     leading?.dip?.also { marginStart = it }
     top?.dip?.also { topMargin = it }
     trailing?.dip?.also { marginEnd = it }

@@ -22,7 +22,7 @@ class ShapeDrawable_Extensions_Test {
 
         val ref = Ref()
 
-        val drawable = ShapeDrawable(Rectangle(), ref) {}
+        val drawable = ShapeDrawable(ref) { Rectangle() }
         val callback = mockt<Drawable.Callback>()
         drawable.callback = callback
 

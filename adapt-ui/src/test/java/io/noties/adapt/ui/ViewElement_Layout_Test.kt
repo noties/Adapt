@@ -160,13 +160,4 @@ class ViewElement_Layout_Test {
                 }
         }
     }
-
-    private fun <V : View> ViewElement<V, LayoutParams>.mockLayoutParams() = mockLayoutParams(
-        LayoutParams(0, 0)
-    )
-
-    private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.mockLayoutParams(params: LP) =
-        this.also {
-            Mockito.`when`(view.layoutParams).thenReturn(params)
-        }
 }

@@ -1,5 +1,6 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
 - [ ] a project without view pager would fail, as viewelementfactory would not be able to resolve it
 - [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?

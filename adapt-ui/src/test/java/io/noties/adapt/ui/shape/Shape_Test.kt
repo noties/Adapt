@@ -155,24 +155,24 @@ class Shape_Test {
         }
     }
 
-    @Test
-    fun `drawable - factory`() {
-        val inputs = shapes()
-
-        for (input in inputs) {
-            val drawable = Shape.drawable(input)
-            Assert.assertEquals(
-                input::class.java.simpleName,
-                ShapeDrawable::class.java,
-                drawable::class.java
-            )
-            Assert.assertEquals(
-                input::class.java.simpleName,
-                input,
-                drawable.shape
-            )
-        }
-    }
+//    @Test
+//    fun `drawable - factory`() {
+//        val inputs = shapes()
+//
+//        for (input in inputs) {
+//            val drawable = Shape.drawable(input)
+//            Assert.assertEquals(
+//                input::class.java.simpleName,
+//                ShapeDrawable::class.java,
+//                drawable::class.java
+//            )
+//            Assert.assertEquals(
+//                input::class.java.simpleName,
+//                input,
+//                drawable.shape
+//            )
+//        }
+//    }
 
     @Test
     fun `drawable - instance`() {

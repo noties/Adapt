@@ -503,3 +503,12 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
     return this
 }
 
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
+    block: ViewElement<V, LP>.() -> Unit
+): ViewElement<V, LP> {
+    val element = this
+    return onView {
+        block(element)
+    }
+}
+

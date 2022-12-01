@@ -34,6 +34,10 @@ android {
     // even if you do not use resources, robolectric still requires this,
     //  otherwise it would skip tests
     testOptions.unitTests.includeAndroidResources = true
+
+    lintOptions {
+        fatal 'StopShip'
+    }
 }
 
 dependencies {
@@ -53,7 +57,7 @@ dependencies {
     testImplementation deps['x-recyclerview']
     testImplementation deps['x-viewpager']
     testImplementation deps['x-viewpager2']
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
 apply from: '../publish.gradle'
