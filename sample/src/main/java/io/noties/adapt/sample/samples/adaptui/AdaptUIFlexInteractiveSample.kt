@@ -15,8 +15,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Switch
 import android.widget.TextView
+import com.google.android.flexbox.AlignContent
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.flexbox.JustifyContent
 import io.noties.adapt.sample.App
@@ -40,6 +42,7 @@ import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
+import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textColor
@@ -57,12 +60,13 @@ import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.onCheckedChanged
 import io.noties.adapt.ui.onClick
-import io.noties.adapt.ui.onElementView
-import io.noties.adapt.ui.onViewPreDraw
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.Asset
+import io.noties.adapt.ui.shape.Capsule
+import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
@@ -99,23 +103,19 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         FlexBasis(),
                         FlexGrow(),
                         FlexGrowInteractive(),
-                        FlexShrinkInteractive()
-                    ).onEach {
-                        it.padding(top = 32)
-                            .background(Rectangle {
-                                add(Rectangle {
-                                    size(height = 16)
-                                    fill(Colors.accent)
-                                })
-                            })
-                    }
+                        FlexShrinkInteractive(),
+                        FlexShrink(),
+                        FlexWrap(),
+                        FlexAlignItemsMultiline(),
+                        FlexAlignContentMultiline()
+                    )
 
                 }.layout(FILL, WRAP)
-                    .padding(vertical = 16)
+                    // more at the bottom, so view can scroll more and dropdown is properly displayed
+                    .padding(bottom = 128)
 
 
             }.layoutFill()
-                .background(Colors.primary)
         }
     }
 
@@ -137,13 +137,13 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .textFont(Typeface.DEFAULT_BOLD)
             .padding(horizontal = 16, vertical = 8)
             .background(RoundedRectangle(8) {
-                stroke(Colors.white, 2)
+                stroke(Colors.primary, 2)
                 padding(1)
                 fill(
                     LinearGradient(
                         GradientEdge.Top to GradientEdge.Bottom,
-                        hex("#20ffffff"),
-                        hex("#00ffffff")
+                        Colors.primary.withAlphaComponent(0.42F),
+                        Colors.primary.withAlphaComponent(0F),
                     )
                 )
             })
@@ -168,8 +168,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .flexAlignItems(AlignItems.STRETCH)
             .padding(horizontal = 12, vertical = 4)
             .background(RoundedRectangle(2) {
-                stroke(hex("#40ffffff"))
-                padding(horizontal = 8)
+                stroke(Colors.black.withAlphaComponent(0.42F), 1, 8)
+                padding(horizontal = 8, vertical = 1)
             })
 
     @Suppress("FunctionName")
@@ -198,7 +198,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 Switch(it).also { s -> s.switchPadding = 8.dip }
             }.text("Show Primary Axis")
                 .padding(bottom = 8)
-                .textColor(Colors.white)
+                .textColor(Colors.black)
                 .ifAvailable(Build.VERSION_CODES.M) {
                     it.onView {
                         thumbTintList = ColorStateListBuilder.create {
@@ -232,7 +232,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     Rectangle {
                         hidden(true)
                         fill(Colors.white.withAlphaComponent(0.65F))
-                        stroke(Colors.primary.withAlphaComponent(0.65F), 2, 4, 1)
+                        stroke(Colors.accent.withAlphaComponent(0.65F), 2, 4, 1)
                         gravity(Gravity.center)
                     }.reference(ref::primaryAxisShape)
                 }.also { primaryAxis = it }
@@ -246,8 +246,6 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             }
             .onView {
                 onGlobalLayout {
-//                    Debug.e("it.isHorizontal=${it.isHorizontal}")
-
                     primaryAxis.invalidate {
                         val shape = primaryAxisShape
                         if (e.view.isHorizontal) {
@@ -268,10 +266,29 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexContainer(
         children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
     ) = VStack(children = children)
-        .padding(vertical = 8)
+        .padding(top = 8, bottom = 32)
+        .background(sampleSeparator())
+
+    private fun sampleSeparator() = Rectangle {
+        val s = 16
+        val drawable = App.shared.getDrawable(R.drawable.ic_asterisk)!!
+        val base = Asset(drawable) {
+            size(s, s, Gravity.center.bottom)
+            tint(Colors.black.withAlphaComponent(0.2F))
+        }
+        add(base)
+        add(base.copy {
+            translate(x = -(s + s / 2 + 4))
+        })
+        add(base.copy {
+            translate(x = s + s / 2 + 4)
+        })
+    }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexDirection() = FlexContainer {
+
+        SampleTitle("Flex direction")
 
         val flex = InteractiveFlex()
 
@@ -282,6 +299,9 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexAlignment() = FlexContainer {
+
+        SampleTitle("Flex alignment")
+
         val flex = InteractiveFlex()
 
         HStack {
@@ -298,6 +318,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexCrossAlignment() = FlexContainer {
+        SampleTitle("Flex cross alignment")
         val flex = InteractiveFlex()
         HStack {
             FlexDirectionDropDown(flex)
@@ -311,6 +332,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexAlignSelf() = FlexContainer {
+        SampleTitle("Flex align self")
         val (flex, firstItem) = InteractiveFlexWithFirstFlexItemActive()
         HStack {
             FlexDirectionDropDown(flex)
@@ -324,6 +346,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     //  in original flex flex-basis is used for that (no need to check axis and use width/height depending on it)
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexBasis() = FlexContainer {
+        SampleTitle("Flex basis")
         val (flex, firstItem) = InteractiveFlexWithFirstFlexItemActive()
         HStack {
 
@@ -386,6 +409,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexGrow() = FlexContainer {
+        SampleTitle("Flex grow")
         val (flex, firstItem) = InteractiveFlexWithFirstFlexItemActive()
         HStack {
 
@@ -405,132 +429,138 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     }
 
     @Suppress("FunctionName")
-    private fun <LP : LayoutParams> ViewFactory<LP>.FlexGrowInteractive() = Flex {
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexGrowInteractive() = FlexContainer {
+        SampleTitle("Flex grow interactive")
 
-        class Ref {
-            lateinit var view: View
-            lateinit var growIndicator: TextView
-            lateinit var minus: View
-            lateinit var plus: View
-        }
+        Flex {
 
-        fun ViewFactory<FlexboxLayout.LayoutParams>.Entry(ref: Ref) = VStack(Gravity.center) {
+            class Ref {
+                lateinit var view: View
+                lateinit var growIndicator: TextView
+                lateinit var minus: View
+                lateinit var plus: View
+            }
 
-            fun <LP : LayoutParams> ViewFactory<LP>.TextEntry(isMinus: Boolean) =
-                Text(if (isMinus) "-" else "+")
-                    .padding(horizontal = 8)
-                    .textFont(Typeface.MONOSPACE)
-                    .textColor(Colors.white)
-                    .textSize(20)
-                    .background(Corners {
-                        fill(Colors.white.withAlphaComponent(0.4F))
-                        if (isMinus) {
-                            leadingTop = 4
-                            bottomLeading = 4
-                            padding(trailing = 1)
-                        } else {
-                            topTrailing = 4
-                            trailingBottom = 4
-                            padding(leading = 1)
+            fun ViewFactory<FlexboxLayout.LayoutParams>.Entry(ref: Ref) = VStack(Gravity.center) {
+
+                fun <LP : LayoutParams> ViewFactory<LP>.TextEntry(isMinus: Boolean) =
+                    Text(if (isMinus) "-" else "+")
+                        .padding(horizontal = 8)
+                        .textFont(Typeface.MONOSPACE)
+                        .textColor(Colors.black)
+                        .textSize(20)
+                        .background(Corners {
+                            fill(Colors.primary.withAlphaComponent(0.4F))
+                            if (isMinus) {
+                                leadingTop = 4
+                                bottomLeading = 4
+                                padding(trailing = 1)
+                            } else {
+                                topTrailing = 4
+                                trailingBottom = 4
+                                padding(leading = 1)
+                            }
+                        })
+                        .ifAvailable(Build.VERSION_CODES.M) {
+                            it.foregroundDefaultSelectable()
                         }
-                    })
-                    .ifAvailable(Build.VERSION_CODES.M) {
-                        it.foregroundDefaultSelectable()
-                    }
-                    .clipToOutline()
+                        .clipToOutline()
 
-            Text("flex-grow:").layoutWrap().textColor(Colors.white)
-            Text("? / ?")
+                Text("flex-grow:").layoutWrap().textColor(Colors.black)
+                Text("? / ?")
+                    .layoutWrap()
+                    .textColor(Colors.black)
+                    .reference(ref::growIndicator)
+                HStack {
+                    TextEntry(true)
+                        .reference(ref::minus)
+                    TextEntry(false)
+                        .reference(ref::plus)
+                }.layoutWrap()
+
+            }.layoutFlexGrow(1F) // by default start with one
                 .layoutWrap()
-                .textColor(Colors.white)
-                .reference(ref::growIndicator)
-            HStack {
-                TextEntry(true)
-                    .reference(ref::minus)
-                TextEntry(false)
-                    .reference(ref::plus)
-            }.layoutWrap()
-
-        }.layoutFlexGrow(1F) // by default start with one
-            .layoutWrap()
-            .background(StatefulShape.drawable {
-                val base = RoundedRectangle(4) {
-                    padding(2)
-                    fill(Colors.white.withAlphaComponent(0.25F))
-                    add(RoundedRectangle(4) {
-                        padding(1)
-                        stroke(Colors.white.withAlphaComponent(0.5F))
+                .background(StatefulShape.drawable {
+                    val base = RoundedRectangle(4) {
+                        padding(2)
+                        fill(Colors.primary.withAlphaComponent(0.25F))
+                        add(RoundedRectangle(4) {
+                            padding(1)
+                            stroke(Colors.primary)
+                        })
+                    }
+                    setActivated(base)
+                    setDefault(base.copy {
+                        alpha(0.5F)
                     })
-                }
-                setActivated(base)
-                setDefault(base.copy {
-                    alpha(0.5F)
                 })
-            })
-            .padding(horizontal = 4)
-            .reference(ref::view)
+                .padding(horizontal = 4)
+                .reference(ref::view)
 
-        val left = Ref()
-        val right = Ref()
+            val left = Ref()
+            val right = Ref()
 
-        fun update() {
-            fun View.flexLP(): FlexboxLayout.LayoutParams =
-                layoutParams as FlexboxLayout.LayoutParams
+            fun update() {
+                fun View.flexLP(): FlexboxLayout.LayoutParams =
+                    layoutParams as FlexboxLayout.LayoutParams
 
-            @SuppressLint("SetTextI18n")
-            fun Ref.updateGrow(own: Float, total: Float) {
-                val ownValue = own.roundToInt()
-                if (ownValue == 0) {
-                    view.isActivated = false
-                    growIndicator.text = "0"
-                } else {
-                    view.isActivated = true
-                    growIndicator.text = "$ownValue / ${total.roundToInt()}"
-                }
-            }
-
-            fun Ref.setupClicks() {
-                fun inTransition(view: View, value: Float) {
-                    if (value >= 0F) {
-                        val lp = view.flexLP()
-                        val flex = (view.parent as FlexboxLayout)
-                        TransitionManager.beginDelayedTransition(flex)
-                        lp.flexGrow = value
-                        view.requestLayout()
+                @SuppressLint("SetTextI18n")
+                fun Ref.updateGrow(own: Float, total: Float) {
+                    val ownValue = own.roundToInt()
+                    if (ownValue == 0) {
+                        view.isActivated = false
+                        growIndicator.text = "0"
+                    } else {
+                        view.isActivated = true
+                        growIndicator.text = "$ownValue / ${total.roundToInt()}"
                     }
                 }
 
-                val lp = view.flexLP()
-                val value = lp.flexGrow.roundToInt()
-                minus.setOnClickListener {
-                    inTransition(view, value - 1F)
-                    update()
+                fun Ref.setupClicks() {
+                    fun inTransition(view: View, value: Float) {
+                        if (value >= 0F) {
+                            val lp = view.flexLP()
+                            val flex = (view.parent as FlexboxLayout)
+                            TransitionManager.beginDelayedTransition(flex)
+                            lp.flexGrow = value
+                            view.requestLayout()
+                        }
+                    }
+
+                    val lp = view.flexLP()
+                    val value = lp.flexGrow.roundToInt()
+                    minus.setOnClickListener {
+                        inTransition(view, value - 1F)
+                        update()
+                    }
+                    plus.setOnClickListener {
+                        inTransition(view, value + 1F)
+                        update()
+                    }
                 }
-                plus.setOnClickListener {
-                    inTransition(view, value + 1F)
-                    update()
-                }
+
+                val leftGrow = left.view.flexLP().flexGrow
+                val rightGrow = right.view.flexLP().flexGrow
+
+                left.updateGrow(leftGrow, leftGrow + rightGrow)
+                right.updateGrow(rightGrow, leftGrow + rightGrow)
+
+                left.setupClicks()
+                right.setupClicks()
             }
 
-            val leftGrow = left.view.flexLP().flexGrow
-            val rightGrow = right.view.flexLP().flexGrow
+            Entry(left)
+            Entry(right)
+                .onView { update() }
 
-            left.updateGrow(leftGrow, leftGrow + rightGrow)
-            right.updateGrow(rightGrow, leftGrow + rightGrow)
-
-            left.setupClicks()
-            right.setupClicks()
-        }
-
-        Entry(left)
-        Entry(right)
-            .onView { update() }
-
-    }.layout(FILL, 128)
-        .defaultFlexContainerStyle()
+        }.layout(FILL, 128)
+            .defaultFlexContainerStyle()
+    }
 
     @Suppress("FunctionName")
-    private fun <LP : LayoutParams> ViewFactory<LP>.FlexShrinkInteractive() = VStack {
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexShrinkInteractive() = FlexContainer {
+
+        SampleTitle("Flex shrink interactive")
 
         // NB! difference from js impl - shrink is not distributed equally, so children are
         //  not shrunk proportionally. They receive the same amount in pixels, but these
@@ -539,11 +569,11 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             Text("flex-basis:$basis")
                 .textSize(12)
                 .textGravity(Gravity.center.horizontal)
-                .textColor(Colors.white)
+                .textColor(Colors.black)
             Text("Actual size:???")
                 .textSize(12)
                 .textGravity(Gravity.center.horizontal)
-                .textColor(Colors.white)
+                .textColor(Colors.black)
                 .onView {
                     val textView = this
                     (textView.parent as View).onGlobalLayout {
@@ -561,10 +591,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         }.layout(basis, FILL)
             .background(RoundedRectangle(2) {
                 padding(1)
-                fill(Colors.white.withAlphaComponent(0.25F))
+                fill(Colors.primary.withAlphaComponent(0.25F))
                 add(RoundedRectangle(2) {
                     padding(1)
-                    stroke(Colors.white.withAlphaComponent(0.5F))
+                    stroke(Colors.primary)
                 })
             })
 
@@ -577,60 +607,209 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         }.defaultFlexContainerStyle()
             .layout(FILL, 128)
 
-        DropDownLabel("Container width", false)
-
-//        Element { ctx ->
-//            SeekBar(ctx).also {
-//                it.max = 100
-//                it.progress = 100
-//                it.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-//                    override fun onProgressChanged(
-//                        seekBar: SeekBar?,
-//                        progress: Int,
-//                        fromUser: Boolean
-//                    ) {
-//                        val width = (flex.view.parent as ViewGroup).width
-//                        flex.layout(
-//                            (width * (progress / 100F)).roundToInt().fromPxToDp,
-//                            128
-//                        ).render()
-//                    }
-//
-//                    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
-//                    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
-//                })
-//            }
-//
-//        }.layout(FILL, WRAP)
-//            .padding(8)
-
-        SeekBar()
-            .seekBarOnChanged {
-                val width = (flex.view.parent as ViewGroup).width
-                val value = (width * it).roundToInt().fromPxToDp
-                Debug.e("progress:$it width:$width value:$value")
-                flex.layout(
-                    value,
-                    128
-                ).render()
-            }
-            .seekBarTint(Colors.yellow)
-            .onElementView {
-                val el = this
-                flex.onViewPreDraw {
-                    el.seekBarValue(1F).render()
-                }.render()
-            }
+        FlexContainerWidthOption(flex)
             .layout(FILL, WRAP)
-            .padding(8)
     }
 
     @Suppress("FunctionName")
-    private fun <LP : LayoutParams> ViewFactory<LP>.FlexShrink() = VStack {
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexShrink() = FlexContainer {
+
+        SampleTitle("Flex shrink")
+
+        val height = 32
+
+        val circles = mutableListOf<ViewElement<*, FlexboxLayout.LayoutParams>>()
+
         val flex = Flex {
 
-        }.defaultFlexContainerStyle()
+            View()
+                .layout(height, FILL)
+                .background(Oval().fill(Colors.yellow))
+                .also { circles.add(it) }
+            View()
+                .layout(128, FILL)
+                .layoutFlexGrow(1F)
+                .layoutMargin(horizontal = 4)
+                .background(Capsule().stroke(Colors.primary).padding(1))
+            View()
+                .layout(height, FILL)
+                .background(Oval().fill(Colors.yellow))
+                .also { circles.add(it) }
+
+        }.flexAlignItems(AlignItems.STRETCH)
+            .background(RoundedRectangle(2) {
+                stroke(hex("#40ff0000"))
+//                padding(horizontal = 8)
+            })
+            .layout(FILL, height)
+
+        HStack(Gravity.top) {
+
+            DropDown(
+                "flex-shrink",
+                listOf("1 (default)" to 1F, "0" to 0F),
+                false
+            ) { selected ->
+                circles.forEach { circle ->
+                    circle.layoutFlexShrink(selected.second)
+                }
+            }.layout(0, WRAP, 1F)
+
+            FlexContainerWidthOption(flex)
+                .layout(0, WRAP, 1F)
+        }
     }
+
+    @Suppress("FunctionName")
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexContainerWidthOption(
+        flex: ViewElement<FlexboxLayout, *>
+    ) = VStack {
+        DropDownLabel("Container width", false)
+        SeekBar()
+            .seekBarTint(Colors.yellow)
+            .seekBarValue(1F)
+            .seekBarOnChanged {
+                val width = ((flex.view.parent as ViewGroup).width * it).roundToInt()
+                val lp = flex.view.layoutParams
+                lp.width = width
+                flex.view.requestLayout()
+            }
+    }
+
+    @Suppress("FunctionName")
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexWrap() = FlexContainer {
+
+        SampleTitle("Flex wrap")
+
+        fun <LP : FlexboxLayout.LayoutParams> ViewFactory<LP>.Entry(basis: Int = 100) = VStack {
+
+            Text("flex-basis: $basis")
+                .textColor(Colors.black)
+            Text("Actual size: ???")
+                .textColor(Colors.black)
+                .layoutMargin(top = 2)
+                .onView {
+                    val tv = this
+                    (tv.parent as View).onGlobalLayout {
+                        tv.text = "Actual size: ${it.width.fromPxToDp}"
+                    }
+                }
+
+        }.layout(basis, WRAP)
+            .padding(4)
+            .background(RoundedRectangle(2) {
+                stroke(Colors.accent.withAlphaComponent(0.42F))
+                padding(2)
+            })
+//            .layoutFlexAlignSelf(AlignItems.STRETCH)
+//            .layoutFlexShrink(0F)
+//            .layoutFlexGrow(1F)
+
+        val flex = Flex {
+            Entry()
+            Entry()
+            Entry()
+        }.defaultFlexContainerStyle()
+
+        HStack(Gravity.top) {
+
+            DropDown(
+                "flex-wrap",
+                listOf("nowrap (default)" to FlexWrap.NOWRAP, "wrap" to FlexWrap.WRAP)
+            ) { selected ->
+                flex.renderInTransition {
+                    flex.flexWrap(selected.second)
+                }
+            }
+                .layout(0, WRAP, 1F)
+
+            FlexContainerWidthOption(flex)
+                .layout(0, WRAP, 1F)
+        }
+    }
+
+    @Suppress("FunctionName")
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexAlignItemsMultiline() = FlexContainer {
+
+        SampleTitle("Flex align items multiline")
+
+        val flex = Flex {
+            FlexItem("Hello")
+                .layout(0, WRAP)
+                .layoutFlexGrow(1F)
+            FlexItem("the")
+                .layout(0, 96)
+                .layoutFlexGrow(1F)
+            FlexItem("world")
+                .layout(0, 96)
+                .layoutFlexWrapBefore()
+                .layoutFlexGrow(1F)
+            FlexItem("!!!")
+                .layout(0, WRAP)
+                .layoutFlexGrow(1F)
+        }.defaultFlexContainerStyle()
+            .flexWrap(FlexWrap.WRAP)
+
+        AlignItemsDropDown(flex)
+    }
+
+    @Suppress("FunctionName")
+    private fun <LP : LayoutParams> ViewFactory<LP>.FlexAlignContentMultiline() = FlexContainer {
+
+        SampleTitle("Flex align content multiline")
+
+        val shape = RoundedRectangle(2) {
+            stroke(Colors.primary)
+            padding(1)
+        }
+
+        val flex = Flex {
+            FlexItem("Hello")
+                .layout(0, WRAP)
+                .layoutFlexGrow(1F)
+            FlexItem("the")
+                .layout(0, 96)
+                .layoutFlexGrow(1F)
+            FlexItem("world")
+                .layout(0, 96)
+                .layoutFlexWrapBefore()
+                .layoutFlexGrow(1F)
+            FlexItem("!!!")
+                .layout(0, WRAP)
+                .layoutFlexGrow(1F)
+        }.defaultFlexContainerStyle()
+            .flexWrap(FlexWrap.WRAP)
+            .layout(FILL, 96 * 2 + 32)
+
+        HStack {
+            AlignItemsDropDown(flex)
+                .layout(0, WRAP, 1F)
+            DropDown(
+                "align-content",
+                listOf(
+                    "flex-start" to AlignContent.FLEX_START,
+                    "flex-end" to AlignContent.FLEX_END,
+                    "center" to AlignContent.CENTER,
+                    "space-between" to AlignContent.SPACE_BETWEEN,
+                    "space-around" to AlignContent.SPACE_AROUND,
+                    "stretch" to AlignContent.STRETCH,
+                )
+            ) { selected ->
+                flex.renderInTransition {
+                    flex.flexAlignContent(selected.second)
+                }
+            }.layout(0, WRAP, 1F)
+        }
+    }
+
+    @Suppress("FunctionName")
+    private fun <LP : LayoutParams> ViewFactory<LP>.SampleTitle(name: String) =
+        Text(name)
+            .textSize(24)
+            .textColor(Colors.primary)
+            .textFont(Typeface.DEFAULT_BOLD)
+            .padding(horizontal = 16)
+            .padding(top = 24, bottom = 8)
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.FlexDirectionDropDown(
@@ -697,7 +876,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         isActive: Boolean
     ) = Text("$name:")
         .textSize(16)
-        .textColor(if (isActive) Colors.yellow else Colors.white)
+        .textColor(if (isActive) Colors.yellow else Colors.black)
         .textFont(Typeface.DEFAULT_BOLD)
 
     @Suppress("FunctionName")
@@ -713,17 +892,17 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         Text()
             .text(values[0].first)
             .textSize(16)
-            .textColor(if (isActive) Colors.black else Colors.white)
+            .textColor(if (isActive) Colors.black else Colors.primary)
             .layoutMargin(top = 4)
             .padding(16)
             .padding(trailing = 16 + 16)
             .background(RoundedRectangle(8) {
-                val base = if (isActive) Colors.yellow else Colors.white.withAlphaComponent(0.1F)
+                val base = if (isActive) Colors.yellow else Colors.black.withAlphaComponent(0.1F)
                 fill(base)
                 add(Asset(App.shared.getDrawable(R.drawable.ic_arrow_drop_down_24)!!) {
                     size(16, 16)
                     gravity(Gravity.center.trailing)
-                    tint(Colors.white)
+                    tint(Colors.accent)
                     translate(x = -8)
                 })
             })

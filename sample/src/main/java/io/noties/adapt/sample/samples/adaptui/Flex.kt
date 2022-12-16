@@ -126,7 +126,7 @@ fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMax
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexWrapBefore(
-    wrapBefore: Boolean
+    wrapBefore: Boolean = true
 ): ViewElement<V, LP> = onLayoutParams {
     this.isWrapBefore = wrapBefore
 }

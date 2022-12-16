@@ -24,10 +24,13 @@ class ViewElement<V : View, LP : LayoutParams>(
     }
 
     // TODO: does it make sense to call render if view is already present?
+    //  what if, we post to the view queue? and if view is present automatically trigger
+    //  rendering
     fun onView(
         block: V.() -> Unit
     ): ViewElement<V, LP> = this.also {
         it.viewBlocks.add(block)
+        scheduleRendering()
     }
 
     // TODO: does it make sense to call render if view is already present?
@@ -35,12 +38,16 @@ class ViewElement<V : View, LP : LayoutParams>(
         block: LP.() -> Unit
     ): ViewElement<V, LP> = this.also {
         it.layoutParamsBlocks.add(block)
+        scheduleRendering()
     }
 
     fun render() {
         // if we are already rendering, no need to launch it again - blocks would be added and invoked
         //  automatically
         if (isRendering) return
+
+        // if rendering has already started no need to trigger it again
+        view.removeCallbacks(renderRunnable)
 
         isRendering = true
 
@@ -141,6 +148,20 @@ class ViewElement<V : View, LP : LayoutParams>(
 
     fun render(block: (ViewElement<V, LP>) -> Unit) {
         block(this)
+        render()
+    }
+
+    // todo: element to include item directly in layout
+    private fun scheduleRendering() {
+        if (!isInitialized) return
+
+        val view = this.view
+        // TODO: do we need to remove it first?
+        view.removeCallbacks(renderRunnable)
+        view.post(renderRunnable)
+    }
+
+    private val renderRunnable: Runnable = Runnable {
         render()
     }
 
