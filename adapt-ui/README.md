@@ -16,4 +16,4 @@ private fun AnyViewElement.myCustomStyle() = this
   It is better to keep current semantics, but allow using different imports... it is not that safe
   can we ensure that certain elements are not imported? plus, different types can be returned
 * input element
-* lazy view (conditionally added to layout, like view-something in android xml)
+* lazy view (conditionally added to layout, like view-stub in android xml)

@@ -238,6 +238,26 @@ class Text_Test {
     }
 
     @Test
+    fun textHintColor() {
+        val input = 8912
+        newTextElement()
+            .textHintColor(input)
+            .renderView {
+                verify(this).setHintTextColor(eq(input))
+            }
+    }
+
+    @Test
+    fun `textHintColor - colorStateList`() {
+        val input = ColorStateList.valueOf(21314)
+        newTextElement()
+            .textHintColor(input)
+            .renderView {
+                verify(this).setHintTextColor(eq(input))
+            }
+    }
+
+    @Test
     fun textEllipsize() {
         val inputs = TextUtils.TruncateAt.values()
         for (input in inputs) {

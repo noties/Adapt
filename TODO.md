@@ -1,17 +1,18 @@
 * explicit tags in sample (enum?), define colors for each
 
 - [ ] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
-- [ ] a project without view pager would fail, as viewelementfactory would not be able to resolve it
 - [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?
 - [ ] createView, move to view factory, cannot import?
-- [ ] text hint color
 - [ ] window insets
 - [ ] Int.unused in shape builder functions (where applicable)
 - [ ] shape, stroke width, stroke gap and stroke dash to be relative?
 - [ ] element+extensions, accessibility properties
 - [ ] view, additional gestures
 
+- [x] text hint color
+- [x] a project without view pager would fail, as viewelementfactory would not be able to resolve it
+  seems to be working now, as view-pager is not importaed, but referenced by full-name
 - [X] layout width|height when used with layoutWeight - anyway it is a proper way to define such a
   view it is better to make weight explicit in `layout` function call for LinearLayout
 - [X] shape rotation

@@ -207,6 +207,27 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
 }
 
 /**
+ * Hint text color
+ * @see TextView.setHintTextColor
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
+    @ColorInt color: Int
+): ViewElement<V, LP> = onView {
+    this.setHintTextColor(color)
+}
+
+/**
+ * Hint text color
+ * @see TextView.setHintTextColor
+ * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
+    colorStateList: ColorStateList
+): ViewElement<V, LP> = onView {
+    this.setHintTextColor(colorStateList)
+}
+
+/**
  * Ellipsize
  * @see TextView.setEllipsize
  */
