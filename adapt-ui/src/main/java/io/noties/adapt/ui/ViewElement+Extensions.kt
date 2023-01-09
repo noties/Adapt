@@ -512,3 +512,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
     }
 }
 
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayout(
+    callback: (V, width: Int, height: Int) -> Unit
+): ViewElement<V, LP> = onView {
+    addOnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
+        @Suppress("UNCHECKED_CAST")
+        callback(v as V, right - left, bottom - top)
+    }
+}
+

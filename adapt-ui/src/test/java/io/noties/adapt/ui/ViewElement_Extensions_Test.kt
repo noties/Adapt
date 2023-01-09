@@ -18,7 +18,6 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyFloat
@@ -815,6 +814,34 @@ class ViewElement_Extensions_Test {
         verify(callbacks, org.mockito.kotlin.never()).invoke(org.mockito.kotlin.any())
         element.render()
         verify(callbacks, times(1)).invoke(org.mockito.kotlin.eq(element))
+    }
+
+    @Test
+    fun onViewLayout() {
+        val callbacks: (View, Int, Int) -> Unit = mockt()
+        val element = newElement()
+            .onViewLayout(callbacks)
+        verify(callbacks, org.mockito.kotlin.never()).invoke(
+            org.mockito.kotlin.any(),
+            anyInt(),
+            anyInt()
+        )
+        element.render()
+        val captor = argumentCaptor<View.OnLayoutChangeListener>()
+        verify(element.view).addOnLayoutChangeListener(captor.capture())
+
+        verify(callbacks, org.mockito.kotlin.never()).invoke(
+            org.mockito.kotlin.any(),
+            anyInt(),
+            anyInt()
+        )
+
+        captor.value.onLayoutChange(element.view, 10, 20, 100, 50, 0, 0, 0, 0)
+        verify(callbacks).invoke(
+            org.mockito.kotlin.eq(element.view),
+            org.mockito.kotlin.eq(100 - 10),
+            org.mockito.kotlin.eq(50 - 20),
+        )
     }
 
     private fun <T> mode(value: T?): VerificationMode = if (value == null) never() else times(1)
