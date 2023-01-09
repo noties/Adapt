@@ -1,15 +1,17 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] add consumer proguard to remove preview layouts (ui and regular)
 - [ ] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
 - [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?
-- [ ] createView, move to view factory, cannot import?
 - [ ] window insets
 - [ ] Int.unused in shape builder functions (where applicable)
-- [ ] shape, stroke width, stroke gap and stroke dash to be relative?
 - [ ] element+extensions, accessibility properties
 - [ ] view, additional gestures
 
+- [?] shape, stroke width, stroke gap and stroke dash to be relative?
+  UPD, seems to have very little value
+- [x] createView, move to view factory, cannot import?
 - [x] text hint color
 - [x] a project without view pager would fail, as viewelementfactory would not be able to resolve it
   seems to be working now, as view-pager is not importaed, but referenced by full-name

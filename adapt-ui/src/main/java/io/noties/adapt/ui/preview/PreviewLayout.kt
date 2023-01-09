@@ -5,16 +5,14 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import io.noties.adapt.ui.ViewFactory
 
-// TODO: add consumer proguard to remove preview layouts (here and in adapt preview)
-// TODO: review all callbacks -> receiving `View.() -> Unit` is not very
-//  convenient (cannot set name for receiver, can introduce confusion)
-
 /**
  * @since $UNRELEASED;
  */
 abstract class PreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+
+        initialize(this)
 
         val factory = ViewFactory<LayoutParams>(context)
         factory.body()
@@ -27,4 +25,6 @@ abstract class PreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayo
     }
 
     abstract fun ViewFactory<LayoutParams>.body()
+
+    open fun initialize(layout: PreviewLayout) = Unit
 }
