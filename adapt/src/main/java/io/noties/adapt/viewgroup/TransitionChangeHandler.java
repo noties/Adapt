@@ -14,7 +14,6 @@ import androidx.annotation.RequiresApi;
  * @see AdaptViewGroup.ChangeHandler
  * @see ViewGroupChangeHandler
  */
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     /**

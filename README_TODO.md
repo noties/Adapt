@@ -174,5 +174,9 @@ VStack {
 }
 ```
 
+Pass elements and items around, allowing wide usage
+Preview in layout
+Use as an argument to achieve dynamism
 
+Drive a customer/user crazy -> change position on click (easy list manipulation)
 

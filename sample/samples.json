@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.view.AdaptViewConfigurationSample",
+    "id": "20230109182559",
+    "title": "AdaptView configuration",
+    "description": "",
+    "tags": [
+      "view"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIFlexInteractiveSample",
     "id": "20221126000447",
     "title": "AdaptUI - Flex interactive guide",

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 
 typealias LayoutParams = ViewGroup.LayoutParams
 
-class ViewFactory<out LP : LayoutParams>(val context: Context) {
+open class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
     @Suppress("PropertyName")
     val FILL: Int
@@ -108,4 +108,11 @@ class ViewFactory<out LP : LayoutParams>(val context: Context) {
             }
         }
     }
+}
+
+open class ViewFactoryViewGroup<V : ViewGroup, LP : LayoutParams>(
+    context: Context,
+    val viewGroup: V
+) : ViewFactory<LP>(context) {
+    constructor(viewGroup: V) : this(viewGroup.context, viewGroup)
 }
