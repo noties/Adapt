@@ -59,8 +59,8 @@ class ViewElement_Test {
     @Test
     fun viewBlock() {
         val element = newElement()
-            .onView { alpha = 0.42F }
-            .onView { isEnabled = false }
+            .onView { it.alpha = 0.42F }
+            .onView { it.isEnabled = false }
         assertEquals(2, element.viewBlocks.size)
 
         element.render()
@@ -75,8 +75,8 @@ class ViewElement_Test {
     @Test
     fun layoutBlock() {
         val element = newElement()
-            .onLayoutParams { width = 88 }
-            .onLayoutParams { height = 9182 }
+            .onLayoutParams { it.width = 88 }
+            .onLayoutParams { it.height = 9182 }
 
         assertEquals(2, element.layoutParamsBlocks.size)
 

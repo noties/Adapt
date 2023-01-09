@@ -633,13 +633,13 @@ class ViewElement_Extensions_Test {
 
     @Test
     fun onScrollChanged() {
-        val inputs: List<((x: Int, y: Int) -> Unit)?> = listOf(
+        val inputs: List<((view: View, x: Int, y: Int) -> Unit)?> = listOf(
             null,
-            { _, _ -> }
+            { _, _, _ -> }
         )
         for (input in inputs) {
             newElement()
-                .onScrollChanged(input)
+                .onViewScrollChanged(input)
                 .renderView {
                     verify(this).setOnScrollChangeListener(
                         if (input == null) eq(null) else any(View.OnScrollChangeListener::class.java)

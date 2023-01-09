@@ -237,7 +237,7 @@ class AdaptUICastSample : SampleView() {
     private fun <V : CheckBox, LP : LayoutParams> ViewElement<V, LP>.checked(
         checked: Boolean = true
     ) = onView {
-        isChecked = checked
+        it.isChecked = checked
     }
 }
 

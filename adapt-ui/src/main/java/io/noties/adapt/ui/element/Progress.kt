@@ -22,7 +22,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Progress(): ViewElement<ProgressBar, LP>
 fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTint(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
-    indeterminateTintList = ColorStateList.valueOf(color)
+    it.indeterminateTintList = ColorStateList.valueOf(color)
 }
 
 /**
@@ -33,5 +33,5 @@ fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTint(
 fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTint(
     colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
-    indeterminateTintList = colorStateList
+    it.indeterminateTintList = colorStateList
 }

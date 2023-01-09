@@ -22,15 +22,15 @@ fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.layout(
 ): ViewElement<V, LP> = onLayoutParams {
     // special values
     if (width == MATCH_PARENT || width == WRAP_CONTENT) {
-        this.width = width
+        it.width = width
     } else {
         // else exact dp values, convert to px
-        this.width = width.dip
+        it.width = width.dip
     }
     if (height == MATCH_PARENT || height == WRAP_CONTENT) {
-        this.height = height
+        it.height = height
     } else {
-        this.height = height.dip
+        it.height = height.dip
     }
 }
 
@@ -59,10 +59,10 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layout(
     height: Int,
     weight: Float? = null
 ): ViewElement<V, LLP> {
-    return this.also {
-        (it as ViewElement<V, out LayoutParams>).layout(width, height)
+    return this.also { element ->
+        (element as ViewElement<V, out LayoutParams>).layout(width, height)
         weight?.also { w ->
-            it.onLayoutParams { this.weight = w }
+            element.onLayoutParams { it.weight = w }
         }
     }
 }
@@ -76,7 +76,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layout(
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight(
     weight: Float
 ): ViewElement<V, LLP> = onLayoutParams {
-    this.weight = weight
+    it.weight = weight
 }
 
 /**
@@ -86,7 +86,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, LLP> = onLayoutParams {
-    this.gravity = gravity.value
+    it.gravity = gravity.value
 }
 
 /**
@@ -96,7 +96,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravit
 fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, FLP> = onLayoutParams {
-    this.gravity = gravity.value
+    it.gravity = gravity.value
 }
 
 /**
@@ -129,9 +129,9 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     top: Int? = null,
     trailing: Int? = null,
     bottom: Int? = null
-) = onLayoutParams {
-    leading?.dip?.also { marginStart = it }
-    top?.dip?.also { topMargin = it }
-    trailing?.dip?.also { marginEnd = it }
-    bottom?.dip?.also { bottomMargin = it }
+) = onLayoutParams { mlp ->
+    leading?.dip?.also { mlp.marginStart = it }
+    top?.dip?.also { mlp.topMargin = it }
+    trailing?.dip?.also { mlp.marginEnd = it }
+    bottom?.dip?.also { mlp.bottomMargin = it }
 }

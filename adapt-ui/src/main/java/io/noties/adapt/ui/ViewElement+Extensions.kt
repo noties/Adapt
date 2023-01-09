@@ -24,7 +24,7 @@ import kotlin.reflect.KMutableProperty0
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
     property: KMutableProperty0<in V>
 ): ViewElement<V, LP> = onView {
-    property.set(this)
+    property.set(it)
 }
 
 /**
@@ -64,7 +64,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.reference(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.id(
     id: Int
 ): ViewElement<V, LP> = onView {
-    setId(id)
+    it.id = id
 }
 
 /**
@@ -76,9 +76,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
     key: Int? = null
 ): ViewElement<V, LP> = onView {
     if (key != null) {
-        setTag(key, tag)
+        it.setTag(key, tag)
     } else {
-        setTag(tag)
+        it.tag = tag
     }
 }
 
@@ -89,7 +89,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
-    setBackgroundColor(color)
+    it.setBackgroundColor(color)
 }
 
 /**
@@ -98,7 +98,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     drawable: Drawable?
 ): ViewElement<V, LP> = onView {
-    background = drawable
+    it.background = drawable
 }
 
 /**
@@ -115,7 +115,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable(): ViewElement<V, LP> =
     onView {
-        background = resolveDefaultSelectableDrawable(context)
+        it.background = resolveDefaultSelectableDrawable(it.context)
     }
 
 /**
@@ -127,9 +127,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     drawable: Drawable?,
     gravity: Gravity? = null
-): ViewElement<V, LP> = onView {
-    foreground = drawable
-    gravity?.also { foregroundGravity = it.value }
+): ViewElement<V, LP> = onView { view ->
+    view.foreground = drawable
+    gravity?.also { view.foregroundGravity = it.value }
 }
 
 /**
@@ -149,7 +149,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
 @RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable(): ViewElement<V, LP> =
     onView {
-        foreground = resolveDefaultSelectableDrawable(context)
+        it.foreground = resolveDefaultSelectableDrawable(it.context)
     }
 
 /**
@@ -177,11 +177,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
     trailing: Int? = null,
     bottom: Int? = null
 ): ViewElement<V, LP> = onView {
-    setPaddingRelative(
-        leading?.dip ?: paddingStart,
-        top?.dip ?: paddingTop,
-        trailing?.dip ?: paddingEnd,
-        bottom?.dip ?: paddingBottom
+    it.setPaddingRelative(
+        leading?.dip ?: it.paddingStart,
+        top?.dip ?: it.paddingTop,
+        trailing?.dip ?: it.paddingEnd,
+        bottom?.dip ?: it.paddingBottom
     )
 }
 
@@ -192,7 +192,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
     enabled: Boolean = true
 ): ViewElement<V, LP> = onView {
-    isEnabled = enabled
+    it.isEnabled = enabled
 }
 
 /**
@@ -202,7 +202,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.enabled(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
     activated: Boolean = true
 ): ViewElement<V, LP> = onView {
-    isActivated = activated
+    it.isActivated = activated
 }
 
 /**
@@ -211,7 +211,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.selected(
     selected: Boolean = true
 ): ViewElement<V, LP> = onView {
-    isSelected = selected
+    it.isSelected = selected
 }
 
 /**
@@ -221,7 +221,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.selected(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
     visible: Boolean
 ): ViewElement<V, LP> = onView {
-    visibility = if (visible) VISIBLE else GONE
+    it.visibility = if (visible) VISIBLE else GONE
 }
 
 /**
@@ -231,7 +231,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.alpha(
     @FloatRange(from = 0.0, to = 1.0) alpha: Float
 ): ViewElement<V, LP> = onView {
-    this.alpha = alpha
+    it.alpha = alpha
 }
 
 /**
@@ -253,9 +253,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scale(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scale(
     x: Float? = null,
     y: Float? = null
-): ViewElement<V, LP> = onView {
-    x?.let { scaleX = it }
-    y?.let { scaleY = it }
+): ViewElement<V, LP> = onView { view ->
+    x?.let { view.scaleX = it }
+    y?.let { view.scaleY = it }
 }
 
 /**
@@ -265,7 +265,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scale(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.rotate(
     rotation: Float
 ): ViewElement<V, LP> = onView {
-    this.rotation = rotation
+    it.rotation = rotation
 }
 
 /**
@@ -275,7 +275,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.rotate(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
     elevation: Int
 ): ViewElement<V, LP> = onView {
-    setElevation(elevation.dip.toFloat())
+    it.elevation = elevation.dip.toFloat()
 }
 
 /**
@@ -288,10 +288,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
     x: Int? = null,
     y: Int? = null,
     z: Int? = null
-): ViewElement<V, LP> = onView {
-    x?.dip?.also { translationX = it.toFloat() }
-    y?.dip?.also { translationY = it.toFloat() }
-    z?.dip?.also { translationZ = it.toFloat() }
+): ViewElement<V, LP> = onView { view ->
+    x?.dip?.also { view.translationX = it.toFloat() }
+    y?.dip?.also { view.translationY = it.toFloat() }
+    z?.dip?.also { view.translationZ = it.toFloat() }
 }
 
 /**
@@ -312,11 +312,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
     action: (() -> Unit)?
 ): ViewElement<V, LP> = onView {
     if (action == null) {
-        setOnClickListener(null)
+        it.setOnClickListener(null)
     } else {
         if (debounce) {
             var lastClickMillis = 0L
-            setOnClickListener {
+            it.setOnClickListener {
                 val now = SystemClock.uptimeMillis()
                 if (now - lastClickMillis > debounceMillis) {
                     lastClickMillis = now
@@ -324,7 +324,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onClick(
                 }
             }
         } else {
-            setOnClickListener { action() }
+            it.setOnClickListener { action() }
         }
     }
 }
@@ -337,9 +337,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
     action: (() -> Unit)?
 ): ViewElement<V, LP> = onView {
     if (action == null) {
-        setOnLongClickListener(null)
+        it.setOnLongClickListener(null)
     } else {
-        setOnLongClickListener {
+        it.setOnLongClickListener {
             action()
             true
         }
@@ -347,14 +347,15 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onScrollChanged(
-    action: ((x: Int, y: Int) -> Unit)?
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewScrollChanged(
+    action: ((V, x: Int, y: Int) -> Unit)?
 ): ViewElement<V, LP> = onView {
     if (action == null) {
-        setOnScrollChangeListener(null)
+        it.setOnScrollChangeListener(null)
     } else {
-        setOnScrollChangeListener { _, scrollX, scrollY, _, _ ->
-            action(scrollX, scrollY)
+        it.setOnScrollChangeListener { v, scrollX, scrollY, _, _ ->
+            @Suppress("UNCHECKED_CAST")
+            action(v as V, scrollX, scrollY)
         }
     }
 }
@@ -366,7 +367,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onScrollChanged(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
     overScrollMode: Int
 ): ViewElement<V, LP> = onView {
-    this.overScrollMode = overScrollMode
+    it.overScrollMode = overScrollMode
 }
 
 /**
@@ -376,7 +377,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
     scrollBarStyle: Int
 ): ViewElement<V, LP> = onView {
-    this.scrollBarStyle = scrollBarStyle
+    it.scrollBarStyle = scrollBarStyle
 }
 
 /**
@@ -387,11 +388,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
     width: Int? = null,
     height: Int? = null
-): ViewElement<V, LP> = onView {
+): ViewElement<V, LP> = onView { view ->
     // there is no point of using `unused` here, as null would suffice
     //  (cannot set null)
-    width?.dip?.also { minimumWidth = it }
-    height?.dip?.also { minimumHeight = it }
+    width?.dip?.also { view.minimumWidth = it }
+    height?.dip?.also { view.minimumHeight = it }
 }
 
 /**
@@ -403,8 +404,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
     focusable: Boolean = true,
     focusableInTouchMode: Boolean = focusable
 ): ViewElement<V, LP> = onView {
-    isFocusable = focusable
-    isFocusableInTouchMode = focusableInTouchMode
+    it.isFocusable = focusable
+    it.isFocusableInTouchMode = focusableInTouchMode
 }
 
 /**
@@ -418,7 +419,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
     clipToOutline: Boolean = true
 ): ViewElement<V, LP> = onView {
-    this.clipToOutline = clipToOutline
+    it.clipToOutline = clipToOutline
 }
 
 /**
@@ -429,8 +430,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
     block: (V) -> Unit
-): ViewElement<V, LP> = onView {
-    val view = this
+): ViewElement<V, LP> = onView { view ->
     val vto = view.viewTreeObserver.takeIf { it.isAlive } ?: return@onView
     vto.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
         override fun onPreDraw(): Boolean {
@@ -455,8 +455,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
     block: (view: V, attached: Boolean) -> Unit
-): ViewElement<V, LP> = onView {
-    this.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+): ViewElement<V, LP> = onView { view ->
+    view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View) {
             notify(v, true)
         }
@@ -467,9 +467,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
 
         @Suppress("UNCHECKED_CAST")
         private fun notify(v: View, attached: Boolean) {
-            (v as? V)?.also {
-                block(it, attached)
-            }
+            block(v as V, attached)
         }
     })
 }
@@ -515,7 +513,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayout(
     callback: (V, width: Int, height: Int) -> Unit
 ): ViewElement<V, LP> = onView {
-    addOnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
+    it.addOnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
         @Suppress("UNCHECKED_CAST")
         callback(v as V, right - left, bottom - top)
     }

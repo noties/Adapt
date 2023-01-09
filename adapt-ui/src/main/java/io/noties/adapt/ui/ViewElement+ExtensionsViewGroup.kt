@@ -12,16 +12,16 @@ import io.noties.adapt.ui.util.children
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.enabled(
     enabled: Boolean,
     applyToChildren: Boolean = false
-): ViewElement<V, LP> = onView {
+): ViewElement<V, LP> = onView { view ->
     if (applyToChildren) {
         fun enable(view: View) {
             view.isEnabled = enabled
             //noinspection NewApi
             (view as? ViewGroup)?.children?.forEach { enable(it) }
         }
-        enable(this)
+        enable(view)
     } else {
-        isEnabled = enabled
+        view.isEnabled = enabled
     }
 }
 
@@ -33,16 +33,16 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.enabled(
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.activated(
     activated: Boolean,
     applyToChildren: Boolean = false
-): ViewElement<V, LP> = onView {
+): ViewElement<V, LP> = onView { view ->
     if (applyToChildren) {
         fun activate(view: View) {
             view.isActivated = activated
             //noinspection NewApi
             (view as? ViewGroup)?.children?.forEach { activate((it)) }
         }
-        activate(this)
+        activate(view)
     } else {
-        isActivated = activated
+        view.isActivated = activated
     }
 }
 
@@ -53,7 +53,7 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.activated(
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipChildren(
     clipChildren: Boolean
 ): ViewElement<V, LP> = onView {
-    this.clipChildren = clipChildren
+    it.clipChildren = clipChildren
 }
 
 /**
@@ -63,7 +63,7 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipChildren(
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipToPadding(
     clipToPadding: Boolean
 ): ViewElement<V, LP> = onView {
-    this.clipToPadding = clipToPadding
+    it.clipToPadding = clipToPadding
 }
 
 

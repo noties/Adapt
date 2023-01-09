@@ -20,5 +20,5 @@ fun <LP : LayoutParams> ViewFactory<LP>.VScroll(
 fun <V : ScrollView, LP : LayoutParams> ViewElement<V, LP>.scrollFillViewPort(
     fillViewPort: Boolean = true
 ): ViewElement<V, LP> = onView {
-    this.isFillViewport = fillViewPort
+    it.isFillViewport = fillViewPort
 }

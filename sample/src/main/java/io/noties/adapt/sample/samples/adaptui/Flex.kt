@@ -30,41 +30,41 @@ fun <LP : LayoutParams> ViewFactory<LP>.Flex(
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexDirection(
     @FlexDirection flexDirection: Int
 ): ViewElement<V, LP> = onView {
-    this.flexDirection = flexDirection
+    it.flexDirection = flexDirection
 }
 
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexWrap(
     @FlexWrap flexWrap: Int
 ): ViewElement<V, LP> = onView {
-    this.flexWrap = flexWrap
+    it.flexWrap = flexWrap
 }
 
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexJustifyContent(
     @JustifyContent justifyContent: Int
 ): ViewElement<V, LP> = onView {
-    this.justifyContent = justifyContent
+    it.justifyContent = justifyContent
 }
 
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignItems(
     @AlignItems alignItems: Int
 ): ViewElement<V, LP> = onView {
-    this.alignItems = alignItems
+    it.alignItems = alignItems
 }
 
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignContent(
     @AlignContent alignContent: Int
 ): ViewElement<V, LP> = onView {
-    this.alignContent = alignContent
+    it.alignContent = alignContent
 }
 
 // FlexboxLayout does not have gap support, but we can use a special drawable as divider
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexGap(
     gap: Int
 ) = onView {
-    setDividerDrawable(Rectangle {
+    it.setDividerDrawable(Rectangle {
         size(gap, gap)
     }.newDrawable())
-    setShowDivider(FlexboxLayout.SHOW_DIVIDER_MIDDLE)
+    it.setShowDivider(FlexboxLayout.SHOW_DIVIDER_MIDDLE)
 }
 
 
@@ -77,7 +77,7 @@ fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexGap(
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexOrder(
     flexOrder: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.order = flexOrder
+    it.order = flexOrder
 }
 
 /**
@@ -86,53 +86,53 @@ fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexOrd
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexGrow(
     flexGrow: Float
 ): ViewElement<V, LP> = onLayoutParams {
-    this.flexGrow = flexGrow
+    it.flexGrow = flexGrow
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexShrink(
     flexShrink: Float
 ): ViewElement<V, LP> = onLayoutParams {
-    this.flexShrink = flexShrink
+    it.flexShrink = flexShrink
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexAlignSelf(
     @AlignSelf alignSelf: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.alignSelf = alignSelf
+    it.alignSelf = alignSelf
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMinWidth(
     minWidth: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.minWidth = minWidth.dip
+    it.minWidth = minWidth.dip
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMinHeight(
     minHeight: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.minHeight = minHeight.dip
+    it.minHeight = minHeight.dip
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMaxWidth(
     maxWidth: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.maxWidth = maxWidth.dip
+    it.maxWidth = maxWidth.dip
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMaxHeight(
     maxHeight: Int
 ): ViewElement<V, LP> = onLayoutParams {
-    this.maxHeight = maxHeight.dip
+    it.maxHeight = maxHeight.dip
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexWrapBefore(
     wrapBefore: Boolean = true
 ): ViewElement<V, LP> = onLayoutParams {
-    this.isWrapBefore = wrapBefore
+    it.isWrapBefore = wrapBefore
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexBasisPercent(
     flexBasisPercent: Float
 ): ViewElement<V, LP> = onLayoutParams {
-    this.flexBasisPercent = flexBasisPercent
+    it.flexBasisPercent = flexBasisPercent
 }

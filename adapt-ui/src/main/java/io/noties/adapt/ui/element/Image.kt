@@ -55,7 +55,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Image(
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
     @DrawableRes resourceId: Int
 ): ViewElement<V, LP> = onView {
-    setImageResource(resourceId)
+    it.setImageResource(resourceId)
 }
 
 /**
@@ -64,7 +64,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
     drawable: Drawable?,
 ): ViewElement<V, LP> = onView {
-    setImageDrawable(drawable)
+    it.setImageDrawable(drawable)
 }
 
 /**
@@ -73,7 +73,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
     bitmap: Bitmap?,
 ): ViewElement<V, LP> = onView {
-    setImageBitmap(bitmap)
+    it.setImageBitmap(bitmap)
 }
 
 /**
@@ -83,7 +83,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     scaleType: ImageView.ScaleType
 ): ViewElement<V, LP> = onView {
-    this.scaleType = scaleType
+    it.scaleType = scaleType
 }
 
 /**
@@ -107,7 +107,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     colorStateList: ColorStateList,
     mode: PorterDuff.Mode? = null
-): ViewElement<V, LP> = onView {
-    imageTintList = colorStateList
-    mode?.also { imageTintMode = it }
+): ViewElement<V, LP> = onView { view ->
+    view.imageTintList = colorStateList
+    mode?.also { view.imageTintMode = it }
 }

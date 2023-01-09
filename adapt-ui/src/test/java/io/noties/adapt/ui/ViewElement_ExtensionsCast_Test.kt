@@ -154,7 +154,7 @@ class ViewElement_ExtensionsCast_Test {
     private fun <V : CheckBox> ViewElement<V, LayoutParams>.checked(
         checked: Boolean
     ) = onView {
-        isChecked = checked
+        it.isChecked = checked
     }
 
     @Test

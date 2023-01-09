@@ -23,7 +23,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.SeekBar() = Element {
 fun <V : SeekBar, LP : LayoutParams> ViewElement<V, LP>.seekBarOnChanged(
     listener: (/*@FloatRange(from = 0.0, to = 1.0)*/ Float) -> Unit
 ) = onView {
-    setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+    it.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             listener(progress / 100F)
         }
@@ -34,13 +34,13 @@ fun <V : SeekBar, LP : LayoutParams> ViewElement<V, LP>.seekBarOnChanged(
 }
 
 fun <V : SeekBar, LP : LayoutParams> ViewElement<V, LP>.seekBarTint(@ColorInt tint: Int) = onView {
-    progressTintList = ColorStateList.valueOf(tint)
-    thumbTintList = ColorStateList.valueOf(tint)
+    it.progressTintList = ColorStateList.valueOf(tint)
+    it.thumbTintList = ColorStateList.valueOf(tint)
 }
 
 fun <V : SeekBar, LP : LayoutParams> ViewElement<V, LP>.seekBarValue(
     @FloatRange(from = 0.0, to = 1.0) ratio: Float
 ) = onView {
-    progress = (ratio * 100).roundToInt()
-    postInvalidate()
+    it.progress = (ratio * 100).roundToInt()
+    it.postInvalidate()
 }

@@ -58,13 +58,12 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWrap
-import io.noties.adapt.ui.onCheckedChanged
+import io.noties.adapt.ui.onViewCheckedChanged
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.Asset
 import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
@@ -153,8 +152,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         lateinit var ffi: ViewElement<*, FlexboxLayout.LayoutParams>
         val flex = InteractiveFlex {
             ffi = it
-            it.onView {
-                (background as ShapeDrawable<*>).also { drawable ->
+            it.onView { view ->
+                (view.background as ShapeDrawable<*>).also { drawable ->
                     drawable.shape.fill(Colors.yellow)
                     drawable.invalidateSelf()
                 }
@@ -201,14 +200,14 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .textColor(Colors.black)
                 .ifAvailable(Build.VERSION_CODES.M) {
                     it.onView {
-                        thumbTintList = ColorStateListBuilder.create {
+                        it.thumbTintList = ColorStateListBuilder.create {
                             set(android.R.attr.state_checked, Colors.white)
                             setDefault(hex("#505a64"))
                         }
                     }
                 }
-                .onCheckedChanged {
-                    showPrimaryAxis(it)
+                .onViewCheckedChanged { _, checked ->
+                    showPrimaryAxis(checked)
                 }
                 .layout(WRAP, WRAP)
                 .layoutGravity(Gravity.center.trailing)
@@ -237,15 +236,15 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     }.reference(ref::primaryAxisShape)
                 }.also { primaryAxis = it }
 
-                overlay.add(drawable)
+                it.overlay.add(drawable)
 
                 // overlay does not update bounds
-                addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+                it.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
                     drawable.setBounds(0, 0, v.width, v.height)
                 }
             }
             .onView {
-                onGlobalLayout {
+                it.onGlobalLayout {
                     primaryAxis.invalidate {
                         val shape = primaryAxisShape
                         if (e.view.isHorizontal) {
@@ -397,7 +396,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     .padding(vertical = 12)
 
                 flex.onView {
-                    onGlobalLayout {
+                    it.onGlobalLayout {
                         update(seek.view.progress)
                     }
                 }
@@ -574,8 +573,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .textSize(12)
                 .textGravity(Gravity.center.horizontal)
                 .textColor(Colors.black)
-                .onView {
-                    val textView = this
+                .onView { textView ->
                     (textView.parent as View).onGlobalLayout {
                         val dp = it.width.fromPxToDp
                         val text = StringBuilder().apply {
@@ -688,8 +686,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             Text("Actual size: ???")
                 .textColor(Colors.black)
                 .layoutMargin(top = 2)
-                .onView {
-                    val tv = this
+                .onView { tv ->
                     (tv.parent as View).onGlobalLayout {
                         tv.text = "Actual size: ${it.width.fromPxToDp}"
                     }

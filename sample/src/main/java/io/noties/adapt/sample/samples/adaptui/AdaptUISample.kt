@@ -110,7 +110,7 @@ class AdaptUISample : SampleView() {
                 VStack { /*no op*/ }
                     .layout(FILL, WRAP)
                     .onView {
-                        bindAdapt(AdaptViewGroup.init(this))
+                        bindAdapt(AdaptViewGroup.init(it))
                     }
 //                    .myCustomStyle()
             }.layout(FILL, FILL)
@@ -535,8 +535,8 @@ class AdaptUISample : SampleView() {
                         .textFont(fontStyle = Typeface.BOLD)
                         .padding(horizontal = 24, vertical = 8)
                         .onView {
-                            background = toggleDrawable
-                            setOnClickListener {
+                            it.background = toggleDrawable
+                            it.setOnClickListener {
                                 it.isActivated = !it.isActivated
                             }
                         }
@@ -572,11 +572,11 @@ class AdaptUISample : SampleView() {
 
         private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pressable(
             shape: Shape
-        ): ViewElement<V, LP> = onView {
+        ): ViewElement<V, LP> = onView { view ->
 
             val distance = 6
 
-            background = StatefulShape.drawable {
+            view.background = StatefulShape.drawable {
                 val base = shape.copy {
                     padding(bottom = distance + (padding?.bottom?.resolve(0) ?: 0))
                 }
@@ -590,8 +590,8 @@ class AdaptUISample : SampleView() {
                 })
             }
 
-            viewTreeObserver.addOnDrawListener {
-                translationY = if (background.state.contains(android.R.attr.state_pressed)) {
+            view.viewTreeObserver.addOnDrawListener {
+                view.translationY = if (view.background.state.contains(android.R.attr.state_pressed)) {
                     distance.dip.toFloat()
                 } else {
                     0F

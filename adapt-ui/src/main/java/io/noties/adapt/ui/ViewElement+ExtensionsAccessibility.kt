@@ -13,7 +13,7 @@ import androidx.annotation.StringRes
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityDescription(
     contentDescription: CharSequence?,
 ): ViewElement<V, LP> = onView {
-    this.contentDescription = contentDescription
+    it.contentDescription = contentDescription
 }
 
 /**
@@ -22,7 +22,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityDescription(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityDescription(
     @StringRes contentDescriptionResId: Int,
 ): ViewElement<V, LP> = onView {
-    this.contentDescription = resources.getString(contentDescriptionResId)
+    it.contentDescription = it.resources.getString(contentDescriptionResId)
 }
 
 @JvmInline
@@ -49,7 +49,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
     importantForAccessibility: ImportantForAccessibility
 ): ViewElement<V, LP> = onView {
-    this.importantForAccessibility = importantForAccessibility.value
+    it.importantForAccessibility = importantForAccessibility.value
 }
 
 /**
@@ -58,7 +58,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLabelFor(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
-    labelFor = targetId
+    it.labelFor = targetId
 }
 
 /**
@@ -79,7 +79,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLabelFor(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefore(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
-    accessibilityTraversalBefore = targetId
+    it.accessibilityTraversalBefore = targetId
 }
 
 /**
@@ -101,7 +101,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefor
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
-    accessibilityTraversalAfter = targetId
+    it.accessibilityTraversalAfter = targetId
 }
 
 /**
@@ -131,7 +131,7 @@ value class AccessibilityLiveRegion(val value: Int) {
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLiveRegion(
     liveRegion: AccessibilityLiveRegion,
 ): ViewElement<V, LP> = onView {
-    accessibilityLiveRegion = liveRegion.value
+    it.accessibilityLiveRegion = liveRegion.value
 }
 
 
@@ -145,13 +145,12 @@ private fun ensureTarget(
     targetProvider: () -> ViewElement<out View, *>,
     onTargetIdReady: (view: View, id: Int) -> Unit
 ) {
-    element.onView {
-        val view = this
+    element.onView { view ->
         val targetElement = targetProvider()
         val targetView = targetElement.takeIf { it.isInitialized }?.view
         if (targetView == null) {
             targetElement.onView {
-                onTargetIdReady(view, this.ensureId())
+                onTargetIdReady(view, it.ensureId())
             }
         } else {
             onTargetIdReady(view, targetView.ensureId())

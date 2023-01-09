@@ -1,5 +1,7 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] view-stub like element
+- [ ] element to include item directly in layout (wraps adaptview)
 - [ ] add consumer proguard to remove preview layouts (ui and regular)
 - [ ] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
 - [ ] review all property references that we have and reduce the amount? generates additional code

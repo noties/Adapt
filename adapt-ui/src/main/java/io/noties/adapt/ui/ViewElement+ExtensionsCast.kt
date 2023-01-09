@@ -57,7 +57,7 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
 
     return onView {
         if (matches()) {
-            post { deliver() }
+            it.post { deliver() }
         }
     }
 }

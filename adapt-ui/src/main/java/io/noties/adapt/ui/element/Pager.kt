@@ -144,7 +144,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerCurrentItem(
     itemPosition: Int,
     smoothScroll: Boolean = false,
 ) = onView {
-    setCurrentItem(itemPosition, smoothScroll)
+    it.setCurrentItem(itemPosition, smoothScroll)
 }
 
 /**
@@ -155,7 +155,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageTransformer(
     pageLayerType: Int = View.LAYER_TYPE_HARDWARE,
     transformer: ViewPager.PageTransformer?
 ) = onView {
-    setPageTransformer(reverseDrawingOrder, transformer, pageLayerType)
+    it.setPageTransformer(reverseDrawingOrder, transformer, pageLayerType)
 }
 
 /**
@@ -164,7 +164,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageTransformer(
 fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOffscreenPageLimit(
     limit: Int = 1
 ) = onView {
-    offscreenPageLimit = limit
+    it.offscreenPageLimit = limit
 }
 
 /**
@@ -175,8 +175,8 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
     margin: Int,
     marginDrawable: Drawable? = null
 ) = onView {
-    pageMargin = margin.dip
-    setPageMarginDrawable(marginDrawable)
+    it.pageMargin = margin.dip
+    it.setPageMarginDrawable(marginDrawable)
 }
 
 /**
@@ -193,14 +193,12 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
 fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedListener(
     onPageChangeListener: ViewPagerOnPageChangeListener
 ) = onView {
-    onPageChangeListener.also {
-        it.viewPager = this
-        // deliver initial result, if we have adapter
-        if (adapter != null) {
-            it.onPageSelected(this.currentItem)
-        }
-        addOnPageChangeListener(it)
+    onPageChangeListener.viewPager = it
+    // deliver initial result, if we have adapter
+    if (it.adapter != null) {
+        onPageChangeListener.onPageSelected(it.currentItem)
     }
+    it.addOnPageChangeListener(onPageChangeListener)
 }
 
 /**
@@ -208,9 +206,9 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedList
  */
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
     gravity: Gravity? = null
-) = onLayoutParams {
-    isDecor = true
-    gravity?.also { this.gravity = it.value }
+) = onLayoutParams { lp ->
+    lp.isDecor = true
+    gravity?.also { lp.gravity = it.value }
 }
 
 /**
@@ -219,8 +217,8 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
  */
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerPageWidthRatio(
     @FloatRange(from = 0.0, to = 1.0) ratio: Float?
-) = onLayoutParams {
-    ratio?.also { pageWidthRatio = it }
+) = onLayoutParams { lp ->
+    ratio?.also { lp.pageWidthRatio = it }
 }
 
 /**
@@ -233,16 +231,16 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerPageWidthRatio(
 @JvmName("pagerOnPageChangeListenerWithAdapterPage")
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageChangedListener(
     onPageChangeListener: ViewPagerOnPageChangeListener?
-) = onLayoutParams {
-    this.onPageChangeListener = onPageChangeListener?.also {
-        it.viewPager = viewPager
+) = onLayoutParams { lp ->
+    lp.onPageChangeListener = onPageChangeListener?.also {
+        it.viewPager = lp.viewPager
     }
 }
 
 fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageSelectedListener(
     onPageSelectedListener: ViewPagerOnPageSelectedListener?
 ) = onLayoutParams {
-    this.onPageSelectedListener = onPageSelectedListener
+    it.onPageSelectedListener = onPageSelectedListener
 }
 
 internal class PagerItem(
