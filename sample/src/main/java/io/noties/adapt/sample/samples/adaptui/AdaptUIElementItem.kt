@@ -19,6 +19,7 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.createLayoutParams
 
 class AdaptUIElementItem(val text: String) :
     ElementItem<AdaptUIElementItem.Ref>(hash(text), ::Ref) {
@@ -46,6 +47,13 @@ class AdaptUIElementItem(val text: String) :
         with(holder.ref) {
             textView.text = text
         }
+    }
+
+    override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
+        // by default width:MATCH and height:WRAP is used
+        // can specify which layoutParams to use instead
+        // NB! also possible to create default params for given parent
+        return parent.createLayoutParams() ?: super.createLayoutParams(parent)
     }
 }
 

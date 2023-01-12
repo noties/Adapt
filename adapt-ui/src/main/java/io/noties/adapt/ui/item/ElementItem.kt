@@ -21,11 +21,9 @@ abstract class ElementItem<R : Any>(
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder<R> {
         val ref: R = refFactory()
-        val view = ViewFactory.createViewWithParams(
-            parent.context,
-            createLayoutParams(parent),
-            ref
-        ) { body(it) }
+        val view = ViewFactory.newView(parent)
+            .layoutParams(createLayoutParams(parent))
+            .create(ref) { body(it) }
         return Holder(view, ref)
     }
 

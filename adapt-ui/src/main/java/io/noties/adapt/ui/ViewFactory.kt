@@ -6,7 +6,19 @@ import android.view.ViewGroup
 
 typealias LayoutParams = ViewGroup.LayoutParams
 
-open class ViewFactory<out LP : LayoutParams>(val context: Context) {
+class ViewFactory<out LP : LayoutParams>(
+    val context: Context,
+    viewGroup: ViewGroup?
+) {
+
+    constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
+
+    private val _viewGroup: ViewGroup? = viewGroup
+
+    val hasViewGroup: Boolean get() = _viewGroup != null
+
+    val viewGroup: ViewGroup
+        get() = _viewGroup ?: error("ViewFactory does not contain ViewGroup, this:$this")
 
     @Suppress("PropertyName")
     val FILL: Int
@@ -30,52 +42,21 @@ open class ViewFactory<out LP : LayoutParams>(val context: Context) {
 
         fun createView(
             context: Context,
-            children: ViewFactory<LayoutParams>.() -> Unit
-        ): View = createView(context, Unit) { children() }
+            children: ViewFactory<LayoutParams>.(Unit) -> Unit
+        ): View = newView(context).create(children)
 
         fun <R : Any> createView(
             context: Context,
-            references: R,
+            ref: R,
             children: ViewFactory<LayoutParams>.(R) -> Unit
-        ): View = createViewWithParams(
-            context,
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT),
-            references,
-            children
-        )
+        ): View = newView(context).create(ref, children)
 
-        fun <LP : LayoutParams> createViewWithParams(
+        fun newView(
             context: Context,
-            layoutParams: LP,
-            children: ViewFactory<LP>.() -> Unit
-        ): View = createViewWithParams(context, layoutParams, Unit) { children() }
+            viewGroup: ViewGroup? = null
+        ) = ViewCreator(context, viewGroup)
 
-        fun <LP : LayoutParams, R : Any> createViewWithParams(
-            context: Context,
-            layoutParams: LP,
-            references: R,
-            children: ViewFactory<LP>.(R) -> Unit
-        ): View {
-
-            val factory = ViewFactory<LP>(context)
-            children(factory, references)
-
-            // ensure single element
-            if (factory.elements.size != 1) {
-                throw IllegalStateException("Unexpected state, view must contain exactly one root element")
-            }
-
-            @Suppress("UNCHECKED_CAST")
-            val root = factory.elements[0] as ViewElement<View, LP>
-
-            val view = root.init(context)
-
-            view.layoutParams = layoutParams
-
-            root.render()
-
-            return view
-        }
+        fun newView(viewGroup: ViewGroup) = newView(viewGroup.context, viewGroup)
 
         @JvmName("addChildrenViewGroup")
         fun addChildren(
@@ -90,7 +71,7 @@ open class ViewFactory<out LP : LayoutParams>(val context: Context) {
         ) {
 
             val context = g.context
-            val factory = ViewFactory<LP>(context)
+            val factory = ViewFactory<LP>(context, g)
 
             children(factory)
 
@@ -108,11 +89,58 @@ open class ViewFactory<out LP : LayoutParams>(val context: Context) {
             }
         }
     }
-}
 
-open class ViewFactoryViewGroup<V : ViewGroup, LP : LayoutParams>(
-    context: Context,
-    val viewGroup: V
-) : ViewFactory<LP>(context) {
-    constructor(viewGroup: V) : this(viewGroup.context, viewGroup)
+    class ViewCreator<LP : LayoutParams> internal constructor(
+        val context: Context,
+        val viewGroup: ViewGroup?,
+        val layoutParams: LP
+    ) {
+
+        companion object {
+            val defaultLayoutParams: LayoutParams
+                get() = LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT
+                )
+
+            operator fun invoke(context: Context, viewGroup: ViewGroup?) = ViewCreator(
+                context,
+                viewGroup,
+                defaultLayoutParams
+            )
+        }
+
+        fun <T : LayoutParams> layoutParams(layoutParams: T): ViewCreator<T> = ViewCreator(
+            context, viewGroup, layoutParams
+        )
+
+        fun create(
+            children: ViewFactory<LP>.(Unit) -> Unit
+        ): View = create(Unit, children)
+
+        fun <R : Any> create(
+            ref: R,
+            children: ViewFactory<LP>.(R) -> Unit
+        ): View {
+
+            val factory = ViewFactory<LP>(context, viewGroup)
+            children(factory, ref)
+
+            // ensure single element
+            if (factory.elements.size != 1) {
+                throw IllegalStateException("Unexpected state, view must contain exactly one root element")
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            val root = factory.elements[0] as ViewElement<View, LP>
+
+            val view = root.init(context)
+
+            view.layoutParams = layoutParams
+
+            root.render()
+
+            return view
+        }
+    }
 }
