@@ -57,4 +57,22 @@ class StatefulShape {
 
     fun setDefault(shape: Shape): StatefulShape =
         set(StateSet.WILD_CARD, shape)
+
+    // postpone for now, `default` would not be very pretty, plus it exposes getter, which is not good
+//    var pressed: Shape by StateProperty(android.R.attr.state_pressed)
+//
+//
+//    // I would have made getter private, but unfortunately it is not possible with Kotlin at the moment
+//    private class StateProperty(val state: Int) : ReadWriteProperty<StatefulShape, Shape> {
+//        // strictly speaking there should not be getter
+//        override fun getValue(thisRef: StatefulShape, property: KProperty<*>): Shape {
+//            return thisRef.entries.firstOrNull {
+//                it.first.size == 1 && it.first[0] == state
+//            }?.second ?: error()
+//        }
+//
+//        override fun setValue(thisRef: StatefulShape, property: KProperty<*>, value: Shape) {
+//            thisRef.set(state, value)
+//        }
+//    }
 }

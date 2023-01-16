@@ -16,6 +16,9 @@ import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import kotlin.math.roundToInt
 
+// TODO: add a new method: .statful { base ->
+//  which receives this shape and allows creating a statful version
+//}
 abstract class Shape {
 
     companion object {

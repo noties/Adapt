@@ -1,5 +1,6 @@
 package io.noties.adapt.ui
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -38,15 +39,37 @@ class AdaptViewElement(
         }
 }
 
-fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
+/**
+ * Creates [AdaptView] for the given view. If element refers to a [ViewGroup] then it is
+ * used as the parent for the [AdaptView], otherwise - element\'s view is considered a
+ * placeholder - its parent would be used to create [AdaptView]. To use as a placeholder
+ * an empty View can be used, for example:
+ * ```kotlin
+ * View()
+ *   .adaptView()
+ * ```
+ */
+fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
     configurator: (AdaptView.Configuration) -> Unit = {}
 ): AdaptElement<AdaptView> {
     val element = AdaptViewElement(configurator)
-    onView(element.onView)
+    onView { view ->
+        if (view is ViewGroup) {
+            element.onView(view)
+        } else {
+            // we take element's view and use it as a placeholder
+            val parent = view.parent as ViewGroup
+
+            // remove placeholder
+            parent.removeView(view)
+
+            element.onView(parent)
+        }
+    }
     return element
 }
 
-fun <V : ViewGroup, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
+fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.adaptView(
     item: Item<*>
 ): AdaptElement<AdaptView> = adaptView { it.item(item) }
 
