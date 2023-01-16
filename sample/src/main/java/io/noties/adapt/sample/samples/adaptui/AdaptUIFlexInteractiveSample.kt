@@ -72,7 +72,6 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
-import io.noties.adapt.ui.shape.invalidate
 import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
@@ -187,7 +186,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         fun showPrimaryAxis(show: Boolean) {
             Debug.e("show:$show")
             primaryAxis.invalidate {
-                primaryAxisShape.hidden(!show)
+                it.primaryAxisShape.hidden(!show)
             }
         }
 
@@ -246,7 +245,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .onView {
                 it.onGlobalLayout {
                     primaryAxis.invalidate {
-                        val shape = primaryAxisShape
+                        val shape = it.primaryAxisShape
                         if (e.view.isHorizontal) {
                             shape.width = null
                             shape.size(height = 4)

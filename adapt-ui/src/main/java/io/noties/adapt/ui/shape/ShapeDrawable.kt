@@ -55,4 +55,9 @@ open class ShapeDrawable<R : Any> private constructor(
     override fun getOutline(outline: Outline) {
         shape.outline(outline, bounds)
     }
+
+    fun invalidate(block: (R) -> Unit) {
+        block(ref)
+        invalidateSelf()
+    }
 }

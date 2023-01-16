@@ -29,7 +29,7 @@ class ShapeDrawable_Extensions_Test {
         val called = AtomicBoolean()
         drawable.invalidate {
             called.set(true)
-            assertEquals(ref, this)
+            assertEquals(ref, it)
         }
         // verify callback after `invalidate` block (invalidation happens after invoking it)
         verify(callback).invalidateDrawable(eq(drawable))
