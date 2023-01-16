@@ -23,7 +23,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
     return ViewElement<ViewPager, LP> { context ->
         ElementViewFactory.Pager(context).also { vp ->
 
-            val factory = ViewFactory<ViewPagerLayoutParams>(context, vp)
+            val factory = ViewFactory<ViewPagerLayoutParams>(vp)
             children(factory)
 
             // layout blocks must be evaluated before adding to the view and to our constructed

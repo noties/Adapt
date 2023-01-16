@@ -318,7 +318,9 @@ class Pager_Test {
     fun `pagerOnPageChangedListener - no adapter`() {
         // if we have adapter, page listener would receive initial callback with
         //  currently selected page
-        val mocked = mock(ViewPager::class.java)
+        val mocked = mock(ViewPager::class.java).also {
+            `when`(it.context).thenReturn(RuntimeEnvironment.getApplication())
+        }
         ElementViewFactory.Pager = { mocked }
 
         val listener = mock(ViewPagerOnPageChangeListener::class.java)
@@ -343,6 +345,7 @@ class Pager_Test {
         //  currently selected page
         val mocked = mock(ViewPager::class.java).also {
             `when`(it.adapter).thenReturn(mock(PagerAdapter::class.java))
+            `when`(it.context).thenReturn(RuntimeEnvironment.getApplication())
         }
         ElementViewFactory.Pager = { mocked }
 

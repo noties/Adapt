@@ -18,6 +18,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -149,7 +150,9 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - default LP`() {
-        val viewGroup: ViewGroup = mockt()
+        val viewGroup: ViewGroup = mockt {
+            on { context } doReturn RuntimeEnvironment.getApplication()
+        }
         val creator = ViewFactory.newView(viewGroup)
 
         val lp = ViewFactory.ViewCreator.defaultLayoutParams
@@ -165,7 +168,9 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - layoutParams`() {
-        val viewGroup: ViewGroup = mockt()
+        val viewGroup: ViewGroup = mockt {
+            on { context } doReturn RuntimeEnvironment.getApplication()
+        }
 
         fun lp(): LayoutParams = FrameLayout.LayoutParams(123, LayoutParams.MATCH_PARENT)
 

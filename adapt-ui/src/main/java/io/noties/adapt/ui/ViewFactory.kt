@@ -8,7 +8,7 @@ typealias LayoutParams = ViewGroup.LayoutParams
 
 class ViewFactory<out LP : LayoutParams>(
     val context: Context,
-    viewGroup: ViewGroup?
+    viewGroup: ViewGroup? = null
 ) {
 
     constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
@@ -70,8 +70,8 @@ class ViewFactory<out LP : LayoutParams>(
             children: ViewFactory<LP>.() -> Unit
         ) {
 
-            val context = g.context
-            val factory = ViewFactory<LP>(context, g)
+            val factory = ViewFactory<LP>(g)
+            val context = factory.context
 
             children(factory)
 
