@@ -181,6 +181,10 @@ class ViewFactory_Test {
         assertLayoutParams(lp(), view.layoutParams)
     }
 
+    // TODO: lock factory after it has been used, so no element is added after-wards
+    // TODO: multiple calls to addChildren are fine, but after the addChildren is
+    //  finished, no element should be able to be added
+
     // a primitive version for equals... platform LP do not have it implemented...
     //  and most of LPs have specific properties too
     private fun assertLayoutParams(lhs: LayoutParams, rhs: LayoutParams?) {

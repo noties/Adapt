@@ -1,11 +1,21 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILazySample",
+    "id": "20230116182927",
+    "title": "AdaptUI, Lazy",
+    "description": "ViewStub-like behaviour in android-ui",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemSample",
     "id": "20230116140759",
     "title": "AdaptUI, Item inside ViewFactory",
-    "description": "Usage of an Item in ViewFactory when building UI view",
+    "description": "Usage of an Item in ViewFactory when building UI view (AdaptView)",
     "tags": [
-      "adapt-ui"
+      "adapt-ui",
+      "adapt-view"
     ]
   },
   {

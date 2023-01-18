@@ -1,16 +1,18 @@
 * explicit tags in sample (enum?), define colors for each
 
-- [ ] view-stub like element
-- [ ] element to include item directly in layout (wraps adaptview)
+- [ ] factory, lock after used
+
 - [ ] add consumer proguard to remove preview layouts (ui and regular)
-- [ ] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
 - [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?
 - [ ] window insets
-- [ ] Int.unused in shape builder functions (where applicable)
 - [ ] element+extensions, accessibility properties
 - [ ] view, additional gestures
 
+- [?] Int.unused in shape builder functions (where applicable)
+- [x] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
+- [x] element to include item directly in layout (wraps adaptview)
+- [x] view-stub like element
 - [?] shape, stroke width, stroke gap and stroke dash to be relative?
   UPD, seems to have very little value
 - [x] createView, move to view factory, cannot import?
