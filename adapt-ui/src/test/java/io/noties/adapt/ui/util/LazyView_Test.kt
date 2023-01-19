@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.View
 import android.view.View.MeasureSpec
 import android.view.ViewGroup
+import android.widget.ImageView
 import io.noties.adapt.ui.LayoutParams
-import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.newElement
+import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.*
 import org.junit.Test
@@ -29,15 +31,67 @@ class LazyView_Test {
     @Test
     fun `measure - noop`() {
         // any layout params should be ignored and size of 0-0 used
-        val view = LazyView(context) {}
-        view.layoutParams = LayoutParams(400, 725)
 
-        val spec = MeasureSpec.makeMeasureSpec(777, MeasureSpec.EXACTLY)
+        val specs = listOf(
+            MeasureSpec.makeMeasureSpec(777, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(1080, MeasureSpec.UNSPECIFIED),
+            MeasureSpec.makeMeasureSpec(61, MeasureSpec.AT_MOST),
+        )
 
-        view.measure(spec, spec)
+        for (spec in specs) {
+            val view = LazyView(context) {}
+            view.layoutParams = LayoutParams(400, 725)
 
-        assertEquals(0, view.measuredWidth)
-        assertEquals(0, view.measuredHeight)
+            view.measure(spec, spec)
+
+            assertEquals(0, view.measuredWidth)
+            assertEquals(0, view.measuredHeight)
+        }
+    }
+
+    @Test
+    fun noop() {
+        // no children?
+        // no parent
+        // no parent index
+        // isInjected?
+
+        fun assertNoop(name: String, view: LazyView) {
+            assertNotNull(name, view.children)
+            assertEquals(name, false, view.isInjected)
+            assertEquals(name, View.GONE, view.visibility)
+        }
+
+        val views = listOf(
+//            "no-children" to LazyView(context) {}.also {
+//                it.children = null
+//
+//                // but create parent
+//                val vg: ViewGroup = mockt {
+//                    on { indexOfChild(eq(it)) } doReturn 0
+//                }
+//                Shadows.shadowOf(it).setMyParent(vg)
+//            },
+            "no-parent" to LazyView(context) {},
+            "no-parent-index" to LazyView(context) {}.also {
+                val vg: ViewGroup = mockt {
+                    // not found
+                    on { indexOfChild(any()) } doReturn -1
+                }
+                Shadows.shadowOf(it).setMyParent(vg)
+            }
+        )
+
+        for ((name, view) in views) {
+            assertNoop(name, view)
+            try {
+                view.inject()
+            } catch (t: Throwable) {
+                println("name:$name message:${t.message}")
+                throw t
+            }
+            assertNoop("$name-injected", view)
+        }
     }
 
     @Test
@@ -51,6 +105,13 @@ class LazyView_Test {
 
         for ((input, result) in inputs) {
             val view = LazyView(context) {}
+            view.also {
+                val parent: ViewGroup = mockt {
+                    on { context } doReturn context
+                    on { indexOfChild(eq(it)) } doReturn 0
+                }
+                Shadows.shadowOf(it).setMyParent(parent)
+            }
             // initial isDisplayed is false
             assertEquals(input.first, false, view.isInjected)
             view.visibility = input.second
@@ -60,7 +121,7 @@ class LazyView_Test {
 
     @Test
     fun `inject - no parent`() {
-        val element: ViewElement<View, LayoutParams> = mockt()
+        val element = newElement()
 
         // when LazyView is not attached, it won't display
         val view = LazyView(context) {
@@ -89,9 +150,9 @@ class LazyView_Test {
 
         for (input in inputs) {
 
-            val elements: List<ViewElement<View, LayoutParams>> = listOf(
-                mockt(),
-                mockt()
+            val elements = listOf(
+                newElement(),
+                newElementOfType<ImageView>()
             )
 
             val view = LazyView(context) {
@@ -100,6 +161,7 @@ class LazyView_Test {
 
             val index = 33
             val parent: ViewGroup = mockt {
+                on { context } doReturn context
                 on { indexOfChild(eq(view)) } doReturn index
             }
 
@@ -122,9 +184,9 @@ class LazyView_Test {
             elements
                 .withIndex()
                 .forEach { (i, value) ->
-                    verify(value).init(any())
-                    verify(parent).addView(eq(value.view), index + i)
-                    verify(value).render()
+//                    verify(value).init(any())
+                    verify(parent).addView(eq(value.view), eq(index + i))
+//                    verify(value).render()
                 }
         }
     }

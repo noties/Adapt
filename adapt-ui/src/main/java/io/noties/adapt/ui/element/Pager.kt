@@ -31,7 +31,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
 
             // each entry becomes an item
             // remove decor views
-            val (decorItems, items) = factory.elements
+            val (decorItems, items) = factory.useElements()
                 .map {
                     @Suppress("UNCHECKED_CAST")
                     val element = (it as ViewElement<out View, ViewPagerLayoutParams>)

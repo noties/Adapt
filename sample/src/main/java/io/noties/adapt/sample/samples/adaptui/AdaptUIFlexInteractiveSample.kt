@@ -218,7 +218,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .also { firstFlexItem?.invoke(it) }
 
         e = Flex {
-            elements.add(firstItem)
+            add(firstItem)
             FlexItem("the")
             FlexItem("world")
         }.layout(FILL, 128 + 24)

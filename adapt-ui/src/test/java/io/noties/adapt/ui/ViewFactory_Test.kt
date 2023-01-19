@@ -1,13 +1,17 @@
 package io.noties.adapt.ui
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
+import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
+import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -15,10 +19,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -93,7 +99,7 @@ class ViewFactory_Test {
         }
 
         val view = ViewFactory.createView(context) {
-            element.also { this.elements.add(it) }
+            element.also { add(it) }
         }
 
         assertTrue(called.get())
@@ -181,9 +187,88 @@ class ViewFactory_Test {
         assertLayoutParams(lp(), view.layoutParams)
     }
 
-    // TODO: lock factory after it has been used, so no element is added after-wards
-    // TODO: multiple calls to addChildren are fine, but after the addChildren is
-    //  finished, no element should be able to be added
+    @Test
+    fun `escape direct usage (after used)`() {
+        // after factory is used, `add` should throw
+
+        val factories = mutableListOf<Pair<String, ViewFactory<LayoutParams>>>()
+
+        ViewFactory.createView(context) {
+            factories.add("createView" to this)
+
+            Text()
+        }
+
+        val vg: ViewGroup = mock {
+            on { context } doReturn context
+        }
+        ViewFactory.addChildren(vg) {
+            factories.add("addChildren" to this)
+
+            Image()
+        }
+
+        for ((name, factory) in factories) {
+            assertEquals(true, factory.isUsed)
+            assertEquals(emptyList<Any?>(), factory.inspectElements())
+
+            try {
+                factory.add(newElement())
+                fail(name)
+            } catch (t: IllegalStateException) {
+                assertTrue(
+                    "$name:${t.message}",
+                    t.message!!.contains("ViewFactory has been already used")
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `context-receiver escape`() {
+
+        fun <LP : FrameLayout.LayoutParams> ViewFactory<LP>.Frame() = Element { View(it) }
+
+        ViewFactory.createView(context) {
+            // root
+            ZStack {
+                VStack {
+                    try {
+                        Frame()
+                        fail()
+                    } catch (t: IllegalStateException) {
+                        assertTrue(
+                            t.message,
+                            t.message!!.contains("ViewFactory has been already used")
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun isUsed() {
+        val factory = ViewFactory<LayoutParams>(context)
+        assertEquals(false, factory.isUsed)
+        factory.add(newElement())
+        assertEquals(1, factory.inspectElements().size)
+        assertEquals(false, factory.isUsed)
+        assertEquals(1, factory.useElements().size)
+        assertEquals(true, factory.isUsed)
+        assertEquals(0, factory.useElements().size)
+        assertEquals(0, factory.inspectElements().size)
+
+        try {
+            factory.add(newElement())
+            fail()
+        } catch (t: IllegalStateException) {
+            assertTrue(
+                t.message,
+                t.message!!.contains("ViewFactory has been already used")
+            )
+        }
+    }
 
     // a primitive version for equals... platform LP do not have it implemented...
     //  and most of LPs have specific properties too

@@ -17,7 +17,7 @@ abstract class PreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayo
         val factory = ViewFactory<LayoutParams>(context, this)
             .also { it.body() }
 
-        factory.elements.forEach { e ->
+        factory.useElements().forEach { e ->
             val view = e.init(context)
             addView(view)
             e.render()

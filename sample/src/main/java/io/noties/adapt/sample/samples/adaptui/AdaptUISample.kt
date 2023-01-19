@@ -243,7 +243,7 @@ class AdaptUISample : SampleView() {
 
         @Suppress("FunctionName")
         private fun <LP : LayoutParams> ViewFactory<LP>.Label(): ViewElement<LabelView, LayoutParams> =
-            ViewElement<LabelView, LayoutParams> { LabelView(it) }.also(elements::add)
+            ViewElement<LabelView, LayoutParams> { LabelView(it) }.also { add(it) }
 
         override fun ViewFactory<LayoutParams>.body(ref: References) {
             VStack {
@@ -591,11 +591,12 @@ class AdaptUISample : SampleView() {
             }
 
             view.viewTreeObserver.addOnDrawListener {
-                view.translationY = if (view.background.state.contains(android.R.attr.state_pressed)) {
-                    distance.dip.toFloat()
-                } else {
-                    0F
-                }
+                view.translationY =
+                    if (view.background.state.contains(android.R.attr.state_pressed)) {
+                        distance.dip.toFloat()
+                    } else {
+                        0F
+                    }
             }
         }
 

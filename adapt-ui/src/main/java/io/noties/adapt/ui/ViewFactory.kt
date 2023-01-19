@@ -10,7 +10,6 @@ class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null
 ) {
-
     constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
 
     private val _viewGroup: ViewGroup? = viewGroup
@@ -32,10 +31,31 @@ class ViewFactory<out LP : LayoutParams>(
             return LayoutParams.WRAP_CONTENT
         }
 
-    val elements: MutableList<ViewElement<out View, *>> = mutableListOf()
+    var isUsed = false
+        private set
+
+    private val _elements = mutableListOf<ViewElement<out View, *>>()
+
+    /**
+     * Returns elements without marking them as _used_
+     */
+    fun inspectElements() = _elements.toList()
+
+    fun useElements() = _elements.toList().also {
+        isUsed = true
+        _elements.clear()
+    }
 
     fun add(element: ViewElement<*, *>) {
-        elements.add(element)
+        if (isUsed) {
+            // init view for proper error reporting
+            val view = element.init(context)
+            throw IllegalStateException(
+                "ViewFactory has been already used, cannot add more elements, " +
+                        "viewGroup:$_viewGroup, element.view:$view"
+            )
+        }
+        _elements.add(element)
     }
 
     companion object {
@@ -76,17 +96,18 @@ class ViewFactory<out LP : LayoutParams>(
             children(factory)
 
             //noinspection NewApi
-            factory.elements.forEach { el ->
-                @Suppress("UNCHECKED_CAST")
-                el as ViewElement<View, LP>
+            factory.useElements()
+                .forEach { el ->
+                    @Suppress("UNCHECKED_CAST")
+                    el as ViewElement<View, LP>
 
-                val view = el.init(context)
+                    val view = el.init(context)
 
-                // now layoutParams are generated
-                g.addView(view)
+                    // now layoutParams are generated
+                    g.addView(view)
 
-                el.render()
-            }
+                    el.render()
+                }
         }
     }
 
@@ -126,13 +147,15 @@ class ViewFactory<out LP : LayoutParams>(
             val factory = ViewFactory<LP>(context, viewGroup)
             children(factory, ref)
 
+            val elements = factory.useElements()
+
             // ensure single element
-            if (factory.elements.size != 1) {
+            if (elements.size != 1) {
                 throw IllegalStateException("Unexpected state, view must contain exactly one root element")
             }
 
             @Suppress("UNCHECKED_CAST")
-            val root = factory.elements[0] as ViewElement<View, LP>
+            val root = elements[0] as ViewElement<View, LP>
 
             val view = root.init(context)
 

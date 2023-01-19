@@ -21,7 +21,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Flex(
     FlexboxLayout(it).also { fl ->
         ViewFactory.addChildren(fl, children)
     }
-}.also(elements::add)
+}.also { add(it) }
 
 
 /**

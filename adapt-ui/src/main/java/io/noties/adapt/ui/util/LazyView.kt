@@ -15,13 +15,14 @@ import io.noties.adapt.ui.ViewFactory
  * as calling [LazyView.inject] directly
  */
 @SuppressLint("ViewConstructor")
-class LazyView internal constructor(
+open class LazyView internal constructor(
     context: Context,
     internal var children: (ViewFactory<LayoutParams>.() -> Unit)?
 ) : View(context) {
 
     init {
-        visibility = GONE
+        // NB! important to send to super
+        super.setVisibility(GONE)
         setWillNotDraw(true)
     }
 
@@ -29,40 +30,51 @@ class LazyView internal constructor(
 
     // Namespace is polluted
     //  fun:show val:isShown (isShown is taken to check visibility)
-    //  fun:display val:isDisplayed (display is a function that returns Display)
+    //  fun:display val:isDisplayed (display() is a function that returns Display)
     //  fun:layOut (interferes with `layout`)
     fun inject() {
-        visibility = VISIBLE
+        // if injection did not happen, we should not change visibility to VISIBLE
+        if (inject(VISIBLE)) {
+            // NB! as we override visibility, send to super
+            super.setVisibility(VISIBLE)
+        }
     }
 
     override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
+        val value = if (inject(visibility)) visibility else GONE
+        super.setVisibility(value)
+    }
 
-        val children = children ?: return
-        val parent = parent as? ViewGroup ?: return
+    private fun inject(forVisibility: Int): Boolean {
+
+        // we could have checked for GONE, but as it is an Int, anything can be there
+        //  check for values that we expect explicitly
+        if (forVisibility != VISIBLE && forVisibility != INVISIBLE) return false
+
+        val children = children ?: return false
+        val parent = parent as? ViewGroup ?: return false
         val index = parent.indexOfChild(this)
-            .takeIf { it > -1 } ?: return
+            .takeIf { it > -1 } ?: return false
 
-        if (visibility == VISIBLE || visibility == INVISIBLE) {
+        // if we are here, children are going to be added, null-out factory
+        this.children = null
 
-            // if we are here, children are going to be added, null-out factory
-            this.children = null
+        val factory = ViewFactory<LayoutParams>(parent)
+        children(factory)
 
-            val factory = ViewFactory<LayoutParams>(parent)
-            children(factory)
+        // remove self
+        parent.removeViewAt(index)
 
-            // remove self
-            parent.removeViewAt(index)
+        factory.useElements()
+            .withIndex()
+            .forEach {
+                val view = it.value.init(context)
+                view.visibility = forVisibility // in case of INVISIBLE
+                parent.addView(view, index + it.index)
+                it.value.render()
+            }
 
-            factory.elements
-                .withIndex()
-                .forEach {
-                    val view = it.value.init(context)
-                    view.visibility = visibility // in case of INVISIBLE
-                    parent.addView(view, index + it.index)
-                    it.value.render()
-                }
-        }
+        return true
     }
 
     override fun onDraw(canvas: Canvas?) = Unit
