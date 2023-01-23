@@ -1,6 +1,9 @@
 * explicit tags in sample (enum?), define colors for each
 
-- [ ] factory, lock after used
+- [ ] review wrappers in adapt (padding and edges)
+- [ ] adapt element, makre onAdapt accept it instead o this
+- [ ] maybe make viewElement open? but what would we achieve? most extensions use `ViewElement`,
+  so type information would not be preserved
 
 - [ ] add consumer proguard to remove preview layouts (ui and regular)
 - [ ] review all property references that we have and reduce the amount? generates additional code
@@ -9,6 +12,10 @@
 - [ ] element+extensions, accessibility properties
 - [ ] view, additional gestures
 
+- [-] view group, diff, obtain same type and bind if id is different
+  this would complicate current simple (adn transition-ready) diff, as we would need to lookup
+  if item is present in the list further, so we can safely reuse it
+- [x] factory, lock after used
 - [?] Int.unused in shape builder functions (where applicable)
 - [x] `onView`... cannot specify the `this`, thus can be inconvenient with nesting
 - [x] element to include item directly in layout (wraps adaptview)

@@ -8,6 +8,16 @@ private fun AnyViewElement.myCustomStyle() = this
 ```
 
 // NB! new elements func builder can be added to a specific layout params, like `Spacer`
+// NB! be aware of context-leak (when nested context receiver export implicitly `this`)
+```kotlin
+One.() -> {
+   Two.() -> {
+       // both One and Two properties and functions are available without prefix `this`
+       doSomethingOne()
+       this.doSomethingTwo() // only Two
+   } 
+}
+```
 
 # TODO
 

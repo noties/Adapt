@@ -151,8 +151,11 @@ VStack {
 }
 ```
 
-Elements can still be referenced as regular objects
+_Static_ means here - after view is build it is not going to be modified if `someCondition`
+boolean changes. This condition is checked only when view is built initially. In order to
+build dynamic layouts - `adapt` items can be used.
 
+Elements can still be referenced as regular objects:
 ```kotlin
 VStack {
 
@@ -163,9 +166,10 @@ VStack {
         .padding(16)
         .background(Colors.accent)
         .onClick {
-            // modify element and call render
-            // NB! `render` is required when element is modified outside view-building phase
-            image.render { background(Colors.primary) }
+            // modify element (automatically will render by posting to the main thread)
+            image.background(Colors.primary)
+            // or render explicitly immediately in this thread
+            image.background(Colors.primary).render()
 
             // or access view directly
             // here we can access the view because it has been already initialized
