@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -11,15 +12,22 @@ import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.clipToOutline
+import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
+import io.noties.adapt.ui.element.imageScaleType
+import io.noties.adapt.ui.element.imageTint
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
+import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.enabled
+import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
@@ -41,7 +49,6 @@ class AdaptUIViewGroupSample : SampleView() {
 
                 // ViewGroup can additionally send enabled/activated states to its children
                 Enabled()
-
             }
         }
     }

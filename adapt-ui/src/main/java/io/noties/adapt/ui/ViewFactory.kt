@@ -31,7 +31,7 @@ class ViewFactory<out LP : LayoutParams>(
             return LayoutParams.WRAP_CONTENT
         }
 
-    var isUsed = false
+    var areElementsConsumed = false
         private set
 
     private val _elements = mutableListOf<ViewElement<out View, *>>()
@@ -41,17 +41,17 @@ class ViewFactory<out LP : LayoutParams>(
      */
     fun inspectElements() = _elements.toList()
 
-    fun useElements() = _elements.toList().also {
-        isUsed = true
+    fun consumeElements() = _elements.toList().also {
+        areElementsConsumed = true
         _elements.clear()
     }
 
     fun add(element: ViewElement<*, *>) {
-        if (isUsed) {
+        if (areElementsConsumed) {
             // init view for proper error reporting
             val view = element.init(context)
             throw IllegalStateException(
-                "ViewFactory has been already used, cannot add more elements, " +
+                "ViewFactory has elements consumed, cannot add more elements, " +
                         "viewGroup:$_viewGroup, element.view:$view"
             )
         }
@@ -96,7 +96,7 @@ class ViewFactory<out LP : LayoutParams>(
             children(factory)
 
             //noinspection NewApi
-            factory.useElements()
+            factory.consumeElements()
                 .forEach { el ->
                     @Suppress("UNCHECKED_CAST")
                     el as ViewElement<View, LP>
@@ -147,7 +147,7 @@ class ViewFactory<out LP : LayoutParams>(
             val factory = ViewFactory<LP>(context, viewGroup)
             children(factory, ref)
 
-            val elements = factory.useElements()
+            val elements = factory.consumeElements()
 
             // ensure single element
             if (elements.size != 1) {

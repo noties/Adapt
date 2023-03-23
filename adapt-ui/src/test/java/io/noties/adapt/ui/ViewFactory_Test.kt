@@ -209,7 +209,7 @@ class ViewFactory_Test {
         }
 
         for ((name, factory) in factories) {
-            assertEquals(true, factory.isUsed)
+            assertEquals(true, factory.areElementsConsumed)
             assertEquals(emptyList<Any?>(), factory.inspectElements())
 
             try {
@@ -218,7 +218,7 @@ class ViewFactory_Test {
             } catch (t: IllegalStateException) {
                 assertTrue(
                     "$name:${t.message}",
-                    t.message!!.contains("ViewFactory has been already used")
+                    t.message!!.contains("ViewFactory has elements consumed")
                 )
             }
         }
@@ -239,7 +239,7 @@ class ViewFactory_Test {
                     } catch (t: IllegalStateException) {
                         assertTrue(
                             t.message,
-                            t.message!!.contains("ViewFactory has been already used")
+                            t.message!!.contains("ViewFactory has elements consumed")
                         )
                     }
                 }
@@ -248,15 +248,15 @@ class ViewFactory_Test {
     }
 
     @Test
-    fun isUsed() {
+    fun isConsumed() {
         val factory = ViewFactory<LayoutParams>(context)
-        assertEquals(false, factory.isUsed)
+        assertEquals(false, factory.areElementsConsumed)
         factory.add(newElement())
         assertEquals(1, factory.inspectElements().size)
-        assertEquals(false, factory.isUsed)
-        assertEquals(1, factory.useElements().size)
-        assertEquals(true, factory.isUsed)
-        assertEquals(0, factory.useElements().size)
+        assertEquals(false, factory.areElementsConsumed)
+        assertEquals(1, factory.consumeElements().size)
+        assertEquals(true, factory.areElementsConsumed)
+        assertEquals(0, factory.consumeElements().size)
         assertEquals(0, factory.inspectElements().size)
 
         try {
@@ -265,7 +265,7 @@ class ViewFactory_Test {
         } catch (t: IllegalStateException) {
             assertTrue(
                 t.message,
-                t.message!!.contains("ViewFactory has been already used")
+                t.message!!.contains("ViewFactory has elements consumed")
             )
         }
     }

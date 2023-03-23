@@ -34,7 +34,7 @@ internal inline fun <reified LP : LayoutParams> obtainView2(block: (ViewFactory<
     val context = RuntimeEnvironment.getApplication()
     val factory = ViewFactory<LP>(context)
     block(factory)
-    return factory.useElements().first().also {
+    return factory.consumeElements().first().also {
         it.init(context)
         it.render()
     }.view

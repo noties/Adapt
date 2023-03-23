@@ -1,5 +1,21 @@
 * explicit tags in sample (enum?), define colors for each
 
+- [ ] SHOW, a layout with rounded background, icon and text => just a text with padding and shape
+  plus, clickable, foreground, cliptooutline
+- on view pred draw should have `once` as it delivers callback only once
+- [ ] shape, padding, for ex top, can result in rect.top be greater than bottom (we do not touch bottom)...
+  NOPE, convert to dp
+- [ ] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which would cause name collision
+
+- [ ] common interface for shape and stateful-shape
+- [ ] StatfulShape.create instead of `drawable`
+- [ ] stateful-shape:
+  ```
+  // TODO: maybe make more fluent, like
+  //  focused = shape ??
+  ```
+- [ ] text, text res so locale is automatically taken from context
+
 - [ ] review wrappers in adapt (padding and edges)
 - [ ] adapt element, makre onAdapt accept it instead o this
 - [ ] maybe make viewElement open? but what would we achieve? most extensions use `ViewElement`,

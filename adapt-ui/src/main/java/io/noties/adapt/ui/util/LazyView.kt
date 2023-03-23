@@ -32,7 +32,8 @@ open class LazyView internal constructor(
     //  fun:show val:isShown (isShown is taken to check visibility)
     //  fun:display val:isDisplayed (display() is a function that returns Display)
     //  fun:layOut (interferes with `layout`)
-    fun inject() {
+    // `open` for the tests
+    open fun inject() {
         // if injection did not happen, we should not change visibility to VISIBLE
         if (inject(VISIBLE)) {
             // NB! as we override visibility, send to super
@@ -65,7 +66,7 @@ open class LazyView internal constructor(
         // remove self
         parent.removeViewAt(index)
 
-        factory.useElements()
+        factory.consumeElements()
             .withIndex()
             .forEach {
                 val view = it.value.init(context)

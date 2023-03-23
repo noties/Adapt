@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample",
+    "id": "20230220160509",
+    "title": "AdaptUI, clip views",
+    "description": "Create a circle avatar view with shape clipping",
+    "tags": [
+      "clip",
+      "shape"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILazySample",
     "id": "20230116182927",
     "title": "AdaptUI, Lazy",
