@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 /**
  * @see AdaptViewGroup.ChangeHandler
@@ -69,16 +68,13 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     // @since $UNRELEASED;
     @NonNull
-    public static TransitionChangeHandler create(@NonNull ViewGroupProvider provider) {
-        final ConfigurationImpl configuration = new ConfigurationImpl();
-        configuration.viewGroupProvider(provider);
-        return new TransitionChangeHandler(configuration);
-    }
-
-    // @since $UNRELEASED;
-    @NonNull
     public static TransitionChangeHandler createTransitionOnParent() {
-        return create(new ParentViewGroupProvider());
+        return create(new Configurator() {
+            @Override
+            public void configure(@NonNull Configuration configuration) {
+                configuration.viewGroupProvider(new ParentViewGroupProvider());
+            }
+        });
     }
 
     @NonNull
