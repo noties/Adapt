@@ -29,6 +29,25 @@ public abstract class AdaptPreviewLayout extends FrameLayout {
 
         initialize(this);
 
+        final ViewGroup layout = createLayout(context);
+        final Adapt adapt = createAdapt(layout);
+
+        adapt.setItems(items());
+    }
+
+    @NonNull
+    protected abstract List<Item<?>> items();
+
+    protected void initialize(@NonNull AdaptPreviewLayout layout) {
+    }
+
+    /**
+     * NB! Layout must be placed into root view (caller would not add it automatically).
+     * This method should return ViewGroup that would be initialized with Adapt
+     */
+    @NonNull
+    protected ViewGroup createLayout(@NonNull Context context) {
+
         final ScrollView scrollView = new ScrollView(context);
         scrollView.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -45,13 +64,11 @@ public abstract class AdaptPreviewLayout extends FrameLayout {
         scrollView.addView(linearLayout);
         addView(scrollView);
 
-        final Adapt adapt = AdaptViewGroup.init(linearLayout);
-        adapt.setItems(items());
+        return linearLayout;
     }
 
     @NonNull
-    protected abstract List<Item<?>> items();
-
-    protected void initialize(@NonNull AdaptPreviewLayout layout) {
+    protected Adapt createAdapt(@NonNull ViewGroup viewGroup) {
+        return AdaptViewGroup.init(viewGroup);
     }
 }
