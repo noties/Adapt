@@ -11,7 +11,7 @@ import io.noties.adapt.ui.util.Gravity
  */
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.VStack(
-    gravity: Gravity = Gravity.center.top,
+    gravity: Gravity = VStackDefaultGravity,
     children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
 ): ViewElement<LinearLayout, LP> = ElementGroup(
     ElementViewFactory.VStack,
@@ -21,3 +21,5 @@ fun <LP : LayoutParams> ViewFactory<LP>.VStack(
     },
     children
 )
+
+val VStackDefaultGravity: Gravity get() = Gravity.center.top

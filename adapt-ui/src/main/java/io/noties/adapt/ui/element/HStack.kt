@@ -11,7 +11,7 @@ import io.noties.adapt.ui.util.Gravity
  */
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.HStack(
-    gravity: Gravity = Gravity.center.leading,
+    gravity: Gravity = HStackDefaultGravity,
     children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
 ): ViewElement<LinearLayout, LP> = ElementGroup(
     ElementViewFactory.HStack,
@@ -21,3 +21,5 @@ fun <LP : LayoutParams> ViewFactory<LP>.HStack(
     },
     children
 )
+
+val HStackDefaultGravity: Gravity get() = Gravity.center.leading
