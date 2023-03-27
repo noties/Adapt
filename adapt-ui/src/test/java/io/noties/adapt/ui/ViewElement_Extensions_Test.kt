@@ -72,6 +72,16 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
+    fun scrollBarsEnabled() {
+        newElement()
+            .scrollBarsEnabled(true, true)
+            .renderView {
+                verify(this).isHorizontalScrollBarEnabled = eq(true)
+                verify(this).isVerticalScrollBarEnabled = eq(true)
+            }
+    }
+
+    @Test
     fun overScrollMode() {
         newElement()
             .overScrollMode(77)

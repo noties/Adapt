@@ -381,6 +381,19 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
 }
 
 /**
+ * Scroll bars
+ * @see View.setHorizontalScrollBarEnabled
+ * @see View.setVerticalScrollBarEnabled
+ */
+fun <V: View, LP: LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
+    horizontal: Boolean,
+    vertical: Boolean
+): ViewElement<V, LP> = onView {
+    it.isHorizontalScrollBarEnabled = horizontal
+    it.isVerticalScrollBarEnabled = vertical
+}
+
+/**
  * Minimum width and height
  * @see View.setMinimumWidth
  * @see View.setMinimumHeight
@@ -504,9 +517,8 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
     block: (ViewElement<V, LP>) -> Unit
 ): ViewElement<V, LP> {
-    val element = this
     return onView {
-        block(element)
+        block(this)
     }
 }
 
