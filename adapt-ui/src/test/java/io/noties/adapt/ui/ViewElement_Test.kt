@@ -178,11 +178,11 @@ class ViewElement_Test {
     @Test
     fun `viewBlock - add during rendering`() {
         // if onView callback adds another callback it should be executed also
-        val callback: View.() -> Unit = mockt()
+        val callback: (View) -> Unit = mockt()
 
         val element = newElement()
             .onElementView {
-                onView(callback)
+                it.onView(callback)
             }
 
         assertEquals(1, element.viewBlocks.size)

@@ -100,9 +100,9 @@ class ViewElement_Layout_Test {
             .layoutMargin(input)
             .renderView {
                 val lp = layoutParams as ViewGroup.MarginLayoutParams
-                Assert.assertEquals(input.dip, lp.marginStart)
+                Assert.assertEquals(input.dip, lp.leftMargin)
                 Assert.assertEquals(input.dip, lp.topMargin)
-                Assert.assertEquals(input.dip, lp.marginEnd)
+                Assert.assertEquals(input.dip, lp.rightMargin)
                 Assert.assertEquals(input.dip, lp.bottomMargin)
             }
     }
@@ -121,9 +121,9 @@ class ViewElement_Layout_Test {
                 .layoutMargin(h, v)
                 .renderView {
                     val lp = layoutParams as ViewGroup.MarginLayoutParams
-                    Assert.assertEquals(h?.dip ?: 0, lp.marginStart)
+                    Assert.assertEquals(h?.dip ?: 0, lp.leftMargin)
                     Assert.assertEquals(v?.dip ?: 0, lp.topMargin)
-                    Assert.assertEquals(h?.dip ?: 0, lp.marginEnd)
+                    Assert.assertEquals(h?.dip ?: 0, lp.rightMargin)
                     Assert.assertEquals(v?.dip ?: 0, lp.bottomMargin)
                 }
         }
@@ -153,9 +153,9 @@ class ViewElement_Layout_Test {
                 .layoutMargin(input.start, input.top, input.end, input.bottom)
                 .renderView {
                     val lp = layoutParams as ViewGroup.MarginLayoutParams
-                    Assert.assertEquals(input.start?.dip ?: 0, lp.marginStart)
+                    Assert.assertEquals(input.start?.dip ?: 0, lp.leftMargin)
                     Assert.assertEquals(input.top?.dip ?: 0, lp.topMargin)
-                    Assert.assertEquals(input.end?.dip ?: 0, lp.marginEnd)
+                    Assert.assertEquals(input.end?.dip ?: 0, lp.rightMargin)
                     Assert.assertEquals(input.bottom?.dip ?: 0, lp.bottomMargin)
                 }
         }

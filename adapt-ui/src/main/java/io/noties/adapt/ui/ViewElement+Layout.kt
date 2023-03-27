@@ -118,9 +118,9 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
 
 /**
  * Specifies values for all layout margins
- * + `leading` => `marginStart`
+ * + `leading` => `leftMargin`
  * + `top` => `topMargin`
- * + `trailing` => `marginEnd`
+ * + `trailing` => `rightMargin`
  * + `bottom` => `bottomMargin`
  * If value is `null` it is ignored
  */
@@ -130,8 +130,8 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     trailing: Int? = null,
     bottom: Int? = null
 ) = onLayoutParams { mlp ->
-    leading?.dip?.also { mlp.marginStart = it }
+    leading?.dip?.also { mlp.leftMargin = it }
     top?.dip?.also { mlp.topMargin = it }
-    trailing?.dip?.also { mlp.marginEnd = it }
+    trailing?.dip?.also { mlp.rightMargin = it }
     bottom?.dip?.also { mlp.bottomMargin = it }
 }

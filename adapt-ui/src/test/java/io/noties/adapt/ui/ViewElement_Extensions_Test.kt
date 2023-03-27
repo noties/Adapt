@@ -808,7 +808,7 @@ class ViewElement_Extensions_Test {
 
     @Test
     fun onElementView() {
-        val callbacks: ViewElement<View, LayoutParams>.() -> Unit = mockt()
+        val callbacks: (ViewElement<View, LayoutParams>) -> Unit = mockt()
         val element = newElement()
             .onElementView(callbacks)
         verify(callbacks, org.mockito.kotlin.never()).invoke(org.mockito.kotlin.any())
