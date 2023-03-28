@@ -18,6 +18,7 @@ import android.widget.TextView
  * @see Image
  * @see Pager
  * @see Progress
+ * @see Recycler
  * @see Spacer
  * @see Text
  * @see TextInput
@@ -32,6 +33,7 @@ object ElementViewFactory {
     lateinit var Image: (Context) -> ImageView
     lateinit var Pager: (Context) -> androidx.viewpager.widget.ViewPager
     lateinit var Progress: (Context) -> ProgressBar
+    lateinit var Recycler: (Context) -> androidx.recyclerview.widget.RecyclerView
     lateinit var Spacer: (Context) -> View
     lateinit var Text: (Context) -> TextView
     lateinit var TextInput: (Context) -> EditText
@@ -50,6 +52,7 @@ object ElementViewFactory {
         Image = { ImageView(it) }
         Pager = { androidx.viewpager.widget.ViewPager(it) }
         Progress = { ProgressBar(it) }
+        Recycler = { androidx.recyclerview.widget.RecyclerView(it) }
         Spacer = { android.view.View(it) }
         Text = { TextView(it) }
         TextInput = { EditText(it) }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -75,6 +76,16 @@ class ElementViewFactory_Test {
             ProgressBar::class.java,
             ElementViewFactory::Progress
         ) { Progress() }
+    }
+
+    @Test
+    fun `element - Recycler`() {
+        assertViewFactory(
+            RecyclerView::class.java,
+            ElementViewFactory::Recycler
+        ) {
+            Recycler()
+        }
     }
 
     @Test
