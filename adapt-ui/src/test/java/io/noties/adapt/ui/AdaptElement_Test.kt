@@ -16,7 +16,6 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.testutil.mockt
-import io.noties.adapt.ui.util.children
 import io.noties.adapt.view.AdaptView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewpager.AdaptViewPager
@@ -107,8 +106,8 @@ class AdaptElement_Test {
             lateinit var viewAdapt: AdaptView
         }
 
-        val view: View = mockt()
-        val item: Item<*> = mockt {
+        val view: View = io.noties.adapt.ui.testutil.mockt()
+        val item: Item<*> = io.noties.adapt.ui.testutil.mockt {
             on { createHolder(any(), any()) } doReturn Item.Holder(view)
         }
 

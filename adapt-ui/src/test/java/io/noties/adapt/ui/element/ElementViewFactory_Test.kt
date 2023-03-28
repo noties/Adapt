@@ -1,6 +1,5 @@
 package io.noties.adapt.ui.element
 
-import android.content.Context
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -12,26 +11,19 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.obtainView2
+import io.noties.adapt.ui.assertViewFactory
+import io.noties.adapt.ui.assertViewFactory2
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import kotlin.reflect.KMutableProperty0
 
 @Suppress("ClassName", "TestFunctionName")
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
 class ElementViewFactory_Test {
-
-    private val context: Context get() = RuntimeEnvironment.getApplication()
 
     @After
     fun after() {
@@ -146,29 +138,5 @@ class ElementViewFactory_Test {
             FrameLayout::class.java,
             ElementViewFactory::ZStack
         ) { ZStack { } }
-    }
-
-    private inline fun <reified V : View> assertViewFactory(
-        expected: Class<out V>,
-        property: KMutableProperty0<(Context) -> V>,
-        block: ViewFactory<LayoutParams>.() -> Unit
-    ) {
-        assertViewFactory2(expected, property, block)
-    }
-
-    private inline fun <reified V : View, reified LP : LayoutParams> assertViewFactory2(
-        expected: Class<out V>,
-        property: KMutableProperty0<(Context) -> V>,
-        block: ViewFactory<LP>.() -> Unit
-    ) {
-        assertEquals(
-            expected,
-            property.get()(context)::class.java
-        )
-
-        val mocked = mock(expected)
-        `when`(mocked.context).thenReturn(context)
-        property.set { mocked }
-        assertEquals(mocked, obtainView2(block))
     }
 }

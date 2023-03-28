@@ -1,0 +1,38 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'io.noties.adapt.ui.test'
+
+    compileSdkVersion config['target-sdk']
+    buildToolsVersion config['build-tools']
+
+    defaultConfig {
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // even if you do not use resources, robolectric still requires this,
+    //  otherwise it would skip tests
+    testOptions.unitTests.includeAndroidResources = true
+}
+
+dependencies {
+    api project(':adapt-ui')
+
+    api deps['junit4']
+    api deps['mockito']
+    api deps['mockito-kotlin']
+    api deps['robolectric']
+}

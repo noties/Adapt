@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.annotation.AttrRes
 
-internal val Int.dip: Int
+val Int.dip: Int
     get() {
         return (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
     }

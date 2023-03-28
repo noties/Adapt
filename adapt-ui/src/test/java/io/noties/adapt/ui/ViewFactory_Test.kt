@@ -131,7 +131,7 @@ class ViewFactory_Test {
     fun `init - no viewGroup`() {
         // when no viewgroup is specified (null)
         val factory = ViewFactory<LayoutParams>(
-            mockt(),
+            io.noties.adapt.ui.testutil.mockt(),
             null
         )
 
@@ -145,8 +145,8 @@ class ViewFactory_Test {
     @Test
     fun init() {
         val factory = ViewFactory<LayoutParams>(
-            mockt(),
-            mockt()
+            io.noties.adapt.ui.testutil.mockt(),
+            io.noties.adapt.ui.testutil.mockt()
         )
         assertTrue(factory.hasViewGroup)
 
@@ -156,7 +156,7 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - default LP`() {
-        val viewGroup: ViewGroup = mockt {
+        val viewGroup: ViewGroup = io.noties.adapt.ui.testutil.mockt {
             on { context } doReturn RuntimeEnvironment.getApplication()
         }
         val creator = ViewFactory.newView(viewGroup)
@@ -174,7 +174,7 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - layoutParams`() {
-        val viewGroup: ViewGroup = mockt {
+        val viewGroup: ViewGroup = io.noties.adapt.ui.testutil.mockt {
             on { context } doReturn RuntimeEnvironment.getApplication()
         }
 

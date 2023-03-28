@@ -790,7 +790,7 @@ class Shape_Test {
         val fillRect = Rect(2, 2, 8, 18)
 
         for (shape in shapes()) {
-            val canvas = mockt<Canvas>()
+            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
             val translation = Shape.Translation(Exact(3), Relative(0.25F))
             shape.padding(2)
                 .also { it.translation = translation }
@@ -820,7 +820,7 @@ class Shape_Test {
 
         // rotation object receives fillRect bounds, not initial received bounds
         for (shape in shapes()) {
-            val canvas = mockt<Canvas>()
+            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
             val rotation = Shape.Rotation(1F, Exact(0), Relative(1F))
             shape.padding(2)
                 .also { it.rotation = rotation }
@@ -889,7 +889,7 @@ class Shape_Test {
     @Test
     fun `draw - not-visible`() {
         // when it is not visible, it is not drawn
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
         val shape = Rectangle().fill(6) // set fill color, so shape is drawn
 
@@ -901,7 +901,7 @@ class Shape_Test {
 
     @Test
     fun `draw - empty bounds`() {
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 0, 0)
         val shape = Circle().fill(1234)
 
@@ -915,7 +915,7 @@ class Shape_Test {
     @Test
     fun `draw - empty bounds after padding`() {
         // received bounds are not empty, but further modifications makes fillRect empty
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val rect = Rect(0, 0, 10, 10)
         Assert.assertFalse(rect.toShortString(), rect.isEmpty)
 
@@ -931,7 +931,7 @@ class Shape_Test {
     @Test
     fun `draw - empty bounds after size`() {
         // received bounds are not empty, but further modifications makes fillRect empty
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val rect = Rect(0, 0, 1000, 1000)
         Assert.assertFalse(rect.toShortString(), rect.isEmpty)
 
@@ -946,7 +946,7 @@ class Shape_Test {
 
     @Test
     fun `draw - translate`() {
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
         val shape = Oval().fill(3)
 
@@ -961,7 +961,7 @@ class Shape_Test {
 
     @Test
     fun `draw - translateRelative`() {
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
         val shape = Capsule().fill(-19)
 
@@ -976,7 +976,7 @@ class Shape_Test {
 
     @Test
     fun `draw - rotate`() {
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
         val shape = RoundedRectangle(12).fill(-1908)
 
@@ -994,13 +994,13 @@ class Shape_Test {
     fun `draw - children`() {
         // children are drawn
         val children = (0 until 5)
-            .map { mockt<Shape> { on { this.alpha } doReturn null } }
+            .map { io.noties.adapt.ui.testutil.mockt<Shape> { on { this.alpha } doReturn null } }
 
         val shape = Oval {
             children.forEach(this::add)
         }
 
-        shape.draw(mockt(), Rect(0, 0, 100, 100))
+        shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(0, 0, 100, 100))
 
         children.forEach {
             verify(it).draw(any(), any())
@@ -1022,13 +1022,13 @@ class Shape_Test {
 
         for (input in inputs) {
             val children = listOf(
-                mockt<Shape> {
+                io.noties.adapt.ui.testutil.mockt<Shape> {
                     on { this.alpha } doReturn 1F
                 },
-                mockt {
+                io.noties.adapt.ui.testutil.mockt {
                     on { this.alpha } doReturn 0.5F
                 },
-                mockt {
+                io.noties.adapt.ui.testutil.mockt {
                     on { this.alpha } doReturn 0.25F
                 }
             )
@@ -1038,7 +1038,7 @@ class Shape_Test {
                 alpha(input)
             }
 
-            shape.draw(mockt(), Rect(1, 2, 5, 8))
+            shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(1, 2, 5, 8))
 
             for (child in children) {
                 val expectedAlpha = (child.alpha ?: 1F) * (shape.alpha ?: 1F)
@@ -1063,7 +1063,7 @@ class Shape_Test {
     fun `draw - children - visible=false`() {
         // when parent is visible=false no children are drawn
         val children = (0 until 5)
-            .map { mockt<Shape> { on { this.alpha } doReturn 1F } }
+            .map { io.noties.adapt.ui.testutil.mockt<Shape> { on { this.alpha } doReturn 1F } }
 
         val shape = Rectangle {
             children.forEach { add(it) }
@@ -1073,9 +1073,9 @@ class Shape_Test {
         }
         Assert.assertTrue(shape.hidden!!)
 
-        val canvas = mockt<Canvas>()
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
 
-        shape.draw(canvas, mockt())
+        shape.draw(canvas, io.noties.adapt.ui.testutil.mockt())
 
         // verify no calls to canvas draw methods were issued
         verifyNoInteractions(canvas)

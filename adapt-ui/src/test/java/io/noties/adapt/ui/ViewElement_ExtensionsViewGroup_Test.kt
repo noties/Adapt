@@ -23,10 +23,10 @@ class ViewElement_ExtensionsViewGroup_Test {
         val inputs = listOf(true, false)
         for (input in inputs) {
             val children = listOf(
-                mockt<View>(),
-                mockt(),
+                io.noties.adapt.ui.testutil.mockt<View>(),
+                io.noties.adapt.ui.testutil.mockt(),
             )
-            val group = mockt<ViewGroup> {
+            val group = io.noties.adapt.ui.testutil.mockt<ViewGroup> {
                 on { this.childCount } doReturn children.size
                 children.withIndex()
                     .forEach {
@@ -34,7 +34,7 @@ class ViewElement_ExtensionsViewGroup_Test {
                     }
             }
             val element = ViewElement<ViewGroup, LayoutParams> { group }.also {
-                it.init(mockt())
+                it.init(io.noties.adapt.ui.testutil.mockt())
             }
             Assert.assertEquals(group, element.view)
 
@@ -53,10 +53,10 @@ class ViewElement_ExtensionsViewGroup_Test {
         val inputs = listOf(true, false)
         for (input in inputs) {
             val children = listOf(
-                mockt<View>(),
-                mockt(),
+                io.noties.adapt.ui.testutil.mockt<View>(),
+                io.noties.adapt.ui.testutil.mockt(),
             )
-            val group = mockt<ViewGroup> {
+            val group = io.noties.adapt.ui.testutil.mockt<ViewGroup> {
                 on { this.childCount } doReturn children.size
                 children.withIndex()
                     .forEach {
@@ -64,7 +64,7 @@ class ViewElement_ExtensionsViewGroup_Test {
                     }
             }
             val element = ViewElement<ViewGroup, LayoutParams> { group }.also {
-                it.init(mockt())
+                it.init(io.noties.adapt.ui.testutil.mockt())
             }
             element.enabled(input, true).renderView {
                 verify(this).isEnabled = eq(input)
@@ -80,10 +80,10 @@ class ViewElement_ExtensionsViewGroup_Test {
         val inputs = listOf(true, false)
         for (input in inputs) {
             val children = listOf(
-                mockt<View>(),
-                mockt(),
+                io.noties.adapt.ui.testutil.mockt<View>(),
+                io.noties.adapt.ui.testutil.mockt(),
             )
-            val group = mockt<ViewGroup> {
+            val group = io.noties.adapt.ui.testutil.mockt<ViewGroup> {
                 on { this.childCount } doReturn children.size
                 children.withIndex()
                     .forEach {
@@ -91,7 +91,7 @@ class ViewElement_ExtensionsViewGroup_Test {
                     }
             }
             val element = ViewElement<ViewGroup, LayoutParams> { group }.also {
-                it.init(mockt())
+                it.init(io.noties.adapt.ui.testutil.mockt())
             }
             element.activated(input).renderView {
                 verify(this).isActivated = eq(input)
@@ -107,10 +107,10 @@ class ViewElement_ExtensionsViewGroup_Test {
         val inputs = listOf(true, false)
         for (input in inputs) {
             val children = listOf(
-                mockt<View>(),
-                mockt(),
+                io.noties.adapt.ui.testutil.mockt<View>(),
+                io.noties.adapt.ui.testutil.mockt(),
             )
-            val group = mockt<ViewGroup> {
+            val group = io.noties.adapt.ui.testutil.mockt<ViewGroup> {
                 on { this.childCount } doReturn children.size
                 children.withIndex()
                     .forEach {
@@ -118,7 +118,7 @@ class ViewElement_ExtensionsViewGroup_Test {
                     }
             }
             val element = ViewElement<ViewGroup, LayoutParams> { group }.also {
-                it.init(mockt())
+                it.init(io.noties.adapt.ui.testutil.mockt())
             }
             element.activated(input, true).renderView {
                 verify(this).isActivated = eq(input)

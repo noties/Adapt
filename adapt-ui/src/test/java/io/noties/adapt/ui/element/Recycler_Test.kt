@@ -128,7 +128,7 @@ class Recycler_Test {
 
     @Test
     fun recyclerLayoutManager() {
-        val lm = mockt<LayoutManager>()
+        val lm = io.noties.adapt.ui.testutil.mockt<LayoutManager>()
         newElementOfType<RecyclerView>()
             .recyclerLayoutManager(lm)
             .renderView {
@@ -152,7 +152,7 @@ class Recycler_Test {
 
     @Test
     fun recyclerItemAnimator() {
-        val ia = mockt<ItemAnimator>()
+        val ia = io.noties.adapt.ui.testutil.mockt<ItemAnimator>()
         newElementOfType<RecyclerView>()
             .recyclerItemAnimator(ia)
             .renderView {

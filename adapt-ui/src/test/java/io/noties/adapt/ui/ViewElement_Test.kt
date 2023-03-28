@@ -122,7 +122,7 @@ class ViewElement_Test {
 
     @Test
     fun `layoutBlock - add during rendering`() {
-        val callback: LayoutParams.() -> Unit = mockt()
+        val callback: LayoutParams.() -> Unit = io.noties.adapt.ui.testutil.mockt()
 
         val element = newElement()
             .mockLayoutParams()
@@ -178,7 +178,7 @@ class ViewElement_Test {
     @Test
     fun `viewBlock - add during rendering`() {
         // if onView callback adds another callback it should be executed also
-        val callback: (View) -> Unit = mockt()
+        val callback: (View) -> Unit = io.noties.adapt.ui.testutil.mockt()
 
         val element = newElement()
             .onElementView {

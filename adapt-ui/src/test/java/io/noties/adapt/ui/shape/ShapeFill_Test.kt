@@ -30,7 +30,7 @@ import kotlin.math.roundToInt
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [ShadowPaint::class])
+@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [io.noties.adapt.ui.testutil.ShadowPaint::class])
 class ShapeFill_Test {
 
     @Test

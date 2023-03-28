@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [ShadowPaint::class])
+@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [io.noties.adapt.ui.testutil.ShadowPaint::class])
 class ShapeStroke_Test {
 
     @Test
@@ -143,15 +143,15 @@ class ShapeStroke_Test {
         val inputs = listOf(
             Stroke(),
             Stroke(width = 0, color = 567, dashGap = 1, dashWidth = 27),
-            Stroke(width = 0, gradient = mockt()),
+            Stroke(width = 0, gradient = io.noties.adapt.ui.testutil.mockt()),
             Stroke(width = 10, color = null),
             Stroke(width = 123, gradient = null)
         )
 
         for (input in inputs) {
-            val canvas = mockt<Canvas>()
+            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
             // important to use real object, not mock in order to see if canvas was called
-            input.draw(canvas, Oval(), mockt())
+            input.draw(canvas, Oval(), io.noties.adapt.ui.testutil.mockt())
             verifyNoInteractions(canvas)
         }
     }
@@ -162,8 +162,8 @@ class ShapeStroke_Test {
         val stroke = Stroke(width = 1, color = 0xFFff0000.toInt())
         // important to use real object, not mock in order to see if canvas was called
         val shape = Rectangle().alpha(0F)
-        val canvas = mockt<Canvas>()
-        stroke.draw(canvas, shape, mockt())
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+        stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
 
         verifyNoInteractions(canvas)
     }
@@ -174,8 +174,8 @@ class ShapeStroke_Test {
         val stroke = Stroke(0x00FFFFFF, 99)
         // important to use real object, not mock in order to see if canvas was called
         val shape = Oval().alpha(1F)
-        val canvas = mockt<Canvas>()
-        stroke.draw(canvas, shape, mockt())
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+        stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
         verifyNoInteractions(canvas)
     }
 
@@ -189,12 +189,12 @@ class ShapeStroke_Test {
 
         for (input in inputs) {
             val stroke = Stroke(input)
-            val canvas = mockt<Canvas>()
-            val shape = mockt<Shape> {
+            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+            val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
                 on { this.alpha } doReturn 1F
             }
 
-            stroke.draw(canvas, shape, mockt())
+            stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
 
             if (Color.alpha(input) == 0) {
                 verify(shape, never()).drawShape(any(), any(), any())
@@ -232,12 +232,12 @@ class ShapeStroke_Test {
         for (input in inputs) {
             for (alpha in alphas) {
                 val stroke = Stroke(input)
-                val canvas = mockt<Canvas>()
-                val shape = mockt<Shape> {
+                val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+                val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
                     on { this.alpha } doReturn alpha
                 }
 
-                stroke.draw(canvas, shape, mockt())
+                stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
 
                 val expectedAlpha = (255 * ((Color.alpha(input) / 255F) * alpha)).roundToInt()
 
@@ -269,10 +269,10 @@ class ShapeStroke_Test {
         val gradient = SweepGradient(1982, 891)
         val input = 0.25F
         val stroke = Stroke(gradient = gradient)
-        val shape = mockt<Shape> {
+        val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
             on { this.alpha } doReturn input
         }
-        stroke.draw(mockt(), shape, mockt())
+        stroke.draw(io.noties.adapt.ui.testutil.mockt(), shape, io.noties.adapt.ui.testutil.mockt())
 
         val captor = argumentCaptor<Paint>()
         verify(shape).drawShape(

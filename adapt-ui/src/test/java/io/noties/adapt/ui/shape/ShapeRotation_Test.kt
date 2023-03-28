@@ -24,8 +24,8 @@ class ShapeRotation_Test {
         val rotation = Shape.Rotation()
         Assert.assertNull("rotation.degrees", rotation.degrees)
 
-        val canvas = mockt<Canvas>()
-        rotation.draw(canvas, mockt())
+        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+        rotation.draw(canvas, io.noties.adapt.ui.testutil.mockt())
 
         verifyNoInteractions(canvas)
     }
@@ -54,7 +54,7 @@ class ShapeRotation_Test {
         val degrees = 45F
 
         for (input in inputs) {
-            val canvas = mockt<Canvas>()
+            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
             val rotation = Shape.Rotation(degrees).also {
                 it.centerX = input.first.first
                 it.centerY = input.first.second

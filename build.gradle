@@ -48,6 +48,9 @@ ext {
             'x-viewpager'   : 'androidx.viewpager:viewpager:1.0.0',
             'x-viewpager2'  : 'androidx.viewpager2:viewpager2:1.0.0',
 
+            // https://github.com/google/flexbox-layout
+            'flexbox': 'com.google.android.flexbox:flexbox:3.0.0',
+
             'junit4'        : 'junit:junit:4.13.2',
 
             // https://github.com/mockito/mockito

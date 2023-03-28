@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
+    // https://developer.android.com/studio/publish-library/prep-lib-release
+    // What this namespace represents? It doesn't seem to be used anywhere
+    namespace 'io.noties.adapt'
 
     compileSdkVersion config['target-sdk']
     buildToolsVersion config['build-tools']
 
     defaultConfig {
-        namespace 'io.noties.adapt'
         minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
 
@@ -22,9 +24,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // https://developer.android.com/studio/publish-library/prep-lib-release
-    // What this namespace represents? It doesn't seem to be used anywhere
-    namespace 'io.noties.adapt'
     publishing {
         singleVariant('release') {
             withSourcesJar()

@@ -408,8 +408,8 @@ class Text_Test {
 
     @Test
     fun textGradient() {
-        val gradient = mockt<Gradient>()
-        val paint = mockt<TextPaint>()
+        val gradient = io.noties.adapt.ui.testutil.mockt<Gradient>()
+        val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
 
         newTextElement()
             .textGradient(gradient)
@@ -494,7 +494,7 @@ class Text_Test {
     fun textBold() {
         val inputs = listOf(
             null to null,
-            mockt<Typeface>() to Typeface.ITALIC
+            io.noties.adapt.ui.testutil.mockt<Typeface>() to Typeface.ITALIC
         )
 
         for ((typeface, style) in inputs) {
@@ -520,7 +520,7 @@ class Text_Test {
     fun textItalic() {
         val inputs = listOf(
             null to null,
-            mockt<Typeface>() to Typeface.BOLD
+            io.noties.adapt.ui.testutil.mockt<Typeface>() to Typeface.BOLD
         )
 
         for ((typeface, style) in inputs) {
@@ -546,7 +546,7 @@ class Text_Test {
     fun textUnderline() {
         val inputs = listOf(true, false)
         for (input in inputs) {
-            val paint = mockt<TextPaint>()
+            val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
             newTextElement()
                 .also {
                     whenever(it.view.paint).thenReturn(paint)
@@ -562,7 +562,7 @@ class Text_Test {
     fun textStrikeThrough() {
         val inputs = listOf(true, false)
         for (input in inputs) {
-            val paint = mockt<TextPaint>()
+            val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
             newTextElement()
                 .also {
                     whenever(it.view.paint).thenReturn(paint)

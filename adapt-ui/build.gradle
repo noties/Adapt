@@ -4,11 +4,14 @@ plugins {
 }
 
 android {
+    // https://developer.android.com/studio/publish-library/prep-lib-release
+    // What this namespace represents? It doesn't seem to be used anywhere
+    namespace 'io.noties.adapt.ui'
+
     compileSdkVersion config['target-sdk']
     buildToolsVersion config['build-tools']
 
     defaultConfig {
-        namespace 'io.noties.adapt.ui'
         minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
     }
@@ -22,9 +25,6 @@ android {
         jvmTarget = '1.8'
     }
 
-    // https://developer.android.com/studio/publish-library/prep-lib-release
-    // What this namespace represents? It doesn't seem to be used anywhere
-    namespace 'io.noties.adapt.ui'
     publishing {
         singleVariant('release') {
             withSourcesJar()
@@ -49,10 +49,12 @@ dependencies {
     compileOnly deps['x-viewpager']
     compileOnly deps['x-viewpager2']
 
-    testImplementation deps['junit4']
-    testImplementation deps['mockito']
-    testImplementation deps['mockito-kotlin']
-    testImplementation deps['robolectric']
+    testImplementation project(':adapt-ui-test-shared')
+
+//    testImplementation deps['junit4']
+//    testImplementation deps['mockito']
+//    testImplementation deps['mockito-kotlin']
+//    testImplementation deps['robolectric']
 
     testImplementation deps['x-recyclerview']
     testImplementation deps['x-viewpager']

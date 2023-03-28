@@ -74,7 +74,7 @@ class LazyView_Test {
 //            },
             "no-parent" to LazyView(context) {},
             "no-parent-index" to LazyView(context) {}.also {
-                val vg: ViewGroup = mockt {
+                val vg: ViewGroup = io.noties.adapt.ui.testutil.mockt {
                     // not found
                     on { indexOfChild(any()) } doReturn -1
                 }
@@ -106,7 +106,7 @@ class LazyView_Test {
         for ((input, result) in inputs) {
             val view = LazyView(context) {}
             view.also {
-                val parent: ViewGroup = mockt {
+                val parent: ViewGroup = io.noties.adapt.ui.testutil.mockt {
                     on { context } doReturn context
                     on { indexOfChild(eq(it)) } doReturn 0
                 }
@@ -160,7 +160,7 @@ class LazyView_Test {
             }
 
             val index = 33
-            val parent: ViewGroup = mockt {
+            val parent: ViewGroup = io.noties.adapt.ui.testutil.mockt {
                 on { context } doReturn context
                 on { indexOfChild(eq(view)) } doReturn index
             }
