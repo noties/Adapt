@@ -1,17 +1,40 @@
-package io.noties.adapt.sample.samples.viewpager
+package io.noties.adapt.ui.pager
 
 import android.content.Context
+import android.os.Build
+import android.transition.TransitionManager
+import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import io.noties.adapt.viewgroup.TransitionChangeHandler
+import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.element.Element
 import io.noties.adapt.viewpager.AdaptViewPager
 import kotlin.math.roundToInt
 
-// view pager is great, if it is added to a scroll view, then the scroll view is not scrolling
-class ViewPagerWrapContent(context: Context) : ViewPager(context) {
+/**
+ * NB! in order to function ViewPager must be initialized with AdaptViewPager.init
+ * @since $UNRELEASED;
+ */
+@Suppress("FunctionName")
+fun <LP : LayoutParams> ViewFactory<LP>.AdaptPagerWrapContent(
+) = Element { AdaptViewPagerWrapContent(it) }
 
-    private val handler: TransitionChangeHandler by lazy(LazyThreadSafetyMode.NONE) {
-        TransitionChangeHandler.createTransitionOnParent()
+// view pager is great, if it is added to a scroll view, then the scroll view is not scrolling
+/**
+ * Requires ViewPager to be initialized with Adapt - [AdaptViewPager.init]
+ * @since $UNRELEASED;
+ */
+class AdaptViewPagerWrapContent(context: Context) : ViewPager(context) {
+
+    interface ChangeHandler {
+        // before request layout is called
+        fun beforeChange(pager: AdaptViewPagerWrapContent)
+
+        // after request layout is called
+        fun afterChange(pager: AdaptViewPagerWrapContent)
     }
+
+    var changeHandler: ChangeHandler = DefaultChangeHandler()
 
     init {
         addOnPageChangeListener(object : SimpleOnPageChangeListener() {
@@ -27,9 +50,9 @@ class ViewPagerWrapContent(context: Context) : ViewPager(context) {
             return
         }
 
-        handler.begin(this)
+        changeHandler.beforeChange(this)
         requestLayout()
-        handler.end(this)
+        changeHandler.afterChange(this)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -71,5 +94,17 @@ class ViewPagerWrapContent(context: Context) : ViewPager(context) {
             view.measuredHeight + paddingTop + paddingBottom,
             MeasureSpec.EXACTLY
         )
+    }
+
+    class DefaultChangeHandler : ChangeHandler {
+        override fun beforeChange(pager: AdaptViewPagerWrapContent) {
+            val parent = pager.parent as? ViewGroup ?: return
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                TransitionManager.endTransitions(parent)
+            }
+            TransitionManager.beginDelayedTransition(parent)
+        }
+
+        override fun afterChange(pager: AdaptViewPagerWrapContent) = Unit
     }
 }

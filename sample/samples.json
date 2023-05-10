@@ -1,6 +1,6 @@
 [
   {
-    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyExploreSample",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample",
     "id": "20230403235622",
     "title": "AdaptUI[Explore] sticky with reverse linear layout",
     "description": "",

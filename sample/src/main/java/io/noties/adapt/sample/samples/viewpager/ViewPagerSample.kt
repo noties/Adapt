@@ -21,6 +21,8 @@ import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
+import io.noties.adapt.ui.element.ViewPagerOnPageChangeListener
+import io.noties.adapt.ui.element.pagerOnPageChangedListener
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
@@ -30,6 +32,7 @@ import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.pager.AdaptPagerWrapContent
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.Circle
@@ -38,6 +41,7 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
+import io.noties.debug.Debug
 import kotlin.math.roundToInt
 
 @AdaptSample(
@@ -70,7 +74,13 @@ class ViewPagerSample : SampleView() {
                     .setItems(items)
 
                 Text("Wrap height")
-                Element(::ViewPagerWrapContent)
+
+                AdaptPagerWrapContent()
+                    .pagerOnPageChangedListener(object: ViewPagerOnPageChangeListener() {
+                        override fun onPageSelected(position: Int) {
+                            Debug.i("selected:$position count:$pagesCount vp:$viewPager")
+                        }
+                    })
                     .onView(::processViewPager)
                     .layout(FILL, WRAP)
                     .adaptViewPager { it.pageWidth(pageWidth) }
