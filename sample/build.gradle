@@ -40,6 +40,7 @@ dependencies {
 
     implementation project(':adapt')
     implementation project(':adapt-ui')
+    implementation project(':adapt-ui-flex')
 
     implementation deps['x-recyclerview']
     implementation deps['x-viewpager']

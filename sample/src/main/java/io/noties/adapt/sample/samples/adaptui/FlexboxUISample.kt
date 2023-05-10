@@ -3,11 +3,6 @@ package io.noties.adapt.sample.samples.adaptui
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.flexbox.AlignContent
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.JustifyContent
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -15,6 +10,19 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textGravity
+import io.noties.adapt.ui.flex.AlignContent
+import io.noties.adapt.ui.flex.AlignItems
+import io.noties.adapt.ui.flex.Flex
+import io.noties.adapt.ui.flex.FlexDirection
+import io.noties.adapt.ui.flex.FlexWrap
+import io.noties.adapt.ui.flex.JustifyContent
+import io.noties.adapt.ui.flex.flexAlignContent
+import io.noties.adapt.ui.flex.flexAlignItems
+import io.noties.adapt.ui.flex.flexDirection
+import io.noties.adapt.ui.flex.flexJustifyContent
+import io.noties.adapt.ui.flex.flexWrap
+import io.noties.adapt.ui.flex.layoutFlexGrow
+import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.util.Gravity
@@ -58,11 +66,11 @@ class FlexboxUISample : SampleView() {
                 Text("4")
                     .layoutFlexWrapBefore(true)
 
-            }.flexDirection(FlexDirection.ROW)
-                .flexJustifyContent(JustifyContent.CENTER)
-                .flexAlignItems(AlignItems.CENTER)
-                .flexAlignContent(AlignContent.CENTER)
-                .flexWrap(FlexWrap.WRAP)
+            }.flexDirection(FlexDirection.row)
+                .flexJustifyContent(JustifyContent.center)
+                .flexAlignItems(AlignItems.center)
+                .flexAlignContent(AlignContent.center)
+                .flexWrap(FlexWrap.wrap)
         }
     }
 }

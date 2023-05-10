@@ -15,12 +15,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Switch
 import android.widget.TextView
-import com.google.android.flexbox.AlignContent
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
-import com.google.android.flexbox.JustifyContent
 import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
@@ -49,6 +44,21 @@ import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.flex.AlignContent
+import io.noties.adapt.ui.flex.AlignItems
+import io.noties.adapt.ui.flex.AlignSelf
+import io.noties.adapt.ui.flex.Flex
+import io.noties.adapt.ui.flex.FlexDirection
+import io.noties.adapt.ui.flex.FlexWrap
+import io.noties.adapt.ui.flex.JustifyContent
+import io.noties.adapt.ui.flex.flexAlignContent
+import io.noties.adapt.ui.flex.flexAlignItems
+import io.noties.adapt.ui.flex.flexDirection
+import io.noties.adapt.ui.flex.flexJustifyContent
+import io.noties.adapt.ui.flex.flexWrap
+import io.noties.adapt.ui.flex.layoutFlexGrow
+import io.noties.adapt.ui.flex.layoutFlexShrink
+import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
@@ -163,7 +173,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     private fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.defaultFlexContainerStyle() =
         this
-            .flexAlignItems(AlignItems.STRETCH)
+            .flexAlignItems(AlignItems.stretch)
             .padding(horizontal = 12, vertical = 4)
             .background(RoundedRectangle(2) {
                 stroke(Colors.black.withAlphaComponent(0.42F), 1, 8)
@@ -633,7 +643,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .background(Oval().fill(Colors.yellow))
                 .also { circles.add(it) }
 
-        }.flexAlignItems(AlignItems.STRETCH)
+        }.flexAlignItems(AlignItems.stretch)
             .background(RoundedRectangle(2) {
                 stroke(hex("#40ff0000"))
 //                padding(horizontal = 8)
@@ -711,7 +721,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
             DropDown(
                 "flex-wrap",
-                listOf("nowrap (default)" to FlexWrap.NOWRAP, "wrap" to FlexWrap.WRAP)
+                listOf("nowrap (default)" to FlexWrap.nowrap, "wrap" to FlexWrap.wrap)
             ) { selected ->
                 flex.renderInTransition {
                     flex.flexWrap(selected.second)
@@ -744,7 +754,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layout(0, WRAP)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.WRAP)
+            .flexWrap(FlexWrap.wrap)
 
         AlignItemsDropDown(flex)
     }
@@ -774,7 +784,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layout(0, WRAP)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.WRAP)
+            .flexWrap(FlexWrap.wrap)
             .layout(FILL, 96 * 2 + 32)
 
         HStack {
@@ -783,12 +793,12 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             DropDown(
                 "align-content",
                 listOf(
-                    "flex-start" to AlignContent.FLEX_START,
-                    "flex-end" to AlignContent.FLEX_END,
-                    "center" to AlignContent.CENTER,
-                    "space-between" to AlignContent.SPACE_BETWEEN,
-                    "space-around" to AlignContent.SPACE_AROUND,
-                    "stretch" to AlignContent.STRETCH,
+                    "flex-start" to AlignContent.flexStart,
+                    "flex-end" to AlignContent.flexEnd,
+                    "center" to AlignContent.center,
+                    "space-between" to AlignContent.spaceBetween,
+                    "space-around" to AlignContent.spaceAround,
+                    "stretch" to AlignContent.stretch,
                 )
             ) { selected ->
                 flex.renderInTransition {
@@ -812,7 +822,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         flex: ViewElement<FlexboxLayout, *>
     ) = DropDown(
         "flex-direction",
-        listOf("row" to FlexDirection.ROW, "column" to FlexDirection.COLUMN)
+        listOf(
+            "row" to FlexDirection.row,
+            "column" to FlexDirection.column
+        )
     ) { selected -> flex.renderInTransition { it.flexDirection(selected.second) } }
 
     @Suppress("FunctionName")
@@ -821,12 +834,12 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) = DropDown(
         "justify-content",
         listOf(
-            "flex-start" to JustifyContent.FLEX_START,
-            "center" to JustifyContent.CENTER,
-            "flex-end" to JustifyContent.FLEX_END,
-            "space-between" to JustifyContent.SPACE_BETWEEN,
-            "space-around" to JustifyContent.SPACE_AROUND,
-            "space-evenly" to JustifyContent.SPACE_EVENLY
+            "flex-start" to JustifyContent.flexStart,
+            "center" to JustifyContent.center,
+            "flex-end" to JustifyContent.flexEnd,
+            "space-between" to JustifyContent.spaceBetween,
+            "space-around" to JustifyContent.spaceAround,
+            "space-evenly" to JustifyContent.spaceEvenly
         )
     ) { selected -> flex.renderInTransition { it.flexJustifyContent(selected.second) } }
 
@@ -836,11 +849,11 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) = DropDown(
         "align-items",
         listOf(
-            "stretch" to AlignItems.STRETCH,
-            "flex-start" to AlignItems.FLEX_START,
-            "center" to AlignItems.CENTER,
-            "flex-end" to AlignItems.FLEX_END,
-            "baseline" to AlignItems.BASELINE
+            "stretch" to AlignItems.stretch,
+            "flex-start" to AlignItems.flexStart,
+            "center" to AlignItems.center,
+            "flex-end" to AlignItems.flexEnd,
+            "baseline" to AlignItems.baseline
         )
     ) { selected -> flex.renderInTransition { it.flexAlignItems(selected.second) } }
 
@@ -851,17 +864,18 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) = DropDown(
         "align-self",
         listOf(
-            "stretch" to AlignItems.STRETCH,
-            "flex-start" to AlignItems.FLEX_START,
-            "center" to AlignItems.CENTER,
-            "flex-end" to AlignItems.FLEX_END,
-            "baseline" to AlignItems.BASELINE
+            "auto" to AlignSelf.auto,
+            "stretch" to AlignSelf.stretch,
+            "flex-start" to AlignSelf.flexStart,
+            "center" to AlignSelf.center,
+            "flex-end" to AlignSelf.flexEnd,
+            "baseline" to AlignSelf.baseline
         ),
         true
     ) { selected ->
         flex.renderInTransition {
             val lp = element.view.layoutParams as FlexboxLayout.LayoutParams
-            lp.alignSelf = selected.second
+            lp.alignSelf = selected.second.value
             element.view.requestLayout()
         }
     }
@@ -970,7 +984,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     }
 
     private companion object {
-        val FlexboxLayout.isHorizontal: Boolean get() = flexDirection == FlexDirection.ROW
+        val FlexboxLayout.isHorizontal: Boolean get() = flexDirection == com.google.android.flexbox.FlexDirection.ROW
 
         fun <V : View> V.onGlobalLayout(block: (V) -> Unit) {
             val view = this
