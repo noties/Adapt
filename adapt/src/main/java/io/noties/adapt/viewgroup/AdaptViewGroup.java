@@ -121,6 +121,12 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
         return viewGroup;
     }
 
+    // @since $UNRELEASED;
+    @NonNull
+    public ChangeHandler changeHandler() {
+        return configuration.changeHandler;
+    }
+
     @NonNull
     @Override
     public List<Item<?>> items() {
