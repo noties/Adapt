@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIWebSample",
+    "id": "20230510172026",
+    "title": "WebView element",
+    "description": "",
+    "tags": [
+      "web",
+      "webview"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample",
     "id": "20230403235622",
     "title": "AdaptUI[Explore] sticky with reverse linear layout",

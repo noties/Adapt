@@ -10,7 +10,6 @@ import io.noties.adapt.ui.R
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Element
-import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.newElementOfType
@@ -30,13 +29,12 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-@Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
 class StickyVerticalScrollTest {
 
     val tagContainer = R.id.adaptui_internal_sticky_scroll_container
-    val tagSticky = R.id.adaptui_internal_sticky_scroll_view
+//    val tagSticky = R.id.adaptui_internal_sticky_scroll_view
 
     val context: Context get() = RuntimeEnvironment.getApplication()
 
