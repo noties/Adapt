@@ -5,7 +5,11 @@ import io.noties.adapt.Item
 import kotlin.reflect.KMutableProperty0
 
 fun <A : Adapt, AE : AdaptElement<A>> AE.onAdapt(block: (A) -> Unit): AE = this.also {
-    callbacks.add(block)
+    if (it.isInitialized) {
+        block(it.adapt)
+    } else {
+        it.callbacks.add(block)
+    }
 }
 
 fun <A : Adapt, AE : AdaptElement<A>> AE.reference(

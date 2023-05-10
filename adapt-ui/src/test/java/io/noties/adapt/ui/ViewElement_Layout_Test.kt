@@ -11,7 +11,6 @@ import io.noties.adapt.ui.util.dip
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
@@ -40,7 +39,7 @@ class ViewElement_Layout_Test {
 
         for ((call, actual) in inputs) {
             newElement()
-                .mockLayoutParams()
+                .useLayoutParams()
                 .layout(call.first, call.second)
                 .renderView {
                     Assert.assertEquals(actual.first, layoutParams.width)
@@ -52,7 +51,7 @@ class ViewElement_Layout_Test {
     @Test
     fun layoutFill() {
         newElement()
-            .mockLayoutParams()
+            .useLayoutParams()
             .layoutFill()
             .renderView {
                 Assert.assertEquals(MATCH_PARENT, layoutParams.width)
@@ -63,7 +62,7 @@ class ViewElement_Layout_Test {
     @Test
     fun layoutWeight() {
         newElementOfTypeLayout<View, LinearLayout.LayoutParams>()
-            .mockLayoutParams(LinearLayout.LayoutParams(0, 0))
+            .useLayoutParams(LinearLayout.LayoutParams(0, 0))
             .layoutWeight(43F)
             .renderView {
                 Assert.assertEquals(43F, (layoutParams as LinearLayout.LayoutParams).weight)
@@ -74,7 +73,7 @@ class ViewElement_Layout_Test {
     fun `layoutGravity - linear`() {
         val input = Gravity.bottom.trailing
         newElementOfTypeLayout<View, LinearLayout.LayoutParams>()
-            .mockLayoutParams(LinearLayout.LayoutParams(0, 0))
+            .useLayoutParams(LinearLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
                 Assert.assertEquals(input.value, (layoutParams as LinearLayout.LayoutParams).gravity)
@@ -85,7 +84,7 @@ class ViewElement_Layout_Test {
     fun `layoutGravity - frame`() {
         val input = Gravity.bottom.trailing
         newElementOfTypeLayout<View, FrameLayout.LayoutParams>()
-            .mockLayoutParams(FrameLayout.LayoutParams(0, 0))
+            .useLayoutParams(FrameLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
                 Assert.assertEquals(input.value, (layoutParams as FrameLayout.LayoutParams).gravity)
@@ -96,7 +95,7 @@ class ViewElement_Layout_Test {
     fun `layoutMargin - all`() {
         val input = 76
         newElementOfTypeLayout<View, ViewGroup.MarginLayoutParams>()
-            .mockLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
+            .useLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
             .layoutMargin(input)
             .renderView {
                 val lp = layoutParams as ViewGroup.MarginLayoutParams
@@ -117,7 +116,7 @@ class ViewElement_Layout_Test {
         )
         for ((h, v) in inputs) {
             newElementOfTypeLayout<View, ViewGroup.MarginLayoutParams>()
-                .mockLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
+                .useLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
                 .layoutMargin(h, v)
                 .renderView {
                     val lp = layoutParams as ViewGroup.MarginLayoutParams
@@ -149,7 +148,7 @@ class ViewElement_Layout_Test {
 
         for (input in inputs) {
             newElementOfTypeLayout<View, ViewGroup.MarginLayoutParams>()
-                .mockLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
+                .useLayoutParams(ViewGroup.MarginLayoutParams(0, 0))
                 .layoutMargin(input.start, input.top, input.end, input.bottom)
                 .renderView {
                     val lp = layoutParams as ViewGroup.MarginLayoutParams

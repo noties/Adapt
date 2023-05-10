@@ -16,6 +16,8 @@ import io.noties.adapt.viewpager.AdaptViewPager
 abstract class AdaptElement<A : Adapt> {
     lateinit var adapt: A
 
+    val isInitialized: Boolean get() = this::adapt.isInitialized
+
     val callbacks: MutableList<(A) -> Unit> = mutableListOf()
 
     fun init(adapt: A) {

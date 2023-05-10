@@ -5,19 +5,21 @@ import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
+import android.view.View.OnScrollChangeListener
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
-import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyFloat
@@ -72,7 +74,7 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
-    fun scrollBarsEnabled() {
+    fun `scrollBarsEnabled - hv`() {
         newElement()
             .scrollBarsEnabled(true, true)
             .renderView {
@@ -643,19 +645,61 @@ class ViewElement_Extensions_Test {
 
     @Test
     fun onScrollChanged() {
-        val inputs: List<((view: View, x: Int, y: Int) -> Unit)?> = listOf(
-            null,
-            { _, _, _ -> }
-        )
-        for (input in inputs) {
-            newElement()
-                .onViewScrollChanged(input)
-                .renderView {
-                    verify(this).setOnScrollChangeListener(
-                        if (input == null) eq(null) else any(View.OnScrollChangeListener::class.java)
-                    )
-                }
+        val output = kotlin.run {
+            class Output(
+                var registration: OnScrollChangedListenerRegistration?,
+                var view: View?,
+                var dx: Int?,
+                var dy: Int?
+            )
+            Output(null, null, null, null)
         }
+
+        val input: OnScrollChangedListenerRegistration.(View, dx: Int, dy: Int) -> Unit = { v, dx, dy ->
+            output.registration = this
+            output.view = v
+            output.dx = dx
+            output.dy = dy
+        }
+
+        newElement()
+            .onViewScrollChanged(input)
+            .renderView {
+
+                val listener = kotlin.run {
+                    val captor = ArgumentCaptor.forClass(OnScrollChangeListener::class.java)
+                    verify(this).setOnScrollChangeListener(captor.capture())
+                    captor.value
+                }
+
+                Assert.assertNull(output.registration)
+                Assert.assertNull(output.view)
+                Assert.assertNull(output.dx)
+                Assert.assertNull(output.dy)
+
+                listener.onScrollChange(this, 10, 20, 0, 0)
+
+                val registration = output.registration
+                Assert.assertNotNull(registration)
+                Assert.assertEquals(this, output.view)
+                Assert.assertEquals(10, output.dx)
+                Assert.assertEquals(20, output.dy)
+
+                registration!!.unregisterOnScrollChangedListener()
+
+                output.registration = null
+                output.view = null
+                output.dx = null
+                output.dy = null
+
+                listener.onScrollChange(this, 777, 999, 555, 333)
+
+                // no longer received
+                Assert.assertNull(output.registration)
+                Assert.assertNull(output.view)
+                Assert.assertNull(output.dx)
+                Assert.assertNull(output.dy)
+            }
     }
 
     @Test
@@ -718,7 +762,7 @@ class ViewElement_Extensions_Test {
             .also {
                 `when`(it.view.viewTreeObserver).thenReturn(vto)
             }
-            .onViewPreDraw { flag.set(true) }
+            .onViewPreDrawOnce { flag.set(true) }
             .renderView {
                 verify(
                     vto,
@@ -740,7 +784,7 @@ class ViewElement_Extensions_Test {
             .also {
                 `when`(it.view.viewTreeObserver).thenReturn(vto)
             }
-            .onViewPreDraw { flag.set(true) }
+            .onViewPreDrawOnce { flag.set(true) }
             .renderView {
                 verify(vto).addOnPreDrawListener(captor.capture())
 
@@ -759,8 +803,76 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
+    fun onViewAttachedOnce() {
+        val called = AtomicInteger()
+        var view: View? = null
+
+        newElement()
+            .onViewAttachedOnce {
+                called.incrementAndGet()
+                view = it
+            }
+            .renderView {
+                val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
+                verify(this).addOnAttachStateChangeListener(captor.capture())
+
+                val listener = captor.value
+                Assert.assertNotNull(listener)
+                Assert.assertNull(view)
+                Assert.assertEquals(0, called.get())
+
+                // detach does nothing
+                listener.onViewDetachedFromWindow(this)
+                Assert.assertNull(view)
+                Assert.assertEquals(0, called.get())
+
+                listener.onViewAttachedToWindow(this)
+                Assert.assertEquals(this, view)
+                Assert.assertEquals(1, called.get())
+
+                // immediately unregistered
+                verify(this).removeOnAttachStateChangeListener(ArgumentMatchers.eq(listener))
+            }
+    }
+
+    @Test
+    fun onViewDetachedOnce() {
+        val called = AtomicInteger()
+        var view: View? = null
+
+        newElement()
+            .onViewDetachedOnce {
+                called.incrementAndGet()
+                view = it
+            }
+            .renderView {
+                val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
+                verify(this).addOnAttachStateChangeListener(captor.capture())
+
+                val listener = captor.value
+                Assert.assertNotNull(listener)
+                Assert.assertNull(view)
+                Assert.assertEquals(0, called.get())
+
+                // attach does nothing
+                listener.onViewAttachedToWindow(this)
+                Assert.assertNull(view)
+                Assert.assertEquals(0, called.get())
+
+                // detach does nothing
+                listener.onViewDetachedFromWindow(this)
+                Assert.assertEquals(this, view)
+                Assert.assertEquals(1, called.get())
+
+                // immediately unregistered
+                verify(this).removeOnAttachStateChangeListener(ArgumentMatchers.eq(listener))
+            }
+    }
+
+    @Test
     fun onViewAttachedStateChanged() {
         class Ref(
+            var container: OnViewAttachedStateChangedContainer? = null,
             var view: View? = null,
             var attached: Boolean? = null,
         )
@@ -769,7 +881,7 @@ class ViewElement_Extensions_Test {
 
         newElement()
             .onViewAttachedStateChanged { view, attached ->
-                ref = Ref(view, attached)
+                ref = Ref(this, view, attached)
             }
             .renderView {
                 val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
@@ -779,6 +891,7 @@ class ViewElement_Extensions_Test {
                 Assert.assertNotNull(value)
 
                 value.onViewAttachedToWindow(this)
+                Assert.assertNotNull(ref.container)
                 Assert.assertEquals(this, ref.view)
                 Assert.assertEquals(true, ref.attached)
 
@@ -786,9 +899,27 @@ class ViewElement_Extensions_Test {
 
                 value.onViewDetachedFromWindow(this)
 
+                // ref changed
                 Assert.assertNotEquals(refId, System.identityHashCode(ref))
+                Assert.assertNotNull(ref.container)
                 Assert.assertEquals(this, ref.view)
                 Assert.assertEquals(false, ref.attached)
+
+                val container = ref.container
+
+                val unsubscribeRef = Ref(null, null, null)
+                ref = unsubscribeRef
+
+                // unsubscribe
+                container!!.removeOnViewAttachedStateChangedListener()
+
+                // ref is the same, must not change
+                Assert.assertEquals(System.identityHashCode(unsubscribeRef), System.identityHashCode(ref))
+                Assert.assertNull(ref.container)
+                Assert.assertNull(ref.view)
+                Assert.assertNull(ref.attached)
+
+                verify(this).removeOnAttachStateChangeListener(eq(value))
             }
     }
 

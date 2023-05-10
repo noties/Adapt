@@ -49,5 +49,7 @@ dependencies {
 
     implementation deps['flexbox']
 
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
     kapt project(':sample-utils:processor')
 }

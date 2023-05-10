@@ -2,7 +2,6 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
-import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -125,7 +124,7 @@ class ViewElement_Test {
         val callback: LayoutParams.() -> Unit = io.noties.adapt.ui.testutil.mockt()
 
         val element = newElement()
-            .mockLayoutParams()
+            .useLayoutParams()
             .also { el ->
                 el.onLayoutParams {
                     el.onLayoutParams(callback)
@@ -143,7 +142,7 @@ class ViewElement_Test {
     @Test
     fun `layoutBlock - endless - self`() {
         val element = newElement()
-            .mockLayoutParams()
+            .useLayoutParams()
 
         lateinit var block: LayoutParams.() -> Unit
         block = {
@@ -161,7 +160,7 @@ class ViewElement_Test {
     @Test
     fun `layoutBlock - endless - gen`() {
         val element = newElement()
-            .mockLayoutParams()
+            .useLayoutParams()
 
         fun gen() {
             element.onLayoutParams { gen() }
@@ -233,7 +232,7 @@ class ViewElement_Test {
         //  layoutBlock posts viewBlock
 
         val element = newElement()
-            .mockLayoutParams()
+            .useLayoutParams()
 
         lateinit var viewBlock: View.() -> Unit
         val layoutBlock: LayoutParams.() -> Unit = {

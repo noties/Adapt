@@ -1,9 +1,15 @@
 package io.noties.adapt.ui.flex
 
 import android.graphics.drawable.Drawable
+import android.view.View
 import com.google.android.flexbox.FlexboxLayout
+import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.useLayoutParams
 import io.noties.adapt.ui.newElementOfType
+import io.noties.adapt.ui.newElementOfTypeLayout
 import io.noties.adapt.ui.renderView
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
 import org.junit.Test
@@ -15,6 +21,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import com.google.android.flexbox.AlignContent as _AlignContent
 import com.google.android.flexbox.AlignItems as _AlignItems
+import com.google.android.flexbox.AlignSelf as _AlignSelf
 import com.google.android.flexbox.FlexDirection as _FlexDirection
 import com.google.android.flexbox.FlexWrap as _FlexWrap
 import com.google.android.flexbox.JustifyContent as _JustifyContent
@@ -52,7 +59,7 @@ class Flex_Test {
     fun `flexDirection - unknown`() {
         Assert.assertEquals(
             _FlexDirection.ROW_REVERSE,
-            FlexDirection(777).value
+            FlexDirection(777).reverse.value
         )
     }
 
@@ -231,11 +238,10 @@ class Flex_Test {
     }
 
     @Test
-    fun flexGap() {
-        val gap = 12
+    fun `flexGap - all`() {
+        assertDefaultDensity()
 
-        // verify density in test
-        Assert.assertEquals(12, 12.dip)
+        val gap = 12
 
         newElementOfType<FlexboxLayout>()
             .flexGap(gap)
@@ -248,5 +254,204 @@ class Flex_Test {
 
                 verify(this).setShowDivider(eq(FlexboxLayout.SHOW_DIVIDER_MIDDLE))
             }
+    }
+
+    @Test
+    fun `flexGap - hv`() {
+        assertDefaultDensity()
+
+        val inputs = listOf(
+            5 to null,
+            null to 6,
+            7 to 8,
+            null to null
+        )
+
+        for ((h, v) in inputs) {
+            newElementOfType<FlexboxLayout>()
+                .flexGap(h, v)
+                .renderView {
+
+                    if (h != null) {
+                        val captor = ArgumentCaptor.forClass(Drawable::class.java)
+                        verify(this).dividerDrawableHorizontal = captor.capture()
+                        val drawable = captor.value
+                        Assert.assertEquals(h, drawable.intrinsicWidth)
+                        Assert.assertEquals(0, drawable.intrinsicHeight)
+                    }
+
+                    if (v != null) {
+                        val captor = ArgumentCaptor.forClass(Drawable::class.java)
+                        verify(this).dividerDrawableVertical = captor.capture()
+                        val drawable = captor.value
+                        Assert.assertEquals(0, drawable.intrinsicWidth)
+                        Assert.assertEquals(v, drawable.intrinsicHeight)
+                    }
+
+                    if (h != null || v != null) {
+                        verify(this).setShowDivider(eq(FlexboxLayout.SHOW_DIVIDER_MIDDLE))
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun layoutFlexOrder() {
+        val input = 76
+
+        newFlexboxChild()
+            .layoutFlexOrder(input)
+            .renderWithLayoutParams {
+                verify(it).order = eq(input)
+            }
+    }
+
+    @Test
+    fun layoutFlexGrow() {
+        val input = 0.67F
+
+        newFlexboxChild()
+            .layoutFlexGrow(input)
+            .renderWithLayoutParams {
+                verify(it).flexGrow = eq(input)
+            }
+    }
+
+    @Test
+    fun layoutFlexShrink() {
+        val input = 0.98F
+
+        newFlexboxChild()
+            .layoutFlexShrink(input)
+            .renderWithLayoutParams {
+                verify(it).flexShrink = eq(input)
+            }
+    }
+
+    @Test
+    fun `layoutAlignSelf - values`() {
+        val inputs = listOf(
+            AlignSelf.Companion::auto to _AlignSelf.AUTO,
+            AlignSelf.Companion::flexStart to _AlignSelf.FLEX_START,
+            AlignSelf.Companion::flexEnd to _AlignSelf.FLEX_END,
+            AlignSelf.Companion::center to _AlignSelf.CENTER,
+            AlignSelf.Companion::baseline to _AlignSelf.BASELINE,
+            AlignSelf.Companion::stretch to _AlignSelf.STRETCH,
+        )
+
+        for ((prop, value) in inputs) {
+            Assert.assertEquals(
+                prop.name,
+                prop.get().value,
+                value
+            )
+        }
+    }
+
+    @Test
+    fun `layoutAlignSelf - element`() {
+        val inputs = listOf(
+            AlignSelf.auto,
+            AlignSelf.flexStart,
+            AlignSelf.flexEnd,
+            AlignSelf.center,
+            AlignSelf.baseline,
+            AlignSelf.stretch,
+            AlignSelf(51212)
+        )
+
+        for (input in inputs) {
+            newFlexboxChild()
+                .layoutFlexAlignSelf(input)
+                .renderWithLayoutParams {
+                    verify(it).alignSelf = eq(input.value)
+                }
+        }
+    }
+
+    @Test
+    fun layoutFlexMinSize() {
+        assertDefaultDensity()
+
+        val inputs = listOf(
+            1 to null,
+            null to 2,
+            3 to 4
+        )
+
+        for ((w, h) in inputs) {
+            newFlexboxChild()
+                .layoutFlexMinSize(w, h)
+                .renderWithLayoutParams {
+                    if (w != null) {
+                        verify(it).minWidth = eq(w)
+                    }
+                    if (h != null) {
+                        verify(it).minHeight = eq(h)
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun layoutFlexMaxSize() {
+        assertDefaultDensity()
+
+        val inputs = listOf(
+            5 to null,
+            null to 6,
+            7 to 8
+        )
+
+        for ((w, h) in inputs) {
+            newFlexboxChild()
+                .layoutFlexMaxSize(w, h)
+                .renderWithLayoutParams {
+                    if (w != null) {
+                        verify(it).maxWidth = eq(w)
+                    }
+                    if (h != null) {
+                        verify(it).maxHeight = eq(h)
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun layoutFlexWrapBefore() {
+        val input = true
+
+        newFlexboxChild()
+            .layoutFlexWrapBefore(input)
+            .renderWithLayoutParams {
+                verify(it).isWrapBefore = eq(input)
+            }
+    }
+
+    @Test
+    fun layoutFlexBasisPercent() {
+        val input = 8.7F
+
+        newFlexboxChild()
+            .layoutFlexBasisPercent(input)
+            .renderWithLayoutParams {
+                verify(it).flexBasisPercent = eq(input)
+            }
+    }
+
+    private fun assertDefaultDensity() {
+        // verify density in test
+        Assert.assertEquals(13, 13.dip)
+    }
+
+    private fun newFlexboxChild() = newElementOfTypeLayout<View, FlexboxLayout.LayoutParams>()
+        .useLayoutParams(mockt<FlexboxLayout.LayoutParams>())
+
+    private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.renderWithLayoutParams(
+        block: View.(LP) -> Unit
+    ) {
+        render()
+        @Suppress("UNCHECKED_CAST")
+        block(view, view.layoutParams as LP)
     }
 }

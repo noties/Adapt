@@ -3,8 +3,12 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PixelFormat
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +56,7 @@ import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
+import io.noties.adapt.ui.onViewScrollChanged
 import io.noties.adapt.ui.overScrollMode
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
@@ -70,6 +75,7 @@ import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
+import java.util.Arrays
 import java.util.Date
 
 @AdaptSample(
@@ -114,6 +120,12 @@ class AdaptUISample : SampleView() {
                     }
 //                    .myCustomStyle()
             }.layout(FILL, FILL)
+                .onViewScrollChanged { scrollView, deltaX, deltaY ->
+                    Debug.i(
+                        "onViewScrollChanged deltaX:$deltaX deltaY:$deltaY " +
+                                "scrollX:${scrollView.scrollX} scrollY:${scrollView.scrollY}"
+                    )
+                }
         }
     }
 
@@ -576,23 +588,54 @@ class AdaptUISample : SampleView() {
 
             val distance = 6
 
-            view.background = StatefulShape.drawable {
-                val base = shape.copy {
-                    padding(bottom = distance + (padding?.bottom?.resolve(0) ?: 0))
+//            view.background = StatefulShape.drawable {
+//                val base = shape.copy {
+//                    padding(bottom = distance + (padding?.bottom?.resolve(0) ?: 0))
+//                }
+//                setPressed(base)
+//                setDefault(Rectangle {
+//                    add(shape.copy {
+//                        size(null, 32, Gravity.bottom)
+//                        fill(Color.GREEN)
+//                    })
+//                    add(base)
+//                })
+//            }
+            view.foreground = object: Drawable() {
+                override fun draw(canvas: Canvas) = Unit
+                override fun setAlpha(alpha: Int) = Unit
+                override fun setColorFilter(colorFilter: ColorFilter?) = Unit
+                override fun getOpacity(): Int = PixelFormat.OPAQUE
+                override fun onStateChange(state: IntArray?): Boolean {
+                    return true
                 }
-                setPressed(base)
-                setDefault(Rectangle {
-                    add(shape.copy {
-                        size(null, 32, Gravity.bottom)
-                        fill(Color.GREEN)
-                    })
-                    add(base)
-                })
+                override fun isStateful(): Boolean {
+                    return true
+                }
             }
 
+            view.isActivated = true
+
+            var previousState = view.drawableState
+
             view.viewTreeObserver.addOnDrawListener {
+                val state = view.drawableState
+                if (!Arrays.equals(previousState, state)) {
+                    previousState = state
+                    val text = state
+                        .map { id ->
+                            try {
+                                view.resources.getResourceName(id)
+                            } catch (t: Throwable) {
+                                Debug.e(t)
+                                id.toString()
+                            }
+                        }
+                        .joinToString(", ")
+                    Debug.e("NEW-STATE:$text")
+                }
                 view.translationY =
-                    if (view.background.state.contains(android.R.attr.state_pressed)) {
+                    if (view.drawableState.contains(android.R.attr.state_pressed)) {
                         distance.dip.toFloat()
                     } else {
                         0F

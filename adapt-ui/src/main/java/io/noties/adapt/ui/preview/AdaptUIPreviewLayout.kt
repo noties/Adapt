@@ -8,7 +8,7 @@ import io.noties.adapt.ui.ViewFactory
 /**
  * @since $UNRELEASED;
  */
-abstract class PreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+abstract class AdaptUIPreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
@@ -26,5 +26,5 @@ abstract class PreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayo
 
     abstract fun ViewFactory<LayoutParams>.body()
 
-    open fun initialize(layout: PreviewLayout) = Unit
+    open fun initialize(layout: AdaptUIPreviewLayout) = Unit
 }

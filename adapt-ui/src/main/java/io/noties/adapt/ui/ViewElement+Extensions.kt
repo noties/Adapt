@@ -13,6 +13,8 @@ import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
+import io.noties.adapt.ui.util.addOnScrollChangedListener
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.resolveDefaultSelectableDrawable
 import kotlin.reflect.KMutableProperty0
@@ -346,17 +348,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onLongClick(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
+/**
+ * Inside the callback actual scroll positions can be checked directly by [View.getScrollX] and [View.getScrollY].
+ * Also callback can unregister listener (stop receiving scroll events) by calling [OnScrollChangedListenerRegistration.unregisterOnScrollChangedListener]
+ * @see [OnScrollChangedListenerRegistration]
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewScrollChanged(
-    action: ((V, x: Int, y: Int) -> Unit)?
-): ViewElement<V, LP> = onView {
-    if (action == null) {
-        it.setOnScrollChangeListener(null)
-    } else {
-        it.setOnScrollChangeListener { v, scrollX, scrollY, _, _ ->
-            @Suppress("UNCHECKED_CAST")
-            action(v as V, scrollX, scrollY)
-        }
+    action: OnScrollChangedListenerRegistration.(V, deltaX: Int, deltaY: Int) -> Unit
+): ViewElement<V, LP> = onView { view ->
+    lateinit var registration: OnScrollChangedListenerRegistration
+    registration = view.addOnScrollChangedListener { _, deltaX, deltaY ->
+        action(registration, view, deltaX, deltaY)
     }
 }
 
@@ -385,12 +387,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
  * @see View.setHorizontalScrollBarEnabled
  * @see View.setVerticalScrollBarEnabled
  */
-fun <V: View, LP: LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
-    horizontal: Boolean,
-    vertical: Boolean
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
+    horizontal: Boolean? = null,
+    vertical: Boolean? = null
 ): ViewElement<V, LP> = onView {
-    it.isHorizontalScrollBarEnabled = horizontal
-    it.isVerticalScrollBarEnabled = vertical
+    horizontal?.also { h -> it.isHorizontalScrollBarEnabled = h }
+    vertical?.also { v -> it.isVerticalScrollBarEnabled = v }
 }
 
 /**
@@ -441,7 +443,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
  * Useful when view dimensions (width and height) should be available (after measure,
  * but before being drawn on screen)
  */
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
     block: (V) -> Unit
 ): ViewElement<V, LP> = onView { view ->
     val vto = view.viewTreeObserver.takeIf { it.isAlive } ?: return@onView
@@ -461,15 +463,54 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
 }
 
 /**
- * `block` callback receives 3 arguments:
- * + `view` - view that has callback registered
- * + `attached` - boolean indicating the state, true - view becomes attached, false - detached
- * @see View.addOnAttachStateChangeListener
+ * NB! This is a callback when view is attached to [Window], not its parent
  */
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
-    block: (view: V, attached: Boolean) -> Unit
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedOnce(
+    block: (V) -> Unit
 ): ViewElement<V, LP> = onView { view ->
     view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(v: View?) {
+            block(view)
+            view.removeOnAttachStateChangeListener(this)
+        }
+
+        override fun onViewDetachedFromWindow(v: View?) = Unit
+    })
+}
+
+/**
+ * NB! This is a callback when view is attached to [Window], not its parent
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewDetachedOnce(
+    block: (V) -> Unit
+): ViewElement<V, LP> = onView { view ->
+    view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(v: View?) = Unit
+        override fun onViewDetachedFromWindow(v: View?) {
+            block(view)
+            view.removeOnAttachStateChangeListener(this)
+        }
+    })
+}
+
+interface OnViewAttachedStateChangedContainer {
+    fun removeOnViewAttachedStateChangedListener()
+}
+
+/**
+ * Registers listener to receive all attach/detach events
+ * `block` callback receives 2 arguments:
+ * + `view` - view that has callback registered
+ * + `attached` - boolean indicating the state, true - view becomes attached, false - detached
+ * NB! This is a callback when view is attached to [Window], not its parent
+ * @see View.addOnAttachStateChangeListener
+ * @see OnViewAttachedStateChangedContainer
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
+    block: OnViewAttachedStateChangedContainer.(view: V, attached: Boolean) -> Unit
+): ViewElement<V, LP> = onView { view ->
+    view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener,
+        OnViewAttachedStateChangedContainer {
         override fun onViewAttachedToWindow(v: View) {
             notify(v, true)
         }
@@ -481,6 +522,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
         @Suppress("UNCHECKED_CAST")
         private fun notify(v: View, attached: Boolean) {
             block(v as V, attached)
+        }
+
+        override fun removeOnViewAttachedStateChangedListener() {
+            view.removeOnAttachStateChangeListener(this)
         }
     })
 }

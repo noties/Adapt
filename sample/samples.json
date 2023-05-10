@@ -1,5 +1,19 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyExploreSample",
+    "id": "20230403235622",
+    "title": "AdaptUI[Explore] sticky with reverse linear layout",
+    "description": "",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample",
+    "id": "20230402020404",
+    "title": "UI, RelativeLayout concept",
+    "description": "",
+    "tags": []
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample",
     "id": "20230220160509",
     "title": "AdaptUI, clip views",
