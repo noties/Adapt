@@ -38,6 +38,10 @@ class ViewElement<V : View, LP : LayoutParams>(
     }
 
     fun render() {
+        // if element is not yet initialized, ignore the call. When view would become available
+        //  it will automatically schedule rendering
+        if (!isInitialized) return
+
         // if we are already rendering, no need to launch it again - blocks would be added and invoked
         //  automatically
         if (isRendering) return

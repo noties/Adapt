@@ -2,6 +2,7 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
+import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -268,5 +269,12 @@ class ViewElement_Test {
         element.onView { gen() }.render()
 
         assertEquals(ViewElement.renderingMaxDifferenceDuringSinglePass, count)
+    }
+
+    @Test
+    fun `render - not initialized`() {
+        val element = ViewElement<View, LayoutParams> { mockt() }
+        assertEquals(false, element.isInitialized)
+        element.render()
     }
 }
