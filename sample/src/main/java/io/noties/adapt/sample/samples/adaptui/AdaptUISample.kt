@@ -560,7 +560,7 @@ class AdaptUISample : SampleView() {
                         padding(1)
                     })
                     .onClick {
-
+                        Debug.i("pressable clicked!")
                     }
             }.padding(16, 8)
         }
@@ -601,20 +601,21 @@ class AdaptUISample : SampleView() {
 //                    add(base)
 //                })
 //            }
-            view.foreground = object: Drawable() {
-                override fun draw(canvas: Canvas) = Unit
-                override fun setAlpha(alpha: Int) = Unit
-                override fun setColorFilter(colorFilter: ColorFilter?) = Unit
-                override fun getOpacity(): Int = PixelFormat.OPAQUE
-                override fun onStateChange(state: IntArray?): Boolean {
-                    return true
-                }
-                override fun isStateful(): Boolean {
-                    return true
-                }
-            }
+//            view.foreground = object: Drawable() {
+//                override fun draw(canvas: Canvas) = Unit
+//                override fun setAlpha(alpha: Int) = Unit
+//                override fun setColorFilter(colorFilter: ColorFilter?) = Unit
+//                override fun getOpacity(): Int = PixelFormat.OPAQUE
+//                override fun onStateChange(state: IntArray?): Boolean {
+//                    return true
+//                }
+//                override fun isStateful(): Boolean {
+//                    return true
+//                }
+//            }
 
-            view.isActivated = true
+            view.isFocusable = true
+            view.isFocusableInTouchMode = true
 
             var previousState = view.drawableState
 

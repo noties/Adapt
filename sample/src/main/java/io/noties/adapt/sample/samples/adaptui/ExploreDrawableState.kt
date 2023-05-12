@@ -10,15 +10,12 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
 
 class DrawableState(@AttrRes val state: IntArray) {
-    // TODO: lazy
-    val enabled: Boolean get() = false
+    val enabled: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(android.R.attr.state_enabled) }
     val pressed: Boolean get() = false
 }
 
-//enum class DrawableState2(@AttrRes val value: Int) {
-//    Enabled(android.R.attr.state_enabled)
-//}
-
+// pressed is not reported without drawable
+//
 fun <V: View, LP: LayoutParams> ViewElement<V, LP>.onDrawableStateChange(
     action: (V, DrawableState) -> Unit
 ) = onView {
