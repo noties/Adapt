@@ -11,7 +11,6 @@ import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Dimension.Exact
 import io.noties.adapt.ui.shape.Dimension.Relative
-import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.Assert
@@ -51,6 +50,7 @@ class Shape_Test {
             Input(Shape::height, Relative(0.25F)),
             Input(Shape::gravity, Gravity.bottom.trailing),
             Input(Shape::rotation, Shape.Rotation(259F, Exact(1), Relative(1F))),
+            Input(Shape::shadow, Shape.Shadow(1, Exact(2), Relative(0.5F), Exact(16))),
             Input(Shape::translation, Shape.Translation(Exact(8), Relative(9F))),
             Input(Shape::padding, Shape.Padding(Exact(1), Relative(2F), Exact(3), Relative(0.5F))),
             Input(Shape::alpha, 88F),
@@ -530,6 +530,104 @@ class Shape_Test {
     }
 
     @Test
+    fun shadow() {
+        val inputs = kotlin.run {
+            class Input(
+                val color: Int? = null,
+                val radius: Int? = null,
+                val offsetX: Int? = null,
+                val offsetY: Int? = null
+            )
+            listOf(
+                Input(1),
+                Input(2, 3),
+                Input(4, 5, 6),
+                Input(7, 8, 9, 10),
+                Input(radius = 11),
+                Input(offsetX = 12),
+                Input(offsetY = 13)
+            )
+        }
+
+        for (input in inputs) {
+            for (shape in shapes()) {
+                shape.assertEquals(null, Shape::shadow)
+
+                shape.shadow(
+                    input.color,
+                    input.radius,
+                    input.offsetX,
+                    input.offsetY
+                )
+
+                val color = Shape.Shadow::color
+                val radius = Shape.Shadow::radius
+                val offsetX = Shape.Shadow::offsetX
+                val offsetY = Shape.Shadow::offsetY
+
+                fun assert(shadow: Shape.Shadow) {
+                    shadow.assertEquals(input.color, color)
+                    shadow.assertEquals(input.radius?.let { Exact(it) }, radius)
+                    shadow.assertEquals(input.offsetX?.let { Exact(it) }, offsetX)
+                    shadow.assertEquals(input.offsetY?.let { Exact(it) }, offsetY)
+                }
+
+                assert(shape.shadow!!)
+                assert(shape.shadow!!.copy())
+            }
+        }
+    }
+
+    @Test
+    fun `shadow - relative`() {
+        val inputs = kotlin.run {
+            class Input(
+                val color: Int? = null,
+                val radius: Float? = null,
+                val offsetX: Float? = null,
+                val offsetY: Float? = null
+            )
+            listOf(
+                Input(1),
+                Input(2, 3F),
+                Input(4, 5F, 6F),
+                Input(7, 8F, 9F, 10F),
+                Input(radius = 11F),
+                Input(offsetX = 12F),
+                Input(offsetY = 13F)
+            )
+        }
+
+        for (input in inputs) {
+            for (shape in shapes()) {
+                shape.assertEquals(null, Shape::shadow)
+
+                shape.shadowRelative(
+                    input.color,
+                    input.radius,
+                    input.offsetX,
+                    input.offsetY
+                )
+
+                val color = Shape.Shadow::color
+                val radius = Shape.Shadow::radius
+                val offsetX = Shape.Shadow::offsetX
+                val offsetY = Shape.Shadow::offsetY
+
+                fun assert(shadow: Shape.Shadow) {
+                    shadow.assertEquals(input.color, color)
+                    shadow.assertEquals(input.radius?.let { Relative(it) }, radius)
+                    shadow.assertEquals(input.offsetX?.let { Relative(it) }, offsetX)
+                    shadow.assertEquals(input.offsetY?.let { Relative(it) }, offsetY)
+                }
+
+                assert(shape.shadow!!)
+                assert(shape.shadow!!.copy())
+            }
+        }
+    }
+
+    @Test
     fun `fill - color`() {
         // NB! asset applies a fill color, otherwise it won't be drawn
         for (shape in shapes()) {
@@ -588,12 +686,15 @@ class Shape_Test {
                 val dashWidth = Shape.Stroke::dashWidth
                 val dashGap = Shape.Stroke::dashGap
 
-                val stroke = shape.stroke!!
+                fun assert(stroke: Shape.Stroke) {
+                    stroke.assertEquals(input.color, color)
+                    stroke.assertEquals(input.width, width)
+                    stroke.assertEquals(input.dashWidth, dashWidth)
+                    stroke.assertEquals(input.dashGap, dashGap)
+                }
 
-                stroke.assertEquals(input.color, color)
-                stroke.assertEquals(input.width, width)
-                stroke.assertEquals(input.dashWidth, dashWidth)
-                stroke.assertEquals(input.dashGap, dashGap)
+                assert(shape.stroke!!)
+                assert(shape.stroke!!.copy())
             }
         }
     }
@@ -628,12 +729,15 @@ class Shape_Test {
                 val dashWidth = Shape.Stroke::dashWidth
                 val dashGap = Shape.Stroke::dashGap
 
-                val stroke = shape.stroke!!
+                fun assert(stroke: Shape.Stroke) {
+                    stroke.assertEquals(input.gradient, gradient)
+                    stroke.assertEquals(input.width, width)
+                    stroke.assertEquals(input.dashWidth, dashWidth)
+                    stroke.assertEquals(input.dashGap, dashGap)
+                }
 
-                stroke.assertEquals(input.gradient, gradient)
-                stroke.assertEquals(input.width, width)
-                stroke.assertEquals(input.dashWidth, dashWidth)
-                stroke.assertEquals(input.dashGap, dashGap)
+                assert(shape.stroke!!)
+                assert(shape.stroke!!.copy())
             }
         }
     }
@@ -1117,7 +1221,8 @@ class Shape_Test {
         Corners(),
         Oval(),
         Rectangle(),
-        RoundedRectangle(17)
+        RoundedRectangle(17),
+        Arc(90F, 69F, true)
     )
 
     private fun <R : Any, T : Any?> R.assertEquals(expected: T, property: KProperty1<in R, T>) {

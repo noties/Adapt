@@ -64,8 +64,6 @@ import kotlin.math.roundToInt
 )
 class AdaptUIShapeSample : SampleView() {
 
-    private lateinit var context: Context
-
     override val layoutResId: Int
         get() = R.layout.view_sample_frame
 

@@ -1,6 +1,7 @@
 package io.noties.adapt.sample
 
 import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,12 @@ abstract class SampleView {
     val sample: Sample
         get() = _sample
 
+    lateinit var context: Context
+
     fun view(sample: Sample, parent: ViewGroup): View {
 
         this._sample = sample
+        this.context = parent.context
 
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.view_sample, parent, false)

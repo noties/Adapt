@@ -1,5 +1,16 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample",
+    "id": "20230512142056",
+    "title": "AdaptUI, shape shadow",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "shadow",
+      "shape"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIWebSample",
     "id": "20230510172026",
     "title": "WebView element",

@@ -1,8 +1,10 @@
 package io.noties.adapt.ui.shape
 
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import android.graphics.MaskFilter
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Rect
@@ -44,6 +46,7 @@ abstract class Shape {
         to.translation = this.translation?.copy()
         to.padding = this.padding?.copy()
         to.alpha = this.alpha
+        to.shadow = this.shadow?.copy()
         to.fill = this.fill?.copy()
         to.stroke = this.stroke?.copy()
         to.children.addAll(this.children.map { it.copy() })
@@ -177,6 +180,34 @@ abstract class Shape {
         }
     }
 
+    fun shadow(
+        @ColorInt color: Int? = null,
+        radius: Int? = null,
+        offsetX: Int? = null,
+        offsetY: Int? = null
+    ) = this.also {
+        this.shadow = (shadow ?: Shadow()).apply {
+            color?.also { this.color = it }
+            radius?.also { this.radius = Dimension.Exact(it) }
+            offsetX?.also { this.offsetX = Dimension.Exact(it) }
+            offsetY?.also { this.offsetY = Dimension.Exact(it) }
+        }
+    }
+
+    fun shadowRelative(
+        @ColorInt color: Int? = null,
+        @FloatRange(from = 0.0, to = 1.0) radius: Float? = null,
+        @FloatRange(from = -1.0, to = 1.0) offsetX: Float? = null,
+        @FloatRange(from = -1.0, to = 1.0) offsetY: Float? = null
+    ) = this.also {
+        this.shadow = (shadow ?: Shadow()).apply {
+            color?.also { this.color = it }
+            radius?.also { this.radius = Dimension.Relative(it) }
+            offsetX?.also { this.offsetX = Dimension.Relative(it) }
+            offsetY?.also { this.offsetY = Dimension.Relative(it) }
+        }
+    }
+
     @Suppress("ReplaceJavaStaticMethodWithKotlinAnalog")
     fun alpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Shape = this.also {
         this.alpha = Math.max(0F, Math.min(1F, alpha))
@@ -250,6 +281,8 @@ abstract class Shape {
 
     open var rotation: Rotation? = null
 
+    open var shadow: Shadow? = null
+
     // applied to both fill and stroke and children
     open var alpha: Float? = null
 
@@ -290,6 +323,8 @@ abstract class Shape {
             translation?.draw(canvas, drawRect)
 
             rotation?.draw(canvas, drawRect)
+
+            shadow?.draw(canvas, this, drawRect)
 
             fill?.draw(canvas, this, drawRect)
 
@@ -579,6 +614,96 @@ abstract class Shape {
 
         override fun toString(): String {
             return "Rotation(degrees=$degrees, centerX=$centerX, centerY=$centerY)"
+        }
+    }
+
+    class Shadow(
+        var color: Int? = null,
+        var radius: Dimension? = null,
+        var offsetX: Dimension? = null,
+        var offsetY: Dimension? = null
+    ) {
+        private val paint = Paint(Paint.ANTI_ALIAS_FLAG).also {
+            it.style = Paint.Style.FILL
+        }
+
+        private val maskFilterCache = MaskFilterCache()
+
+        private val rect = Rect()
+
+        fun copy(block: Shadow.() -> Unit = {}): Shadow =
+            Shadow(color, radius, offsetX, offsetY).also(block)
+
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+            val color = this.color ?: return
+            val radius = this.radius?.let {
+                it.resolve(bounds.width())
+                    .takeIf { v -> v > 0 }
+                    ?: it.resolve(bounds.height()).takeIf { v -> v > 0 }
+            } ?: return
+
+            rect.set(bounds)
+
+            offsetX?.resolve(bounds.width())?.also { x ->
+                rect.left += x
+                rect.right += x
+            }
+
+            offsetY?.resolve(bounds.height())?.also { y ->
+                rect.top += y
+                rect.bottom += y
+            }
+
+            paint.color = color
+            paint.maskFilter = maskFilterCache.maskFilter(radius.toFloat())
+
+            shape.drawShape(canvas, rect, paint)
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Shadow
+
+            if (color != other.color) return false
+            if (radius != other.radius) return false
+            if (offsetX != other.offsetX) return false
+            if (offsetY != other.offsetY) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = color ?: 0
+            result = 31 * result + (radius?.hashCode() ?: 0)
+            result = 31 * result + (offsetX?.hashCode() ?: 0)
+            result = 31 * result + (offsetY?.hashCode() ?: 0)
+            return result
+        }
+
+        override fun toString(): String {
+            return "Shadow(color=$color, radius=$radius, offsetX=$offsetX, offsetY=$offsetY)"
+        }
+
+        private class MaskFilterCache {
+
+            private var filter: BlurMaskFilter? = null
+            private var radius: Float = 0F
+
+            fun maskFilter(radius: Float): MaskFilter {
+                // NB! We can allow customizing the Blue, like NORMAL, INSIDE, etc
+                //  but it seems to be a highly optional
+                val filter = this.filter
+
+                if (filter != null && radius == this.radius) {
+                    return filter
+                }
+
+                return BlurMaskFilter(
+                    radius, BlurMaskFilter.Blur.NORMAL
+                ).also { this.filter = it }
+            }
         }
     }
 
