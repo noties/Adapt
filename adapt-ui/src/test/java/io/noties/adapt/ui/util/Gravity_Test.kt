@@ -89,7 +89,7 @@ class Gravity_Test {
         for (input in inputs) {
             assertEquals(input.first, input.second)
             // check that raw equals with the same gravityValue
-            assertEquals(input.first, Gravity.raw(input.first.value))
+            assertEquals(input.first, Gravity(input.first.value))
         }
     }
 }

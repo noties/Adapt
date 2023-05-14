@@ -5,12 +5,18 @@ import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
+import android.util.StateSet
 import android.view.View
 import android.view.ViewTreeObserver.OnPreDrawListener
 import androidx.annotation.AttrRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.shape.copy
 import java.util.Arrays
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 @JvmInline
 value class DrawableState(@AttrRes val value: Int) {
@@ -29,32 +35,21 @@ value class DrawableState(@AttrRes val value: Int) {
 
     // https://stackoverflow.com/questions/15543186/how-do-i-create-colorstatelist-programmatically/58121371#58121371
     // It is possible to specify state by negating value.. for unfocused would be -attr.focused
-    /**
-     * `!DrawableState.pressed` => not pressed
-     */
-    // TODO: this actually does not seem to be working now, we do not receive negative attributesø
-//    operator fun not(): DrawableState = DrawableState(-value)
+    //  it it possible that this is a discarded impl, right now we do not receive negative values
 }
 
 class DrawableStateSet(@AttrRes val state: IntArray) {
-    val pressed: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.pressed.value) }
-    val focused: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.focused.value) }
-    val selected: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.selected.value) }
-    val enabled: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.enabled.value) }
-    val activated: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.activated.value) }
-    val checked: Boolean by lazy(LazyThreadSafetyMode.NONE) { state.contains(DrawableState.checked.value) }
+    val pressed by Prop(DrawableState.pressed)
+    val focused by Prop(DrawableState.focused)
+    val selected by Prop(DrawableState.selected)
+    val enabled by Prop(DrawableState.enabled)
+    val activated by Prop(DrawableState.activated)
+    val checked by Prop(DrawableState.checked)
 
-    fun matches(set: Set<DrawableState>): Boolean {
-        return matches(state, set)
-    }
-
-    fun matches(@AttrRes state: IntArray): Boolean {
-        return matches(this.state, state)
-    }
-
-    fun contains(state: DrawableState) = contains(state.value)
-
-    fun contains(@AttrRes attr: Int): Boolean = state.contains(attr)
+    fun contains(set: Set<DrawableState>) = contains(this.state, set)
+    fun contains(state: DrawableState) = contains(this.state, state)
+    fun contains(@AttrRes state: IntArray) = contains(this.state, state)
+    fun contains(@AttrRes attr: Int) = contains(this.state, attr)
 
     override fun toString(): String = toString(Resources.getSystem())
 
@@ -74,12 +69,35 @@ class DrawableStateSet(@AttrRes val state: IntArray) {
                 "$attr"
             }
 
-        fun matches(@AttrRes state: IntArray, set: Set<DrawableState>): Boolean {
+        fun contains(@AttrRes state: IntArray, drawableState: DrawableState): Boolean {
+            return state.contains(drawableState.value)
+        }
+
+        fun contains(@AttrRes state: IntArray, @AttrRes attr: Int): Boolean {
+            return state.contains(attr)
+        }
+
+        fun contains(@AttrRes state: IntArray, set: Set<DrawableState>): Boolean {
             return set.all { state.contains(it.value) }
         }
 
-        fun matches(@AttrRes state: IntArray, @AttrRes stateToMatch: IntArray): Boolean {
-            return state.all { stateToMatch.contains(it) }
+        fun contains(@AttrRes state: IntArray, @AttrRes stateToMatch: IntArray): Boolean {
+            return stateToMatch.all { state.contains(it) }
+        }
+
+        internal class Prop(val state: DrawableState) :
+            ReadOnlyProperty<DrawableStateSet, Boolean> {
+
+            // no synchronization
+            private var cached: Boolean? = null
+
+            override fun getValue(thisRef: DrawableStateSet, property: KProperty<*>): Boolean {
+                return cached ?: kotlin.run {
+                    thisRef.state.contains(state.value).also {
+                        cached = it
+                    }
+                }
+            }
         }
     }
 }
@@ -114,7 +132,14 @@ class ReportStateDrawable(val set: Set<DrawableState>) : Drawable() {
 
     private var previousState = intArrayOf()
 
+    /**
+     * Accepts only a single state
+     */
     constructor(state: DrawableState) : this(setOf(state))
+
+    /**
+     * Accepts all the states
+     */
     constructor() : this(setOf())
 
     override fun draw(canvas: Canvas) = Unit
@@ -131,7 +156,7 @@ class ReportStateDrawable(val set: Set<DrawableState>) : Drawable() {
         // we could match before (was pressed), but not it is not, but we are not tracking it
         val result = set.isEmpty() || kotlin.run {
             // check current THEN previous (if not current, but previous, then there is also a change)
-            DrawableStateSet.matches(state, set) || DrawableStateSet.matches(previousState, set)
+            DrawableStateSet.contains(state, set) || DrawableStateSet.contains(previousState, set)
         }
         previousState = state.copyOf()
 
@@ -143,4 +168,67 @@ class ReportStateDrawable(val set: Set<DrawableState>) : Drawable() {
 
     override fun getIntrinsicWidth(): Int = 1
     override fun getIntrinsicHeight(): Int = 1
+}
+
+class StatefulShape private constructor() {
+    companion object {
+        fun create(block: StatefulShapeBuilder.() -> Unit): Drawable {
+            val builder = StatefulShapeBuilder()
+            block(builder)
+            TODO()
+        }
+    }
+
+    // TODO: shape equals/hashcode?
+    // TODO: defensive copy? this way to need to hash, identity would be ok
+    class StatefulShapeBuilder {
+        // Nullable shape, so it is possible to create a stateful shape, which still would draw default one
+        // TODO: can we create drawable? so a shape could be reusued without creating a drawable?
+        //  but, is there any performance gain?
+        operator fun set(state: DrawableState, shape: Shape) = set(setOf(state), shape)
+        operator fun set(@AttrRes attr: Int, shape: Shape) = set(DrawableState(attr), shape)
+        operator fun set(@AttrRes attrs: IntArray, shape: Shape) =
+            set(attrs.map { DrawableState(it) }.toSet(), shape)
+
+        operator fun set(set: Set<DrawableState>, shape: Shape) = this.also {
+            // if wildcard, then set default
+            val notWildCards = set.filter { it.value != 0 }
+            if (set.size != notWildCards.size) {
+                // we have wildcards specified
+                defaultShape = shape
+
+                // if there are more states, just use them
+                if (notWildCards.isNotEmpty()) {
+                    sets[notWildCards.toSet()] = shape
+                }
+            } else {
+                sets[set] = shape
+            }
+        }
+
+        fun setPressed(shape: Shape) = this.also { it[DrawableState.pressed] = shape }
+        fun setFocused(shape: Shape) = this.also { it[DrawableState.focused] = shape }
+        fun setSelected(shape: Shape) = this.also { it[DrawableState.selected] = shape }
+        fun setEnabled(shape: Shape) = this.also { it[DrawableState.enabled] = shape }
+        fun setActivated(shape: Shape) = this.also { it[DrawableState.activated] = shape }
+        fun setChecked(shape: Shape) = this.also { it[DrawableState.checked] = shape }
+        fun setDefault(shape: Shape) = this.also { it[StateSet.WILD_CARD] = shape }
+
+        private val sets = mutableMapOf<Set<DrawableState>, Shape>()
+        private var defaultShape: Shape? = null
+
+        fun build(): StateListDrawable {
+            val drawable = StateListDrawable()
+            // NB! copy the shape only when drawable is created, otherwise we would lose identity
+            val shapes = sets.values.toSet().associateWith { it.copy().newDrawable() }
+            sets.forEach { entry ->
+                drawable.addState(
+                    entry.key.map { it.value }.toIntArray(),
+                    shapes[entry.value]
+                )
+            }
+            defaultShape?.also { drawable.addState(StateSet.WILD_CARD, shapes[it]) }
+            return drawable
+        }
+    }
 }

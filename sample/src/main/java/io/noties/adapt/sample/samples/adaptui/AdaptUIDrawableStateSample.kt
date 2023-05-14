@@ -1,5 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.view.MotionEvent
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -26,10 +27,6 @@ import io.noties.debug.Debug
 )
 class AdaptUIDrawableStateSample : AdaptUISampleView() {
 
-    init {
-        ExploreGravity.hey()
-    }
-
     /**
      * In order to receive all drawable states reliably a stateful drawable must be used
      * as a `background` or `foreground`. For example, default selectable drawable
@@ -46,10 +43,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 .background(Capsule {
                     fill(Colors.primary)
                 })
-                .foreground(ReportStateDrawable(DrawableState.pressed))
-//                .foreground(DrawableReportStates(null))
-//                .foregroundDefaultSelectable()
-//                .clipToOutline()
+//                .foreground(ReportStateDrawable(DrawableState.pressed))
                 .onDrawableStateChange { textView, drawableState ->
                     Debug.e("state:$drawableState")
                     textView.clearAnimation()
@@ -62,6 +56,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 }
                 .onClick {
                     Debug.i("clicked")
+
                 }
 
         }.layoutFill()
