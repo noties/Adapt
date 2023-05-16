@@ -441,7 +441,7 @@ abstract class Shape {
         return "Shape.${this::class.java.simpleName}(${toStringDedicatedProperties()}){hidden=$hidden, width=$width, height=$height, gravity=$gravity, padding=$padding, translation=$translation, rotation=$rotation, alpha=$alpha, fill=$fill, stroke=$stroke, children=$children, drawRect=$drawRect}"
     }
 
-    internal class ShaderCache {
+    protected class ShaderCache {
         private val bounds = Rect()
 
         private var shader: Shader? = null

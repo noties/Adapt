@@ -9,7 +9,7 @@ typealias LayoutParams = ViewGroup.LayoutParams
 class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null
-) {
+): ViewFactoryConstants {
     constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
 
     private val _viewGroup: ViewGroup? = viewGroup
@@ -18,18 +18,6 @@ class ViewFactory<out LP : LayoutParams>(
 
     val viewGroup: ViewGroup
         get() = _viewGroup ?: error("ViewFactory does not contain ViewGroup, this:$this")
-
-    @Suppress("PropertyName")
-    val FILL: Int
-        get() {
-            return LayoutParams.MATCH_PARENT
-        }
-
-    @Suppress("PropertyName")
-    val WRAP: Int
-        get() {
-            return LayoutParams.WRAP_CONTENT
-        }
 
     var areElementsConsumed = false
         private set

@@ -303,6 +303,31 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
 }
 
 /**
+ * JustificationMode
+ * @see Layout.JUSTIFICATION_MODE_NONE
+ * @see Layout.JUSTIFICATION_MODE_INTER_WORD
+ * @see textJustificationMode
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+@JvmInline
+value class JustificationMode(val value: Int) {
+    companion object {
+        val none: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_NONE)
+        val interWord: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
+    }
+}
+
+/**
+ * @see JustificationMode
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
+    mode: JustificationMode
+): ViewElement<V, LP> = onView {
+    it.justificationMode = mode.value
+}
+
+/**
  * Supplied values are in SP (so, 12 == 12.sp)
  * @see TextView.setAutoSizeTextTypeUniformWithPresetSizes
  */

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -22,7 +23,6 @@ import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
-import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
@@ -299,6 +299,18 @@ class Text_Test {
     }
 
     @Test
+    fun `textHyphenationFrequency - values`() {
+        val inputs = listOf(
+            Layout.HYPHENATION_FREQUENCY_NONE to HyphenationFrequency.none,
+            Layout.HYPHENATION_FREQUENCY_NORMAL to HyphenationFrequency.normal,
+            Layout.HYPHENATION_FREQUENCY_FULL to HyphenationFrequency.full
+        )
+        for ((expected, input) in inputs) {
+            assertEquals(expected, input.value)
+        }
+    }
+
+    @Test
     fun textHyphenationFrequency() {
         val inputs = listOf(
             HyphenationFrequency.none,
@@ -316,6 +328,18 @@ class Text_Test {
     }
 
     @Test
+    fun `textBreakStrategy - values`() {
+        val inputs = listOf(
+            Layout.BREAK_STRATEGY_SIMPLE to BreakStrategy.simple,
+            Layout.BREAK_STRATEGY_BALANCED to BreakStrategy.balanced,
+            Layout.BREAK_STRATEGY_HIGH_QUALITY to BreakStrategy.highQuality
+        )
+        for ((expected, input) in inputs) {
+            assertEquals(expected, input.value)
+        }
+    }
+
+    @Test
     fun textBreakStrategy() {
         val inputs = listOf(
             BreakStrategy.simple,
@@ -328,6 +352,35 @@ class Text_Test {
                 .textBreakStrategy(input)
                 .renderView {
                     verify(this).breakStrategy = eq(input.value)
+                }
+        }
+    }
+
+    @Test
+    fun `textJustificationMode - values`() {
+        val inputs = listOf(
+            Layout.JUSTIFICATION_MODE_NONE to JustificationMode.none,
+            Layout.JUSTIFICATION_MODE_INTER_WORD to JustificationMode.interWord
+        )
+
+        for ((expected, input) in inputs) {
+            assertEquals(expected, input.value)
+        }
+    }
+
+    @Test
+    fun textJustificationMode() {
+        val inputs = listOf(
+            JustificationMode.none,
+            JustificationMode.interWord,
+            JustificationMode(-2813)
+        )
+
+        for (input in inputs) {
+            newTextElement()
+                .textJustificationMode(input)
+                .renderView {
+                    verify(this).justificationMode = eq(input.value)
                 }
         }
     }

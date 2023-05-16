@@ -3,6 +3,7 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.ColorFilter
+import android.graphics.Outline
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
@@ -15,6 +16,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.copy
 import java.util.Arrays
+import kotlin.math.roundToInt
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -179,12 +181,7 @@ class StatefulShape private constructor() {
         }
     }
 
-    // TODO: shape equals/hashcode?
-    // TODO: defensive copy? this way to need to hash, identity would be ok
     class StatefulShapeBuilder {
-        // Nullable shape, so it is possible to create a stateful shape, which still would draw default one
-        // TODO: can we create drawable? so a shape could be reusued without creating a drawable?
-        //  but, is there any performance gain?
         operator fun set(state: DrawableState, shape: Shape) = set(setOf(state), shape)
         operator fun set(@AttrRes attr: Int, shape: Shape) = set(DrawableState(attr), shape)
         operator fun set(@AttrRes attrs: IntArray, shape: Shape) =
@@ -231,4 +228,96 @@ class StatefulShape private constructor() {
             return drawable
         }
     }
+}
+
+fun Shape.newDrawable2() = ShapeDrawable2(this, Unit)
+
+open class ShapeDrawable2<R : Any>(
+    val shape: Shape,
+    val ref: R
+) : Drawable() {
+
+    companion object {
+
+//            operator fun invoke(
+//                shape: Shape
+//            ): ShapeDrawableNoRef = ShapeDrawable(shape, Unit)
+
+//        operator fun <S : Shape, R : Any> invoke(ref: R, block: (R) -> S): ShapeDrawable<R> {
+//            return ShapeDrawable(block(ref), ref)
+//        }
+    }
+
+    private var stateful: Stateful<R>? = null
+
+    override fun draw(canvas: Canvas) {
+        shape.draw(canvas, bounds)
+    }
+
+    override fun getIntrinsicWidth(): Int {
+        // NB! relative dimension would not report intrinsic value (we have no reference)
+        return shape.width?.resolve(0) ?: super.getIntrinsicWidth()
+    }
+
+    override fun getIntrinsicHeight(): Int {
+        // NB! relative dimension would not report intrinsic value (we have no reference)
+        return shape.height?.resolve(0) ?: super.getIntrinsicHeight()
+    }
+
+    override fun getAlpha(): Int {
+        return shape.alpha?.let { (it * 255).roundToInt() } ?: 255
+    }
+
+    override fun setAlpha(alpha: Int) {
+        shape.alpha(alpha / 255F)
+    }
+
+    override fun setColorFilter(colorFilter: ColorFilter?) = Unit
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun getOpacity(): Int = PixelFormat.OPAQUE
+
+    override fun getOutline(outline: Outline) {
+        shape.outline(outline, bounds)
+    }
+
+    fun invalidate(block: (R) -> Unit) {
+        block(ref)
+        invalidateSelf()
+    }
+
+    // TODO: add a single state fun
+    fun stateful(
+        states: Set<DrawableState> = emptySet(),
+        onStateChange: ShapeDrawable2<R>.(DrawableStateSet) -> Unit = {}
+    ) = this.also {
+        it.stateful = Stateful(states, onStateChange)
+    }
+
+    override fun isStateful(): Boolean {
+        return stateful != null
+    }
+
+    override fun onStateChange(state: IntArray): Boolean {
+        val stateful = this.stateful ?: return false
+        val result = stateful.states.isEmpty() || kotlin.run {
+            DrawableStateSet.contains(state, stateful.states) || DrawableStateSet.contains(
+                previousState,
+                stateful.states
+            )
+        }
+        previousState = state.copyOf()
+        if (result) {
+            stateful.onStateChange.invoke(this, DrawableStateSet(state))
+            invalidateSelf()
+        }
+        return result
+    }
+
+    private var previousState: IntArray = intArrayOf()
+
+    private class Stateful<R : Any>(
+        val states: Set<DrawableState>,
+        val onStateChange: ShapeDrawable2<R>.(DrawableStateSet) -> Unit = {}
+    )
 }

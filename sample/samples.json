@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample",
+    "id": "20230515172204",
+    "title": "[Explore] Text Shape",
+    "description": "Shape that draws text",
+    "tags": [
+      "shape"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample",
     "id": "20230513001821",
     "title": "DrawableState",

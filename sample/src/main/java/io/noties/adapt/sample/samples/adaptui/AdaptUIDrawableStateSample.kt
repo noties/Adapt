@@ -42,7 +42,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 .layoutMargin(16)
                 .background(Capsule {
                     fill(Colors.primary)
-                })
+                }.newDrawable2().stateful(setOf(DrawableState.pressed)))
 //                .foreground(ReportStateDrawable(DrawableState.pressed))
                 .onDrawableStateChange { textView, drawableState ->
                     Debug.e("state:$drawableState")
