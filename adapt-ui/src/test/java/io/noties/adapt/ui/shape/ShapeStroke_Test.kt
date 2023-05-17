@@ -49,7 +49,7 @@ class ShapeStroke_Test {
                 gradient = LinearGradient.edges { trailing to bottom.trailing }
                     .setColors(1, 7)
             ),
-            Stroke(87812, 88, 123, 987, SweepGradient(182, 12134))
+            Stroke(87812, 88, 123, 987, SweepGradient.center().setColors(182, 12134))
         )
 
         for (input in inputs) {
@@ -80,7 +80,7 @@ class ShapeStroke_Test {
             Input(width = 213),
             Input(dashWidth = 91),
             Input(dashGap = 991),
-            Input(gradient = SweepGradient(1, 9)),
+            Input(gradient = SweepGradient.center().setColors(1, 9)),
             Input(7126, 1, 2134, 12, RadialGradient.center().setColors(123, 2))
         )
 
@@ -259,7 +259,7 @@ class ShapeStroke_Test {
 
     @Test
     fun `draw - gradient - alpha`() {
-        val gradient = SweepGradient(1982, 891)
+        val gradient = SweepGradient.center().setColors(1982, 891)
         val input = 0.25F
         val stroke = Stroke(gradient = gradient)
         val shape = mockt<Shape> {

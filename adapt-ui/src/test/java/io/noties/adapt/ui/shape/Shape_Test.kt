@@ -67,7 +67,7 @@ class Shape_Test {
                     99,
                     1,
                     10,
-                    SweepGradient(1231243, 8776)
+                    SweepGradient.center().setColors(1231243, 8776)
                 )
             ),
         )
@@ -703,7 +703,7 @@ class Shape_Test {
     fun `stroke - gradient`() {
 
         class Input(
-            val gradient: Gradient = SweepGradient(112, 911),
+            val gradient: Gradient = SweepGradient.center().setColors(112, 911),
             val width: Int? = null,
             val dashWidth: Int? = null,
             val dashGap: Int? = null

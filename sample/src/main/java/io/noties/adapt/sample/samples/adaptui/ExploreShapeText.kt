@@ -482,8 +482,6 @@ object ExploreShapeText {
 
 //                    textPaint.set(paint)
 
-                    // TODO: maybe we do not need additional textColor? as it should use the value
-                    //  from Shape
                     with(textData) {
                         textSize?.dip?.toFloat()?.also { textPaint.textSize = it }
                         textColor?.also { textPaint.color = it }

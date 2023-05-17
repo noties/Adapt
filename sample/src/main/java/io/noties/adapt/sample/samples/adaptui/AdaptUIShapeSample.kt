@@ -353,7 +353,7 @@ class AdaptUIShapeSample : SampleView() {
         val sweepGradients = listOf(
             Circle {
                 fill(
-                    SweepGradient(
+                    SweepGradient.center().setColors(
                         Colors.orange,
                         Colors.primary
                     )
@@ -362,21 +362,19 @@ class AdaptUIShapeSample : SampleView() {
             RoundedRectangle(24) {
                 padding(8)
                 stroke(
-                    SweepGradient(
-                        intArrayOf(Colors.orange, Colors.primary, Colors.accent, Colors.black)
+                    SweepGradient.center().setColors(
+                        Colors.orange, Colors.primary, Colors.accent, Colors.black
                     ),
                     16
                 )
             },
             Rectangle {
                 fill(
-                    SweepGradient(
-                        listOf(
-                            Colors.orange to 0.1F,
-                            Colors.accent to 0.2F,
-                            Colors.primary to 0.7F,
-                            Colors.black to 1F
-                        )
+                    SweepGradient.center().setColors(
+                        Colors.orange to 0.1F,
+                        Colors.accent to 0.2F,
+                        Colors.primary to 0.7F,
+                        Colors.black to 1F
                     )
                 )
             }

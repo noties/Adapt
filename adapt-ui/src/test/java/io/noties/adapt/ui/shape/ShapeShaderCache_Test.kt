@@ -114,7 +114,7 @@ class ShapeShaderCache_Test {
         val rect = Rect(10, 20, 30, 40)
 
         val gradient1 = RadialGradient.center().setColors(1, 567)
-        val gradient2 = SweepGradient(42, 24)
+        val gradient2 = SweepGradient.center().setColors(42, 24)
 
         val paint1 = mock(Paint::class.java)
 

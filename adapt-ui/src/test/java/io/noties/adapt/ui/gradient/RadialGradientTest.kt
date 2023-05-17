@@ -52,47 +52,65 @@ class RadialGradientTest {
     @Test
     fun `init - colors2`() {
         val (start, end) = 0 to 1
-        val gradient = RadialGradient.center()
-            .setColors(start, end)
-        Assert.assertArrayEquals(
-            intArrayOf(start, end),
-            gradient.colors
-        )
-        Assert.assertNull(gradient.positions)
-        Assert.assertNull(gradient.tileMode)
-        Assert.assertNull(gradient.radius)
+
+        fun assert(builder: RadialGradient.Builder) {
+            val gradient = builder.setColors(start, end)
+            Assert.assertArrayEquals(
+                intArrayOf(start, end),
+                gradient.colors
+            )
+            Assert.assertNull(gradient.positions)
+            Assert.assertNull(gradient.tileMode)
+            Assert.assertNull(gradient.radius)
+        }
+
+        assert(RadialGradient.center())
+        assert(RadialGradient.edge(GradientEdge.top))
+        assert(RadialGradient.angle(42F))
     }
 
     @Test
     fun `init - colors vararg`() {
         val input = intArrayOf(0, 1, 2, 3, 4)
-        val gradient = RadialGradient.angle(1F)
-            .setColors(*input)
-        Assert.assertArrayEquals(
-            input,
-            gradient.colors
-        )
-        Assert.assertNull(gradient.positions)
-        Assert.assertNull(gradient.tileMode)
-        Assert.assertNull(gradient.radius)
+
+        fun assert(builder: RadialGradient.Builder) {
+            val gradient = builder.setColors(*input)
+            Assert.assertArrayEquals(
+                input,
+                gradient.colors
+            )
+            Assert.assertNull(gradient.positions)
+            Assert.assertNull(gradient.tileMode)
+            Assert.assertNull(gradient.radius)
+        }
+
+        assert(RadialGradient.center())
+        assert(RadialGradient.edge(GradientEdge.bottom))
+        assert(RadialGradient.angle(1F))
     }
 
     @Test
     fun `init - colors and positions`() {
         val input = (1..5).map { it to it / 5F }.toTypedArray()
-        val gradient = RadialGradient.edge(GradientEdge.top)
-            .setColors(*input)
-        Assert.assertArrayEquals(
-            input.map { it.first }.toIntArray(),
-            gradient.colors
-        )
-        Assert.assertArrayEquals(
-            input.map { it.second }.toFloatArray(),
-            gradient.positions,
-            0.01F
-        )
-        Assert.assertNull(gradient.tileMode)
-        Assert.assertNull(gradient.radius)
+
+        fun assert(builder: RadialGradient.Builder) {
+            val gradient = builder.setColors(*input)
+            Assert.assertArrayEquals(
+                input.map { it.first }.toIntArray(),
+                gradient.colors
+            )
+            Assert.assertArrayEquals(
+                input.map { it.second }.toFloatArray(),
+                gradient.positions,
+                0.01F
+            )
+            Assert.assertNull(gradient.tileMode)
+            Assert.assertNull(gradient.radius)
+        }
+
+        assert(RadialGradient.center())
+        assert(RadialGradient.edge(GradientEdge.bottom))
+        assert(RadialGradient.angle(1F))
     }
 
     @Test

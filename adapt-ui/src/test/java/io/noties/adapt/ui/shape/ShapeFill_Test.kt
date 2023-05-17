@@ -42,7 +42,7 @@ class ShapeFill_Test {
                 LinearGradient.edges { trailing to bottom.trailing }
                     .setColors(1, 7)
             ),
-            Shape.Fill(1234, SweepGradient(182, 12134))
+            Shape.Fill(1234, SweepGradient.center().setColors(182, 12134))
         )
 
         for (input in inputs) {
@@ -63,7 +63,7 @@ class ShapeFill_Test {
         val inputs = listOf(
             null to null,
             0 to null,
-            null to SweepGradient(1, 9),
+            null to SweepGradient.center().setColors(1, 9),
             98712 to RadialGradient.center().setColors(9887, 1)
         )
 
