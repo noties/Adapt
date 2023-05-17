@@ -652,7 +652,7 @@ class Shape_Test {
             } else {
                 shape.assertEquals(null, Shape::fill)
             }
-            val gradient = RadialGradient(12, 24)
+            val gradient = RadialGradient.center().setColors(12, 24)
             shape.fill(gradient)
             shape.fill!!.assertEquals(gradient, Shape.Fill::gradient)
         }

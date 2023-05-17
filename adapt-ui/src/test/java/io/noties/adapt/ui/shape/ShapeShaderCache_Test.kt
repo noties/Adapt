@@ -78,7 +78,7 @@ class ShapeShaderCache_Test {
 
         assertNotEquals(rect1, rect2)
 
-        val gradient = RadialGradient(1, 567)
+        val gradient = RadialGradient.center().setColors(1, 567)
         val paint1 = mock(Paint::class.java)
 
         cache.shader(
@@ -113,7 +113,7 @@ class ShapeShaderCache_Test {
         val cache = Shape.ShaderCache()
         val rect = Rect(10, 20, 30, 40)
 
-        val gradient1 = RadialGradient(1, 567)
+        val gradient1 = RadialGradient.center().setColors(1, 567)
         val gradient2 = SweepGradient(42, 24)
 
         val paint1 = mock(Paint::class.java)

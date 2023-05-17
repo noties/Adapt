@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
-import io.noties.adapt.ui.util.toHexString
 
 class LinearGradient internal constructor(
     internal val type: Type,
@@ -63,15 +62,9 @@ class LinearGradient internal constructor(
     }
 
     override fun toString(): String {
-        val colors = positions?.let { p ->
-            p.withIndex()
-                .map { (i, position) ->
-                    "\"${colors[i].toHexString()}\":$position"
-                }
-        } ?: colors.map { "\"${it.toHexString()}\"" }
         val properties = listOf(
             "type" to type,
-            "colors" to colors,
+            "colors" to colorsAndPositionsToString(colors, positions),
             "tileMode" to tileMode
         ).joinToString(", ") {
             "${it.first}=${it.second}"
@@ -80,18 +73,8 @@ class LinearGradient internal constructor(
     }
 
     sealed class Type
-
-    data class Edges(val edges: Pair<GradientEdge, GradientEdge>) : Type() {
-        override fun toString(): String {
-            return "Type.Edges(edges=$edges)"
-        }
-    }
-
-    data class Angle(val angle: Float) : Type() {
-        override fun toString(): String {
-            return "Type.Angle(angle=$angle)"
-        }
-    }
+    data class Edges(val edges: Pair<GradientEdge, GradientEdge>) : Type()
+    data class Angle(val angle: Float) : Type()
 
     class Builder(private val type: Type) {
         @CheckResult
@@ -104,10 +87,11 @@ class LinearGradient internal constructor(
         fun setColors(
             @ColorInt vararg colors: Int
         ): LinearGradient {
-            require(colors.size >= 2) {
-                "Minimum 2 colors are required, supplied:${colors.size} - ${colors.map { c -> "\"${c.toHexString()}\"" }}"
-            }
-            return LinearGradient(type, colors.copyOf(), null)
+            return LinearGradient(
+                type,
+                createColors(*colors),
+                null
+            )
         }
 
         /**
@@ -117,14 +101,7 @@ class LinearGradient internal constructor(
         fun setColors(
             vararg colorsAndPositions: Pair</*@ColorInt*/ Int, Float>
         ): LinearGradient {
-            require(colorsAndPositions.size >= 2) {
-                val string = colorsAndPositions.joinToString(", ") { cap ->
-                    "\"${cap.first.toHexString()}\":${cap.second}"
-                }
-                "Minimum 2 colors are required, supplied:${colorsAndPositions.size} - [$string]"
-            }
-            val colors = colorsAndPositions.map { cap -> cap.first }.toIntArray()
-            val positions = colorsAndPositions.map { cap -> cap.second }.toFloatArray()
+            val (colors, positions) = createColorsAndPositions(*colorsAndPositions)
             return LinearGradient(
                 type,
                 colors,

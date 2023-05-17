@@ -81,7 +81,7 @@ class ShapeStroke_Test {
             Input(dashWidth = 91),
             Input(dashGap = 991),
             Input(gradient = SweepGradient(1, 9)),
-            Input(7126, 1, 2134, 12, RadialGradient(123, 2))
+            Input(7126, 1, 2134, 12, RadialGradient.center().setColors(123, 2))
         )
 
         val strokes = listOf(

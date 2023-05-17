@@ -101,7 +101,7 @@ class AdaptUITextSample : SampleView() {
             .text("A very very very long long text text 3456789")
             .textColor(Colors.orange)
             .textGradient(
-                RadialGradient(
+                RadialGradient.center().setColors(
                     Colors.orange,
                     Colors.primary,
                 )

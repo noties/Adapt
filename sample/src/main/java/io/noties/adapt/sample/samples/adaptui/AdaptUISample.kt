@@ -697,7 +697,7 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
                 View()
                     .layout(FILL, FILL)
                     .background(Circle {
-                        fill(RadialGradient(Color.MAGENTA, Color.YELLOW))
+                        fill(RadialGradient.center().setColors(Color.MAGENTA, Color.YELLOW))
                         gravity(Gravity.leading.top)
                         add(Rectangle {
                             stroke(Color.BLACK, 2)

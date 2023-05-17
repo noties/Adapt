@@ -312,7 +312,7 @@ class AdaptUIShapeSample : SampleView() {
         val radialGradients = listOf(
             Rectangle {
                 fill(
-                    RadialGradient(
+                    RadialGradient.center().setColors(
                         Colors.orange,
                         Colors.black
                     )
@@ -320,36 +320,32 @@ class AdaptUIShapeSample : SampleView() {
             },
             Circle {
                 fill(
-                    RadialGradient(
-                        intArrayOf(Colors.orange, Colors.accent, Colors.primary, Colors.black)
+                    RadialGradient.center().setColors(
+                        Colors.orange, Colors.accent, Colors.primary, Colors.black
                     )
                 )
             },
             Corners(leadingTop = 48) {
                 fill(
-                    RadialGradient(
-                        listOf(
+                    RadialGradient.edge(GradientEdge.top)
+                        .setColors(
                             Colors.black to 0.1F,
                             Colors.primary to 0.5F,
                             Colors.accent to 0.6F,
                             Colors.orange to 1F
-                        ),
-                        edge = GradientEdge.top
-                    )
+                        )
                 )
             },
             Capsule {
                 sizeRelative(height = 0.5F, gravity = Gravity.center)
                 fill(
-                    RadialGradient(
-                        listOf(
+                    RadialGradient.edge(GradientEdge.leading)
+                        .setColors(
                             Colors.orange to 0.1F,
                             Colors.accent to 0.4F,
                             Colors.primary to 0.75F,
                             Colors.orange to 1F
-                        ),
-                        GradientEdge.leading
-                    )
+                        )
                 )
             }
         )

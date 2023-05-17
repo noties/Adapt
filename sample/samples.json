@@ -1,5 +1,17 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIGradientSample",
+    "id": "20230517155636",
+    "title": "UI, shape gradients",
+    "description": "LinearGradient, RadialGradient, SweepGradient",
+    "tags": [
+      "adapt-ui",
+      "gradient",
+      "graphics",
+      "shape"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample",
     "id": "20230515172204",
     "title": "[Explore] Text Shape",

@@ -64,7 +64,7 @@ class ShapeFill_Test {
             null to null,
             0 to null,
             null to SweepGradient(1, 9),
-            98712 to RadialGradient(9887, 1)
+            98712 to RadialGradient.center().setColors(9887, 1)
         )
 
         val fills = listOf(
