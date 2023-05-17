@@ -4,12 +4,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import io.noties.adapt.ui.gradient.Gradient
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
 import io.noties.adapt.ui.shape.Shape.Stroke
-import io.noties.adapt.ui.testutil.ShadowPaint
 import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.testutil.withAlpha
@@ -31,7 +29,11 @@ import kotlin.math.roundToInt
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [io.noties.adapt.ui.testutil.ShadowPaint::class])
+@Config(
+    manifest = Config.NONE,
+    sdk = [Config.TARGET_SDK],
+    shadows = [io.noties.adapt.ui.testutil.ShadowPaint::class]
+)
 class ShapeStroke_Test {
 
     @Test
@@ -44,11 +46,8 @@ class ShapeStroke_Test {
             Stroke(dashWidth = 24),
             Stroke(dashGap = 36),
             Stroke(
-                gradient = LinearGradient(
-                    GradientEdge.Trailing to GradientEdge.BottomTrailing,
-                    1,
-                    7
-                )
+                gradient = LinearGradient.edges { trailing to bottom.trailing }
+                    .setColors(1, 7)
             ),
             Stroke(87812, 88, 123, 987, SweepGradient(182, 12134))
         )
@@ -91,22 +90,16 @@ class ShapeStroke_Test {
             Stroke(dashWidth = -91),
             Stroke(dashGap = -991),
             Stroke(
-                gradient = LinearGradient(
-                    GradientEdge.BottomTrailing to GradientEdge.BottomTrailing,
-                    9999,
-                    888
-                )
+                gradient = LinearGradient.edges { bottom.trailing to bottom.trailing }
+                    .setColors(9999, 888)
             ),
             Stroke(
                 -1234,
                 -213,
                 -91,
                 -991,
-                LinearGradient(
-                    GradientEdge.BottomTrailing to GradientEdge.BottomTrailing,
-                    9999,
-                    888
-                )
+                LinearGradient.edges { bottom.trailing to bottom.trailing }
+                    .setColors(9999, 888)
             ),
         )
 
@@ -143,15 +136,15 @@ class ShapeStroke_Test {
         val inputs = listOf(
             Stroke(),
             Stroke(width = 0, color = 567, dashGap = 1, dashWidth = 27),
-            Stroke(width = 0, gradient = io.noties.adapt.ui.testutil.mockt()),
+            Stroke(width = 0, gradient = mockt()),
             Stroke(width = 10, color = null),
             Stroke(width = 123, gradient = null)
         )
 
         for (input in inputs) {
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+            val canvas = mockt<Canvas>()
             // important to use real object, not mock in order to see if canvas was called
-            input.draw(canvas, Oval(), io.noties.adapt.ui.testutil.mockt())
+            input.draw(canvas, Oval(), mockt())
             verifyNoInteractions(canvas)
         }
     }
@@ -162,8 +155,8 @@ class ShapeStroke_Test {
         val stroke = Stroke(width = 1, color = 0xFFff0000.toInt())
         // important to use real object, not mock in order to see if canvas was called
         val shape = Rectangle().alpha(0F)
-        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-        stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
+        val canvas = mockt<Canvas>()
+        stroke.draw(canvas, shape, mockt())
 
         verifyNoInteractions(canvas)
     }
@@ -174,8 +167,8 @@ class ShapeStroke_Test {
         val stroke = Stroke(0x00FFFFFF, 99)
         // important to use real object, not mock in order to see if canvas was called
         val shape = Oval().alpha(1F)
-        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-        stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
+        val canvas = mockt<Canvas>()
+        stroke.draw(canvas, shape, mockt())
         verifyNoInteractions(canvas)
     }
 
@@ -189,12 +182,12 @@ class ShapeStroke_Test {
 
         for (input in inputs) {
             val stroke = Stroke(input)
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-            val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
+            val canvas = mockt<Canvas>()
+            val shape = mockt<Shape> {
                 on { this.alpha } doReturn 1F
             }
 
-            stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
+            stroke.draw(canvas, shape, mockt())
 
             if (Color.alpha(input) == 0) {
                 verify(shape, never()).drawShape(any(), any(), any())
@@ -232,12 +225,12 @@ class ShapeStroke_Test {
         for (input in inputs) {
             for (alpha in alphas) {
                 val stroke = Stroke(input)
-                val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-                val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
+                val canvas = mockt<Canvas>()
+                val shape = mockt<Shape> {
                     on { this.alpha } doReturn alpha
                 }
 
-                stroke.draw(canvas, shape, io.noties.adapt.ui.testutil.mockt())
+                stroke.draw(canvas, shape, mockt())
 
                 val expectedAlpha = (255 * ((Color.alpha(input) / 255F) * alpha)).roundToInt()
 
@@ -269,10 +262,10 @@ class ShapeStroke_Test {
         val gradient = SweepGradient(1982, 891)
         val input = 0.25F
         val stroke = Stroke(gradient = gradient)
-        val shape = io.noties.adapt.ui.testutil.mockt<Shape> {
+        val shape = mockt<Shape> {
             on { this.alpha } doReturn input
         }
-        stroke.draw(io.noties.adapt.ui.testutil.mockt(), shape, io.noties.adapt.ui.testutil.mockt())
+        stroke.draw(mockt(), shape, mockt())
 
         val captor = argumentCaptor<Paint>()
         verify(shape).drawShape(

@@ -72,9 +72,9 @@ class Arc_Test {
     @Test
     fun draw() {
         val arc = Arc(-1F, -2F, false)
-        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+        val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 55, 33)
-        arc.drawShape(canvas, bounds, io.noties.adapt.ui.testutil.mockt())
+        arc.drawShape(canvas, bounds, mockt())
         verify(canvas).drawArc(
             eq(RectF(bounds)),
             eq(-1F),

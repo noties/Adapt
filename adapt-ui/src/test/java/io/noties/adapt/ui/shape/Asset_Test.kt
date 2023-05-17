@@ -27,7 +27,7 @@ class Asset_Test {
 
     @Test
     fun clone() {
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable>()
+        val drawable = mockt<Drawable>()
         val asset: Shape = Asset(drawable)
         val clone = asset.clone()
         assertEquals(Asset::class.java, clone::class.java)
@@ -36,11 +36,11 @@ class Asset_Test {
 
     @Test
     fun `clone - tries to create new drawable`() {
-        val mockNewDrawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
+        val mockNewDrawable = mockt<Drawable> {
             on { mutate() } doReturn mock
         }
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
-            val cs = io.noties.adapt.ui.testutil.mockt<Drawable.ConstantState> {
+        val drawable = mockt<Drawable> {
+            val cs = mockt<Drawable.ConstantState> {
                 on { newDrawable() } doReturn mockNewDrawable
             }
             on { constantState } doReturn cs
@@ -56,7 +56,7 @@ class Asset_Test {
     @Test
     fun init() {
         // defaultFillColor required to draw
-        val asset = Asset(io.noties.adapt.ui.testutil.mockt())
+        val asset = Asset(mockt())
         assertEquals(
             Shape.defaultFillColor.toHexString(),
             asset.fill?.color?.toHexString()
@@ -75,7 +75,7 @@ class Asset_Test {
         val hpx = 149
 
         // if drawable has intrinsic bounds it would be converted to dp and size set
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
+        val drawable = mockt<Drawable> {
             on { intrinsicWidth } doReturn wpx
             on { intrinsicHeight } doReturn hpx
         }
@@ -99,12 +99,12 @@ class Asset_Test {
 
     @Test
     fun draw() {
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable>()
+        val drawable = mockt<Drawable>()
         val asset = Asset(drawable)
-        val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+        val canvas = mockt<Canvas>()
         val rect = Rect(0, 0, 10, 88)
         val alpha = (255 * 0.721F).roundToInt()
-        val paint = io.noties.adapt.ui.testutil.mockt<Paint> {
+        val paint = mockt<Paint> {
             on { this.alpha } doReturn alpha
         }
         asset.drawShape(
@@ -119,7 +119,7 @@ class Asset_Test {
 
     @Test
     fun `factory - tinted - color`() {
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
+        val drawable = mockt<Drawable> {
             on { mutate() } doReturn mock
         }
         val color = 97271
@@ -133,8 +133,8 @@ class Asset_Test {
 
     @Test
     fun `factory - tinted - colorStateList`() {
-        val csl = io.noties.adapt.ui.testutil.mockt<ColorStateList>()
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
+        val csl = mockt<ColorStateList>()
+        val drawable = mockt<Drawable> {
             on { mutate() } doReturn mock
         }
         val asset = Asset(drawable) {
@@ -153,7 +153,7 @@ class Asset_Test {
         val (w, h) = 2 to 3
 
         // NB! intrinsic size is represented by platform pixels
-        val drawable = io.noties.adapt.ui.testutil.mockt<Drawable> {
+        val drawable = mockt<Drawable> {
             on { this.intrinsicWidth } doReturn w.dip
             on { this.intrinsicHeight } doReturn h.dip
         }

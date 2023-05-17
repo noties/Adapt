@@ -60,7 +60,6 @@ import io.noties.adapt.ui.flex.layoutFlexGrow
 import io.noties.adapt.ui.flex.layoutFlexShrink
 import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.foregroundDefaultSelectable
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
@@ -68,8 +67,8 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWrap
-import io.noties.adapt.ui.onViewCheckedChanged
 import io.noties.adapt.ui.onClick
+import io.noties.adapt.ui.onViewCheckedChanged
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.Asset
@@ -148,11 +147,11 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 stroke(Colors.primary, 2)
                 padding(1)
                 fill(
-                    LinearGradient(
-                        GradientEdge.Top to GradientEdge.Bottom,
-                        Colors.primary.withAlphaComponent(0.42F),
-                        Colors.primary.withAlphaComponent(0F),
-                    )
+                    LinearGradient.edges { top to bottom }
+                        .setColors(
+                            Colors.primary.withAlphaComponent(0.42F),
+                            Colors.primary.withAlphaComponent(0F)
+                        )
                 )
             })
 

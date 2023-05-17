@@ -42,7 +42,6 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.element.viewPager
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.enabled
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
@@ -164,11 +163,8 @@ class AdaptUIPagerSample : SampleView() {
                 .pagerOffscreenPageLimit(3)
                 .pagerPageMargin(16, Capsule {
                     fill(
-                        LinearGradient(
-                            GradientEdge.Top to GradientEdge.Bottom,
-                            Colors.orange,
-                            Colors.black
-                        )
+                        LinearGradient.edges { top to bottom }
+                            .setColors(Colors.orange, Colors.black)
                     )
                     padding(4)
                 })

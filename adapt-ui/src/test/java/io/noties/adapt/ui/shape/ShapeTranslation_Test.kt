@@ -32,8 +32,8 @@ class ShapeTranslation_Test {
         )
 
         for (input in inputs) {
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-            input.draw(canvas, io.noties.adapt.ui.testutil.mockt())
+            val canvas = mockt<Canvas>()
+            input.draw(canvas, mockt())
             verifyNoInteractions(canvas)
         }
     }
@@ -53,8 +53,8 @@ class ShapeTranslation_Test {
                 exact.first?.let(::Exact),
                 exact.second?.let(::Exact)
             )
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-            translation.draw(canvas, io.noties.adapt.ui.testutil.mockt())
+            val canvas = mockt<Canvas>()
+            translation.draw(canvas, mockt())
             verify(canvas).translate(
                 eq(expected.first),
                 eq(expected.second)
@@ -79,7 +79,7 @@ class ShapeTranslation_Test {
                 exact.first?.let(::Relative),
                 exact.second?.let(::Relative)
             )
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+            val canvas = mockt<Canvas>()
             translation.draw(canvas, rect)
             verify(canvas).translate(
                 eq(expected.first),

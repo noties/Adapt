@@ -197,11 +197,8 @@ class AdaptUIShapeSample : SampleView() {
                     fromRelative(0F, 0F)
                     toRelative(1F, 1F)
                     stroke(
-                        LinearGradient(
-                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
-                            Colors.accent,
-                            Colors.primary
-                        ),
+                        LinearGradient.edges { top.leading to bottom.trailing }
+                            .setColors(Colors.accent, Colors.primary),
 //                        Colors.black,
                         4,
                         16,
@@ -270,52 +267,44 @@ class AdaptUIShapeSample : SampleView() {
             Rectangle {
                 alpha(0.5F)
                 fill(
-                    LinearGradient(
-                        GradientEdge.TopLeading to GradientEdge.BottomTrailing,
-                        Colors.orange.withAlphaComponent(0.75F),
-                        Colors.black.withAlphaComponent(0.75F)
-                    )
+                    LinearGradient.edges { top.leading to bottom.trailing }
+                        .setColors(
+                            Colors.orange.withAlphaComponent(0.75F),
+                            Colors.black.withAlphaComponent(0.75F)
+                        )
                 )
                 stroke(
-                    LinearGradient(
-                        GradientEdge.TopTrailing to GradientEdge.BottomLeading,
-                        Colors.black,
-                        Colors.orange
-                    ), 4
+                    LinearGradient.edges { top.trailing to bottom.leading }
+                        .setColors(Colors.black, Colors.orange),
+                    4
                 )
             },
             Arc(225F, -270F) {
                 fill(
-                    LinearGradient(
-                        GradientEdge.Top to GradientEdge.BottomTrailing,
-                        intArrayOf(Colors.black, Colors.primary, Colors.accent, Colors.orange)
-                    )
+                    LinearGradient.edges { top to bottom.trailing }
+                        .setColors(Colors.black, Colors.primary, Colors.accent, Colors.orange)
                 )
             },
             RoundedRectangle(8) {
                 fill(
-                    LinearGradient(
-                        GradientEdge.Leading to GradientEdge.Trailing,
-                        listOf(
+                    LinearGradient.edges { leading to trailing }
+                        .setColors(
                             Colors.black to 0.1F,
                             Colors.primary to 0.5F,
                             Colors.accent to 0.6F,
                             Colors.orange to 1F
                         )
-                    )
                 )
             },
             Circle {
                 fill(
-                    LinearGradient(
-                        GradientEdge.Top to GradientEdge.Bottom,
-                        intArrayOf(
+                    LinearGradient.edges { top to bottom }
+                        .setColors(
                             Colors.orange,
                             Colors.black,
                             Colors.primary,
                             Colors.orange
                         )
-                    )
                 )
             }
         )
@@ -345,7 +334,7 @@ class AdaptUIShapeSample : SampleView() {
                             Colors.accent to 0.6F,
                             Colors.orange to 1F
                         ),
-                        edge = GradientEdge.Top
+                        edge = GradientEdge.top
                     )
                 )
             },
@@ -359,7 +348,7 @@ class AdaptUIShapeSample : SampleView() {
                             Colors.primary to 0.75F,
                             Colors.orange to 1F
                         ),
-                        GradientEdge.Leading
+                        GradientEdge.leading
                     )
                 )
             }
@@ -485,11 +474,11 @@ class AdaptUIShapeSample : SampleView() {
             .layout(FILL, 128)
             .background(RoundedRectangle(12) {
                 stroke(
-                    LinearGradient(
-                        GradientEdge.Leading to GradientEdge.Trailing,
-                        Colors.orange,
-                        Colors.primary
-                    ),
+                    LinearGradient.edges { leading to trailing }
+                        .setColors(
+                            Colors.orange,
+                            Colors.primary
+                        ),
                     width = 2,
 //                    dashWidth = 12
                 )
@@ -559,10 +548,8 @@ class AdaptUIShapeSample : SampleView() {
                         reference(ref::gradient)
 
                         fill(
-                            LinearGradient(
-                                GradientEdge.Top to GradientEdge.Bottom,
-                                Colors.accent, Colors.primary
-                            )
+                            LinearGradient.edges { top to bottom }
+                                .setColors(Colors.accent, Colors.primary)
                         )
                         size(height = 16, gravity = Gravity.bottom)
 
@@ -640,11 +627,8 @@ class AdaptUIShapeSample : SampleView() {
                     })
                     add(Arc(180F, 90F) {
                         fill(
-                            LinearGradient(
-                                GradientEdge.Top to GradientEdge.Bottom,
-                                Colors.accent,
-                                Colors.black
-                            )
+                            LinearGradient.edges { top to bottom }
+                                .setColors(Colors.accent, Colors.black)
                         )
                         translate(-5, -4)
                     })

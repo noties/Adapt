@@ -3,7 +3,6 @@ package io.noties.adapt.ui.shape
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Shader
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
@@ -44,7 +43,8 @@ class ShapeShaderCache_Test {
         val cache = Shape.ShaderCache()
         val rect = Rect(1, 2, 3, 4)
         val paint1 = mock(Paint::class.java)
-        val gradient = LinearGradient(GradientEdge.Bottom to GradientEdge.Trailing, 777, 123)
+        val gradient = LinearGradient.edges { bottom to trailing }
+            .setColors(777, 123)
 
         cache.shader(
             gradient,

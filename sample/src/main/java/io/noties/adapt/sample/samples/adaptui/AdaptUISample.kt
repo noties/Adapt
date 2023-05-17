@@ -3,12 +3,8 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PixelFormat
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +41,6 @@ import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.item.ElementItem
@@ -206,22 +201,16 @@ class AdaptUISample : SampleView() {
                     padding(16)
 
                     fill(
-                        LinearGradient(
-                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
-                            Color.YELLOW,
-                            Color.RED
-                        )
+                        LinearGradient.edges { top.leading to bottom.trailing }
+                            .setColors(Color.YELLOW, Color.RED)
                     )
 
                     // add copy of self to stroke with padding
                     add(copy {
                         fill(null)
                         stroke(
-                            LinearGradient(
-                                GradientEdge.Top to GradientEdge.Bottom,
-                                Color.MAGENTA,
-                                Color.BLUE
-                            ),
+                            LinearGradient.edges { top to bottom }
+                                .setColors(Color.MAGENTA, Color.BLUE),
                             4,
                             16
                         )
@@ -697,11 +686,8 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
                             translate(x = -16)
                         })
                         fill(
-                            LinearGradient(
-                                GradientEdge.TopLeading to GradientEdge.BottomTrailing,
-                                Color.CYAN,
-                                Color.GREEN
-                            )
+                            LinearGradient.edges { top.leading to bottom.trailing }
+                                .setColors(Color.CYAN, Color.GREEN)
                         )
                     })
                     .layoutMargin(16)

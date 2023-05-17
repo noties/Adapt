@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import io.noties.adapt.ui.gradient.Gradient
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
@@ -58,7 +57,8 @@ class Shape_Test {
                 Shape::fill,
                 Shape.Fill(
                     8765,
-                    LinearGradient(GradientEdge.Trailing to GradientEdge.Bottom, 87, 78)
+                    LinearGradient.edges { trailing to bottom }
+                        .setColors(87, 78)
                 )
             ),
             Input(

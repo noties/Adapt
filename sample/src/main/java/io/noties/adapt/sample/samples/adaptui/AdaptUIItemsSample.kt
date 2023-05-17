@@ -17,7 +17,6 @@ import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.scrollFillViewPort
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
@@ -106,11 +105,11 @@ class AdaptUIItemsSample : SampleView() {
                     // this rectangle is container for other children
                     //  but it too can have values specified
                     fill(
-                        LinearGradient(
-                            GradientEdge.TopLeading to GradientEdge.BottomTrailing,
-                            ColorUtils.setAlphaComponent(Colors.orange, 80),
-                            ColorUtils.setAlphaComponent(Colors.black, 80)
-                        )
+                        LinearGradient.edges { top.leading to bottom.trailing }
+                            .setColors(
+                                ColorUtils.setAlphaComponent(Colors.orange, 80),
+                                ColorUtils.setAlphaComponent(Colors.black, 80)
+                            )
                     )
                 })
         }

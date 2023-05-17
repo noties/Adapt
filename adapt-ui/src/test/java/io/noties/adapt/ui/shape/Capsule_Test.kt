@@ -47,8 +47,8 @@ class Capsule_Test {
             Rect(1000, 4)
         )
         for (input in inputs) {
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
-            val paint = io.noties.adapt.ui.testutil.mockt<Paint>()
+            val canvas = mockt<Canvas>()
+            val paint = mockt<Paint>()
             val capsule = Capsule()
             val radius = capsule.radius(input)
             capsule.drawShape(canvas, input, paint)

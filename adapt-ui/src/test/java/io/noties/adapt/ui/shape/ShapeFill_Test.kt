@@ -3,7 +3,6 @@ package io.noties.adapt.ui.shape
 import android.graphics.Color
 import android.graphics.Paint
 import io.noties.adapt.ui.gradient.Gradient
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.gradient.SweepGradient
@@ -30,7 +29,7 @@ import kotlin.math.roundToInt
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [io.noties.adapt.ui.testutil.ShadowPaint::class])
+@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], shadows = [ShadowPaint::class])
 class ShapeFill_Test {
 
     @Test
@@ -40,7 +39,8 @@ class ShapeFill_Test {
             Shape.Fill(0),
             Shape.Fill(
                 null,
-                LinearGradient(GradientEdge.Trailing to GradientEdge.BottomTrailing, 1, 7)
+                LinearGradient.edges { trailing to bottom.trailing }
+                    .setColors(1, 7)
             ),
             Shape.Fill(1234, SweepGradient(182, 12134))
         )
@@ -71,15 +71,13 @@ class ShapeFill_Test {
             Shape.Fill(1234567),
             Shape.Fill(
                 null,
-                LinearGradient(
-                    GradientEdge.BottomTrailing to GradientEdge.BottomTrailing,
-                    9999,
-                    888
-                )
+                LinearGradient.edges { bottom.trailing to bottom.trailing }
+                    .setColors(9999, 888)
             ),
             Shape.Fill(
                 456789,
-                LinearGradient(GradientEdge.BottomTrailing to GradientEdge.Bottom, 19999, 1888)
+                LinearGradient.edges { bottom.trailing to bottom }
+                    .setColors(19999, 1888)
             ),
         )
 

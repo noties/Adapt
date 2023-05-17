@@ -39,7 +39,7 @@ class Circle_Test {
             Gravity.trailing.bottom to Rect(80, 0, 100, 20),
         )
         for ((gravity, bounds) in inputs) {
-            val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
+            val canvas = mockt<Canvas>()
             val circle = Circle().also {
                 if (gravity != null) it.gravity(gravity)
             }
@@ -47,7 +47,7 @@ class Circle_Test {
             val r = circle.buildRect(rect, 10)
             assertEquals(gravity.toString(), bounds.toShortString(), r.toShortString())
 
-            circle.drawShape(canvas, rect, io.noties.adapt.ui.testutil.mockt())
+            circle.drawShape(canvas, rect, mockt())
             verify(canvas).drawCircle(
                 eq(bounds.centerX().toFloat()),
                 eq(bounds.centerY().toFloat()),

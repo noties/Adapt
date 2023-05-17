@@ -26,7 +26,6 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.focusable
-import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
@@ -99,11 +98,8 @@ class AdaptUIAccessibilitySample : SampleView() {
                         .background(Rectangle {
 //                            alpha(0.5F)
                             fill(
-                                LinearGradient(
-                                    GradientEdge.Top to GradientEdge.Bottom,
-                                    Colors.primary,
-                                    Colors.orange
-                                )
+                                LinearGradient.edges { top to bottom }
+                                    .setColors(Colors.primary, Colors.orange)
                             )
                         })
                 }
