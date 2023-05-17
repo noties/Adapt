@@ -1,7 +1,9 @@
 package io.noties.adapt.ui.gradient
 
+import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.Shader
+import io.noties.adapt.ui.shape.Dimension
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,6 +12,8 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.Implementation
 import org.robolectric.annotation.Implements
 import org.robolectric.shadow.api.Shadow
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 @RunWith(RobolectricTestRunner::class)
 @Config(
@@ -56,6 +60,7 @@ class RadialGradientTest {
         )
         Assert.assertNull(gradient.positions)
         Assert.assertNull(gradient.tileMode)
+        Assert.assertNull(gradient.radius)
     }
 
     @Test
@@ -69,6 +74,7 @@ class RadialGradientTest {
         )
         Assert.assertNull(gradient.positions)
         Assert.assertNull(gradient.tileMode)
+        Assert.assertNull(gradient.radius)
     }
 
     @Test
@@ -86,11 +92,12 @@ class RadialGradientTest {
             0.01F
         )
         Assert.assertNull(gradient.tileMode)
+        Assert.assertNull(gradient.radius)
     }
 
     @Test
-    fun radius() {
-        // takes min
+    fun `radius default`() {
+        // takes min dimension by default
         val inputs = listOf(
             1 to Rect(0, 0, 1, 999),
             2 to Rect(1, 1, 3, 4),
@@ -104,6 +111,36 @@ class RadialGradientTest {
                 RadialGradient.radius(rect)
             )
         }
+    }
+
+    @Test
+    fun `init - radius - default`() {
+        // by default is null
+        val gradient = RadialGradient.center()
+            .setColors(0, 0)
+        Assert.assertNull(gradient.radius)
+    }
+
+    @Test
+    fun `init - radius - exact`() {
+        Assert.assertEquals(1F, Resources.getSystem().displayMetrics.density)
+
+        val radius = 42
+        val gradient = RadialGradient.center()
+            .setColors(0, 0)
+            .setRadius(radius)
+
+        Assert.assertEquals(Dimension.Exact(radius), gradient.radius)
+    }
+
+    @Test
+    fun `init - radius - relative`() {
+        val radius = 0.42F
+        val gradient = RadialGradient.center()
+            .setColors(0, 0)
+            .setRadiusRelative(radius)
+
+        Assert.assertEquals(Dimension.Relative(radius), gradient.radius)
     }
 
     @Test
@@ -132,6 +169,8 @@ class RadialGradientTest {
 
     @Test
     fun `createShader - edge`() {
+        Assert.assertEquals(1F, Resources.getSystem().displayMetrics.density)
+
         val tileMode = Shader.TileMode.MIRROR
         val (colors, positions) = (0..4)
             .map { it }
@@ -140,18 +179,20 @@ class RadialGradientTest {
                 it to it.map { it / 4F }.toFloatArray()
             }
 
+        val radius = 42
         val bounds = Rect(1, 1, 99, 199)
         val edge = GradientEdge.bottom.leading
         val gradient = RadialGradient.edge(edge)
             .setColors(*colors.zip(positions.toList()).toTypedArray())
             .setTileMode(tileMode)
+            .setRadius(radius)
         val shadow = createShaderShadow(gradient, bounds)
 
         val point = Gradient.positionOfEdge(edge, bounds)
 
         Assert.assertEquals(point.x, shadow.centerX)
         Assert.assertEquals(point.y, shadow.centerY)
-        Assert.assertEquals(RadialGradient.radius(bounds).toFloat(), shadow.radius)
+        Assert.assertEquals(radius.toFloat(), shadow.radius)
         Assert.assertArrayEquals(
             colors,
             shadow.colors
@@ -169,14 +210,20 @@ class RadialGradientTest {
         val angle = 42F
         val (start, end) = 99 to -1
         val bounds = Rect(2, 3, 4, 5)
+        val radiusRelative = 0.42F
+
         val gradient = RadialGradient.angle(angle)
             .setColors(start, end)
+            .setRadiusRelative(radiusRelative)
+
         val (point, _) = Gradient.positionsOfAngle(angle, bounds)
         val shadow = createShaderShadow(gradient, bounds)
 
         Assert.assertEquals(point.x, shadow.centerX)
         Assert.assertEquals(point.y, shadow.centerY)
-        Assert.assertEquals(RadialGradient.radius(bounds).toFloat(), shadow.radius)
+
+        val expectedRadius = (min(bounds.width(), bounds.height()) * radiusRelative).roundToInt().toFloat()
+        Assert.assertEquals(expectedRadius, shadow.radius)
         Assert.assertArrayEquals(
             intArrayOf(start, end),
             shadow.colors

@@ -5,6 +5,8 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
+import io.noties.adapt.ui.shape.Dimension
 import kotlin.math.min
 
 /**
@@ -16,6 +18,7 @@ class RadialGradient internal constructor(
     internal val positions: FloatArray?
 ) : Gradient() {
 
+    internal var radius: Dimension? = null
     internal var tileMode: Shader.TileMode? = null
 
     companion object {
@@ -29,7 +32,22 @@ class RadialGradient internal constructor(
         @CheckResult
         fun angle(angle: Float) = Builder(Angle(angle))
 
+        // default radius
         internal fun radius(bounds: Rect) = min(bounds.width(), bounds.height())
+    }
+
+    /**
+     * Exact value in density independent pixels
+     */
+    fun setRadius(dip: Int) = this.also {
+        it.radius = Dimension.Exact(dip)
+    }
+
+    /**
+     * Uses smallest dimension (width/height) as the base
+     */
+    fun setRadiusRelative(@FloatRange(from = 0.0, to = 1.0) ratio: Float) = this.also {
+        it.radius = Dimension.Relative(ratio)
     }
 
     @CheckResult
@@ -51,7 +69,8 @@ class RadialGradient internal constructor(
             }
         }
 
-        val radius = radius(bounds).toFloat()
+        val radius =
+            (this.radius?.resolve(min(bounds.width(), bounds.height())) ?: radius(bounds)).toFloat()
 
         // radial can take _power_ argument to indicate the radius
         //  so, 0.5F is equal, 0.25F initial color takes 1/4th with second one taking the rest 0.75

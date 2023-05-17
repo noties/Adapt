@@ -17,7 +17,9 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
@@ -104,6 +106,19 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                     4
                 )
             })
+        },
+        "RG.center" to Rectangle {
+            fill(RadialGradient.center()
+                .setColors(Colors.accent, Colors.orange))
+        },
+        "RG.edge" to Rectangle {
+            fill(RadialGradient.edge(GradientEdge.top)
+                .setColors(Colors.orange, Colors.black))
+        },
+        "RG.angle" to Rectangle {
+            fill(RadialGradient.angle(250F)
+                .setColors(Colors.primary, Colors.yellow)
+                .setRadiusRelative(0.75F))
         }
     ).map { GradientItem(it.first, it.second) }
 
