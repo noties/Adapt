@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.explore
 
 import android.content.Context
 import android.view.View

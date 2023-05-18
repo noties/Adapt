@@ -1,7 +1,9 @@
 package io.noties.adapt.sample.samples.adaptui
 
-import android.view.MotionEvent
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.explore.DrawableState
+import io.noties.adapt.sample.explore.newDrawable2
+import io.noties.adapt.sample.explore.onDrawableStateChange
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -10,7 +12,6 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
-import io.noties.adapt.ui.foreground
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.noClip

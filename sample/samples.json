@@ -1,5 +1,17 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILinearGradientSample",
+    "id": "20230518004635",
+    "title": "UI, LinearGradient interactive",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "gradient",
+      "interactive",
+      "shape"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIGradientSample",
     "id": "20230517155636",
     "title": "UI, shape gradients",

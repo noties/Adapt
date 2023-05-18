@@ -330,26 +330,9 @@ abstract class Shape {
 
             stroke?.draw(canvas, this, drawRect)
 
-            val alpha = this.alpha
+            drawSelf(canvas, drawRect)
 
-            //noinspection NewApi
-            children.forEach {
-                val childAlpha = it.alpha
-                val childDrawAlpha = (childAlpha ?: 1F) * (alpha ?: 1F)
-
-                // do not draw the shape if alpha would be 0
-                if (childDrawAlpha > 0F) {
-                    // if child had paint with alpha, it will be cleared always (even if parent has no alpha)
-                    //  so, prioritize independent `alpha` usage, but prefill alpha value from color if it is supplied
-                    it.alpha = childDrawAlpha
-
-                    // draw the shape
-                    it.draw(canvas, drawRect)
-
-                    // restore initial value
-                    it.alpha = childAlpha
-                }
-            }
+            drawChildren(canvas, drawRect)
 
         } finally {
             canvas.restoreToCount(save)
@@ -357,6 +340,31 @@ abstract class Shape {
     }
 
     abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint)
+
+    protected open fun drawSelf(canvas: Canvas, bounds: Rect) = Unit
+
+    protected open fun drawChildren(canvas: Canvas, bounds: Rect) {
+        val alpha = this.alpha
+
+        //noinspection NewApi
+        children.forEach {
+            val childAlpha = it.alpha
+            val childDrawAlpha = (childAlpha ?: 1F) * (alpha ?: 1F)
+
+            // do not draw the shape if alpha would be 0
+            if (childDrawAlpha > 0F) {
+                // if child had paint with alpha, it will be cleared always (even if parent has no alpha)
+                //  so, prioritize independent `alpha` usage, but prefill alpha value from color if it is supplied
+                it.alpha = childDrawAlpha
+
+                // draw the shape
+                it.draw(canvas, drawRect)
+
+                // restore initial value
+                it.alpha = childAlpha
+            }
+        }
+    }
 
     fun outline(outline: Outline, bounds: Rect) {
 

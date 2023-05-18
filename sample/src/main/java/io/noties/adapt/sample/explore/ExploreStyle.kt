@@ -1,10 +1,11 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.explore
 
 import android.content.Context
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import io.noties.adapt.sample.samples.adaptui.Colors
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory

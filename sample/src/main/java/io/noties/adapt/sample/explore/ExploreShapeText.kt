@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.explore
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -28,7 +28,6 @@ object ExploreShapeText {
 
     // TODO: rename to something more nice
     // TODO: make setters (to align with other shapes configuration)
-    // TODO: text gradient?
     interface TextDataBase {
         data class TextShadow(
             val radius: Int,

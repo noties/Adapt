@@ -1,5 +1,6 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.explore
 
+import android.R
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.ColorFilter
@@ -23,12 +24,12 @@ import kotlin.reflect.KProperty
 @JvmInline
 value class DrawableState(@AttrRes val value: Int) {
     companion object {
-        val pressed = DrawableState(android.R.attr.state_pressed)
-        val focused = DrawableState(android.R.attr.state_focused)
-        val selected = DrawableState(android.R.attr.state_selected)
-        val enabled = DrawableState(android.R.attr.state_enabled)
-        val activated = DrawableState(android.R.attr.state_activated)
-        val checked = DrawableState(android.R.attr.state_checked)
+        val pressed = DrawableState(R.attr.state_pressed)
+        val focused = DrawableState(R.attr.state_focused)
+        val selected = DrawableState(R.attr.state_selected)
+        val enabled = DrawableState(R.attr.state_enabled)
+        val activated = DrawableState(R.attr.state_activated)
+        val checked = DrawableState(R.attr.state_checked)
     }
 
     operator fun plus(other: DrawableState): Set<DrawableState> {
