@@ -1,5 +1,6 @@
 package io.noties.adapt.sample.explore
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
@@ -41,10 +42,10 @@ object ExploreShapeText2 {
         var textRotation: Shape.Rotation?
         var textShadow: Shape.Shadow?
         var textMaxLines: Int?
+        var textEllipsize: TextUtils.TruncateAt?
         var textBreakStrategy: BreakStrategy?
         var textHyphenationFrequency: HyphenationFrequency?
         var textJustificationMode: JustificationMode?
-        var textEllipsize: TextUtils.TruncateAt?
         var textLineSpacingAdd: Int?
         var textLineSpacingMultiplier: Float?
 
@@ -84,11 +85,15 @@ object ExploreShapeText2 {
             offsetY: Int? = null
         ): TextDataBase
 
-        fun textMaxLines(textMaxLines: Int?): TextDataBase
+        /**
+         * Limits by lines resulting text.
+         * NB! in most of the cases for text to be properly limited `TruncateAt` should be specified,
+         * by default text shape would use `TruncateAt.END` if not specified explicitly
+         */
+        fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt? = null): TextDataBase
         fun textBreakStrategy(textBreakStrategy: BreakStrategy?): TextDataBase
         fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?): TextDataBase
         fun textJustificationMode(textJustificationMode: JustificationMode?): TextDataBase
-        fun textEllipsize(textEllipsize: TextUtils.TruncateAt?): TextDataBase
         fun textLineSpacingAdd(textLineSpacingAdd: Int?): TextDataBase
         fun textLineSpacingMultiplier(textLineSpacingMultiplier: Float?): TextDataBase
     }
@@ -109,10 +114,10 @@ object ExploreShapeText2 {
         override var textRotation: Shape.Rotation? = null,
         override var textShadow: Shape.Shadow? = null,
         override var textMaxLines: Int? = null,
+        override var textEllipsize: TextUtils.TruncateAt? = null,
         override var textBreakStrategy: BreakStrategy? = null,
         override var textHyphenationFrequency: HyphenationFrequency? = null,
         override var textJustificationMode: JustificationMode? = null,
-        override var textEllipsize: TextUtils.TruncateAt? = null,
         override var textLineSpacingAdd: Int? = null,
         override var textLineSpacingMultiplier: Float? = null,
     ): TextDataBase {
@@ -141,11 +146,13 @@ object ExploreShapeText2 {
                 offsetY?.let { p -> Dimension.Exact(p) }
             )
         }
-        override fun textMaxLines(textMaxLines: Int?) = this.also { it.textMaxLines = textMaxLines }
+        override fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt?) = this.also {
+            it.textMaxLines = textMaxLines
+            it.textEllipsize = textEllipsize
+        }
         override fun textBreakStrategy(textBreakStrategy: BreakStrategy?) = this.also { it.textBreakStrategy = textBreakStrategy }
         override fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?) = this.also { it.textHyphenationFrequency = textHyphenationFrequency }
         override fun textJustificationMode(textJustificationMode: JustificationMode?) = this.also { it.textJustificationMode = textJustificationMode }
-        override fun textEllipsize(textEllipsize: TextUtils.TruncateAt?) = this.also { it.textEllipsize = textEllipsize }
         override fun textLineSpacingAdd(textLineSpacingAdd: Int?) = this.also { it.textLineSpacingAdd = textLineSpacingAdd }
         override fun textLineSpacingMultiplier(textLineSpacingMultiplier: Float?) = this.also { it.textLineSpacingMultiplier = textLineSpacingMultiplier }
     }
@@ -208,7 +215,7 @@ object ExploreShapeText2 {
         internal class LayoutCache {
             private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
             private var layout: StaticLayout? = null
-            private val shaderCache = Shape.ShaderCache()
+            private val shaderCache = ShaderCache()
 
             private var previousTextData: TextData? = null
             private var previousWidth: Int = 0
@@ -359,6 +366,7 @@ object ExploreShapeText2 {
                 return layout
             }
 
+            @SuppressLint("RtlHardcoded")
             internal fun alignment(gravity: Gravity): Alignment {
                 val value = gravity.value and android.view.Gravity.HORIZONTAL_GRAVITY_MASK
                 return when (value) {

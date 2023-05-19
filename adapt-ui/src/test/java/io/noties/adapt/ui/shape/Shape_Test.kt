@@ -188,6 +188,21 @@ class Shape_Test {
     }
 
     @Test
+    fun `drawable - instance ref`() {
+        val inputs = shapes()
+        for (input in inputs) {
+            val ref = Any()
+            val drawable = input.newDrawable(ref)
+            Assert.assertEquals(
+                input::class.java.simpleName,
+                input,
+                drawable.shape
+            )
+            Assert.assertEquals(ref, drawable.ref)
+        }
+    }
+
+    @Test
     fun hidden() {
         for (shape in shapes()) {
             // by default `null` (which means false)
@@ -1222,7 +1237,7 @@ class Shape_Test {
         Oval(),
         Rectangle(),
         RoundedRectangle(17),
-        Arc(90F, 69F, true)
+        Arc(90F, 69F, true),
     )
 
     private fun <R : Any, T : Any?> R.assertEquals(expected: T, property: KProperty1<in R, T>) {

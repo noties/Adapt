@@ -172,7 +172,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
         add(ExploreShapeText2.Text {
             // accepts spannable content
             val text = kotlin.run {
-                val html = "<b>Some <i>another</i></b> <u>time</u><sup>234</sup>"
+                val html = "<b>Some <i>another</i></b> <u>time</u><sup><font color=red>234</font></sup>"
                 HtmlUtil.fromHtml(html)
             }
             text(text)

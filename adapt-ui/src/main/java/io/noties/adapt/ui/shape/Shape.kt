@@ -18,9 +18,6 @@ import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import kotlin.math.roundToInt
 
-// TODO: add a new method: .statful { base ->
-//  which receives this shape and allows creating a statful version
-//}
 abstract class Shape {
 
     companion object {
@@ -56,6 +53,9 @@ abstract class Shape {
      * Creates new drawable with this shape as root
      */
     fun newDrawable(): ShapeDrawableNoRef = ShapeDrawable(this)
+
+    fun <R : Any> newDrawable(ref: R) = ShapeDrawable(ref) { this }
+
 
     fun hidden(hidden: Boolean = true): Shape = this.also {
         it.hidden = hidden.takeIf { b -> b }
@@ -366,7 +366,7 @@ abstract class Shape {
         }
     }
 
-    fun outline(outline: Outline, bounds: Rect) {
+    open fun outline(outline: Outline, bounds: Rect) {
 
         if (true == hidden) {
             outline.setEmpty()
