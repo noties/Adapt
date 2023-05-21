@@ -123,6 +123,7 @@ class ViewFactory<out LP : LayoutParams>(
             context, viewGroup, layoutParams
         )
 
+        // TODO: a setting -> render on attached, why don't we have it this way in the first place for all?
         fun create(
             children: ViewFactory<LP>.(Unit) -> Unit
         ): View = create(Unit, children)

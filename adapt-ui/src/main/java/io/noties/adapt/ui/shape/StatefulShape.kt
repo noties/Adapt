@@ -2,6 +2,7 @@ package io.noties.adapt.ui.shape
 
 import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
+import io.noties.adapt.ui.state.DrawableState
 
 class StatefulShape {
 
@@ -13,13 +14,14 @@ class StatefulShape {
         }
     }
 
-    private val entries = mutableListOf<Pair<IntArray, Shape>>()
-    private var defaultEntry: Shape? = null
+    internal val entries = mutableMapOf<Set<DrawableState>, Shape>()
+    internal var defaultEntry: Shape? = null
 
     fun drawable(): StateListDrawable {
         val drawable = StateListDrawable()
-        entries.forEach {
-            drawable.addState(it.first, it.second.newDrawable())
+        entries.forEach { (key, value) ->
+            val states = key.map { it.value }.toIntArray()
+            drawable.addState(states, value.newDrawable())
         }
         // must be applied last... otherwise it will be used for all states
         defaultEntry?.also {
@@ -28,51 +30,49 @@ class StatefulShape {
         return drawable
     }
 
-    fun set(state: Int, shape: Shape): StatefulShape =
-        this.set(intArrayOf(state), shape)
+    @Deprecated(
+        "Use dedicated DrawableState",
+        replaceWith = ReplaceWith("set(DrawableState(state), shape)")
+    )
+    fun set(state: Int, shape: Shape) = set(DrawableState(state), shape)
 
-    fun set(state: IntArray, shape: Shape): StatefulShape =
-        this.also {
-            if (StateSet.isWildCard(state)) {
-                defaultEntry = shape
-            } else {
-                entries.add(state to shape)
-            }
+    @Deprecated("Use dedicated DrawableState")
+    fun set(state: IntArray, shape: Shape) = this.also {
+        val states = state.map { DrawableState(it) }.toSet()
+        set(states, shape)
+    }
+
+    fun set(set: Set<DrawableState>, shape: Shape) = this.also {
+        if (set.isEmpty() || set.first().value == 0) {
+            defaultEntry = shape
+        } else {
+            entries[set] = shape
         }
+    }
 
-    fun setPressed(shape: Shape): StatefulShape =
-        set(android.R.attr.state_pressed, shape)
+    fun set(set: Set<DrawableState>, block: () -> Shape) = set(set, block())
 
-    fun setEnabled(shape: Shape): StatefulShape =
-        set(android.R.attr.state_enabled, shape)
+    fun set(state: DrawableState, shape: Shape) = set(setOf(state), shape)
+    fun set(state: DrawableState, block: () -> Shape) = set(state, block())
 
-    fun setFocused(shape: Shape): StatefulShape =
-        set(android.R.attr.state_focused, shape)
+    fun setPressed(shape: Shape) = set(setOf(DrawableState.pressed), shape)
+    fun setPressed(block: () -> Shape) = setPressed(block())
 
-    fun setActivated(shape: Shape): StatefulShape =
-        set(android.R.attr.state_activated, shape)
+    fun setEnabled(shape: Shape) = set(setOf(DrawableState.enabled), shape)
+    fun setEnabled(block: () -> Shape) = setEnabled(block())
 
-    fun setSelected(shape: Shape): StatefulShape =
-        set(android.R.attr.state_selected, shape)
+    fun setFocused(shape: Shape) = set(setOf(DrawableState.focused), shape)
+    fun setFocused(block: () -> Shape) = setFocused(block())
 
-    fun setDefault(shape: Shape): StatefulShape =
-        set(StateSet.WILD_CARD, shape)
+    fun setActivated(shape: Shape) = set(setOf(DrawableState.activated), shape)
+    fun setActivated(block: () -> Shape) = setActivated(block())
 
-    // postpone for now, `default` would not be very pretty, plus it exposes getter, which is not good
-//    var pressed: Shape by StateProperty(android.R.attr.state_pressed)
-//
-//
-//    // I would have made getter private, but unfortunately it is not possible with Kotlin at the moment
-//    private class StateProperty(val state: Int) : ReadWriteProperty<StatefulShape, Shape> {
-//        // strictly speaking there should not be getter
-//        override fun getValue(thisRef: StatefulShape, property: KProperty<*>): Shape {
-//            return thisRef.entries.firstOrNull {
-//                it.first.size == 1 && it.first[0] == state
-//            }?.second ?: error()
-//        }
-//
-//        override fun setValue(thisRef: StatefulShape, property: KProperty<*>, value: Shape) {
-//            thisRef.set(state, value)
-//        }
-//    }
+    fun setSelected(shape: Shape) = set(setOf(DrawableState.selected), shape)
+    fun setSelected(block: () -> Shape) = setSelected(block())
+
+    fun setChecked(shape: Shape) = set(setOf(DrawableState.checked), shape)
+    fun setChecked(block: () -> Shape) = setChecked(block())
+
+    fun setDefault(shape: Shape) = set(setOf(), shape)
+    fun setDefault(block: () -> Shape) = setDefault(block())
 }

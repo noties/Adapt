@@ -1,5 +1,65 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2Sample",
+    "id": "20230520123338",
+    "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element #2",
+    "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1Sample",
+    "id": "20230520122012",
+    "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element",
+    "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReferenceSample",
+    "id": "20230520013122",
+    "title": "[Showcase] AdaptUI reference elements",
+    "description": "Access to created elements as regular objects",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlowSample",
+    "id": "20230520005529",
+    "title": "[Showcase] AdaptUI control flow",
+    "description": "\u003cem\u003eFor loop\u003c/em\u003e, \u003cem\u003eforEach\u003c/em\u003e, \u003cem\u003eif-else\u003c/em\u003e, \u003cem\u003ewhile\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2Sample",
+    "id": "20230520002917",
+    "title": "[Showcase] AdaptUI basic2",
+    "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVScroll\u003c/em\u003e, \u003cem\u003eHScroll\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1Sample",
+    "id": "20230519160703",
+    "title": "[Showcase] AdaptUI basic",
+    "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVStack\u003c/em\u003e, \u003cem\u003eHStack\u003c/em\u003e, \u003cem\u003eZStack\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILinearGradientSample",
     "id": "20230518004635",
     "title": "UI, LinearGradient interactive",

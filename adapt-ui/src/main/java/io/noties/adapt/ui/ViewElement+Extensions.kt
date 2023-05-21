@@ -576,3 +576,14 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayout(
     }
 }
 
+/**
+ * Utility function that returns this element in order to to indent after an element group:
+ * ```
+ * VStack {
+ *   Text()
+ * }.indent()
+ *   .layoutFill()
+ * ```
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.indent() = this
+
