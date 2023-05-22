@@ -14,40 +14,25 @@ class StatefulShape {
         }
     }
 
-    internal val entries = mutableMapOf<Set<DrawableState>, Shape>()
-    internal var defaultEntry: Shape? = null
-
     fun drawable(): StateListDrawable {
         val drawable = StateListDrawable()
-        entries.forEach { (key, value) ->
-            val states = key.map { it.value }.toIntArray()
-            drawable.addState(states, value.newDrawable())
-        }
-        // must be applied last... otherwise it will be used for all states
-        defaultEntry?.also {
-            drawable.addState(StateSet.WILD_CARD, it.newDrawable())
-        }
+        entries
+            .toList()
+            // wild_card must be applied last... otherwise it will be used for all states
+            .sortedByDescending { it.first.size }
+            .forEach { (key, value) ->
+                val states = if (key.isEmpty()) {
+                    StateSet.WILD_CARD
+                } else {
+                    key.map { it.value }.toIntArray()
+                }
+                drawable.addState(states, value.newDrawable())
+            }
         return drawable
     }
 
-    @Deprecated(
-        "Use dedicated DrawableState",
-        replaceWith = ReplaceWith("set(DrawableState(state), shape)")
-    )
-    fun set(state: Int, shape: Shape) = set(DrawableState(state), shape)
-
-    @Deprecated("Use dedicated DrawableState")
-    fun set(state: IntArray, shape: Shape) = this.also {
-        val states = state.map { DrawableState(it) }.toSet()
-        set(states, shape)
-    }
-
     fun set(set: Set<DrawableState>, shape: Shape) = this.also {
-        if (set.isEmpty() || set.first().value == 0) {
-            defaultEntry = shape
-        } else {
-            entries[set] = shape
-        }
+        entries[set] = shape
     }
 
     fun set(set: Set<DrawableState>, block: () -> Shape) = set(set, block())
@@ -75,4 +60,22 @@ class StatefulShape {
 
     fun setDefault(shape: Shape) = set(setOf(), shape)
     fun setDefault(block: () -> Shape) = setDefault(block())
+
+    @Deprecated(
+        "Use dedicated DrawableState",
+        replaceWith = ReplaceWith("set(DrawableState(state), shape)")
+    )
+    fun set(state: Int, shape: Shape) = set(DrawableState(state), shape)
+
+    @Deprecated("Use dedicated DrawableState")
+    fun set(state: IntArray, shape: Shape) = this.also {
+        val states = if (StateSet.isWildCard(state)) {
+            emptySet()
+        } else {
+            state.map { DrawableState(it) }.toSet()
+        }
+        set(states, shape)
+    }
+
+    internal val entries = mutableMapOf<Set<DrawableState>, Shape>()
 }

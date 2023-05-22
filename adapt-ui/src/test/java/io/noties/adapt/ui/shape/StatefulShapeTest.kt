@@ -1,5 +1,7 @@
 package io.noties.adapt.ui.shape
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
 import io.noties.adapt.ui.state.DrawableState
 import io.noties.adapt.ui.state.DrawableStateSet
@@ -9,6 +11,9 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.Implementation
+import org.robolectric.annotation.Implements
+import org.robolectric.shadow.api.Shadow
 
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
@@ -28,8 +33,12 @@ class StatefulShapeTest {
         for (input in inputs) {
             val stateful = StatefulShape()
             input.invoke(stateful)
-            Assert.assertEquals(0, stateful.entries.size)
-            Assert.assertEquals(shape, stateful.defaultEntry)
+            Assert.assertEquals(1, stateful.entries.size)
+            assertFirstEntry(
+                emptySet(),
+                shape,
+                stateful
+            )
         }
     }
 
@@ -50,23 +59,17 @@ class StatefulShapeTest {
         for (input in inputs) {
             val stateful = StatefulShape()
             Assert.assertEquals(0, stateful.entries.size)
-            Assert.assertNull(stateful.defaultEntry)
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -88,19 +91,14 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -122,19 +120,14 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -156,19 +149,14 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -190,19 +178,14 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -224,19 +207,14 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(setOf(state), entry.key)
-            Assert.assertEquals(shape, entry.value)
-            Assert.assertNull(stateful.defaultEntry)
+            assertFirstEntry(setOf(state), shape, stateful)
         }
 
         val stateful = StatefulShape().also { s ->
             inputs.forEach { it.invoke(s) }
         }
         Assert.assertEquals(1, stateful.entries.size)
-        val (k, v) = stateful.entries.entries.first()
-        Assert.assertEquals(setOf(state), k)
-        Assert.assertEquals(shape, v)
+        assertFirstEntry(setOf(state), shape, stateful)
     }
 
     @Test
@@ -254,9 +232,7 @@ class StatefulShapeTest {
             input.invoke(stateful)
 
             Assert.assertEquals(1, stateful.entries.size)
-            val entry = stateful.entries.entries.first()
-            Assert.assertEquals(set, entry.key)
-            Assert.assertEquals(shape, entry.value)
+            assertFirstEntry(set, shape, stateful)
         }
     }
 
@@ -277,9 +253,7 @@ class StatefulShapeTest {
             }
         }
 
-        // -1, as default is store independently
-        Assert.assertEquals(expected.size - 1, stateful.entries.size)
-        Assert.assertEquals(defaultShape, stateful.defaultEntry)
+        Assert.assertEquals(expected.size, stateful.entries.size)
 
         val drawable = stateful.drawable()
         val shadow = Shadows.shadowOf(drawable)
@@ -299,6 +273,77 @@ class StatefulShapeTest {
                 k.map { it.value }.toIntArray()
             }
             assertShape(v, state)
+        }
+    }
+
+    @Test
+    @Config(shadows = [StateListDrawableShadow2::class])
+    fun sorted() {
+        // entries are sorted based on number of states, with WILDCARD always the last
+
+        val wildcard = Rectangle()
+
+        val inputs = listOf(
+            setOf(DrawableState.pressed) to Oval(),
+            emptySet<DrawableState>() to wildcard,
+            DrawableState.focused + DrawableState.activated to Circle()
+        )
+
+        val stateful = StatefulShape.drawable {
+            for ((set, shape) in inputs) {
+                set(set, shape)
+            }
+        }
+
+        val shadow = StateListDrawableShadow2.extract(stateful)
+        val expected = inputs
+            .map {
+                val k = if (it.first.isEmpty()) {
+                    StateSet.WILD_CARD
+                } else {
+                    it.first.map { it.value }.toIntArray()
+                }
+                k to it.second
+            }
+            .sortedByDescending { it.first.size }
+        Assert.assertEquals(StateSet.WILD_CARD to wildcard, expected.last())
+
+        for ((i, entry) in expected.withIndex()) {
+            val (state, shape) = entry
+
+            val (stateEntry, drawable) = shadow.states[i]
+            Assert.assertArrayEquals(state, stateEntry)
+            require(drawable is ShapeDrawable<*>) {
+                "drawable must be of ShapeDrawable type, drawable:$drawable"
+            }
+            Assert.assertEquals(shape, drawable.shape)
+        }
+    }
+
+    private fun assertFirstEntry(
+        set: Set<DrawableState>,
+        shape: Shape,
+        statefulShape: StatefulShape
+    ) {
+        val (key, value) = statefulShape.entries.entries.first()
+        Assert.assertEquals(set, key)
+        Assert.assertEquals(shape, value)
+    }
+
+    @Implements(StateListDrawable::class)
+    class StateListDrawableShadow2 {
+
+        companion object {
+            fun extract(shadow: Any): StateListDrawableShadow2 {
+                return Shadow.extract(shadow) as StateListDrawableShadow2
+            }
+        }
+
+        val states = mutableListOf<Pair<IntArray, Drawable>>()
+
+        @Implementation
+        fun addState(stateSet: IntArray, drawable: Drawable) {
+            states.add(stateSet to drawable)
         }
     }
 }
