@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CheckResult
-import io.noties.adapt.sample.samples.adaptui.TextStyles.textStylePrimary
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -151,7 +150,7 @@ class ExploreAdaptUIBinding {
         ViewFactory.createView(context) {
             Text()
                 .layout(FILL, WRAP)
-                .textStylePrimary()
+//                .textStylePrimary()
                 .bind(color) {
                     Debug.i("color:$it")
                     background(it)

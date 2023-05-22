@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyleSample",
+    "id": "20230522113544",
+    "title": "[Showcase] AdaptUI, element style",
+    "description": "Combine common styles to be reused",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2Sample",
     "id": "20230520123338",
     "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element #2",

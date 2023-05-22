@@ -8,9 +8,9 @@ import android.widget.TextView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.TextStyles.heyHey
-import io.noties.adapt.sample.samples.adaptui.TextStyles.heyHo
-import io.noties.adapt.sample.samples.adaptui.TextStyles.textStylePrimary
+import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHey
+import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHo
+import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.textStylePrimary
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -55,46 +55,46 @@ class AdaptUIExtensionsSample : SampleView() {
             }
         }
     }
-}
 
-object TextStyles {
+    object TextStyles {
 
-    // becomes available to all subclasses of TextView with any LayoutParams
-    fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStylePrimary() = this
-        .textSize(16)
-        .textColor(Colors.primary)
-        .textGravity(Gravity.top)
-        .textFont(fontStyle = Typeface.BOLD)
+        // becomes available to all subclasses of TextView with any LayoutParams
+        fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStylePrimary() = this
+            .textSize(16)
+            .textColor(Colors.primary)
+            .textGravity(Gravity.top)
+            .textFont(fontStyle = Typeface.BOLD)
 
-    // becomes available to only TextView elements (no subclasses would be allowed,
-    //  no AppCompatTextView, EditText, no Button, no CheckBox, etc)
-    fun <LP : LayoutParams> ViewElement<TextView, LP>.textStyleSecondary() = this
-        .textSize(17)
-        .textColor(Colors.primary)
+        // becomes available to only TextView elements (no subclasses would be allowed,
+        //  no AppCompatTextView, EditText, no Button, no CheckBox, etc)
+        fun <LP : LayoutParams> ViewElement<TextView, LP>.textStyleSecondary() = this
+            .textSize(17)
+            .textColor(Colors.primary)
 
-    // becomes available to only TextView inside a LinearLayout
-    fun <LP : LinearLayout.LayoutParams> ViewElement<TextView, LP>.textStyleAdditional() = this
-        .textColor(Colors.primary)
-        .textGravity(Gravity.center)
-        .layoutWeight(1F)
+        // becomes available to only TextView inside a LinearLayout
+        fun <LP : LinearLayout.LayoutParams> ViewElement<TextView, LP>.textStyleAdditional() = this
+            .textColor(Colors.primary)
+            .textGravity(Gravity.center)
+            .layoutWeight(1F)
 
-    // LP in most cases could be omitted if further customization is not required
-    // Extension also does not need to return ViewElement, but in this case
-    //  no further calls for customization would be available
-    fun ViewElement<*, *>.heyHey() {
-        background(Colors.primary)
-        padding(48)
+        // LP in most cases could be omitted if further customization is not required
+        // Extension also does not need to return ViewElement, but in this case
+        //  no further calls for customization would be available
+        fun ViewElement<*, *>.heyHey() {
+            background(Colors.primary)
+            padding(48)
+        }
+
+        /*
+        VStack {
+          Text()
+            .heyHey() // it is called here, but does not return anything, so nothing can called after it
+        }
+         */
+
+        // it is possible to return this, but this would have types erased and thus
+        //  type information missing
+        fun ViewElement<*, *>.heyHo() = this
+            .background(Colors.accent)
     }
-
-    /*
-    VStack {
-      Text()
-        .heyHey() // it is called here, but does not return anything, so nothing can called after it
-    }
-     */
-
-    // it is possible to return this, but this would have types erased and thus
-    //  type information missing
-    fun ViewElement<*, *>.heyHo() = this
-        .background(Colors.accent)
 }
