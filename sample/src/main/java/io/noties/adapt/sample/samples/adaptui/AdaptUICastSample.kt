@@ -176,13 +176,13 @@ class AdaptUICastSample : SampleView() {
                 .onClick {
                     // because we have exited the render callback, we need to explicitly call it
                     if (isIf) {
-                        element.ifCastView(CheckBox::class.java) {
+                        element.ifCastView(CheckBox::class) {
                             it.checked(true)
                                 .layout(FILL, 128)
                                 .background(Colors.orange)
                         }.render()
                     } else {
-                        element.castView(CheckBox::class.java)
+                        element.castView(CheckBox::class)
                             .checked(true)
                             .layout(FILL, 128)
                             .background(Colors.orange)
@@ -218,13 +218,13 @@ class AdaptUICastSample : SampleView() {
             Button("Cast")
                 .onClick {
                     if (isIf) {
-                        element.ifCastLayout(LinearLayout.LayoutParams::class.java) {
+                        element.ifCastLayout(LinearLayout.LayoutParams::class) {
                             it.background(Colors.orange)
                                 .layout(FILL, 128)
 
                         }.render()
                     } else {
-                        element.castLayout(LinearLayout.LayoutParams::class.java)
+                        element.castLayout(LinearLayout.LayoutParams::class)
                             .background(Colors.orange)
                             .layout(FILL, 128)
                             .render()

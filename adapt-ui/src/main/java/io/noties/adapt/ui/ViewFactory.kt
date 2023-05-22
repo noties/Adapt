@@ -2,6 +2,7 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
+import android.view.View.OnAttachStateChangeListener
 import android.view.ViewGroup
 
 typealias LayoutParams = ViewGroup.LayoutParams
@@ -9,7 +10,7 @@ typealias LayoutParams = ViewGroup.LayoutParams
 class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null
-): ViewFactoryConstants {
+) : ViewFactoryConstants {
     constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
 
     private val _viewGroup: ViewGroup? = viewGroup
@@ -102,7 +103,11 @@ class ViewFactory<out LP : LayoutParams>(
     class ViewCreator<LP : LayoutParams> internal constructor(
         val context: Context,
         val viewGroup: ViewGroup?,
-        val layoutParams: LP
+        val layoutParams: LP,
+        // can request to render on first attach, this is helpful when inside adapter context
+        //  and initially view is assigned default layoutParameters, not the ones that parent would
+        //  use
+        val renderOnAttach: Boolean = false
     ) {
 
         companion object {
@@ -123,7 +128,10 @@ class ViewFactory<out LP : LayoutParams>(
             context, viewGroup, layoutParams
         )
 
-        // TODO: a setting -> render on attached, why don't we have it this way in the first place for all?
+        fun renderOnAttach(): ViewCreator<LP> = ViewCreator(
+            context, viewGroup, layoutParams, true
+        )
+
         fun create(
             children: ViewFactory<LP>.(Unit) -> Unit
         ): View = create(Unit, children)
@@ -150,7 +158,20 @@ class ViewFactory<out LP : LayoutParams>(
 
             view.layoutParams = layoutParams
 
-            root.render()
+            if (renderOnAttach) {
+                // we assume that layout params would be already processed by parent
+                view.addOnAttachStateChangeListener(object : OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(v: View?) {
+                        view.removeOnAttachStateChangeListener(this)
+                        root.render()
+                    }
+
+                    override fun onViewDetachedFromWindow(v: View?) = Unit
+                })
+            } else {
+                // trigger render now
+                root.render()
+            }
 
             return view
         }

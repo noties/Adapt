@@ -42,14 +42,14 @@ class ViewElement_ExtensionsCast_Test {
 
         // success
         try {
-            element.castView(CheckBox::class.java)
+            element.castView(CheckBox::class)
         } catch (t: AdaptClassCastException) {
             fail(t.message)
         }
 
         // failure
         try {
-            element.castView(EditText::class.java)
+            element.castView(EditText::class)
             fail()
         } catch (t: AdaptClassCastException) {
             val message = t.message!!
@@ -71,10 +71,10 @@ class ViewElement_ExtensionsCast_Test {
         assertFalse(success.isInitialized)
         assertFalse(failure.isInitialized)
 
-        success.castView(CheckBox::class.java)
+        success.castView(CheckBox::class)
             .checked(true)
 
-        failure.castView(EditText::class.java)
+        failure.castView(EditText::class)
 
         success.init(RuntimeEnvironment.getApplication())
         failure.init(RuntimeEnvironment.getApplication())
@@ -110,7 +110,7 @@ class ViewElement_ExtensionsCast_Test {
         assertFalse(element.isInitialized)
 
         // success
-        element.ifCastView(CheckBox::class.java) {
+        element.ifCastView(CheckBox::class) {
             it.checked(true)
         }
 
@@ -138,7 +138,7 @@ class ViewElement_ExtensionsCast_Test {
         }
         assertFalse(element.isInitialized)
 
-        element.ifCastView(EditText::class.java) {
+        element.ifCastView(EditText::class) {
             it.background(12)
         }
 
@@ -171,14 +171,14 @@ class ViewElement_ExtensionsCast_Test {
 
         // success
         try {
-            element.castLayout(FrameLayout.LayoutParams::class.java)
+            element.castLayout(FrameLayout.LayoutParams::class)
         } catch (t: AdaptClassCastException) {
             fail(t.message)
         }
 
         // failure
         try {
-            element.castLayout(LinearLayout.LayoutParams::class.java)
+            element.castLayout(LinearLayout.LayoutParams::class)
             fail()
         } catch (t: AdaptClassCastException) {
             val message = t.message!!
@@ -200,11 +200,11 @@ class ViewElement_ExtensionsCast_Test {
         assertFalse(success.isInitialized)
         assertFalse(failure.isInitialized)
 
-        success.castLayout(FrameLayout.LayoutParams::class.java)
+        success.castLayout(FrameLayout.LayoutParams::class)
             .layoutGravity(Gravity.bottom)
 
 
-        failure.castLayout(LinearLayout.LayoutParams::class.java)
+        failure.castLayout(LinearLayout.LayoutParams::class)
             .layoutWeight(3F)
 
         success.init(RuntimeEnvironment.getApplication())
@@ -245,7 +245,7 @@ class ViewElement_ExtensionsCast_Test {
         assertFalse(element.isInitialized)
 
         // success
-        element.ifCastLayout(FrameLayout.LayoutParams::class.java) {
+        element.ifCastLayout(FrameLayout.LayoutParams::class) {
             it.layoutGravity(Gravity.bottom)
         }
 
@@ -284,7 +284,7 @@ class ViewElement_ExtensionsCast_Test {
         }
         assertFalse(element.isInitialized)
 
-        element.ifCastLayout(LinearLayout.LayoutParams::class.java) {
+        element.ifCastLayout(LinearLayout.LayoutParams::class) {
             it.layoutWeight(2F)
         }
 

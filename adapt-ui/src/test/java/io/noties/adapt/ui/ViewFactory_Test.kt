@@ -1,6 +1,7 @@
 package io.noties.adapt.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -12,6 +13,7 @@ import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
+import io.noties.adapt.ui.testutil.assertDensity
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert
 import org.junit.Assert.assertEquals
@@ -23,8 +25,13 @@ import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -33,7 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("ClassName")
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK], qualifiers = "xxhdpi")
+@Config(manifest = Config.NONE, sdk = [Config.TARGET_SDK])
 class ViewFactory_Test {
 
     private lateinit var context: Context
@@ -49,7 +56,7 @@ class ViewFactory_Test {
             ViewFactory.createView(context) {
                 // no calls
             }
-            Assert.fail()
+            fail()
         } catch (t: Throwable) {
             assertEquals(
                 "Unexpected state, view must contain exactly one root element",
@@ -65,7 +72,7 @@ class ViewFactory_Test {
                 Text()
                 Text()
             }
-            Assert.fail()
+            fail()
         } catch (t: Throwable) {
             assertEquals(
                 "Unexpected state, view must contain exactly one root element",
@@ -131,7 +138,7 @@ class ViewFactory_Test {
     fun `init - no viewGroup`() {
         // when no viewgroup is specified (null)
         val factory = ViewFactory<LayoutParams>(
-            io.noties.adapt.ui.testutil.mockt(),
+            mockt(),
             null
         )
 
@@ -145,8 +152,8 @@ class ViewFactory_Test {
     @Test
     fun init() {
         val factory = ViewFactory<LayoutParams>(
-            io.noties.adapt.ui.testutil.mockt(),
-            io.noties.adapt.ui.testutil.mockt()
+            mockt(),
+            mockt()
         )
         assertTrue(factory.hasViewGroup)
 
@@ -156,7 +163,7 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - default LP`() {
-        val viewGroup: ViewGroup = io.noties.adapt.ui.testutil.mockt {
+        val viewGroup: ViewGroup = mockt {
             on { context } doReturn RuntimeEnvironment.getApplication()
         }
         val creator = ViewFactory.newView(viewGroup)
@@ -174,7 +181,7 @@ class ViewFactory_Test {
 
     @Test
     fun `viewCreator - layoutParams`() {
-        val viewGroup: ViewGroup = io.noties.adapt.ui.testutil.mockt {
+        val viewGroup: ViewGroup = mockt {
             on { context } doReturn RuntimeEnvironment.getApplication()
         }
 
@@ -185,6 +192,51 @@ class ViewFactory_Test {
             .create { View() }
 
         assertLayoutParams(lp(), view.layoutParams)
+    }
+
+    @Test
+    fun `viewCreator - renderOnAttach`() {
+        assertDensity(1F)
+
+        val viewGroup: ViewGroup = mockt {
+            on { context } doReturn RuntimeEnvironment.getApplication()
+        }
+
+        val background = Color.RED
+        val padding = 101
+
+        val element = newElement()
+            .background(background)
+            .padding(padding)
+
+        val lp = FrameLayout.LayoutParams(123, LayoutParams.MATCH_PARENT)
+
+        val view = ViewFactory.newView(viewGroup)
+            .layoutParams(lp)
+            .renderOnAttach()
+            .create { element.also { add(it) } }
+
+        // layout params are still set
+        verify(view).layoutParams = eq(lp)
+
+        // not not configuration happens now
+        verify(view, never()).setBackgroundColor(any())
+        verify(view, never()).setPadding(any(), any(), any(), any())
+
+        // now, an attach listener will be registered
+        val listener = kotlin.run {
+            val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
+            verify(view).addOnAttachStateChangeListener(captor.capture())
+            captor.value
+        }
+
+        assertNotNull(listener)
+
+        listener.onViewAttachedToWindow(element.view)
+
+        // now render should be triggered
+        verify(view).setBackgroundColor(eq(background))
+        verify(view).setPaddingRelative(eq(padding), eq(padding), eq(padding), eq(padding))
     }
 
     @Test

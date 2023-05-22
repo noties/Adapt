@@ -23,6 +23,10 @@ abstract class ElementItem<R : Any>(
         val ref: R = refFactory()
         val view = ViewFactory.newView(parent)
             .layoutParams(createLayoutParams(parent))
+            // NB! we might create layout-params, but they might not be the ones that
+            //  parent uses, but we could have some customization rely on certain layouts,
+            //  this is why it is better to postpone rendering until view is properly attached
+            .renderOnAttach()
             .create(ref) { body(it) }
         return Holder(view, ref)
     }
