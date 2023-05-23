@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import io.noties.adapt.Item
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
@@ -26,9 +25,10 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Arc
-import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.CornersShape
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.ZStackSquare
@@ -61,14 +61,14 @@ class AdaptUIGradientSample : AdaptUISampleView() {
     }
 
     private fun items(): List<Item<*>> = listOf(
-        "LG.edges(t-b)" to Rectangle {
+        "LG.edges(t-b)" to RectangleShape {
             fill(LinearGradient.edges { top to bottom }.setColors(Colors.orange, Colors.primary))
         },
-        "LG.angle(229)" to RoundedRectangle(8) {
+        "LG.angle(229)" to RoundedRectangleShape(8) {
             padding(8)
             fill(LinearGradient.angle(229F).setColors(Colors.orange, Colors.primary))
         },
-        "LG.edges+positions" to Corners {
+        "LG.edges+positions" to CornersShape {
             corners(4, 8, 16, 32)
             padding(2)
             val gradient = LinearGradient.edges { leading to trailing }
@@ -80,7 +80,7 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                 )
             fill(gradient)
         },
-        "LG.stroke" to Rectangle {
+        "LG.stroke" to RectangleShape {
             padding(4)
             add(RoundedRectangle(8) {
                 padding(4)
@@ -96,7 +96,7 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                 })
             })
         },
-        "LG.stroke+dash" to Rectangle {
+        "LG.stroke+dash" to RectangleShape {
             padding(4)
             add(RoundedRectangle(12) {
                 padding(4)
@@ -108,28 +108,36 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                 )
             })
         },
-        "RG.center" to Rectangle {
-            fill(RadialGradient.center()
-                .setColors(Colors.accent, Colors.orange))
+        "RG.center" to RectangleShape {
+            fill(
+                RadialGradient.center()
+                    .setColors(Colors.accent, Colors.orange)
+            )
         },
-        "RG.edge" to Rectangle {
-            fill(RadialGradient.edge(GradientEdge.top)
-                .setColors(Colors.orange, Colors.black))
+        "RG.edge" to RectangleShape {
+            fill(
+                RadialGradient.edge(GradientEdge.top)
+                    .setColors(Colors.orange, Colors.black)
+            )
         },
-        "RG.angle" to Rectangle {
-            fill(RadialGradient.angle(250F)
-                .setColors(Colors.primary, Colors.yellow)
-                .setRadiusRelative(0.75F))
+        "RG.angle" to RectangleShape {
+            fill(
+                RadialGradient.angle(250F)
+                    .setColors(Colors.primary, Colors.yellow)
+                    .setRadiusRelative(0.75F)
+            )
         },
-        "SG" to Rectangle {
+        "SG" to RectangleShape {
             fill(SweepGradient.center().setColors(Colors.orange, Colors.accent))
         },
-        "SG-edge" to Rectangle {
+        "SG-edge" to RectangleShape {
             fill(SweepGradient.edge(GradientEdge.top).setColors(Colors.yellow, Colors.primary))
         },
-        "SG-angle" to Rectangle {
-            fill(SweepGradient.angle(25F)
-                .setColors(Colors.orange, Colors.accent))
+        "SG-angle" to RectangleShape {
+            fill(
+                SweepGradient.angle(25F)
+                    .setColors(Colors.orange, Colors.accent)
+            )
         }
     ).map { GradientItem(it.first, it.second) }
 

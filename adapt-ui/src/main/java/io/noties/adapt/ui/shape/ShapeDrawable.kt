@@ -4,32 +4,40 @@ import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.Outline
 import android.graphics.PixelFormat
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import io.noties.adapt.ui.state.DrawableState
 import io.noties.adapt.ui.state.DrawableStateSet
 import kotlin.math.roundToInt
 
-typealias ShapeDrawableNoRef = ShapeDrawable<Unit>
-
-open class ShapeDrawable<R : Any> private constructor(
+open class ShapeDrawable<R : Any>(
     val shape: Shape,
     val ref: R
 ) : Drawable() {
 
     companion object {
 
+        operator fun invoke(shape: Shape) = ShapeDrawable(shape, Unit)
+
         operator fun invoke(
-            shape: Shape
-        ): ShapeDrawableNoRef = ShapeDrawable(shape, Unit)
+            builder: ShapeFactoryBuilder
+        ) = ShapeDrawable(builder(ShapeFactory.NoOp), Unit)
 
-        operator fun <S : Shape> invoke(block: () -> S) = ShapeDrawable(Unit) { block() }
-
-        operator fun <S : Shape, R : Any> invoke(ref: R, block: (R) -> S): ShapeDrawable<R> {
-            return ShapeDrawable(block(ref), ref)
-        }
+        operator fun <R : Any> invoke(
+            ref: R,
+            builder: ShapeFactoryRefBuilder<R>
+        ) = ShapeDrawable(
+            builder(ShapeFactory.NoOp, ref),
+            ref
+        )
     }
 
     private var stateful: Stateful<R>? = null
+
+    override fun onBoundsChange(bounds: Rect?) {
+        super.onBoundsChange(bounds)
+        invalidateSelf()
+    }
 
     override fun draw(canvas: Canvas) {
         shape.draw(canvas, bounds)
@@ -57,6 +65,7 @@ open class ShapeDrawable<R : Any> private constructor(
 
     override fun setAlpha(alpha: Int) {
         shape.alpha(alpha / 255F)
+        invalidateSelf()
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) = Unit
@@ -68,12 +77,12 @@ open class ShapeDrawable<R : Any> private constructor(
         shape.outline(outline, bounds)
     }
 
-    fun invalidate(block: (R) -> Unit) {
-        block(ref)
+    fun invalidate(block: ShapeDrawable<R>.(R) -> Unit) {
+        block(this, ref)
         invalidateSelf()
     }
 
-    fun setStateless() = this.also {
+    fun clearStateful() = this.also {
         it.stateful = null
         invalidateSelf()
     }

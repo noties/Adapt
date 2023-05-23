@@ -35,9 +35,9 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.pager.AdaptPagerWrapContent
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
-import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.CircleShape
+import io.noties.adapt.ui.shape.CornersShape
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
@@ -76,7 +76,7 @@ class ViewPagerSample : SampleView() {
                 Text("Wrap height")
 
                 AdaptPagerWrapContent()
-                    .pagerOnPageChangedListener(object: ViewPagerOnPageChangeListener() {
+                    .pagerOnPageChangedListener(object : ViewPagerOnPageChangeListener() {
                         override fun onPageSelected(position: Int) {
                             Debug.i("selected:$position count:$pagesCount vp:$viewPager")
                         }
@@ -141,7 +141,7 @@ class ViewPagerSample : SampleView() {
             HStack {
 
                 View()
-                    .background(Circle {
+                    .background(CircleShape {
                         fill(Color.YELLOW)
                     })
                     .layout(64, 64)
@@ -158,11 +158,11 @@ class ViewPagerSample : SampleView() {
             }.layout(FILL, FILL)
                 .padding(16)
                 .background(StatefulShape.drawable {
-                    setSelected(Corners(leadingTop = 24, trailingBottom = 24) {
+                    setSelected(CornersShape(leadingTop = 24, trailingBottom = 24) {
                         fill(Color.MAGENTA)
                         padding(8)
                     })
-                    setDefault(RoundedRectangle(8) {
+                    setDefault(RoundedRectangleShape(8) {
                         fill(Color.WHITE)
                         padding(8)
                     })

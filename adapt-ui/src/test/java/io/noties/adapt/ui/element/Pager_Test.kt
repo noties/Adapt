@@ -9,7 +9,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
@@ -299,7 +299,7 @@ class Pager_Test {
 
     @Test
     fun `pagerPagerMargin - shape`() {
-        val (margin, shape) = 3 to Rectangle()
+        val (margin, shape) = 3 to RectangleShape()
         newViewPager()
             .pagerPageMargin(margin, shape)
             .renderView {

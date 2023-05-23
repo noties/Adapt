@@ -41,12 +41,14 @@ import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
-import io.noties.adapt.ui.shape.Arc
-import io.noties.adapt.ui.shape.Asset
+import io.noties.adapt.ui.shape.ArcShape
+import io.noties.adapt.ui.shape.AssetShape
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.CircleShape
+import io.noties.adapt.ui.shape.CornersShape
 import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RectangleShape
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.translation
@@ -90,13 +92,13 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
             }
         }
         return listOf(
-            ShapeItem("Rectangle", Rectangle(), config()),
-            ShapeItem("RoundedRectangle", RoundedRectangle(8), config()),
-            ShapeItem("Corners", Corners(4, 12, 24, 48), config()),
-            ShapeItem("Circle", Circle(), config()),
-            ShapeItem("Arc", Arc(90F, 180F), config()),
+            ShapeItem("Rectangle", RectangleShape(), config()),
+            ShapeItem("RoundedRectangle", RoundedRectangleShape(8), config()),
+            ShapeItem("Corners", CornersShape(4, 12, 24, 48), config()),
+            ShapeItem("Circle", CircleShape(), config()),
+            ShapeItem("Arc", ArcShape(90F, 180F), config()),
 //            ShapeItem("Oval", Oval(), config()),
-            ShapeItem("Nested shadows", Circle()) {
+            ShapeItem("Nested shadows", CircleShape()) {
                 fill(Colors.white)
                 shadow(Colors.black.withAlphaComponent(0.5F), 12)
 
@@ -118,24 +120,24 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                     })
                 })
             },
-            ShapeItem("Follows content", Rectangle()) {
+            ShapeItem("Follows content", RectangleShape()) {
                 fill(Colors.white)
                 size(24, 24, Gravity.bottom.trailing)
                 shadow(Colors.accent, 4)
             },
             // Asset is not supported (does not use Paint to draw drawable resource)
-            ShapeItem("Asset (N/A)", Asset(context.getDrawable(R.drawable.logo)!!)) {
+            ShapeItem("Asset (N/A)", AssetShape(context.getDrawable(R.drawable.logo)!!)) {
                 size(56)
                 gravity(Gravity.center)
                 shadow(Colors.black, 8)
             },
-            ShapeItem("Rotated", Rectangle()) {
+            ShapeItem("Rotated", RectangleShape()) {
                 fill(Colors.white)
                 sizeRelative(0.75F, 0.25F, Gravity.center)
                 rotate(45F)
                 shadow(Colors.black, 8)
             },
-            ShapeItem("Rotated 2X", Rectangle()) {
+            ShapeItem("Rotated 2X", RectangleShape()) {
                 add(Rectangle {
                     fill(Colors.white)
                     sizeRelative(0.75F, 0.25F, Gravity.center)
@@ -149,11 +151,11 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                     shadow(Colors.primary, 16)
                 })
             },
-            ShapeItem("Offset", Rectangle()) {
+            ShapeItem("Offset", RectangleShape()) {
                 fill(Colors.white)
                 shadow(Colors.black, 12, 4, -8)
             },
-            ShapeItem("Relative", Rectangle()) {
+            ShapeItem("Relative", RectangleShape()) {
                 size(48, 48)
                 fill(Colors.white)
                 shadowRelative(
@@ -213,7 +215,7 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
 
                 // this is the base shape
                 //  we will use it to draw background and shadow and clip content
-                val base = RoundedRectangle(12) {
+                val base = RoundedRectangleShape(12) {
                     // it does not have any info except its outline
 //                    fill(Colors.primary)
                 }

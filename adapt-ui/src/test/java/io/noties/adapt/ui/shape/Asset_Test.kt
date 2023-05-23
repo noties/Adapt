@@ -28,10 +28,10 @@ class Asset_Test {
     @Test
     fun clone() {
         val drawable = mockt<Drawable>()
-        val asset: Shape = Asset(drawable)
+        val asset: Shape = AssetShape(drawable)
         val clone = asset.clone()
-        assertEquals(Asset::class.java, clone::class.java)
-        assertEquals(drawable, (clone as Asset).drawable)
+        assertEquals(AssetShape::class.java, clone::class.java)
+        assertEquals(drawable, (clone as AssetShape).drawable)
     }
 
     @Test
@@ -45,7 +45,7 @@ class Asset_Test {
             }
             on { constantState } doReturn cs
         }
-        val asset = Asset(drawable)
+        val asset = AssetShape(drawable)
         val cloned = asset.clone()
 
         verify(drawable).constantState
@@ -56,7 +56,7 @@ class Asset_Test {
     @Test
     fun init() {
         // defaultFillColor required to draw
-        val asset = Asset(mockt())
+        val asset = AssetShape(mockt())
         assertEquals(
             Shape.defaultFillColor.toHexString(),
             asset.fill?.color?.toHexString()
@@ -79,7 +79,7 @@ class Asset_Test {
             on { intrinsicWidth } doReturn wpx
             on { intrinsicHeight } doReturn hpx
         }
-        val asset = Asset(drawable)
+        val asset = AssetShape(drawable)
         assertEquals(
             Shape.defaultFillColor.toHexString(),
             asset.fill?.color?.toHexString()
@@ -100,7 +100,7 @@ class Asset_Test {
     @Test
     fun draw() {
         val drawable = mockt<Drawable>()
-        val asset = Asset(drawable)
+        val asset = AssetShape(drawable)
         val canvas = mockt<Canvas>()
         val rect = Rect(0, 0, 10, 88)
         val alpha = (255 * 0.721F).roundToInt()
@@ -123,7 +123,7 @@ class Asset_Test {
             on { mutate() } doReturn mock
         }
         val color = 97271
-        val asset = Asset(drawable) {
+        val asset = AssetShape(drawable) {
             tint(color)
         }
         assertEquals(drawable, asset.drawable)
@@ -137,7 +137,7 @@ class Asset_Test {
         val drawable = mockt<Drawable> {
             on { mutate() } doReturn mock
         }
-        val asset = Asset(drawable) {
+        val asset = AssetShape(drawable) {
             tint(csl)
         }
         assertEquals(drawable, asset.drawable)
@@ -158,11 +158,11 @@ class Asset_Test {
             on { this.intrinsicHeight } doReturn h.dip
         }
 
-        val assetNoBlock = Asset(drawable)
+        val assetNoBlock = AssetShape(drawable)
         assertEquals(w, (assetNoBlock.width as Dimension.Exact).value)
         assertEquals(h, (assetNoBlock.height as Dimension.Exact).value)
 
-        val asset = Asset(drawable) {
+        val asset = AssetShape(drawable) {
             size(4, 5)
         }
         assertEquals(4, (asset.width as Dimension.Exact).value)

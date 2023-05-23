@@ -9,7 +9,9 @@ import android.view.View.OnScrollChangeListener
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.Oval
+import io.noties.adapt.ui.shape.OvalShape
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.testutil.value
@@ -374,6 +376,27 @@ class ViewElement_Extensions_Test {
     }
 
     @Test
+    fun `foreground - shape-factory`() {
+        newElement()
+            .foreground { Oval() }
+            .renderView {
+                val drawable = kotlin.run {
+                    val captor = ArgumentCaptor.forClass(Drawable::class.java)
+                    verify(this).foreground = captor.capture()
+                    captor.value
+                }
+                Assert.assertEquals(
+                    ShapeDrawable::class,
+                    drawable::class
+                )
+                Assert.assertEquals(
+                    OvalShape::class,
+                    (drawable as ShapeDrawable<*>).shape::class
+                )
+            }
+    }
+
+    @Test
     fun foregroundDefaultSelectable() {
         val context = mock(Context::class.java)
         val drawable = mock(Drawable::class.java)
@@ -411,7 +434,7 @@ class ViewElement_Extensions_Test {
 
     @Test
     fun `background - shape`() {
-        val shape = Rectangle()
+        val shape = RectangleShape()
         newElement()
             .background(shape)
             .renderView {
@@ -432,6 +455,27 @@ class ViewElement_Extensions_Test {
             .background(input)
             .renderView {
                 verify(this).setBackgroundColor(eq(input))
+            }
+    }
+
+    @Test
+    fun `background - shape-factory`() {
+        newElement()
+            .background { Oval() }
+            .renderView {
+                val drawable = kotlin.run {
+                    val captor = ArgumentCaptor.forClass(Drawable::class.java)
+                    verify(this).background = captor.capture()
+                    captor.value
+                }
+                Assert.assertEquals(
+                    ShapeDrawable::class,
+                    drawable::class
+                )
+                Assert.assertEquals(
+                    OvalShape::class,
+                    (drawable as ShapeDrawable<*>).shape::class
+                )
             }
     }
 

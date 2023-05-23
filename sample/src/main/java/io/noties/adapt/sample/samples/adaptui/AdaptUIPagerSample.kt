@@ -49,8 +49,8 @@ import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.CapsuleShape
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
@@ -120,12 +120,13 @@ class AdaptUIPagerSample : SampleView() {
                         .textSize(24) // already 24sp
                         .layout(FILL, 0)
                         .layoutWeight(1F)
-                        .background(RoundedRectangle(9) {
+                        .background(RoundedRectangleShape(9) {
                             fill(Colors.white) // for the shape to cast proper elevation shadow
                             stroke(Colors.black)
                             padding(16)
+                            shadow(Colors.black, 4)
                         })
-                        .elevation(4)
+//                        .elevation(4)
                 }
 
                 // as the really important part is actual call inside ViewFactory context
@@ -161,7 +162,7 @@ class AdaptUIPagerSample : SampleView() {
                 })
                 .pagerCurrentItem(1)
                 .pagerOffscreenPageLimit(3)
-                .pagerPageMargin(16, Capsule {
+                .pagerPageMargin(16, CapsuleShape {
                     fill(
                         LinearGradient.edges { top to bottom }
                             .setColors(Colors.orange, Colors.black)
@@ -230,7 +231,7 @@ class AdaptUIPagerSample : SampleView() {
     }
 
     private fun decorViewButtonBackground(baseColor: Int): Drawable = StatefulShape.drawable {
-        val base = RoundedRectangle(9) {
+        val base = RoundedRectangleShape(9) {
             fill(baseColor)
             padding(4)
             alpha(0.2F) // disabled alpha

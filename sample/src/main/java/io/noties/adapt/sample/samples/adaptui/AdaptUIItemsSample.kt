@@ -22,8 +22,9 @@ import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.setItems
-import io.noties.adapt.ui.shape.Circle
+import io.noties.adapt.ui.shape.CircleShape
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
@@ -77,9 +78,9 @@ class AdaptUIItemsSample : SampleView() {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
                 .layout(FILL, 56)
-                .background(Rectangle {
+                .background(RectangleShape {
 
-                    val base = Circle {
+                    val base = CircleShape {
                         fill(Colors.orange)
                         size(8, 8)
                     }
@@ -96,11 +97,11 @@ class AdaptUIItemsSample : SampleView() {
                         translate(-8, -8)
                     })
 
-                    add(Rectangle {
+                    Rectangle {
                         size(24, 12)
                         fill(Colors.black)
                         translate(16, 8)
-                    })
+                    }
 
                     // this rectangle is container for other children
                     //  but it too can have values specified

@@ -23,7 +23,7 @@ import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.foreground
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
-import io.noties.adapt.ui.shape.Circle
+import io.noties.adapt.ui.shape.CircleShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 
@@ -63,7 +63,7 @@ class AdaptUIClipSample : SampleView() {
     @Suppress("FunctionName")
     private fun ViewFactory<LayoutParams>.CircleAvatar() {
         // base shape, we add a stroke on top, so use the same base shape
-        fun circle() = Circle {
+        fun circle() = CircleShape {
             size(128, 128, Gravity.center)
         }
 

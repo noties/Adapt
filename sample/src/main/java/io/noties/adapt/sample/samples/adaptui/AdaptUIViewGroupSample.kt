@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -12,23 +11,16 @@ import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.clipToOutline
-import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
-import io.noties.adapt.ui.element.imageScaleType
-import io.noties.adapt.ui.element.imageTint
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
-import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.enabled
-import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.ColorStateListBuilder
@@ -65,21 +57,21 @@ class AdaptUIViewGroupSample : SampleView() {
                         setDefault(Colors.black)
                     })
                     .background(StatefulShape.drawable {
-                        setEnabled(Rectangle {
+                        setEnabled(RectangleShape {
                             stroke(Colors.orange)
                             padding(1)
                         })
-                        setDefault(Rectangle {
+                        setDefault(RectangleShape {
                             stroke(Colors.black)
                             padding(1)
                         })
                     }).layoutMargin(4)
             }.background(StatefulShape.drawable {
-                setEnabled(Rectangle {
+                setEnabled(RectangleShape {
                     stroke(Colors.orange)
                     padding(1)
                 })
-                setDefault(Rectangle {
+                setDefault(RectangleShape {
                     stroke(Colors.black)
                     padding(1)
                 })
@@ -89,7 +81,7 @@ class AdaptUIViewGroupSample : SampleView() {
                 .padding(horizontal = 16, vertical = 8)
                 .textColor(Colors.white)
                 .background(StatefulShape.drawable {
-                    val base = Rectangle {
+                    val base = RectangleShape {
                         fill(Colors.orange)
                     }
                     setPressed(base.copy {

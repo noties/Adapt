@@ -24,7 +24,7 @@ import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Capsule
+import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
@@ -64,7 +64,7 @@ class AdaptUIShowcaseBasic1Sample : AdaptUISampleView() {
 
             }.layout(FILL, WRAP)
                 .layoutMargin(16, 8)
-                .background(Capsule().fill(Color.LTGRAY))
+                .background(CapsuleShape().fill(Color.LTGRAY))
 
         }.layout(FILL, FILL) // specifies layout width/height (default: FILL/WRAP)
             // utility function to specify layout(FILL, FILL)

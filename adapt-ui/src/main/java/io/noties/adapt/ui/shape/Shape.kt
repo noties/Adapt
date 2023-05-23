@@ -18,7 +18,7 @@ import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import kotlin.math.roundToInt
 
-abstract class Shape {
+abstract class Shape : ShapeFactory {
 
     companion object {
         // default color, black with 255 (1F) alpha
@@ -52,9 +52,9 @@ abstract class Shape {
     /**
      * Creates new drawable with this shape as root
      */
-    fun newDrawable(): ShapeDrawableNoRef = ShapeDrawable(this)
+    fun newDrawable() = ShapeDrawable(this)
 
-    fun <R : Any> newDrawable(ref: R) = ShapeDrawable(ref) { this }
+    fun <R : Any> newDrawable(ref: R) = ShapeDrawable(ref) { this@Shape }
 
 
     fun hidden(hidden: Boolean = true): Shape = this.also {
@@ -258,11 +258,14 @@ abstract class Shape {
         }
     }
 
-    fun add(shape: Shape): Shape = this.also {
+    override fun add(shape: Shape) {
+        if (shape == this) {
+            throw IllegalStateException("Cannot add self to children:$this")
+        }
         children.add(shape)
     }
 
-    fun remove(shape: Shape) = this.also {
+    fun remove(shape: Shape) {
         children.remove(shape)
     }
 
@@ -290,7 +293,8 @@ abstract class Shape {
 
     open var stroke: Stroke? = null
 
-    open val children: MutableList<Shape> = mutableListOf()
+    // NB! set in order to not have duplicates of the same shape
+    open val children: LinkedHashSet<Shape> = LinkedHashSet()
 
     internal val drawRect = Rect()
     internal val outlineRect = Rect()

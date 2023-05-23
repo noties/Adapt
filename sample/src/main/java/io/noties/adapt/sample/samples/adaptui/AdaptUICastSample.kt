@@ -34,7 +34,7 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
@@ -138,7 +138,7 @@ class AdaptUICastSample : SampleView() {
         .textColor(Colors.white)
         .layoutMargin(top = 8)
         .background(StatefulShape.drawable {
-            val base = RoundedRectangle(6) {
+            val base = RoundedRectangleShape(6) {
                 fill(Colors.primary)
             }
             setPressed(base.copy {

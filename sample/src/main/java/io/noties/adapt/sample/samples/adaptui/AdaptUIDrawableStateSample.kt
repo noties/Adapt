@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.explore.ExploreShapeText2
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -34,11 +33,12 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Capsule
+import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
-import io.noties.adapt.ui.shape.reference
+import io.noties.adapt.ui.shape.Text
 import io.noties.adapt.ui.state.DrawableState
 import io.noties.adapt.ui.state.onDrawableStateChange
 import io.noties.adapt.ui.util.Gravity
@@ -65,7 +65,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 .textGravity(Gravity.center)
                 .padding(12)
                 .layoutMargin(16)
-                .background(Capsule {
+                .background(CapsuleShape {
                     fill(Colors.primary)
                 }.newDrawable().stateful(setOf(DrawableState.pressed)))
                 .onDrawableStateChange { textView, drawableState ->
@@ -150,7 +150,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
         .padding(12, 4)
         .layoutMargin(horizontal = 4)
         .layout(0, WRAP, 1F)
-        .background(Capsule().fill(Colors.primary))
+        .background(CapsuleShape().fill(Colors.primary))
         .ifAvailable(Build.VERSION_CODES.O) {
             it.foregroundDefaultSelectable()
         }
@@ -172,9 +172,9 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
             Rectangle {
                 padding(2)
                 fill(Colors.orange)
-                add(Rectangle {
+                Rectangle {
                     stroke(Colors.primary, 4)
-                })
+                }
             }
         }.stateful { state ->
             if (state.pressed) {
@@ -201,42 +201,40 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createStatefulShapeDrawable(): ShapeDrawable<Ref> {
         return ShapeDrawable(Ref()) { ref ->
-            Rectangle {
+            RectangleShape {
                 fill(Colors.black.withAlphaComponent(0.1F))
 
-                add(ExploreShapeText2.Text("pressed") {
-                    reference(ref::pressed)
+                ref.pressed = Text("pressed") {
                     textSize(16)
                     textBold()
                     textGravity(Gravity.leading.top)
                     textColor(Colors.primary)
                     padding(8)
-                })
-                add(ExploreShapeText2.Text("focused") {
-                    reference(ref::focused)
+                }
+
+                ref.focused = Text("focused") {
                     textSize(24)
                     textItalic()
                     textGravity(Gravity.trailing.top)
                     textColor(Colors.black)
                     padding(8)
-                })
-                add(ExploreShapeText2.Text("enabled") {
-                    reference(ref::enabled)
+                }
+
+                ref.enabled = Text("enabled") {
                     textSize(21)
                     textUnderline()
                     textGravity(Gravity.trailing.bottom)
                     textColor(Colors.orange)
                     padding(8)
-                })
+                }
 
-                add(ExploreShapeText2.Text("activated") {
-                    reference(ref::activated)
+                ref.activated = Text("activated") {
                     textSize(18)
                     textStrikethrough()
                     textGravity(Gravity.leading.bottom)
                     textColor(Colors.accent)
                     padding(8)
-                })
+                }
             }
         }
     }

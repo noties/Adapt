@@ -72,11 +72,14 @@ import io.noties.adapt.ui.onViewCheckedChanged
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.Asset
-import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.Oval
+import io.noties.adapt.ui.shape.AssetShape
+import io.noties.adapt.ui.shape.CapsuleShape
+import io.noties.adapt.ui.shape.CornersShape
+import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.StatefulShape
@@ -143,17 +146,19 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .textColor(Colors.white)
             .textFont(Typeface.DEFAULT_BOLD)
             .padding(horizontal = 16, vertical = 8)
-            .background(RoundedRectangle(8) {
-                stroke(Colors.primary, 2)
-                padding(1)
-                fill(
-                    LinearGradient.edges { top to bottom }
-                        .setColors(
-                            Colors.primary.withAlphaComponent(0.42F),
-                            Colors.primary.withAlphaComponent(0F)
-                        )
-                )
-            })
+            .background {
+                RoundedRectangle(8) {
+                    stroke(Colors.primary, 2)
+                    padding(1)
+                    fill(
+                        LinearGradient.edges { top to bottom }
+                            .setColors(
+                                Colors.primary.withAlphaComponent(0.42F),
+                                Colors.primary.withAlphaComponent(0F)
+                            )
+                    )
+                }
+            }
 
     @Suppress("FunctionName")
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.InteractiveFlexWithFirstFlexItemActive(): Pair<ViewElement<FlexboxLayout, *>, ViewElement<*, FlexboxLayout.LayoutParams>> {
@@ -174,7 +179,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         this
             .flexAlignItems(AlignItems.stretch)
             .padding(horizontal = 12, vertical = 4)
-            .background(RoundedRectangle(2) {
+            .background(RoundedRectangleShape(2) {
                 stroke(Colors.black.withAlphaComponent(0.42F), 1, 8)
                 padding(horizontal = 8, vertical = 1)
             })
@@ -276,10 +281,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         .padding(top = 8, bottom = 32)
         .background(sampleSeparator())
 
-    private fun sampleSeparator() = Rectangle {
+    private fun sampleSeparator() = RectangleShape {
         val s = 16
         val drawable = App.shared.getDrawable(R.drawable.ic_asterisk)!!
-        val base = Asset(drawable) {
+        val base = AssetShape(drawable) {
             size(s, s, Gravity.center.bottom)
             tint(Colors.black.withAlphaComponent(0.2F))
         }
@@ -456,7 +461,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         .textFont(Typeface.MONOSPACE)
                         .textColor(Colors.black)
                         .textSize(20)
-                        .background(Corners {
+                        .background(CornersShape {
                             fill(Colors.primary.withAlphaComponent(0.4F))
                             if (isMinus) {
                                 leadingTop = 4
@@ -488,13 +493,14 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             }.layoutFlexGrow(1F) // by default start with one
                 .layoutWrap()
                 .background(StatefulShape.drawable {
-                    val base = RoundedRectangle(4) {
+                    val base = RoundedRectangleShape(4) {
                         padding(2)
                         fill(Colors.primary.withAlphaComponent(0.25F))
-                        add(RoundedRectangle(4) {
+
+                        RoundedRectangle(4) {
                             padding(1)
                             stroke(Colors.primary)
-                        })
+                        }
                     }
                     setActivated(base)
                     setDefault(base.copy {
@@ -595,13 +601,13 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     }
                 }
         }.layout(basis, FILL)
-            .background(RoundedRectangle(2) {
+            .background(RoundedRectangleShape(2) {
                 padding(1)
                 fill(Colors.primary.withAlphaComponent(0.25F))
-                add(RoundedRectangle(2) {
+                RoundedRectangle(2) {
                     padding(1)
                     stroke(Colors.primary)
-                })
+                }
             })
 
         val flex = Flex {
@@ -630,20 +636,20 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
             View()
                 .layout(height, FILL)
-                .background(Oval().fill(Colors.yellow))
+                .background(OvalShape().fill(Colors.yellow))
                 .also { circles.add(it) }
             View()
                 .layout(128, FILL)
                 .layoutFlexGrow(1F)
                 .layoutMargin(horizontal = 4)
-                .background(Capsule().stroke(Colors.primary).padding(1))
+                .background(CapsuleShape().stroke(Colors.primary).padding(1))
             View()
                 .layout(height, FILL)
-                .background(Oval().fill(Colors.yellow))
+                .background(OvalShape().fill(Colors.yellow))
                 .also { circles.add(it) }
 
         }.flexAlignItems(AlignItems.stretch)
-            .background(RoundedRectangle(2) {
+            .background(RoundedRectangleShape(2) {
                 stroke(hex("#40ff0000"))
 //                padding(horizontal = 8)
             })
@@ -702,7 +708,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
         }.layout(basis, WRAP)
             .padding(4)
-            .background(RoundedRectangle(2) {
+            .background(RoundedRectangleShape(2) {
                 stroke(Colors.accent.withAlphaComponent(0.42F))
                 padding(2)
             })
@@ -763,10 +769,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
         SampleTitle("Flex align content multiline")
 
-        val shape = RoundedRectangle(2) {
-            stroke(Colors.primary)
-            padding(1)
-        }
+//        val shape = RoundedRectangleShape(2) {
+//            stroke(Colors.primary)
+//            padding(1)
+//        }
 
         val flex = Flex {
             FlexItem("Hello")
@@ -905,15 +911,16 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             .layoutMargin(top = 4)
             .padding(16)
             .padding(trailing = 16 + 16)
-            .background(RoundedRectangle(8) {
+            .background(RoundedRectangleShape(8) {
                 val base = if (isActive) Colors.yellow else Colors.black.withAlphaComponent(0.1F)
                 fill(base)
-                add(Asset(App.shared.getDrawable(R.drawable.ic_arrow_drop_down_24)!!) {
+
+                Asset(App.shared.getDrawable(R.drawable.ic_arrow_drop_down_24)!!) {
                     size(16, 16)
                     gravity(Gravity.center.trailing)
                     tint(Colors.accent)
                     translate(x = -8)
-                })
+                }
             })
             .ifAvailable(Build.VERSION_CODES.M) {
                 it.foregroundDefaultSelectable()
@@ -938,7 +945,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     )
                     window.isFocusable = true
                     window.elevation = 10.dip.toFloat()
-                    window.setBackgroundDrawable(RoundedRectangle(8).fill(Colors.white).newDrawable())
+                    window.setBackgroundDrawable(RoundedRectangleShape(8).fill(Colors.white).newDrawable())
                     window.showAsDropDown(element.view, 0, -element.view.height)
                 }
             }

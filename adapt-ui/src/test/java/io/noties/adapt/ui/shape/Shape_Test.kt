@@ -90,7 +90,7 @@ class Shape_Test {
             reflectedMissingProperties
         )
 
-        val base = Rectangle().apply {
+        val base = RectangleShape().apply {
             inputs.forEach {
                 @Suppress("UNCHECKED_CAST")
                 (it as Input<Any?, KMutableProperty1<Shape, Any?>>)
@@ -280,7 +280,7 @@ class Shape_Test {
         // verify density
         Assert.assertEquals(1F, Resources.getSystem().displayMetrics.density)
 
-        val shape = Circle {
+        val shape = CircleShape {
             size(width = 12)
             sizeRelative(height = 0.5F)
         }
@@ -461,7 +461,7 @@ class Shape_Test {
 
     @Test
     fun `padding - mix`() {
-        val shape = Capsule {
+        val shape = CapsuleShape {
             padding(leading = 1, top = 2)
             paddingRelative(trailing = 0.3F, bottom = 0.4F)
         }
@@ -646,7 +646,7 @@ class Shape_Test {
     fun `fill - color`() {
         // NB! asset applies a fill color, otherwise it won't be drawn
         for (shape in shapes()) {
-            if (shape is Asset) {
+            if (shape is AssetShape) {
                 val fill = shape.fill
                 fill!!.assertEquals(Shape.defaultFillColor, Shape.Fill::color)
             } else {
@@ -661,7 +661,7 @@ class Shape_Test {
     @Test
     fun `fill - gradient`() {
         for (shape in shapes()) {
-            if (shape is Asset) {
+            if (shape is AssetShape) {
                 val fill = shape.fill!!
                 fill.assertEquals(Shape.defaultFillColor, Shape.Fill::color)
             } else {
@@ -1010,7 +1010,7 @@ class Shape_Test {
         // when it is not visible, it is not drawn
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
-        val shape = Rectangle().fill(6) // set fill color, so shape is drawn
+        val shape = RectangleShape().fill(6) // set fill color, so shape is drawn
 
         shape.hidden(true)
         shape.draw(canvas, bounds)
@@ -1022,7 +1022,7 @@ class Shape_Test {
     fun `draw - empty bounds`() {
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 0, 0)
-        val shape = Circle().fill(1234)
+        val shape = CircleShape().fill(1234)
 
         Assert.assertTrue(bounds.toShortString(), bounds.isEmpty)
 
@@ -1038,7 +1038,7 @@ class Shape_Test {
         val rect = Rect(0, 0, 10, 10)
         Assert.assertFalse(rect.toShortString(), rect.isEmpty)
 
-        val shape = RoundedRectangle(8)
+        val shape = RoundedRectangleShape(8)
             .fill(98712)
             .padding(11)
 
@@ -1054,7 +1054,7 @@ class Shape_Test {
         val rect = Rect(0, 0, 1000, 1000)
         Assert.assertFalse(rect.toShortString(), rect.isEmpty)
 
-        val shape = RoundedRectangle(8)
+        val shape = RoundedRectangleShape(8)
             .fill(765)
             .size(0, 0)
 
@@ -1067,7 +1067,7 @@ class Shape_Test {
     fun `draw - translate`() {
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 100)
-        val shape = Oval().fill(3)
+        val shape = OvalShape().fill(3)
 
         shape.translate(10, 20)
         shape.draw(canvas, bounds)
@@ -1082,7 +1082,7 @@ class Shape_Test {
     fun `draw - translateRelative`() {
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
-        val shape = Capsule().fill(-19)
+        val shape = CapsuleShape().fill(-19)
 
         shape.translateRelative(0.5F, 0.25F)
         shape.draw(canvas, bounds)
@@ -1097,7 +1097,7 @@ class Shape_Test {
     fun `draw - rotate`() {
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
-        val shape = RoundedRectangle(12).fill(-1908)
+        val shape = RoundedRectangleShape(12).fill(-1908)
 
         shape.rotate(45F)
         shape.draw(canvas, bounds)
@@ -1115,7 +1115,7 @@ class Shape_Test {
         val children = (0 until 5)
             .map { io.noties.adapt.ui.testutil.mockt<Shape> { on { this.alpha } doReturn null } }
 
-        val shape = Oval {
+        val shape = OvalShape {
             children.forEach(this::add)
         }
 
@@ -1152,7 +1152,7 @@ class Shape_Test {
                 }
             )
 
-            val shape = Rectangle {
+            val shape = RectangleShape {
                 children.forEach { add(it) }
                 alpha(input)
             }
@@ -1184,7 +1184,7 @@ class Shape_Test {
         val children = (0 until 5)
             .map { io.noties.adapt.ui.testutil.mockt<Shape> { on { this.alpha } doReturn 1F } }
 
-        val shape = Rectangle {
+        val shape = RectangleShape {
             children.forEach { add(it) }
 
             // mark as non visible
@@ -1208,36 +1208,78 @@ class Shape_Test {
     @Test
     fun add() {
         for (shape in shapes()) {
-            val child = Rectangle()
+            val child = RectangleShape()
             Assert.assertEquals(shape.children.toString(), 0, shape.children.size)
             shape.add(child)
+            shape.add(child)
             Assert.assertEquals(
-                listOf(child),
+                setOf(child),
                 shape.children
             )
         }
     }
 
     @Test
-    fun remove() {
+    fun `add - self`() {
         for (shape in shapes()) {
-            val child = Circle()
-            shape.add(child)
-            Assert.assertEquals(listOf(child), shape.children)
-            shape.remove(child)
-            Assert.assertEquals(listOf<Shape>(), shape.children)
+            try {
+                shape.add(shape)
+                Assert.fail("shape:${shape::class.simpleName}")
+            } catch (t: Throwable) {
+                t.printStackTrace(System.err)
+                val message = t.message!!
+                Assert.assertTrue(
+                    message,
+                    message.contains("Cannot add self to children")
+                )
+            }
         }
     }
 
+    @Test
+    fun `add - factory`() {
+        val shape = RectangleShape {
+            // both adds, only a single one would be added
+            add(Rectangle())
+        }
+
+        Assert.assertEquals(1, shape.children.size)
+    }
+
+    @Test
+    fun remove() {
+        for (shape in shapes()) {
+            val child = CircleShape()
+            shape.add(child)
+            shape.add(child)
+            Assert.assertEquals(setOf(child), shape.children)
+            shape.remove(child)
+            Assert.assertEquals(emptySet<Shape>(), shape.children)
+        }
+    }
+
+    @Test
+    fun factory() {
+        val shape = RectangleShape()
+        val factory = shape as ShapeFactory
+
+        val oval = factory.Oval()
+
+        Assert.assertEquals(1, shape.children.size)
+        Assert.assertEquals(setOf(oval), shape.children)
+    }
+
     private fun shapes() = listOf(
-        Asset(ColorDrawable(99)),
-        Capsule(),
-        Circle(),
-        Corners(),
-        Oval(),
-        Rectangle(),
-        RoundedRectangle(17),
-        Arc(90F, 69F, true),
+        AssetShape(ColorDrawable(99)),
+        CapsuleShape(),
+        CircleShape(),
+        CornersShape(),
+        OvalShape(),
+        RectangleShape(),
+        RoundedRectangleShape(17),
+        ArcShape(90F, 69F, true),
+        LineShape(),
+        TextShape()
     )
 
     private fun <R : Any, T : Any?> R.assertEquals(expected: T, property: KProperty1<in R, T>) {

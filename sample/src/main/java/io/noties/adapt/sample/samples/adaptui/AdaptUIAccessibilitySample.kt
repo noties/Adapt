@@ -32,7 +32,7 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 
 @AdaptSample(
     id = "20221009162741",
@@ -95,7 +95,7 @@ class AdaptUIAccessibilitySample : SampleView() {
 
                     View()
                         .layout(FILL, 256)
-                        .background(Rectangle {
+                        .background(RectangleShape {
 //                            alpha(0.5F)
                             fill(
                                 LinearGradient.edges { top to bottom }

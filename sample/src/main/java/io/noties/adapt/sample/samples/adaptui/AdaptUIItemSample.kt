@@ -20,10 +20,8 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.reference
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.view.AdaptView
 
 @AdaptSample(
     id = "20230116140759",
@@ -66,7 +64,7 @@ class AdaptUIItemSample : SampleView() {
                     .textGravity(Gravity.center)
                     .layoutMargin(16)
                     .padding(horizontal = 16, vertical = 12)
-                    .background(RoundedRectangle(8).fill(Colors.orange))
+                    .background(RoundedRectangleShape(8).fill(Colors.orange))
                     .also { element ->
                         ItemGenerator.reset()
                         element.onClick {

@@ -35,31 +35,32 @@ class StatefulShape {
         entries[set] = shape
     }
 
-    fun set(set: Set<DrawableState>, block: () -> Shape) = set(set, block())
+    fun set(set: Set<DrawableState>, block: ShapeFactoryBuilder) =
+        set(set, block(ShapeFactory.NoOp))
 
     fun set(state: DrawableState, shape: Shape) = set(setOf(state), shape)
-    fun set(state: DrawableState, block: () -> Shape) = set(state, block())
+    fun set(state: DrawableState, block: ShapeFactoryBuilder) = set(state, block(ShapeFactory.NoOp))
 
     fun setPressed(shape: Shape) = set(setOf(DrawableState.pressed), shape)
-    fun setPressed(block: () -> Shape) = setPressed(block())
+    fun setPressed(block: ShapeFactoryBuilder) = setPressed(block(ShapeFactory.NoOp))
 
     fun setEnabled(shape: Shape) = set(setOf(DrawableState.enabled), shape)
-    fun setEnabled(block: () -> Shape) = setEnabled(block())
+    fun setEnabled(block: ShapeFactoryBuilder) = setEnabled(block(ShapeFactory.NoOp))
 
     fun setFocused(shape: Shape) = set(setOf(DrawableState.focused), shape)
-    fun setFocused(block: () -> Shape) = setFocused(block())
+    fun setFocused(block: ShapeFactoryBuilder) = setFocused(block(ShapeFactory.NoOp))
 
     fun setActivated(shape: Shape) = set(setOf(DrawableState.activated), shape)
-    fun setActivated(block: () -> Shape) = setActivated(block())
+    fun setActivated(block: ShapeFactoryBuilder) = setActivated(block(ShapeFactory.NoOp))
 
     fun setSelected(shape: Shape) = set(setOf(DrawableState.selected), shape)
-    fun setSelected(block: () -> Shape) = setSelected(block())
+    fun setSelected(block: ShapeFactoryBuilder) = setSelected(block(ShapeFactory.NoOp))
 
     fun setChecked(shape: Shape) = set(setOf(DrawableState.checked), shape)
-    fun setChecked(block: () -> Shape) = setChecked(block())
+    fun setChecked(block: ShapeFactoryBuilder) = setChecked(block(ShapeFactory.NoOp))
 
     fun setDefault(shape: Shape) = set(setOf(), shape)
-    fun setDefault(block: () -> Shape) = setDefault(block())
+    fun setDefault(block: ShapeFactoryBuilder) = setDefault(block(ShapeFactory.NoOp))
 
     @Deprecated(
         "Use dedicated DrawableState",

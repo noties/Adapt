@@ -24,7 +24,7 @@ import io.noties.adapt.ui.flex.flexWrap
 import io.noties.adapt.ui.flex.layoutFlexGrow
 import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
@@ -43,20 +43,20 @@ class FlexboxUISample : SampleView() {
             Flex {
 
                 Text("1")
-                    .background(Rectangle {
+                    .background(RectangleShape {
                         fill(Color.RED)
                     })
                     .padding(16)
 
                 Text("2")
-                    .background(Rectangle {
+                    .background(RectangleShape {
                         fill(Color.GREEN)
                     })
                     .padding(12)
                     .layoutFlexGrow(1F)
 
                 Text("3")
-                    .background(Rectangle {
+                    .background(RectangleShape {
                         fill(Color.YELLOW)
                     })
                     .layoutFlexWrapBefore(true)

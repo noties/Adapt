@@ -20,10 +20,10 @@ class Arc_Test {
 
     @Test
     fun clone() {
-        val arc: Shape = Arc(3F, 97F, false).clone()
-        assertEquals(Arc::class.java, arc::class.java)
+        val arc: Shape = ArcShape(3F, 97F, false).clone()
+        assertEquals(ArcShape::class.java, arc::class.java)
 
-        arc as Arc
+        arc as ArcShape
         assertEquals("startAngle", 3F, arc.startAngle)
         assertEquals("sweepAngle", 97F, arc.sweepAngle)
         assertEquals("useCenter", false, arc.useCenter)
@@ -39,7 +39,7 @@ class Arc_Test {
             Triple(3F, 4F, true)
         )
 
-        val arc = Arc(-1F, -2F)
+        val arc = ArcShape(-1F, -2F)
 
         for (input in inputs) {
             // assertNotEquals... what to do with `useCenter`?
@@ -71,7 +71,7 @@ class Arc_Test {
 
     @Test
     fun draw() {
-        val arc = Arc(-1F, -2F, false)
+        val arc = ArcShape(-1F, -2F, false)
         val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 55, 33)
         arc.drawShape(canvas, bounds, mockt())

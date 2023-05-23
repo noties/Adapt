@@ -41,14 +41,19 @@ import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onViewAttachedStateChanged
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Arc
+import io.noties.adapt.ui.shape.ArcShape
 import io.noties.adapt.ui.shape.Asset
+import io.noties.adapt.ui.shape.AssetShape
 import io.noties.adapt.ui.shape.Capsule
+import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.CircleShape
+import io.noties.adapt.ui.shape.CornersShape
 import io.noties.adapt.ui.shape.Line
-import io.noties.adapt.ui.shape.Oval
+import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RectangleShape
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.StatefulShape
@@ -124,13 +129,13 @@ class AdaptUIShapeSample : SampleView() {
         HStack {
             // Asset
             listOf(
-                Asset(drawableTinted(Colors.orange)) {
+                AssetShape(drawableTinted(Colors.orange)) {
                     gravity(Gravity.center)
                 },
-                Arc(240F, -300F),
-                Circle(),
-                Oval(),
-                Rectangle()
+                ArcShape(240F, -300F),
+                CircleShape(),
+                OvalShape(),
+                RectangleShape()
             ).forEach {
                 view(it)
                     .layout(0, FILL)
@@ -141,13 +146,13 @@ class AdaptUIShapeSample : SampleView() {
         HStack {
 
             // capsule automatically take smallest dimension
-            Capsule().also { view(it).layout(24, FILL) }
-            Capsule().also { view(it).layout(56, 24) }
+            CapsuleShape().also { view(it).layout(24, FILL) }
+            CapsuleShape().also { view(it).layout(56, 24) }
 
-            RoundedRectangle(8).also { view(it).layout(56, FILL) }
+            RoundedRectangleShape(8).also { view(it).layout(56, FILL) }
 
             // special rounded rectangle with all corners customizable
-            Corners(24, 8, 24, 4).also {
+            CornersShape(24, 8, 24, 4).also {
                 view(it).layout(0, FILL)
                     .layoutWeight(1F)
             }
@@ -160,41 +165,41 @@ class AdaptUIShapeSample : SampleView() {
         // each shape can contain other shapes
         View()
             .layout(FILL, 64)
-            .background(Rectangle {
+            .background(RectangleShape {
 
                 stroke(Colors.black)
                 padding(2)
 
                 // add an asset
 
-                add(Capsule {
+                Capsule {
                     fill(hex("#cccccc"))
                     size(height = 56, gravity = Gravity.center)
                     padding(4)
 
                     // align to start
-                    add(Asset(drawableTinted(Colors.black)) {
+                    Asset(drawableTinted(Colors.black)) {
                         size(36, 36, Gravity.leading.center)
                         translate(x = 8)
-                    })
+                    }
 
                     // align to end
-                    add(Asset(drawableTinted(Colors.orange)) {
+                    Asset(drawableTinted(Colors.orange)) {
                         size(24, 24, Gravity.trailing.center)
                         translate(x = -8)
-                    })
-                })
+                    }
+                }
             })
     }
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.relativeValues() {
         View()
             .layout(FILL, 128)
-            .background(Rectangle {
+            .background(RectangleShape {
                 stroke(Colors.orange)
                 padding(12)
 
-                add(Line {
+                Line {
                     fromRelative(0F, 0F)
                     toRelative(1F, 1F)
                     stroke(
@@ -205,29 +210,29 @@ class AdaptUIShapeSample : SampleView() {
                         16,
                         2
                     )
-                })
+                }
 
                 // relative to bounds size, half of width and 1/4 of height
-                add(Rectangle {
+                Rectangle {
                     sizeRelative(0.5F, 0.25F)
                     fill(0x20ff0000)
-                })
+                }
 
                 // relative padding
-                add(Rectangle {
+                Rectangle {
                     // half of available dimensions is padding -> rest is content
                     paddingRelative(0.25F)
 
                     fill(0x2000ff00)
-                })
+                }
 
                 // translate
-                add(Rectangle {
+                Rectangle {
                     size(48, 48, Gravity.trailing.bottom)
                     // negative values as we start at bottom right
                     translateRelative(x = -0.25F, y = -0.25F)
                     fill(0x200000ff)
-                })
+                }
             })
     }
 
@@ -239,7 +244,7 @@ class AdaptUIShapeSample : SampleView() {
                 .layout(64, 64)
                 .layoutMargin(leading = 8)
                 .elevation(8)
-                .background(Circle {
+                .background(CircleShape {
                     fill(Colors.orange)
                 })
 
@@ -247,7 +252,7 @@ class AdaptUIShapeSample : SampleView() {
                 .layout(64, 64)
                 .layoutMargin(leading = 8)
                 .elevation(8)
-                .background(RoundedRectangle(8) {
+                .background(RoundedRectangleShape(8) {
                     fill(Colors.orange)
                 })
 
@@ -255,7 +260,7 @@ class AdaptUIShapeSample : SampleView() {
                 .layout(FILL, 24)
                 .layoutMargin(leading = 8, trailing = 8)
                 .elevation(8)
-                .background(Corners(bottomLeading = 8) {
+                .background(CornersShape(bottomLeading = 8) {
                     fill(Colors.orange)
                 })
 
@@ -265,7 +270,7 @@ class AdaptUIShapeSample : SampleView() {
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.gradients() {
         val linearGradients: List<Shape> = listOf(
-            Rectangle {
+            RectangleShape {
                 alpha(0.5F)
                 fill(
                     LinearGradient.edges { top.leading to bottom.trailing }
@@ -280,13 +285,13 @@ class AdaptUIShapeSample : SampleView() {
                     4
                 )
             },
-            Arc(225F, -270F) {
+            ArcShape(225F, -270F) {
                 fill(
                     LinearGradient.edges { top to bottom.trailing }
                         .setColors(Colors.black, Colors.primary, Colors.accent, Colors.orange)
                 )
             },
-            RoundedRectangle(8) {
+            RoundedRectangleShape(8) {
                 fill(
                     LinearGradient.edges { leading to trailing }
                         .setColors(
@@ -297,7 +302,7 @@ class AdaptUIShapeSample : SampleView() {
                         )
                 )
             },
-            Circle {
+            CircleShape {
                 fill(
                     LinearGradient.edges { top to bottom }
                         .setColors(
@@ -311,7 +316,7 @@ class AdaptUIShapeSample : SampleView() {
         )
 
         val radialGradients = listOf(
-            Rectangle {
+            RectangleShape {
                 fill(
                     RadialGradient.center().setColors(
                         Colors.orange,
@@ -319,14 +324,14 @@ class AdaptUIShapeSample : SampleView() {
                     )
                 )
             },
-            Circle {
+            CircleShape {
                 fill(
                     RadialGradient.center().setColors(
                         Colors.orange, Colors.accent, Colors.primary, Colors.black
                     )
                 )
             },
-            Corners(leadingTop = 48) {
+            CornersShape(leadingTop = 48) {
                 fill(
                     RadialGradient.edge(GradientEdge.top)
                         .setColors(
@@ -337,7 +342,7 @@ class AdaptUIShapeSample : SampleView() {
                         )
                 )
             },
-            Capsule {
+            CapsuleShape {
                 sizeRelative(height = 0.5F, gravity = Gravity.center)
                 fill(
                     RadialGradient.edge(GradientEdge.leading)
@@ -352,7 +357,7 @@ class AdaptUIShapeSample : SampleView() {
         )
 
         val sweepGradients = listOf(
-            Circle {
+            CircleShape {
                 fill(
                     SweepGradient.center().setColors(
                         Colors.orange,
@@ -360,7 +365,7 @@ class AdaptUIShapeSample : SampleView() {
                     )
                 )
             },
-            RoundedRectangle(24) {
+            RoundedRectangleShape(24) {
                 padding(8)
                 stroke(
                     SweepGradient.center().setColors(
@@ -369,7 +374,7 @@ class AdaptUIShapeSample : SampleView() {
                     16
                 )
             },
-            Rectangle {
+            RectangleShape {
                 fill(
                     SweepGradient.center().setColors(
                         Colors.orange to 0.1F,
@@ -401,8 +406,8 @@ class AdaptUIShapeSample : SampleView() {
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.rotation() {
         View()
             .layout(FILL, 128)
-            .background(Rectangle {
-                val base = Rectangle {
+            .background(RectangleShape {
+                val base = RectangleShape {
                     sizeRelative(0.5F, 0.5F)
                     gravity(Gravity.bottom.trailing)
                     padding(8)
@@ -430,12 +435,12 @@ class AdaptUIShapeSample : SampleView() {
             .layout(FILL, 56)
             .background(StatefulShape.drawable {
 
-                val base = RoundedRectangle(8) {
+                val base = RoundedRectangleShape(8) {
                     fill(Colors.orange)
                     stroke(Colors.black, 4)
                 }
 
-                setDefault(Rectangle {
+                setDefault(RectangleShape {
                     add(base.copy {
                         stroke = null
                         fill(Colors.black.withAlphaComponent(0.4F))
@@ -467,7 +472,7 @@ class AdaptUIShapeSample : SampleView() {
 
         View()
             .layout(FILL, 128)
-            .background(RoundedRectangle(12) {
+            .background(RoundedRectangleShape(12) {
                 stroke(
                     LinearGradient.edges { leading to trailing }
                         .setColors(
@@ -478,7 +483,7 @@ class AdaptUIShapeSample : SampleView() {
 //                    dashWidth = 12
                 )
 
-                val corner = Circle {
+                val corner = CircleShape {
                     size(12, 12)
                 }
                 add(corner.copy {
@@ -491,12 +496,12 @@ class AdaptUIShapeSample : SampleView() {
                     gravity(Gravity.bottom.trailing)
                 })
 
-                add(Rectangle {
+                Rectangle {
                     sizeRelative(0.5F)
                     size(height = 24)
                     fill(Color.BLUE)
                     gravity(Gravity.center)
-                })
+                }
 
             }.newDrawable()
                 .also { shapeDrawable ->
@@ -538,7 +543,8 @@ class AdaptUIShapeSample : SampleView() {
                         gravity(Gravity.center)
                     })
 
-                    add(Rectangle {
+                    // or just save normally
+                    ref.gradient = Rectangle {
                         // also possible to call reference here
                         reference(ref::gradient)
 
@@ -548,7 +554,7 @@ class AdaptUIShapeSample : SampleView() {
                         )
                         size(height = 16, gravity = Gravity.bottom)
 
-                    }.reference(ref::gradient))
+                    }.reference(ref::gradient)
                 }
             }.also { drawable = it })
 //            .background(Shape.drawable(Rectangle(), Ref()) { ref ->
@@ -608,32 +614,32 @@ class AdaptUIShapeSample : SampleView() {
     private fun ViewFactory<LayoutParams>.arc() {
         View()
             .layout(FILL, 150)
-            .background(Rectangle {
-                add(Rectangle {
+            .background(RectangleShape {
+                Rectangle {
                     size(128, 128, Gravity.leading.center)
                     padding(8)
                     stroke(Colors.black.withAlphaComponent(0.2F), 2, 2, 2)
 
-                    add(Arc(0F, 90F) {
+                    Arc(0F, 90F) {
                         fill(Colors.orange)
-                    })
-                    add(Arc(90F, 90F) {
+                    }
+                    Arc(90F, 90F) {
                         fill(Colors.primary)
-                    })
-                    add(Arc(180F, 90F) {
+                    }
+                    Arc(180F, 90F) {
                         fill(
                             LinearGradient.edges { top to bottom }
                                 .setColors(Colors.accent, Colors.black)
                         )
                         translate(-5, -4)
-                    })
-                    add(Arc(270F, 90F) {
+                    }
+                    Arc(270F, 90F) {
                         stroke(Colors.black, 2)
                         padding(1)
-                    })
-                })
+                    }
+                }
 
-                add(Rectangle {
+                Rectangle {
                     padding(leading = 132, trailing = 1)
                     stroke(Colors.black, 1)
 
@@ -650,12 +656,12 @@ class AdaptUIShapeSample : SampleView() {
                         320F to 360F
                     ).withIndex()
                         .forEach { (i, v) ->
-                            add(Arc(v.first, v.second - v.first) {
+                            Arc(v.first, v.second - v.first) {
                                 fill(colors[i % colors.size])
                                 padding(2)
-                            })
+                            }
                         }
-                })
+                }
             })
     }
 

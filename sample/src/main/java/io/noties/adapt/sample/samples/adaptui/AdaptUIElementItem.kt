@@ -18,6 +18,7 @@ import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.createLayoutParams
 
@@ -37,7 +38,7 @@ class AdaptUIElementItem(val text: String) :
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)
                 .reference(ref::textView)
-        }.background(RoundedRectangle(8) {
+        }.background(RoundedRectangleShape(8) {
             stroke(Colors.black, 2, 8, 2)
             padding(8)
         })

@@ -20,9 +20,9 @@ class Circle_Test {
 
     @Test
     fun clone() {
-        val circle: Shape = Circle()
+        val circle: Shape = CircleShape()
         val copied = circle.clone()
-        assertEquals(Circle::class.java, copied::class.java)
+        assertEquals(CircleShape::class.java, copied::class.java)
     }
 
     @Test
@@ -40,7 +40,7 @@ class Circle_Test {
         )
         for ((gravity, bounds) in inputs) {
             val canvas = mockt<Canvas>()
-            val circle = Circle().also {
+            val circle = CircleShape().also {
                 if (gravity != null) it.gravity(gravity)
             }
 

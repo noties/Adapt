@@ -57,12 +57,15 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.scrollBarStyle
 import io.noties.adapt.ui.shape.Asset
-import io.noties.adapt.ui.shape.Capsule
+import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.Oval
+import io.noties.adapt.ui.shape.CircleShape
+import io.noties.adapt.ui.shape.CornersShape
+import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
@@ -197,7 +200,7 @@ class AdaptUISample : SampleView() {
                 .padding(48)
                 .layout(FILL, 256)
                 // Note that shape has distinct padding from the view
-                .background(Corners(leadingTop = 32) {
+                .background(CornersShape(leadingTop = 32) {
                     padding(16)
 
                     fill(
@@ -219,12 +222,12 @@ class AdaptUISample : SampleView() {
                         Debug.i(it)
                     })
 
-                    add(Asset(context.getDrawable(R.drawable.ic_search_24)!!) {
+                    Asset(context.getDrawable(R.drawable.ic_search_24)!!) {
                         gravity(Gravity.bottom.trailing)
                         translate(-8, -8)
                         alpha(0.5F)
                         size(48, 48)
-                    })
+                    }
                 })
                 .elevation(12)
         }
@@ -251,15 +254,15 @@ class AdaptUISample : SampleView() {
                 View()
                     // 128 is already dp
                     .layout(FILL, 128)
-                    .background(Rectangle {
+                    .background(RectangleShape {
 
-                        val base = Rectangle {
+                        val base = RectangleShape {
                             fill(Color.MAGENTA)
                             sizeRelative(.75F, .75F, gravity = Gravity.trailing.bottom)
                             alpha(0.5F)
                         }
 
-                        val circle = Circle {
+                        val circle = CircleShape {
                             fill(0xFF000000.toInt())
                             sizeRelative(0.25F, 0.25F)
                             gravity(Gravity.leading.top)
@@ -413,7 +416,7 @@ class AdaptUISample : SampleView() {
         }
 
         private val background = StatefulShape.drawable {
-            val base = Capsule {
+            val base = CapsuleShape {
                 fill(Color.BLUE)
             }
             setPressed(base.copy {
@@ -432,36 +435,36 @@ class AdaptUISample : SampleView() {
         }
 
         private val shape: Shape
-            get() = Oval {
+            get() = OvalShape {
 
                 fill(Color.CYAN)
                 padding(8)
 
-                add(RoundedRectangle(8) {
+                RoundedRectangle(8) {
                     fill(Color.BLACK)
                     stroke(Color.YELLOW, 8, 8, 2)
                     size(100, 48, Gravity.trailing.bottom)
-                })
+                }
 
-                add(Rectangle {
+                Rectangle {
                     fill(Color.WHITE)
                     stroke(Color.GRAY, 1, 8, 2)
                     size(64, 64, Gravity.leading.center)
 
-                    add(Circle {
+                    Circle {
                         fill(Color.RED)
                         // would still be circle -> additionally moved to be centered (inside own bounds!)
                         // if gravity is specified with `size`, then gravity is applied inside parent bounds
                         size(32, 32, Gravity.bottom.trailing)
                         padding(2)
 
-                        add(Circle {
+                        Circle {
                             fill(Color.GREEN)
                             size(16, 16, Gravity.trailing.top)
                             padding(4)
-                        })
-                    })
-                })
+                        }
+                    }
+                }
             }
     }
 
@@ -489,7 +492,7 @@ class AdaptUISample : SampleView() {
         }
 
         private val background = StatefulShape.drawable {
-            val base = Capsule {
+            val base = CapsuleShape {
                 fill(Color.WHITE)
                 stroke(0xFFeeeeee.toInt(), 1)
                 size(128, 48)
@@ -543,7 +546,7 @@ class AdaptUISample : SampleView() {
                         }
                 }.padding(8)
                     .padding(bottom = 12)
-                    .pressable(RoundedRectangle(12) {
+                    .pressable(RoundedRectangleShape(12) {
                         stroke(Color.BLACK, 2)
                         fill(Color.WHITE)
                         padding(1)
@@ -555,20 +558,19 @@ class AdaptUISample : SampleView() {
         }
 
         private val iconShape: Shape
-            get() = Rectangle {
+            get() = RectangleShape {
+                padding(4)
 
-                add(RoundedRectangle(8) {
+                RoundedRectangle(8) {
                     fill(Color.RED)
                     size(48, 48, Gravity.trailing.bottom)
-                })
+                }
 
-                add(Circle {
+                Circle {
                     fill(Color.BLUE)
                     size(48, 48, Gravity.leading.top)
                     alpha(0.82F)
-                })
-
-                padding(4)
+                }
             }
 
         private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pressable(
@@ -636,19 +638,20 @@ class AdaptUISample : SampleView() {
         private val toggleDrawable
             get() = StatefulShape.drawable {
 
-                val control = Rectangle {
+                val control = RectangleShape {
                     size(width = 12)
                     fill(Color.GRAY)
                     stroke(Color.BLACK, 1)
                 }
 
-                setActivated(Rectangle {
+                setActivated(RectangleShape {
 
-                    add(Rectangle {
+                    Rectangle {
                         padding(1)
                         padding(trailing = 12)
                         fill(Color.GREEN)
-                    })
+                    }
+
                     add(control.copy {
                         gravity(Gravity.trailing)
                     })
@@ -656,12 +659,12 @@ class AdaptUISample : SampleView() {
                     stroke(Color.BLACK, 2)
                 })
 
-                setDefault(Rectangle {
-                    add(Rectangle {
+                setDefault(RectangleShape {
+                    Rectangle {
                         padding(1)
                         padding(leading = 12)
                         fill(Color.RED)
-                    })
+                    }
                     add(control.copy())
                     stroke(Color.BLACK, 2)
                 })
@@ -679,12 +682,12 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
                     .textSize(20)
                     .textGravity(Gravity.center)
                     .padding(horizontal = 16 + 16 + 8, vertical = 12)
-                    .background(RoundedRectangle(9) {
-                        add(Circle {
+                    .background(RoundedRectangleShape(9) {
+                        Circle {
                             fill(Color.YELLOW)
                             size(24, 24, Gravity.trailing.center)
                             translate(x = -16)
-                        })
+                        }
                         fill(
                             LinearGradient.edges { top.leading to bottom.trailing }
                                 .setColors(Color.CYAN, Color.GREEN)
@@ -696,12 +699,12 @@ class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
 
                 View()
                     .layout(FILL, FILL)
-                    .background(Circle {
+                    .background(CircleShape {
                         fill(RadialGradient.center().setColors(Color.MAGENTA, Color.YELLOW))
                         gravity(Gravity.leading.top)
-                        add(Rectangle {
+                        Rectangle {
                             stroke(Color.BLACK, 2)
-                        })
+                        }
                     })
             }.layoutFill()
                 .noClip()

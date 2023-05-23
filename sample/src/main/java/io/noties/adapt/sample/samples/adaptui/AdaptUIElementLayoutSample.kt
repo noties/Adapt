@@ -30,6 +30,7 @@ import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
@@ -72,7 +73,7 @@ class AdaptUIElementLayoutSample : SampleView() {
     @Suppress("FunctionName")
     private fun ViewFactory<LayoutParams>.LinearLayoutSample() {
 
-        fun strokeBackground() = Rectangle {
+        fun strokeBackground() = RectangleShape {
             stroke(Colors.black, 1)
             padding(1)
         }
@@ -145,10 +146,12 @@ class AdaptUIElementLayoutSample : SampleView() {
 
         }.layout(FILL, 128)
             .padding(16)
-            .background(Rectangle {
-                stroke(Colors.black)
-                padding(8)
-            })
+            .background {
+                Rectangle {
+                    stroke(Colors.black)
+                    padding(8)
+                }
+            }
     }
 }
 

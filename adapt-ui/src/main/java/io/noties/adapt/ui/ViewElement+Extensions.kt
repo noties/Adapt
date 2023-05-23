@@ -12,6 +12,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.shape.ShapeFactory
+import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import io.noties.adapt.ui.util.addOnScrollChangedListener
@@ -112,6 +114,14 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 ): ViewElement<V, LP> = background(shape.newDrawable())
 
 /**
+ * @see View.setBackground
+ * @see Shape.Companion.builder
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
+    block: ShapeFactoryBuilder
+): ViewElement<V, LP> = background(block(ShapeFactory.NoOp))
+
+/**
  * @see background(Int)
  * @see background(Drawable?)
  */
@@ -144,6 +154,19 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     gravity: Gravity? = null
 ): ViewElement<V, LP> = foreground(shape.newDrawable(), gravity)
+
+/**
+ * @see View.setForeground
+ * @see View.setForegroundGravity
+ * @see Shape.newDrawable
+ * @see Shape.Companion.builder
+ * @see ShapeFactory
+ */
+@RequiresApi(Build.VERSION_CODES.M)
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
+    gravity: Gravity? = null,
+    block: ShapeFactoryBuilder
+): ViewElement<V, LP> = foreground(block(ShapeFactory.NoOp), gravity)
 
 /**
  * @see View.setForeground

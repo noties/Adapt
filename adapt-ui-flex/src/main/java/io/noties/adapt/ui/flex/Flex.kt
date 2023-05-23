@@ -12,7 +12,7 @@ import com.google.android.flexbox.JustifyContent as _JustifyContent
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.ElementGroup
-import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.util.dip
 
 @Suppress("FunctionName")
@@ -119,7 +119,7 @@ fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignContent(
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexGap(
     gap: Int
 ) = onView {
-    it.setDividerDrawable(Rectangle {
+    it.setDividerDrawable(RectangleShape {
         size(gap, gap)
     }.newDrawable())
     it.setShowDivider(FlexboxLayout.SHOW_DIVIDER_MIDDLE)
@@ -132,12 +132,12 @@ fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexGap(
 ) = onView { flexbox ->
 
     horizontal?.also {
-        flexbox.dividerDrawableHorizontal = Rectangle {
+        flexbox.dividerDrawableHorizontal = RectangleShape {
             size(it, 0)
         }.newDrawable()
     }
     vertical?.also {
-        flexbox.dividerDrawableVertical = Rectangle {
+        flexbox.dividerDrawableVertical = RectangleShape {
             size(0, it)
         }.newDrawable()
     }

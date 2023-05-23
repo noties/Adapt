@@ -41,7 +41,7 @@ import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
@@ -79,7 +79,7 @@ class AdaptUITextSample : SampleView() {
             .padding(horizontal = 16, vertical = 12)
             .layoutMargin(horizontal = 16, vertical = 8)
             .background(StatefulShape.drawable {
-                val base = RoundedRectangle(9)
+                val base = RoundedRectangleShape(9)
                 setFocused(base.copy {
                     stroke(Colors.orange)
                     fill(hex("#00000000"))

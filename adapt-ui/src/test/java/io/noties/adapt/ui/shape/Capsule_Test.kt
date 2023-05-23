@@ -22,9 +22,9 @@ class Capsule_Test {
 
     @Test
     fun clone() {
-        val capsule: Shape = Capsule()
+        val capsule: Shape = CapsuleShape()
         val cloned = capsule.clone()
-        assertEquals(Capsule::class.java, cloned::class.java)
+        assertEquals(CapsuleShape::class.java, cloned::class.java)
     }
 
     @Test
@@ -35,7 +35,7 @@ class Capsule_Test {
         )
 
         for ((bounds, radius) in inputs) {
-            val result = Capsule().radius(bounds)
+            val result = CapsuleShape().radius(bounds)
             assertEquals(radius, result)
         }
     }
@@ -49,7 +49,7 @@ class Capsule_Test {
         for (input in inputs) {
             val canvas = mockt<Canvas>()
             val paint = mockt<Paint>()
-            val capsule = Capsule()
+            val capsule = CapsuleShape()
             val radius = capsule.radius(input)
             capsule.drawShape(canvas, input, paint)
             val captor = argumentCaptor<RectF>()
