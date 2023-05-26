@@ -315,6 +315,23 @@ class Pager_Test {
     }
 
     @Test
+    fun `pagerPagerMargin - shape-factory`() {
+        val (margin, shape) = 3 to RectangleShape()
+        newViewPager()
+            .pagerPageMargin(margin) { shape }
+            .renderView {
+                verify(this).pageMargin = eq(margin)
+
+                val captor = ArgumentCaptor.forClass(Drawable::class.java)
+                verify(this).setPageMarginDrawable(captor.capture())
+
+                val d = captor.value
+                assertTrue(d is ShapeDrawable<*>)
+                assertEquals(shape, (d as ShapeDrawable<*>).shape)
+            }
+    }
+
+    @Test
     fun `pagerOnPageChangedListener - no adapter`() {
         // if we have adapter, page listener would receive initial callback with
         //  currently selected page

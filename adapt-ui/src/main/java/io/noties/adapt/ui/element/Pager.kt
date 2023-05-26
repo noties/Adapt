@@ -10,6 +10,8 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.shape.ShapeFactory
+import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 
@@ -187,6 +189,15 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
     margin: Int,
     marginShape: Shape
 ) = pagerPageMargin(margin, marginShape.newDrawable())
+
+/**
+ * @see ViewPager.setPageMargin
+ * @see ViewPager.setPageMarginDrawable
+ */
+fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
+    margin: Int,
+    shapeBuilder: ShapeFactoryBuilder
+) = pagerPageMargin(margin, shapeBuilder(ShapeFactory.NoOp))
 
 
 @JvmName("pagerOnPageChangeListenerViewPager")
