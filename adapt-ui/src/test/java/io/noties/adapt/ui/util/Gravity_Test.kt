@@ -5,6 +5,8 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
+import android.view.Gravity.LEFT
+import android.view.Gravity.RIGHT
 import android.view.Gravity.START
 import android.view.Gravity.TOP
 import org.junit.Assert.assertEquals
@@ -33,28 +35,28 @@ class Gravity_Test {
 
             Gravity.leading to START,
             Gravity.leading.top to (START or TOP),
-            Gravity.leading.center to (START or CENTER),
+            Gravity.leading.center to (START or CENTER_VERTICAL),
             Gravity.leading.bottom to (START or BOTTOM),
 
             Gravity.top to TOP,
             Gravity.top.leading to (TOP or START),
-            Gravity.top.center to (TOP or CENTER),
+            Gravity.top.center to (TOP or CENTER_HORIZONTAL),
             Gravity.top.trailing to (TOP or END),
 
             Gravity.trailing to END,
             Gravity.trailing.top to (END or TOP),
-            Gravity.trailing.center to (END or CENTER),
+            Gravity.trailing.center to (END or CENTER_VERTICAL),
             Gravity.trailing.bottom to (END or BOTTOM),
 
             Gravity.bottom to BOTTOM,
             Gravity.bottom.leading to (BOTTOM or START),
-            Gravity.bottom.center to (BOTTOM or CENTER),
+            Gravity.bottom.center to (BOTTOM or CENTER_HORIZONTAL),
             Gravity.bottom.trailing to (BOTTOM or END),
         )
 
         for (input in inputs) {
             assertEquals(
-                input.first.toString(),
+                toString(input.first),
                 input.first.value,
                 input.second,
             )
@@ -90,6 +92,175 @@ class Gravity_Test {
             assertEquals(input.first, input.second)
             // check that raw equals with the same gravityValue
             assertEquals(input.first, Gravity(input.first.value))
+        }
+    }
+
+    @Test
+    fun hasLeading() {
+        val inputs = listOf(
+            Gravity.leading,
+            Gravity.leading.top,
+            Gravity.leading.bottom,
+            Gravity.leading.center,
+            Gravity(LEFT),
+            Gravity(START),
+            Gravity(LEFT or CENTER_VERTICAL),
+            Gravity(START or CENTER_VERTICAL)
+        )
+
+        for (input in inputs) {
+            assertEquals(toString(input), true, input.hasLeading())
+        }
+
+        allPredefinedGravities()
+            .filter { !inputs.contains(it) }
+            .forEach { input ->
+                assertEquals(toString(input), false, input.hasLeading())
+            }
+    }
+
+    @Test
+    fun hasTop() {
+        val inputs = listOf(
+            Gravity.top,
+            Gravity.top.leading,
+            Gravity.top.trailing,
+            Gravity.top.center,
+            Gravity(TOP),
+            Gravity(TOP or START),
+            Gravity(TOP or CENTER),
+        )
+
+        for (input in inputs) {
+            assertEquals(toString(input), true, input.hasTop())
+        }
+
+        allPredefinedGravities()
+            .filter { !inputs.contains(it) }
+            .forEach { input ->
+                assertEquals(toString(input), false, input.hasTop())
+            }
+    }
+
+    @Test
+    fun hasTrailing() {
+        val inputs = listOf(
+            Gravity.trailing,
+            Gravity.trailing.top,
+            Gravity.trailing.bottom,
+            Gravity.trailing.center,
+            Gravity(END),
+            Gravity(RIGHT),
+            Gravity(END or TOP),
+            Gravity(RIGHT or CENTER),
+        )
+
+        for (input in inputs) {
+            assertEquals(toString(input), true, input.hasTrailing())
+        }
+
+        allPredefinedGravities()
+            .filter { !inputs.contains(it) }
+            .forEach { input ->
+                assertEquals(toString(input), false, input.hasTrailing())
+            }
+    }
+
+    @Test
+    fun hasBottom() {
+        val inputs = listOf(
+            Gravity.bottom,
+            Gravity.bottom.leading,
+            Gravity.bottom.trailing,
+            Gravity.bottom.center,
+            Gravity(BOTTOM),
+            Gravity(BOTTOM or START),
+            Gravity(BOTTOM or CENTER)
+        )
+
+        for (input in inputs) {
+            assertEquals(toString(input), true, input.hasBottom())
+        }
+
+        allPredefinedGravities()
+            .filter { !inputs.contains(it) }
+            .forEach { input ->
+                assertEquals(toString(input), false, input.hasBottom())
+            }
+    }
+
+    @Test
+    fun hasCenter() {
+        val inputs = listOf(
+            Gravity.center,
+            Gravity.center.horizontal,
+            Gravity.center.vertical,
+            Gravity.center.leading,
+            Gravity.center.trailing,
+            Gravity.center.top,
+            Gravity.center.bottom,
+            Gravity(CENTER),
+            Gravity(CENTER_VERTICAL or CENTER_HORIZONTAL),
+            Gravity(CENTER or TOP),
+            Gravity(CENTER or END),
+            Gravity(CENTER or LEFT),
+        )
+
+        for (input in inputs) {
+            assertEquals(toString(input), true, input.hasCenter())
+        }
+
+        allPredefinedGravities()
+            .filter { !inputs.contains(it) }
+            .forEach { input ->
+                assertEquals(toString(input), false, input.hasCenter())
+            }
+    }
+
+    private fun allPredefinedGravities() = listOf(
+        Gravity.center,
+        Gravity.center.leading,
+        Gravity.center.top,
+        Gravity.center.trailing,
+        Gravity.center.bottom,
+        Gravity.center.horizontal,
+        Gravity.center.vertical,
+
+        Gravity.leading,
+        Gravity.leading.top,
+        Gravity.leading.center,
+        Gravity.leading.bottom,
+
+        Gravity.top,
+        Gravity.top.leading,
+        Gravity.top.center,
+        Gravity.top.trailing,
+
+        Gravity.trailing,
+        Gravity.trailing.top,
+        Gravity.trailing.center,
+        Gravity.trailing.bottom,
+
+        Gravity.bottom,
+        Gravity.bottom.leading,
+        Gravity.bottom.center,
+        Gravity.bottom.trailing,
+    )
+
+    private val toString: (Gravity) -> String = kotlin.run {
+        val method = try {
+            android.view.Gravity::class.java.getDeclaredMethod(
+                "toString",
+                java.lang.Integer.TYPE
+            ).also { it.isAccessible = true }
+        } catch (t: Throwable) {
+            t.printStackTrace(System.err)
+            null
+        }
+
+        { gravity ->
+            val text = method?.invoke(null, gravity.value)?.toString() ?: ""
+            "Gravity(${gravity.value} = [$text])"
         }
     }
 }

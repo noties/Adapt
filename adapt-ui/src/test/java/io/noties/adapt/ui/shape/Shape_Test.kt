@@ -49,7 +49,7 @@ class Shape_Test {
             Input(Shape::height, Relative(0.25F)),
             Input(Shape::gravity, Gravity.bottom.trailing),
             Input(Shape::rotation, Shape.Rotation(259F, Exact(1), Relative(1F))),
-            Input(Shape::shadow, Shape.Shadow(1, Exact(2), Relative(0.5F), Exact(16))),
+            Input(Shape::shadow, Shape.Shadow(Exact(2), 1, Relative(0.5F), Exact(16))),
             Input(Shape::translation, Shape.Translation(Exact(8), Relative(9F))),
             Input(Shape::padding, Shape.Padding(Exact(1), Relative(2F), Exact(3), Relative(0.5F))),
             Input(Shape::alpha, 88F),
@@ -569,8 +569,8 @@ class Shape_Test {
                 shape.assertEquals(null, Shape::shadow)
 
                 shape.shadow(
-                    input.color,
                     input.radius,
+                    input.color,
                     input.offsetX,
                     input.offsetY
                 )
@@ -618,8 +618,8 @@ class Shape_Test {
                 shape.assertEquals(null, Shape::shadow)
 
                 shape.shadowRelative(
-                    input.color,
                     input.radius,
+                    input.color,
                     input.offsetX,
                     input.offsetY
                 )

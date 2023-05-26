@@ -1,5 +1,16 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiShapeLabelSample",
+    "id": "20230526022755",
+    "title": "LabelShape",
+    "description": "Shape that draws \u003ci\u003esimple\u003c/i\u003e single line text",
+    "tags": [
+      "adapt-ui",
+      "shape",
+      "text"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyleSample",
     "id": "20230522113544",
     "title": "[Showcase] AdaptUI, element style",
@@ -96,9 +107,10 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample",
     "id": "20230515172204",
-    "title": "[Explore] Text Shape",
-    "description": "Shape that draws text",
+    "title": "TextShape",
+    "description": "Shape that draws text with \u003cem\u003eStaticLayout\u003c/em\u003e",
     "tags": [
+      "adapt-ui",
       "shape"
     ]
   },

@@ -178,9 +178,9 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
             }
         }.stateful { state ->
             if (state.pressed) {
-                shape.shadow(Colors.black, 12)
+                shape.shadow(12)
             } else {
-                shape.shadow(Colors.black, 2)
+                shape.shadow(2)
             }
         })
         .onDrawableStateChange { textView, drawableStateSet ->

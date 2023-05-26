@@ -88,7 +88,7 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
         fun config(radius: Int = 12): Shape.() -> Unit {
             return {
                 fill(Colors.white)
-                shadow(Colors.black, radius)
+                shadow(radius)
             }
         }
         return listOf(
@@ -100,22 +100,22 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
 //            ShapeItem("Oval", Oval(), config()),
             ShapeItem("Nested shadows", CircleShape()) {
                 fill(Colors.white)
-                shadow(Colors.black.withAlphaComponent(0.5F), 12)
+                shadow(12, Colors.black.withAlphaComponent(0.5F))
 
                 add(Circle {
                     padding(12)
                     fill(Colors.primary)
-                    shadow(Colors.primary, 12)
+                    shadow(12, Colors.primary)
 
                     add(Circle {
                         padding(12)
                         fill(Colors.orange)
-                        shadow(Colors.orange, 12)
+                        shadow(12, Colors.orange)
 
                         add(Circle {
                             padding(12)
                             fill(0xFFff0000.toInt())
-                            shadow(Colors.white, 12)
+                            shadow(12, Colors.white)
                         })
                     })
                 })
@@ -123,46 +123,45 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
             ShapeItem("Follows content", RectangleShape()) {
                 fill(Colors.white)
                 size(24, 24, Gravity.bottom.trailing)
-                shadow(Colors.accent, 4)
+                shadow(4, Colors.accent)
             },
             // Asset is not supported (does not use Paint to draw drawable resource)
             ShapeItem("Asset (N/A)", AssetShape(context.getDrawable(R.drawable.logo)!!)) {
                 size(56)
                 gravity(Gravity.center)
-                shadow(Colors.black, 8)
+                shadow(8)
             },
             ShapeItem("Rotated", RectangleShape()) {
                 fill(Colors.white)
                 sizeRelative(0.75F, 0.25F, Gravity.center)
                 rotate(45F)
-                shadow(Colors.black, 8)
+                shadow(8)
             },
             ShapeItem("Rotated 2X", RectangleShape()) {
                 add(Rectangle {
                     fill(Colors.white)
                     sizeRelative(0.75F, 0.25F, Gravity.center)
                     rotate(45F)
-                    shadow(Colors.orange, 8)
+                    shadow(8, Colors.orange)
                 })
                 add(Rectangle {
                     fill(Colors.white)
                     sizeRelative(0.75F, 0.25F, Gravity.center)
                     rotate(-45F)
-                    shadow(Colors.primary, 16)
+                    shadow(16, Colors.primary)
                 })
             },
             ShapeItem("Offset", RectangleShape()) {
                 fill(Colors.white)
-                shadow(Colors.black, 12, 4, -8)
+                shadow(12, offsetX = 4, offsetY = -8)
             },
             ShapeItem("Relative", RectangleShape()) {
                 size(48, 48)
                 fill(Colors.white)
                 shadowRelative(
-                    Colors.black,
                     0.25F,
-                    0.1F,
-                    -0.5F
+                    offsetX = 0.1F,
+                    offsetY = -0.5F
                 )
             },
             CardItem()
@@ -249,7 +248,7 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
 
                 }.background(base.copy {
                     fill(Colors.primary)
-                    shadow(Colors.accent, 12)
+                    shadow(12, Colors.accent)
                 })
 
             }.layout(FILL, 128)

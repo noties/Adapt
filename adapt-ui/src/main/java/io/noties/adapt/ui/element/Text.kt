@@ -20,6 +20,7 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
+import io.noties.adapt.ui.util.TypefaceStyle
 import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
@@ -116,14 +117,26 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
 /**
  * Typeface
  * @see TextView.setTypeface
+ * @see textTypeface
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use `textTypeface`")
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     font: Typeface? = null,
     fontStyle: Int = Typeface.NORMAL
+) = textTypeface(font, TypefaceStyle(fontStyle))
+
+fun <V: TextView, LP: LayoutParams> ViewElement<V, LP>.textTypeface(
+    typeface: Typeface? = null,
+    typefaceStyle: TypefaceStyle = TypefaceStyle.normal
 ): ViewElement<V, LP> = onView {
-    it.setTypeface(font, fontStyle)
+    it.setTypeface(typeface, typefaceStyle.value)
 }
 
+/**
+ * Makes text typeface style **bold**.
+ * NB! if current style already is _italic_, the resulting style would be BOLD_ITALIC
+ */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBold(
 ): ViewElement<V, LP> = onView { view ->
     val tp = view.typeface
@@ -131,6 +144,10 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBold(
     view.setTypeface(tp, style)
 }
 
+/**
+ * Makes text typeface style _italic_.
+ * NB! if current style already is **bold**, the resulting style would be BOLD_ITALIC
+ */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textItalic(
 ): ViewElement<V, LP> = onView { view ->
     val tp = view.typeface

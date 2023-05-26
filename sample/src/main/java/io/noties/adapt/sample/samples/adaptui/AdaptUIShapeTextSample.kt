@@ -23,19 +23,28 @@ import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
+import io.noties.adapt.ui.shape.LabelShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Text
 import io.noties.adapt.ui.util.Gravity
+import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230515172204",
-    title = "[Explore] Text Shape",
-    "Shape that draws text",
-    tags = ["shape"]
+    title = "TextShape",
+    "Shape that draws text with <em>StaticLayout</em>",
+    tags = ["shape", "adapt-ui"]
 )
 class AdaptUIShapeTextSample : AdaptUISampleView() {
+
+    init {
+        val gravity = android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL
+        val flag = gravity and android.view.Gravity.HORIZONTAL_GRAVITY_MASK
+        Debug.i("gravity:$gravity flag:$flag and:${flag and android.view.Gravity.CENTER_HORIZONTAL} (CENTER_HOR:${android.view.Gravity.CENTER_HORIZONTAL})")
+    }
+
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -87,7 +96,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
                 // negative padding will grow around text
                 padding(-16)
                 fill(Colors.primary)
-                shadow(Colors.black, 8)
+                shadow(8)
 
                 RoundedRectangle(12) {
                     padding(2)
@@ -140,7 +149,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             RoundedRectangle(8) {
                 fill(Colors.black)
                 padding(-4)
-                shadow(Colors.orange, 16)
+                shadow(16, Colors.orange)
             }
         }
 
@@ -171,7 +180,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             Capsule {
                 fill(Colors.white)
                 padding(-12, -4)
-                shadow(Colors.black, 12)
+                shadow(12)
             }
         }
 

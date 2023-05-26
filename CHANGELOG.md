@@ -1,7 +1,8 @@
 # Changelog
 
 # 5.0.0
-
+### Changed
+* `Text`: `.textFont` => `.textTypeface`
 
 #### Shape
 `Shape` has changed API. Right now all shapes are named following basic pattern - `RectangleShape`,

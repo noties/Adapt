@@ -10,8 +10,6 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.TextUtils
-import androidx.annotation.ColorInt
-import androidx.annotation.FloatRange
 import androidx.annotation.RequiresApi
 import io.noties.adapt.ui.element.BreakStrategy
 import io.noties.adapt.ui.element.HyphenationFrequency
@@ -21,20 +19,11 @@ import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
-//@formatter:off
-interface TextShapeDataBase {
+interface BaseTextShapeData : CommonTextPaintData {
     var text: CharSequence?
-    var textSize: Int?
-    var textColor: Int?
     var textGradient: Gradient?
-    var textTypeface: Typeface?
-    var textBold: Boolean?
-    var textItalic: Boolean?
-    var textUnderline: Boolean?
-    var textStrikethrough: Boolean?
     var textGravity: Gravity?
     var textRotation: Shape.Rotation?
-    var textShadow: Shape.Shadow?
     var textMaxLines: Int?
     var textEllipsize: TextUtils.TruncateAt?
     var textBreakStrategy: BreakStrategy?
@@ -42,65 +31,87 @@ interface TextShapeDataBase {
     var textJustificationMode: JustificationMode?
     var textLineSpacingAdd: Int?
     var textLineSpacingMultiplier: Float?
-    var textLetterSpacing: Float?
 
-    fun text(text: CharSequence?): TextShapeDataBase
-    fun textSize(textSize: Int?): TextShapeDataBase
-    fun textColor(textColor: Int?): TextShapeDataBase
-    fun textGradient(textGradient: Gradient?): TextShapeDataBase
-    fun textTypeface(textTypeface: Typeface?): TextShapeDataBase
-    fun textBold(textBold: Boolean? = true): TextShapeDataBase
-    fun textItalic(textItalic: Boolean? = true): TextShapeDataBase
-    fun textUnderline(textUnderline: Boolean? = true): TextShapeDataBase
-    fun textStrikethrough(textStrikethrough: Boolean? = true): TextShapeDataBase
+    /**
+     * Set text to be drawn. If text is null, this shape is not going to be drawn
+     */
+    fun text(text: CharSequence?) = this.also { this.text = text }
+
+    /**
+     * Set text gradient, based on actual text bounds
+     * @see TextPaint.setShader
+     */
+    fun textGradient(textGradient: Gradient?) = this.also { it.textGradient = textGradient }
 
     /**
      * `textGravity` is used to position text vertically within parent bounds. Horizontally
      * text is going to be positioned via `alignment` property of a [TextPaint].
+     * @see StaticLayout.Builder.setAlignment
      */
-    fun textGravity(textGravity: Gravity?): TextShapeDataBase
+    fun textGravity(textGravity: Gravity?) = this.also {
+        it.textGravity = textGravity
+    }
 
     /**
-     * NB! Text rotation is always relative to actual text bounds.
-     * By default center is used as the pivot point
+     * Rotate text relative to its bounds (bounds that actual text content takes). Accepts
+     * relative values - 0F..1F where x=0F is left-most position y=1F is bottom-most position.
+     * By default 0.5F-0.5F is used (center of text bounds)
      */
-    fun textRotation(
-        angle: Float,
-        @FloatRange(from = 0.0, to = 1.0) centerX: Float? = null,
-        @FloatRange(from = 0.0, to = 1.0) centerY: Float? = null
-    ): TextShapeDataBase
+    fun textRotation(angle: Float, centerX: Float? = null, centerY: Float? = null) = this.also {
+        it.textRotation = Shape.Rotation(
+            angle,
+            centerX?.let { p -> Dimension.Relative(p) },
+            centerY?.let { p -> Dimension.Relative(p) }
+        )
+    }
 
     /**
-     * By default uses text color as shadow color
+     * Limits text to `maxLines` specified. If no `textEllipsize` END is used by default
+     * @see StaticLayout.Builder.setMaxLines
+     * @see StaticLayout.Builder.setEllipsize
      */
-    fun textShadow(
-        radius: Int,
-        @ColorInt color: Int? = null,
-        offsetX: Int? = null,
-        offsetY: Int? = null
-    ): TextShapeDataBase
+    fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt? = null) = this.also {
+        it.textMaxLines = textMaxLines
+        it.textEllipsize = textEllipsize
+    }
 
     /**
-     * Limits by lines resulting text.
-     * NB! in most of the cases for text to be properly limited `TruncateAt` should be specified,
-     * by default text shape would use `TruncateAt.END` if not specified explicitly
+     * Set BreakStrategy for [StaticLayout]
+     * @see BreakStrategy
+     * @see StaticLayout.Builder.setBreakStrategy
      */
-    fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt? = null): TextShapeDataBase
-    fun textBreakStrategy(textBreakStrategy: BreakStrategy?): TextShapeDataBase
-    fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?): TextShapeDataBase
-    fun textJustificationMode(textJustificationMode: JustificationMode?): TextShapeDataBase
-    fun textLineSpacingAdd(textLineSpacingAdd: Int?): TextShapeDataBase
-    fun textLineSpacingMultiplier(textLineSpacingMultiplier: Float?): TextShapeDataBase
+    fun textBreakStrategy(textBreakStrategy: BreakStrategy?) = this.also {
+        it.textBreakStrategy = textBreakStrategy
+    }
 
     /**
-     * NB! this is `em` value, negative values shrink text
-     * @see TextPaint.setLetterSpacing
+     * Set Hyphenation frequency for [StaticLayout]
+     * @see HyphenationFrequency
+     * @see StaticLayout.Builder.setHyphenationFrequency
      */
-    fun textLetterSpacing(em: Float?): TextShapeDataBase
+    fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?) = this.also {
+        it.textHyphenationFrequency = textHyphenationFrequency
+    }
+
+    /**
+     * Set Justification mode for [StaticLayout]
+     * @see JustificationMode
+     * @see StaticLayout.Builder.setJustificationMode
+     */
+    fun textJustificationMode(textJustificationMode: JustificationMode?) = this.also {
+        it.textJustificationMode = textJustificationMode
+    }
+
+    /**
+     * Set additional line spacing for [StaticLayout], by default add=0, mult=1.0F
+     * @see StaticLayout.Builder.setLineSpacing
+     */
+    fun textLineSpacing(add: Int? = null, mult: Float? = null) = this.also {
+        it.textLineSpacingAdd = add
+        it.textLineSpacingMultiplier = mult
+    }
 }
-//@formatter:on
 
-//@formatter:off
 data class TextShapeData(
     override var text: CharSequence? = null,
     override var textSize: Int? = null,
@@ -122,51 +133,14 @@ data class TextShapeData(
     override var textLineSpacingAdd: Int? = null,
     override var textLineSpacingMultiplier: Float? = null,
     override var textLetterSpacing: Float? = null
-): TextShapeDataBase {
-    override fun text(text: CharSequence?) = this.also { it.text = text }
-    override fun textSize(textSize: Int?) = this.also { it.textSize = textSize }
-    override fun textColor(textColor: Int?) = this.also { it.textColor = textColor }
-    override fun textGradient(textGradient: Gradient?) = this.also { it.textGradient = textGradient }
-    override fun textTypeface(textTypeface: Typeface?) = this.also { it.textTypeface = textTypeface }
-    override fun textBold(textBold: Boolean?) = this.also { it.textBold = textBold }
-    override fun textItalic(textItalic: Boolean?) = this.also { it.textItalic = textItalic }
-    override fun textUnderline(textUnderline: Boolean?) = this.also { it.textUnderline = textUnderline }
-    override fun textStrikethrough(textStrikethrough: Boolean?) = this.also { it.textStrikethrough = textStrikethrough }
-    override fun textGravity(textGravity: Gravity?) = this.also { it.textGravity = textGravity }
-    override fun textRotation(angle: Float, centerX: Float?, centerY: Float?) = this.also {
-        it.textRotation = Shape.Rotation(
-            angle,
-            centerX?.let { p -> Dimension.Relative(p) },
-            centerY?.let { p -> Dimension.Relative(p) }
-        )
-    }
-    override fun textShadow(radius: Int, @ColorInt color: Int?, offsetX: Int?, offsetY: Int?) = this.also {
-        it.textShadow = Shape.Shadow(
-            color,
-            Dimension.Exact(radius),
-            offsetX?.let { p -> Dimension.Exact(p) },
-            offsetY?.let { p -> Dimension.Exact(p) }
-        )
-    }
-    override fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt?) = this.also {
-        it.textMaxLines = textMaxLines
-        it.textEllipsize = textEllipsize
-    }
-    override fun textBreakStrategy(textBreakStrategy: BreakStrategy?) = this.also { it.textBreakStrategy = textBreakStrategy }
-    override fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?) = this.also { it.textHyphenationFrequency = textHyphenationFrequency }
-    override fun textJustificationMode(textJustificationMode: JustificationMode?) = this.also { it.textJustificationMode = textJustificationMode }
-    override fun textLineSpacingAdd(textLineSpacingAdd: Int?) = this.also { it.textLineSpacingAdd = textLineSpacingAdd }
-    override fun textLineSpacingMultiplier(textLineSpacingMultiplier: Float?) = this.also { it.textLineSpacingMultiplier = textLineSpacingMultiplier }
-    override fun textLetterSpacing(em: Float?) = this.also { it.textLetterSpacing = em }
-}
-//@formatter:on
+) : BaseTextShapeData
 
 @RequiresApi(Build.VERSION_CODES.O)
 class TextShape(
     text: CharSequence? = null,
     private val data: TextShapeData = TextShapeData(text = text),
     block: TextShape.() -> Unit = {}
-) : RectangleShape(), TextShapeDataBase by data {
+) : RectangleShape(), BaseTextShapeData by data {
 
     init {
         block(this)
@@ -196,6 +170,7 @@ class TextShape(
         // apply text rotation to content (and children)
         textRotation?.draw(canvas, drawRect)
 
+        // NB! children are drawn before actual text (so would be displayed under text)
         super.drawChildren(canvas, drawRect)
 
         val save = canvas.save()
@@ -247,54 +222,7 @@ class TextShape(
                     return null
                 }
 
-                with(textData) {
-                    textSize?.dip?.toFloat()?.also { textPaint.textSize = it }
-                    textColor?.also { textPaint.color = it }
-                    textTypeface?.also { textPaint.typeface = it }
-
-                    val typeface = textTypeface
-                    if (typeface != null) {
-                        val bold = textBold ?: false
-                        val italic = textItalic ?: false
-                        val style = when {
-                            bold && italic -> Typeface.BOLD_ITALIC
-                            bold -> Typeface.BOLD
-                            italic -> Typeface.ITALIC
-                            else -> Typeface.NORMAL
-                        }
-                        textPaint.typeface = Typeface.create(typeface, style)
-                    } else {
-                        // emulate bold
-                        if (true == textBold) {
-                            textPaint.isFakeBoldText = true
-                        }
-                        // emulate italic
-                        if (true == textItalic) {
-                            textPaint.textSkewX = -0.25F
-                        }
-                    }
-                    textUnderline?.also { textPaint.isUnderlineText = it }
-                    textStrikethrough?.also { textPaint.isStrikeThruText = it }
-
-                    textPaint.letterSpacing = textLetterSpacing ?: 0F
-
-                    // resolve(0) is a way to ensure only Exact dimensions
-                    textShadow
-                        ?.let { it to (it.radius?.resolve(0) ?: 0) }
-                        ?.takeIf { it.second > 0 }
-                        ?.also { (shadow, radius) ->
-                            val x = shadow.offsetX?.resolve(0) ?: 0
-                            val y = shadow.offsetY?.resolve(0) ?: 0
-                            textPaint.setShadowLayer(
-                                radius.toFloat(),
-                                x.toFloat(),
-                                y.toFloat(),
-                                shadow.color ?: textPaint.color
-                            )
-                        }
-                    // else clear shadow layer
-                        ?: kotlin.run { textPaint.clearShadowLayer() }
-                }
+                textData.applyTo(textPaint)
 
                 layout = StaticLayout.Builder
                     .obtain(
@@ -306,7 +234,7 @@ class TextShape(
                     )
                     .also { builder ->
                         with(textData) {
-                            textGravity?.also { builder.setAlignment(alignment(it)) }
+                            textGravity?.also { builder.setAlignment(horizontalAlignment(it)) }
                             textBreakStrategy?.also { builder.setBreakStrategy(it.value) }
                             textHyphenationFrequency?.also {
                                 builder.setHyphenationFrequency(
@@ -338,16 +266,11 @@ class TextShape(
                         val contentHeight = layout.height
 
                         // we update drawRect according to the text gravity
-                        // additionally, we gravity is applied here only to vertical axis
+                        // additionally, when gravity is applied here only to vertical axis
                         //  as horizontal gravity should be taken by the cache (which constructs alignment),
                         //  here, text is always the width of container, but with proper gravity it can be
                         //  positioned freely on the canvas
                         textData.textGravity?.also { gravity ->
-                            // we update drawRect according to the text gravity
-                            // additionally, we gravity is applied here only to vertical axis
-                            //  as horizontal gravity should be taken by the cache (which constructs alignment),
-                            //  here, text is always the width of container, but with proper gravity it can be
-                            //  positioned freely on the canvas
                             android.view.Gravity.apply(
                                 gravity.value,
                                 contentWidth,
@@ -365,6 +288,8 @@ class TextShape(
                         }
                     }
 
+                // NB! this called at the end (after already sending textPaint to layout,
+                //  because we need text bounds to create gradient)
                 shaderCache.shader(textData.textGradient, contentBounds, textPaint)
             }
 
@@ -373,11 +298,10 @@ class TextShape(
 
         @Suppress("MoveVariableDeclarationIntoWhen")
         @SuppressLint("RtlHardcoded")
-        internal fun alignment(gravity: Gravity): Layout.Alignment {
-            val value = gravity.value.and(android.view.Gravity.HORIZONTAL_GRAVITY_MASK)
-            return when (value) {
-                android.view.Gravity.START, android.view.Gravity.LEFT -> Layout.Alignment.ALIGN_NORMAL
-                android.view.Gravity.END, android.view.Gravity.RIGHT -> Layout.Alignment.ALIGN_OPPOSITE
+        internal fun horizontalAlignment(gravity: Gravity): Layout.Alignment {
+            return when {
+                gravity.hasLeading() -> Layout.Alignment.ALIGN_NORMAL
+                gravity.hasTrailing() -> Layout.Alignment.ALIGN_OPPOSITE
                 else -> Layout.Alignment.ALIGN_CENTER
             }
         }

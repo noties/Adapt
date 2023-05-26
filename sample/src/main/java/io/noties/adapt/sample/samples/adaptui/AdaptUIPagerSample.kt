@@ -124,7 +124,7 @@ class AdaptUIPagerSample : SampleView() {
                             fill(Colors.white) // for the shape to cast proper elevation shadow
                             stroke(Colors.black)
                             padding(16)
-                            shadow(Colors.black, 4)
+                            shadow(4)
                         })
 //                        .elevation(4)
                 }

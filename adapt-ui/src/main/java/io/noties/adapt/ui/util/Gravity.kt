@@ -5,8 +5,12 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
+import android.view.Gravity.HORIZONTAL_GRAVITY_MASK
+import android.view.Gravity.LEFT
+import android.view.Gravity.RIGHT
 import android.view.Gravity.START
 import android.view.Gravity.TOP
+import android.view.Gravity.VERTICAL_GRAVITY_MASK
 import androidx.annotation.GravityInt
 
 /**
@@ -69,5 +73,19 @@ open class Gravity(@GravityInt val value: Int) {
 
     override fun hashCode(): Int {
         return value
+    }
+
+    fun hasLeading() = checkHorizontal(LEFT)
+    fun hasTop() = checkVertical(TOP)
+    fun hasTrailing() = checkHorizontal(RIGHT)
+    fun hasBottom() = checkVertical(BOTTOM)
+    fun hasCenter() = checkHorizontal(CENTER_HORIZONTAL) || checkVertical(CENTER_VERTICAL)
+
+    private fun checkHorizontal(expected: Int): Boolean {
+        return expected == (value and HORIZONTAL_GRAVITY_MASK)
+    }
+
+    private fun checkVertical(expected: Int): Boolean {
+        return expected == (value and VERTICAL_GRAVITY_MASK)
     }
 }

@@ -180,29 +180,32 @@ abstract class Shape : ShapeFactory {
         }
     }
 
+    /**
+     * By default uses black shadow color
+     */
     fun shadow(
-        @ColorInt color: Int? = null,
         radius: Int? = null,
+        @ColorInt color: Int? = null,
         offsetX: Int? = null,
         offsetY: Int? = null
     ) = this.also {
         this.shadow = (shadow ?: Shadow()).apply {
-            color?.also { this.color = it }
             radius?.also { this.radius = Dimension.Exact(it) }
+            color?.also { this.color = it }
             offsetX?.also { this.offsetX = Dimension.Exact(it) }
             offsetY?.also { this.offsetY = Dimension.Exact(it) }
         }
     }
 
     fun shadowRelative(
-        @ColorInt color: Int? = null,
         @FloatRange(from = 0.0, to = 1.0) radius: Float? = null,
+        @ColorInt color: Int? = null,
         @FloatRange(from = -1.0, to = 1.0) offsetX: Float? = null,
         @FloatRange(from = -1.0, to = 1.0) offsetY: Float? = null
     ) = this.also {
         this.shadow = (shadow ?: Shadow()).apply {
-            color?.also { this.color = it }
             radius?.also { this.radius = Dimension.Relative(it) }
+            color?.also { this.color = it }
             offsetX?.also { this.offsetX = Dimension.Relative(it) }
             offsetY?.also { this.offsetY = Dimension.Relative(it) }
         }
@@ -362,7 +365,7 @@ abstract class Shape : ShapeFactory {
                 it.alpha = childDrawAlpha
 
                 // draw the shape
-                it.draw(canvas, drawRect)
+                it.draw(canvas, bounds)
 
                 // restore initial value
                 it.alpha = childAlpha
@@ -630,8 +633,8 @@ abstract class Shape : ShapeFactory {
     }
 
     class Shadow(
-        var color: Int? = null,
         var radius: Dimension? = null,
+        var color: Int? = null,
         var offsetX: Dimension? = null,
         var offsetY: Dimension? = null
     ) {
@@ -644,15 +647,16 @@ abstract class Shape : ShapeFactory {
         private val rect = Rect()
 
         fun copy(block: Shadow.() -> Unit = {}): Shadow =
-            Shadow(color, radius, offsetX, offsetY).also(block)
+            Shadow(radius, color, offsetX, offsetY).also(block)
 
         fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
-            val color = this.color ?: return
             val radius = this.radius?.let {
                 it.resolve(bounds.width())
                     .takeIf { v -> v > 0 }
                     ?: it.resolve(bounds.height()).takeIf { v -> v > 0 }
             } ?: return
+
+            val color = this.color ?: Color.BLACK
 
             rect.set(bounds)
 
