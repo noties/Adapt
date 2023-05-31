@@ -32,6 +32,7 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.whenever
 import org.mockito.verification.VerificationMode
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -352,6 +353,7 @@ class ViewElement_Extensions_Test {
     @Test
     fun `foreground - shape`() {
         val shape = mock(Shape::class.java)
+        whenever(shape.newDrawable()).then { ShapeDrawable.createActual(it.mock as Shape, Unit) }
 
         val inputs = listOf(
             shape to null,

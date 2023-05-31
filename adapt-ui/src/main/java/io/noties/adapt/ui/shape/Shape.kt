@@ -181,7 +181,10 @@ abstract class Shape : ShapeFactory {
     }
 
     /**
-     * By default uses black shadow color
+     * By default uses black shadow color.
+     * __NB!__ internally this uses [BlurMaskFilter] so it can be displayed differently
+     * on distinct Android versions, especially on _old_ ones, which have limitations for such
+     * graphic features
      */
     fun shadow(
         radius: Int? = null,
@@ -197,6 +200,12 @@ abstract class Shape : ShapeFactory {
         }
     }
 
+    /**
+     * By default uses black shadow color.
+     * __NB!__ internally this uses [BlurMaskFilter] so it can be displayed differently
+     * on distinct Android versions, especially on _old_ ones, which have limitations for such
+     * graphic features
+     */
     fun shadowRelative(
         @FloatRange(from = 0.0, to = 1.0) radius: Float? = null,
         @ColorInt color: Int? = null,

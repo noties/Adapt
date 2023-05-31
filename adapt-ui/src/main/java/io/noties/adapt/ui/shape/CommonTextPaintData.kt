@@ -17,79 +17,6 @@ interface CommonTextPaintData {
     var textLetterSpacing: Float?
 
     /**
-     * Set text size in SP
-     * @see TextPaint.setTextSize
-     */
-    fun textSize(textSize: Int?) = this.also { it.textSize = textSize }
-
-    /**
-     * Set text color
-     * @see TextPaint.setColor
-     */
-    fun textColor(@ColorInt textColor: Int?) = this.also { it.textColor = textColor }
-
-    /**
-     * Set text Typeface
-     * @see TextPaint.setTypeface
-     */
-    fun textTypeface(textTypeface: Typeface?) = this.also { it.textTypeface = textTypeface }
-
-    /**
-     * Apply bold style. If no typeface is available, then [TextPaint.setFakeBoldText] is going to be used
-     * @see TextPaint.setFakeBoldText
-     */
-    fun textBold(textBold: Boolean? = true) = this.also { it.textBold = textBold }
-
-    /**
-     * Apply italic style. If no typeface is available, then [TextPaint.setTextSkewX] is going to be used
-     * @see TextPaint.setTextSkewX
-     */
-    fun textItalic(textItalic: Boolean? = true) = this.also { it.textItalic = textItalic }
-
-    /**
-     * Apply underline
-     * @see TextPaint.setUnderlineText
-     */
-    fun textUnderline(textUnderline: Boolean? = true) = this.also {
-        it.textUnderline = textUnderline
-    }
-
-    /**
-     * Apply strike-through
-     * @see TextPaint.setStrikeThruText
-     */
-    fun textStrikethrough(textStrikethrough: Boolean? = true) =
-        this.also { it.textStrikethrough = textStrikethrough }
-
-    /**
-     * By default uses text color as shadow color.
-     * NB! only uses exact dimensions
-     * @see TextPaint.setShadowLayer
-     * @see Dimension.Exact
-     */
-    fun textShadow(
-        radius: Int,
-        @ColorInt color: Int? = null,
-        offsetX: Int? = null,
-        offsetY: Int? = null
-    ) = this.also {
-        it.textShadow = Shape.Shadow(
-            Dimension.Exact(radius),
-            color,
-            offsetX?.let { p -> Dimension.Exact(p) },
-            offsetY?.let { p -> Dimension.Exact(p) }
-        )
-    }
-
-    /**
-     * Apply letter spacing in EM, negative values shrink letters
-     * @see TextPaint.setLetterSpacing
-     */
-    fun textLetterSpacing(em: Float?) = this.also {
-        it.textLetterSpacing = em
-    }
-
-    /**
      * Apply properties to supplied [TextPaint]
      */
     fun applyTo(textPaint: TextPaint) {
@@ -145,5 +72,96 @@ interface CommonTextPaintData {
             ?: kotlin.run { textPaint.clearShadowLayer() }
 
         textPaint.letterSpacing = textLetterSpacing ?: 0F
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+interface CommonTextPaintDataSetter<THIS : CommonTextPaintData> : CommonTextPaintData {
+    /**
+     * Set text size in SP
+     * @see TextPaint.setTextSize
+     */
+    fun textSize(
+        textSize: Int?
+    ) = (this as THIS).also { it.textSize = textSize }
+
+    /**
+     * Set text color
+     * @see TextPaint.setColor
+     */
+    fun textColor(
+        @ColorInt textColor: Int?
+    ) = (this as THIS).also { it.textColor = textColor }
+
+    /**
+     * Set text Typeface
+     * @see TextPaint.setTypeface
+     */
+    fun textTypeface(
+        textTypeface: Typeface?
+    ) = (this as THIS).also { it.textTypeface = textTypeface }
+
+    /**
+     * Apply bold style. If no typeface is available, then [TextPaint.setFakeBoldText] is going to be used
+     * @see TextPaint.setFakeBoldText
+     */
+    fun textBold(
+        textBold: Boolean? = true
+    ) = (this as THIS).also { it.textBold = textBold }
+
+    /**
+     * Apply italic style. If no typeface is available, then [TextPaint.setTextSkewX] is going to be used
+     * @see TextPaint.setTextSkewX
+     */
+    fun textItalic(
+        textItalic: Boolean? = true
+    ) = (this as THIS).also { it.textItalic = textItalic }
+
+    /**
+     * Apply underline
+     * @see TextPaint.setUnderlineText
+     */
+    fun textUnderline(
+        textUnderline: Boolean? = true
+    ) = (this as THIS).also {
+        it.textUnderline = textUnderline
+    }
+
+    /**
+     * Apply strike-through
+     * @see TextPaint.setStrikeThruText
+     */
+    fun textStrikethrough(
+        textStrikethrough: Boolean? = true
+    ) = (this as THIS).also { it.textStrikethrough = textStrikethrough }
+
+    /**
+     * By default uses text color as shadow color.
+     * NB! only uses exact dimensions
+     * @see TextPaint.setShadowLayer
+     * @see Dimension.Exact
+     */
+    fun textShadow(
+        radius: Int,
+        @ColorInt color: Int? = null,
+        offsetX: Int? = null,
+        offsetY: Int? = null
+    ) = (this as THIS).also {
+        it.textShadow = Shape.Shadow(
+            Dimension.Exact(radius),
+            color,
+            offsetX?.let { p -> Dimension.Exact(p) },
+            offsetY?.let { p -> Dimension.Exact(p) }
+        )
+    }
+
+    /**
+     * Apply letter spacing in EM, negative values shrink letters
+     * @see TextPaint.setLetterSpacing
+     */
+    fun textLetterSpacing(
+        em: Float?
+    ) = (this as THIS).also {
+        it.textLetterSpacing = em
     }
 }

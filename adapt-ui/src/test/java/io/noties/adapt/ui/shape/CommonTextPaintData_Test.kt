@@ -29,7 +29,7 @@ class CommonTextPaintData_Test {
         override var textStrikethrough: Boolean? = null,
         override var textShadow: Shape.Shadow? = null,
         override var textLetterSpacing: Float? = null
-    ) : CommonTextPaintData
+    ) : CommonTextPaintData, CommonTextPaintDataSetter<Impl>
 
     @Test
     fun textSize() {

@@ -11,16 +11,28 @@ interface BaseLabelShapeData : CommonTextPaintData {
     var text: String?
     var textGravity: Gravity?
     var textRotation: Shape.Rotation?
+}
 
-    fun text(text: String?) = this.also {
+@Suppress("UNCHECKED_CAST")
+interface BaseLabelShapeDataSetter<THIS : BaseLabelShapeData> : BaseLabelShapeData {
+
+    fun text(
+        text: String?
+    ) = (this as THIS).also {
         it.text = text
     }
 
-    fun textGravity(textGravity: Gravity?) = this.also {
+    fun textGravity(
+        textGravity: Gravity?
+    ) = (this as THIS).also {
         it.textGravity = textGravity
     }
 
-    fun textRotation(angle: Float, centerX: Float? = null, centerY: Float? = null) = this.also {
+    fun textRotation(
+        angle: Float,
+        centerX: Float? = null,
+        centerY: Float? = null
+    ) = (this as THIS).also {
         it.textRotation = Shape.Rotation(
             angle,
             Dimension.Relative(centerX ?: 0.5F),
@@ -44,18 +56,18 @@ data class LabelShapeData(
     override var textRotation: Shape.Rotation? = null,
 ) : BaseLabelShapeData
 
-// TODO: override all setter functions, as they start returning parent
-// .also { add(it) } - won't work as data file is passed around
-
 /**
  * A shape to draw _simple_ single-line text.
  * @see TextShape
  */
 class LabelShape(
     text: String? = null,
-    val data: LabelShapeData = LabelShapeData(text = text),
+    private val data: LabelShapeData = LabelShapeData(text = text),
     block: LabelShape.() -> Unit = {}
-) : RectangleShape(), BaseLabelShapeData by data {
+) : RectangleShape(),
+    BaseLabelShapeData by data,
+    CommonTextPaintDataSetter<LabelShape>,
+    BaseLabelShapeDataSetter<LabelShape> {
 
     init {
         block(this)

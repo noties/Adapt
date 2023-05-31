@@ -13,7 +13,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawableSample",
     "id": "20230530151621",
     "title": "[Showcase] ShapeDrawable usage",
-    "description": "",
+    "description": "stateful hotspot",
     "tags": [
       "adapt-ui",
       "showcase"

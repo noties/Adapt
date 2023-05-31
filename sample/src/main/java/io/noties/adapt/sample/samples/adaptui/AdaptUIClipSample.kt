@@ -69,24 +69,24 @@ class AdaptUIClipSample : AdaptUISampleView() {
 
             }.layout(FILL, 256)
 
-            ZStack {
-                View().layoutFill()
-                    .background(Colors.black)
-            }.layout(FILL, 128)
-                .background(
-                    ShapeDrawable(
-                        RoundRectShape(
-                            listOf(0, 4, 16, 32)
-                                .map { it.dip.toFloat() }
-                                .flatMap { listOf(it, it) }
-                                .toFloatArray(),
-                            null,
-                            null
-                        )
-                    )
-                )
-                .foreground { Rectangle().fill(Colors.orange) }
-                .clipToOutline()
+//            ZStack {
+//                View().layoutFill()
+//                    .background(Colors.black)
+//            }.layout(FILL, 128)
+//                .background(
+//                    ShapeDrawable(
+//                        RoundRectShape(
+//                            listOf(0, 4, 16, 32)
+//                                .map { it.dip.toFloat() }
+//                                .flatMap { listOf(it, it) }
+//                                .toFloatArray(),
+//                            null,
+//                            null
+//                        )
+//                    )
+//                )
+//                .foreground { Rectangle().fill(Colors.orange) }
+//                .clipToOutline()
 
             // Arc is not supported, Line, Text, Label
             listOf(

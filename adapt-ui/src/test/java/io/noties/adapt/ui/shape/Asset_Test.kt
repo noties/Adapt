@@ -16,6 +16,7 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.math.roundToInt
@@ -167,5 +168,25 @@ class Asset_Test {
         }
         assertEquals(4, (asset.width as Dimension.Exact).value)
         assertEquals(5, (asset.height as Dimension.Exact).value)
+    }
+
+    @Test
+    fun newDrawable() {
+        val drawable = mockt<Drawable> {
+            whenever(mock.isStateful).thenReturn(true)
+        }
+
+        val asset = AssetShape(drawable)
+        val shapeDrawable = asset.newDrawable()
+
+        assertEquals(true, shapeDrawable.isStateful)
+
+        val state = intArrayOf(65)
+        shapeDrawable.state = state
+
+        verify(drawable).state = eq(state)
+
+        shapeDrawable.setHotspot(3F, 6F)
+        verify(drawable).setHotspot(eq(3F), eq(6F))
     }
 }

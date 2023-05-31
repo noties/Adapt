@@ -29,13 +29,13 @@ class AdaptUiShapeLabelSample : AdaptUISampleView() {
                 .background {
                     LabelShape {
                         text("Hello there! \uD83D\uDE18")
-                        textSize(20)
-                        textColor(Colors.black)
-                        textGravity(Gravity.center)
-                        textBold()
+                            .textSize(20)
+                            .textColor(Colors.black)
+                            .textGravity(Gravity.center)
+                            .textBold()
 //                        textRotation(45F, 1F, 0F)
-                        textShadow(4, Colors.accent)
-                        textLetterSpacing(-0.05F)
+                            .textShadow(4, Colors.accent)
+                            .textLetterSpacing(-0.05F)
 
                         // add a child that would fit actual text bounds
                         Rectangle {

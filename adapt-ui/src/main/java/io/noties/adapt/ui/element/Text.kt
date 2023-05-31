@@ -68,11 +68,13 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
     val rect = Rect()
 
     fun deliver() {
+        val left = view.paddingLeft
+        val top = view.paddingTop
         rect.set(
-            view.paddingLeft,
-            view.paddingTop,
-            view.width - view.paddingRight - view.paddingLeft,
-            view.height - view.paddingBottom - view.paddingTop
+            left,
+            top,
+            left + (view.width - view.paddingRight - left),
+            top + (view.height - view.paddingBottom - top)
         )
 
         if (shaderBounds != rect || !rect.isEmpty) {

@@ -15,8 +15,6 @@ open class ShapeDrawable<R : Any> protected constructor(
     val ref: R
 ) : Drawable() {
 
-    // TODO: we do need to redirect to newDrawable (as shapes might override some behavior)
-    //  but... we must create actual drawable there, not here, otherwise it is a recursive loop
     companion object {
 
         operator fun invoke(
@@ -110,9 +108,9 @@ open class ShapeDrawable<R : Any> protected constructor(
         it.invalidateSelf()
     }
 
-    fun clearStateful() = this.also {
-        it.stateful = null
-        invalidateSelf()
+    fun clearHotspot() = this.also {
+        it.hotspot = null
+        it.invalidateSelf()
     }
 
     fun stateful(
@@ -120,6 +118,11 @@ open class ShapeDrawable<R : Any> protected constructor(
         onStateChange: ShapeDrawable<R>.(DrawableStateSet) -> Unit = {}
     ) = this.also {
         it.stateful = Stateful(states, onStateChange)
+        invalidateSelf()
+    }
+
+    fun clearStateful() = this.also {
+        it.stateful = null
         invalidateSelf()
     }
 

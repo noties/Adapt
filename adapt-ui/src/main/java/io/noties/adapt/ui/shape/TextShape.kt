@@ -31,24 +31,33 @@ interface BaseTextShapeData : CommonTextPaintData {
     var textJustificationMode: JustificationMode?
     var textLineSpacingAdd: Int?
     var textLineSpacingMultiplier: Float?
+}
 
+@Suppress("UNCHECKED_CAST")
+interface BaseTextShapeDataSetter<THIS : BaseTextShapeData> : BaseTextShapeData {
     /**
      * Set text to be drawn. If text is null, this shape is not going to be drawn
      */
-    fun text(text: CharSequence?) = this.also { this.text = text }
+    fun text(
+        text: CharSequence?
+    ) = (this as THIS).also { this.text = text }
 
     /**
      * Set text gradient, based on actual text bounds
      * @see TextPaint.setShader
      */
-    fun textGradient(textGradient: Gradient?) = this.also { it.textGradient = textGradient }
+    fun textGradient(
+        textGradient: Gradient?
+    ) = (this as THIS).also { it.textGradient = textGradient }
 
     /**
      * `textGravity` is used to position text vertically within parent bounds. Horizontally
      * text is going to be positioned via `alignment` property of a [TextPaint].
      * @see StaticLayout.Builder.setAlignment
      */
-    fun textGravity(textGravity: Gravity?) = this.also {
+    fun textGravity(
+        textGravity: Gravity?
+    ) = (this as THIS).also {
         it.textGravity = textGravity
     }
 
@@ -57,7 +66,11 @@ interface BaseTextShapeData : CommonTextPaintData {
      * relative values - 0F..1F where x=0F is left-most position y=1F is bottom-most position.
      * By default 0.5F-0.5F is used (center of text bounds)
      */
-    fun textRotation(angle: Float, centerX: Float? = null, centerY: Float? = null) = this.also {
+    fun textRotation(
+        angle: Float,
+        centerX: Float? = null,
+        centerY: Float? = null
+    ) = (this as THIS).also {
         it.textRotation = Shape.Rotation(
             angle,
             centerX?.let { p -> Dimension.Relative(p) },
@@ -70,7 +83,10 @@ interface BaseTextShapeData : CommonTextPaintData {
      * @see StaticLayout.Builder.setMaxLines
      * @see StaticLayout.Builder.setEllipsize
      */
-    fun textMaxLines(textMaxLines: Int?, textEllipsize: TextUtils.TruncateAt? = null) = this.also {
+    fun textMaxLines(
+        textMaxLines: Int?,
+        textEllipsize: TextUtils.TruncateAt? = null
+    ) = (this as THIS).also {
         it.textMaxLines = textMaxLines
         it.textEllipsize = textEllipsize
     }
@@ -80,7 +96,9 @@ interface BaseTextShapeData : CommonTextPaintData {
      * @see BreakStrategy
      * @see StaticLayout.Builder.setBreakStrategy
      */
-    fun textBreakStrategy(textBreakStrategy: BreakStrategy?) = this.also {
+    fun textBreakStrategy(
+        textBreakStrategy: BreakStrategy?
+    ) = (this as THIS).also {
         it.textBreakStrategy = textBreakStrategy
     }
 
@@ -89,7 +107,9 @@ interface BaseTextShapeData : CommonTextPaintData {
      * @see HyphenationFrequency
      * @see StaticLayout.Builder.setHyphenationFrequency
      */
-    fun textHyphenationFrequency(textHyphenationFrequency: HyphenationFrequency?) = this.also {
+    fun textHyphenationFrequency(
+        textHyphenationFrequency: HyphenationFrequency?
+    ) = (this as THIS).also {
         it.textHyphenationFrequency = textHyphenationFrequency
     }
 
@@ -98,7 +118,9 @@ interface BaseTextShapeData : CommonTextPaintData {
      * @see JustificationMode
      * @see StaticLayout.Builder.setJustificationMode
      */
-    fun textJustificationMode(textJustificationMode: JustificationMode?) = this.also {
+    fun textJustificationMode(
+        textJustificationMode: JustificationMode?
+    ) = (this as THIS).also {
         it.textJustificationMode = textJustificationMode
     }
 
@@ -106,7 +128,10 @@ interface BaseTextShapeData : CommonTextPaintData {
      * Set additional line spacing for [StaticLayout], by default add=0, mult=1.0F
      * @see StaticLayout.Builder.setLineSpacing
      */
-    fun textLineSpacing(add: Int? = null, mult: Float? = null) = this.also {
+    fun textLineSpacing(
+        add: Int? = null,
+        mult: Float? = null
+    ) = (this as THIS).also {
         it.textLineSpacingAdd = add
         it.textLineSpacingMultiplier = mult
     }
@@ -140,7 +165,10 @@ class TextShape(
     text: CharSequence? = null,
     private val data: TextShapeData = TextShapeData(text = text),
     block: TextShape.() -> Unit = {}
-) : RectangleShape(), BaseTextShapeData by data {
+) : RectangleShape(),
+    BaseTextShapeData by data,
+    CommonTextPaintDataSetter<TextShape>,
+    BaseTextShapeDataSetter<TextShape> {
 
     init {
         block(this)

@@ -16,6 +16,8 @@ import org.mockito.ArgumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.concurrent.atomic.AtomicBoolean
@@ -50,7 +52,7 @@ class ShapeDrawable_Test {
     fun draw() {
         val bounds = Rect(0, 0, 10, 22)
         val shape = mockt<Shape>()
-        val drawable = ShapeDrawable(shape).also { it.bounds = bounds }
+        val drawable = ShapeDrawable.createActual(shape, Unit).also { it.bounds = bounds }
         val canvas = mockt<Canvas>()
 
         assertEquals(shape, drawable.shape)
@@ -111,7 +113,7 @@ class ShapeDrawable_Test {
         val shape = mockt<Shape>()
         val outline = mockt<Outline>()
 
-        val drawable = ShapeDrawable(shape).also { it.bounds = bounds }
+        val drawable = ShapeDrawable.createActual(shape, Unit).also { it.bounds = bounds }
         drawable.getOutline(outline)
 
         verify(shape).outline(eq(outline), eq(bounds))
@@ -228,5 +230,55 @@ class ShapeDrawable_Test {
         // invalidated each time state changes + first time when statefulness is requested +
         //  one time drawable is set stateless
         verify(drawableCallback, times(trigger.size + 2)).invalidateDrawable(eq(drawable))
+    }
+
+    @Test
+    fun `factory - calls shape`() {
+        // invoke(shape)
+        kotlin.run {
+            val shape = mockt<Shape>()
+            ShapeDrawable.invoke(shape)
+            verify(shape).newDrawable()
+        }
+
+        // invoke(shape, ref)
+        kotlin.run {
+            val shape = mockt<Shape>()
+            val ref = Any()
+            ShapeDrawable.invoke(ref, shape)
+            verify(shape).newDrawable(eq(ref))
+        }
+
+        // invoke(ShapeFactory)
+        kotlin.run {
+            val shape = mockt<Shape>()
+            ShapeDrawable.invoke { shape }
+            verify(shape).newDrawable()
+        }
+
+        // invoke(ref, ShapeFactory)
+        kotlin.run {
+            val shape = mockt<Shape>()
+            val ref = Any()
+            ShapeDrawable.invoke(ref) { shape }
+            verify(shape).newDrawable(eq(ref))
+        }
+    }
+
+    @Test
+    fun hotspot() {
+        val drawable = ShapeDrawable.createActual(mockt(), Any())
+        // nothing happens
+        drawable.setHotspot(1F, 2F)
+
+        val callback: ShapeDrawable<Any>.(Float, Float) -> Unit = mockt()
+        drawable.hotspot(callback)
+
+        drawable.setHotspot(3F, 4F)
+        verify(callback).invoke(eq(drawable), eq(3F), eq(4F))
+
+        drawable.clearHotspot()
+        drawable.setHotspot(5F, 6F)
+        verifyNoMoreInteractions(callback)
     }
 }
