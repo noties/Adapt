@@ -1,7 +1,6 @@
 package io.noties.adapt.ui.shape
 
 import android.graphics.Canvas
-import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
@@ -111,9 +110,5 @@ class LineShape(
 
             return path
         }
-    }
-
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        outline.setEmpty()
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.SystemClock
 import androidx.annotation.ColorInt
 import kotlin.math.roundToInt
 
@@ -71,5 +72,52 @@ class AssetShape(
     override fun outlineShape(outline: Outline, bounds: Rect) {
         drawable.bounds = bounds
         drawable.getOutline(outline)
+    }
+
+    override fun newDrawable(): ShapeDrawable<Unit> =
+        super.newDrawable().also { processShapeDrawable(it) }
+
+    override fun <R : Any> newDrawable(ref: R): ShapeDrawable<R> =
+        super.newDrawable(ref).also { processShapeDrawable(it) }
+
+    private fun <R : Any> processShapeDrawable(shapeDrawable: ShapeDrawable<R>) {
+        drawable.callback = object : Drawable.Callback {
+            override fun invalidateDrawable(who: Drawable) {
+                // invalidate parent drawable
+                // NB! super important, as otherwise invalidation might be ignored,
+                //  as wrapped drawable is not added to a target view
+                // NB! we might result in a recursive loop, for example when obtaining
+                //  outline an invalidation occurs, which in turn triggers outline...
+                //  schedule for the next drawing pass (meanwhile unregistering previous callback)
+                shapeDrawable.callback?.also {
+                    unscheduleDrawable(shapeDrawable, runnable)
+                    scheduleDrawable(shapeDrawable, runnable, SystemClock.uptimeMillis() + 1L)
+                }
+            }
+
+            override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
+                shapeDrawable.callback?.scheduleDrawable(shapeDrawable, what, `when`)
+            }
+
+            override fun unscheduleDrawable(who: Drawable, what: Runnable) {
+                shapeDrawable.callback?.unscheduleDrawable(shapeDrawable, what)
+            }
+
+            val runnable = Runnable {
+                shapeDrawable.invalidateSelf()
+            }
+        }
+
+        if (drawable.isStateful) {
+            shapeDrawable.stateful {
+                drawable.state = it.state
+                drawable.invalidateSelf()
+            }
+        }
+
+        shapeDrawable.hotspot { x, y ->
+            drawable.setHotspot(x, y)
+            drawable.invalidateSelf()
+        }
     }
 }

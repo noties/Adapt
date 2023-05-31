@@ -71,11 +71,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
         rect.set(
             view.paddingLeft,
             view.paddingTop,
-            view.width - view.paddingRight,
-            view.height - view.paddingBottom
+            view.width - view.paddingRight - view.paddingLeft,
+            view.height - view.paddingBottom - view.paddingTop
         )
 
-        if (shaderBounds != rect && !rect.isEmpty) {
+        if (shaderBounds != rect || !rect.isEmpty) {
             shaderBounds.set(rect)
             view.paint.shader = gradient.createShader(shaderBounds)
             view.invalidate()

@@ -22,9 +22,11 @@ import io.noties.adapt.ui.element.textItalic
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.element.textStrikeThrough
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.element.textUnderline
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.TypefaceStyle
 
 @AdaptSample(
     id = "20230520122012",
@@ -48,7 +50,7 @@ class AdaptUIShowcaseText1Sample : AdaptUISampleView() {
                 // single line
                 .textSingleLine()
                 // typeface and style
-                .textFont(Typeface.DEFAULT_BOLD, Typeface.ITALIC)
+                .textTypeface(Typeface.DEFAULT_BOLD, TypefaceStyle.italic)
                 // apply bold style
                 .textBold()
                 // apply italic style

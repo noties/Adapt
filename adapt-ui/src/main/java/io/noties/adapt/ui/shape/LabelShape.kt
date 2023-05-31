@@ -44,6 +44,9 @@ data class LabelShapeData(
     override var textRotation: Shape.Rotation? = null,
 ) : BaseLabelShapeData
 
+// TODO: override all setter functions, as they start returning parent
+// .also { add(it) } - won't work as data file is passed around
+
 /**
  * A shape to draw _simple_ single-line text.
  * @see TextShape

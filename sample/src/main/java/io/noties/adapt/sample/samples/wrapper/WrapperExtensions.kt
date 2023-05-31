@@ -2,9 +2,15 @@ package io.noties.adapt.sample.samples.wrapper
 
 import android.graphics.drawable.Drawable
 import io.noties.adapt.Item
-import io.noties.adapt.sample.util.dip
+import io.noties.adapt.ui.util.dip
 import io.noties.adapt.util.Edges
-import io.noties.adapt.wrapper.*
+import io.noties.adapt.wrapper.BackgroundWrapper
+import io.noties.adapt.wrapper.FrameWrapper
+import io.noties.adapt.wrapper.IdWrapper
+import io.noties.adapt.wrapper.MarginWrapper
+import io.noties.adapt.wrapper.OnBindWrapper
+import io.noties.adapt.wrapper.OnClickWrapper
+import io.noties.adapt.wrapper.PaddingWrapper
 
 fun Item<*>.background(color: Int): Item<*> = wrap(BackgroundWrapper.init(color))
 fun Item<*>.background(drawable: Drawable?): Item<*> = wrap(BackgroundWrapper.init(drawable))

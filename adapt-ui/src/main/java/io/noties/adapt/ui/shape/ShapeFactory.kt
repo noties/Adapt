@@ -97,3 +97,10 @@ fun ShapeFactory.Text(
     children: TextShape.() -> Unit = {}
 ) = TextShape(text)
     .also(processAndAdd(children))
+
+@Suppress("FunctionName")
+fun ShapeFactory.Label(
+    text: String? = null,
+    children: LabelShape.() -> Unit = {}
+) = LabelShape(text)
+    .also(processAndAdd(children))

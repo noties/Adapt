@@ -52,9 +52,9 @@ abstract class Shape : ShapeFactory {
     /**
      * Creates new drawable with this shape as root
      */
-    fun newDrawable() = ShapeDrawable(this)
+    open fun newDrawable() = ShapeDrawable.createActual(this, Unit)
 
-    fun <R : Any> newDrawable(ref: R) = ShapeDrawable(ref) { this@Shape }
+    open fun <R : Any> newDrawable(ref: R) = ShapeDrawable.createActual(this, ref)
 
 
     fun hidden(hidden: Boolean = true): Shape = this.also {
@@ -409,7 +409,9 @@ abstract class Shape : ShapeFactory {
             ?: 1F)
     }
 
-    open fun outlineShape(outline: Outline, bounds: Rect) = Unit
+    open fun outlineShape(outline: Outline, bounds: Rect) {
+        outline.setRect(bounds)
+    }
 
     internal fun fillRect(bounds: Rect, rect: Rect) {
 
@@ -671,6 +673,20 @@ abstract class Shape : ShapeFactory {
             }
 
             paint.color = color
+
+            // on older platforms, of cause it is not supported!
+//            paint.setShadowLayer(
+//                radius.toFloat(),
+//                offsetX?.resolve(bounds.width())?.toFloat() ?: 0F,
+//                offsetY?.resolve(bounds.height())?.toFloat() ?: 0F,
+//                color
+//            )
+//            paint.shader = RadialGradient.center()
+//                .setColors(
+//                    color to 0F,
+//                    0 to 1F
+//                )
+//                .createShader(rect)
             paint.maskFilter = maskFilterCache.maskFilter(radius.toFloat())
 
             shape.drawShape(canvas, rect, paint)

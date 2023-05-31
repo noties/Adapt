@@ -451,7 +451,20 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.focusable(
  * when a background drawable is set, by default it is used to
  * create an outline. Most of the shapes ([Shape]) do initialize
  * an outline, so they would work too. The exception is to use _simple_
- * shapes (cannot use path) - see [View.setClipToOutline] for more info
+ * shapes (cannot use path) - see [View.setClipToOutline] for more info.
+ * __Supported shapes__ on most of the platform versions:
+ * - `Rectangle`
+ * - `RoundedRectangle`
+ * - `Circle`
+ * - `Capsule` (uses rounded rect internally for outline)
+ * __Semi-supported__ shapes:
+ * - `Corners` (seem to be supported on Android 33, but not before)
+ * - `Oval` (seems to be supported on Android 33, but not before)
+ * __Not supported__ shapes (the rest of):
+ * - `Arc`
+ * - `Asset` (does not support outline by itself, redirects this call to the source drawable),
+ * - `Label`, `Text`,
+ * - `Line`
  * @see View.setClipToOutline
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(

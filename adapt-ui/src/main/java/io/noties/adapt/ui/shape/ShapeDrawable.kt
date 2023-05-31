@@ -10,29 +10,42 @@ import io.noties.adapt.ui.state.DrawableState
 import io.noties.adapt.ui.state.DrawableStateSet
 import kotlin.math.roundToInt
 
-open class ShapeDrawable<R : Any>(
+open class ShapeDrawable<R : Any> protected constructor(
     val shape: Shape,
     val ref: R
 ) : Drawable() {
 
+    // TODO: we do need to redirect to newDrawable (as shapes might override some behavior)
+    //  but... we must create actual drawable there, not here, otherwise it is a recursive loop
     companion object {
 
-        operator fun invoke(shape: Shape) = ShapeDrawable(shape, Unit)
+        operator fun invoke(
+            shape: Shape
+        ): ShapeDrawable<Unit> = shape.newDrawable()
 
         operator fun invoke(
             builder: ShapeFactoryBuilder
-        ) = ShapeDrawable(builder(ShapeFactory.NoOp), Unit)
+        ): ShapeDrawable<Unit> = builder(ShapeFactory.NoOp).newDrawable()
+
+        operator fun <R : Any> invoke(
+            ref: R,
+            shape: Shape
+        ): ShapeDrawable<R> = shape.newDrawable(ref)
 
         operator fun <R : Any> invoke(
             ref: R,
             builder: ShapeFactoryRefBuilder<R>
-        ) = ShapeDrawable(
-            builder(ShapeFactory.NoOp, ref),
-            ref
-        )
+        ): ShapeDrawable<R> = builder(ShapeFactory.NoOp, ref).newDrawable(ref)
+
+        /**
+         * Special function to _finally_ create actual [ShapeDrawable] without any
+         * redirects.
+         */
+        fun <R : Any> createActual(shape: Shape, ref: R) = ShapeDrawable(shape, ref)
     }
 
     private var stateful: Stateful<R>? = null
+    private var hotspot: Hotspot<R>? = null
 
     override fun onBoundsChange(bounds: Rect?) {
         super.onBoundsChange(bounds)
@@ -82,6 +95,21 @@ open class ShapeDrawable<R : Any>(
         invalidateSelf()
     }
 
+    override fun setHotspot(x: Float, y: Float) {
+        super.setHotspot(x, y)
+
+        hotspot?.onHotspotChanged?.invoke(this, x, y)
+    }
+
+    /**
+     * Please note that in most cases drawable must also be stateful to report `pressed` or `hovered`
+     * states, otherwise this hotspot event won\'t be delivered
+     */
+    fun hotspot(onHotspotChanged: ShapeDrawable<R>.(x: Float, y: Float) -> Unit) = this.also {
+        it.hotspot = Hotspot(onHotspotChanged)
+        it.invalidateSelf()
+    }
+
     fun clearStateful() = this.also {
         it.stateful = null
         invalidateSelf()
@@ -111,7 +139,7 @@ open class ShapeDrawable<R : Any>(
                 stateful.states
             )
         }
-        stateful.previousState = state.copyOf()
+        stateful.persistState(state)
         if (result) {
             stateful.onStateChange.invoke(this, DrawableStateSet(state))
             invalidateSelf()
@@ -124,5 +152,15 @@ open class ShapeDrawable<R : Any>(
         val onStateChange: ShapeDrawable<R>.(DrawableStateSet) -> Unit = {}
     ) {
         var previousState: IntArray = intArrayOf()
+            private set
+
+        fun persistState(state: IntArray) {
+            // if out states is empty, we do not need to persist previous state
+            if (states.isNotEmpty()) {
+                previousState = state.copyOf()
+            }
+        }
     }
+
+    private class Hotspot<R : Any>(val onHotspotChanged: ShapeDrawable<R>.(x: Float, y: Float) -> Unit)
 }

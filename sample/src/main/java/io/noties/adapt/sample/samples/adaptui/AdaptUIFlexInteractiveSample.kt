@@ -21,8 +21,6 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.children
-import io.noties.adapt.sample.util.dip
-import io.noties.adapt.sample.util.fromPxToDp
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
@@ -87,6 +85,8 @@ import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.pxToDip
 import io.noties.debug.Debug
 import kotlin.math.roundToInt
 
@@ -589,7 +589,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .textColor(Colors.black)
                 .onView { textView ->
                     (textView.parent as View).onGlobalLayout {
-                        val dp = it.width.fromPxToDp
+                        val dp = it.width.pxToDip
                         val text = StringBuilder().apply {
                             append("Actual size:$dp")
                             if (dp != basis) {
@@ -702,7 +702,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layoutMargin(top = 2)
                 .onView { tv ->
                     (tv.parent as View).onGlobalLayout {
-                        tv.text = "Actual size: ${it.width.fromPxToDp}"
+                        tv.text = "Actual size: ${it.width.pxToDip}"
                     }
                 }
 

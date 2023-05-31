@@ -2,21 +2,20 @@ package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.util.AttributeSet
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
 import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
-import io.noties.adapt.ui.element.textAllCaps
+import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230520005529",
@@ -49,14 +48,14 @@ class AdaptUIShowcaseControlFlowSample : AdaptUISampleView() {
                     .textColor(Color.BLUE)
             }
 
-            var i = 7
-            while (i < 10) {
-                Text("while:$i")
-                    .textGravity(Gravity.center.horizontal)
-                    .textAllCaps()
-                    .background(Color.YELLOW)
-                i += 1
-            }
+            // version check
+            Text()
+                .ifAvailable(
+                    Build.VERSION_CODES.M,
+                    { it.text("M is available! :)") },
+                    // else is optional and can be omitted
+                    { it.text("M is not available :(") }
+                )
 
         }.layoutFill()
     }

@@ -10,10 +10,22 @@ import androidx.annotation.AttrRes
 import androidx.annotation.XmlRes
 import org.xmlpull.v1.XmlPullParser
 
+/**
+ * Converts given Int to pixel value of dip, so `4.dip`:
+ * - `4 pixels at 1F density` (4 * 1)
+ * - `8 pixels at 2F density` (4 * 2)
+ * - `12 pixels at 3F density` (4 * 3)
+ * - etc
+ */
 val Int.dip: Int
-    get() {
-        return (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
-    }
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+
+/**
+ * Converts back from raw pixels to dip, for example:
+ * - `12.pxToDip` == `4` at 3F density (12 / 3)
+ */
+val Int.pxToDip: Int get() = (this / Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+
 
 fun Resources.createAttributeSet(
     @XmlRes xmlResId: Int

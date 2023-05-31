@@ -1,5 +1,45 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3Sample",
+    "id": "20230530152155",
+    "title": "[Showcase] AdaptUI, Shape",
+    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e #3",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawableSample",
+    "id": "20230530151621",
+    "title": "[Showcase] ShapeDrawable usage",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2Sample",
+    "id": "20230526030500",
+    "title": "[Showcase] AdaptUI, Shape",
+    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e #2",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1Sample",
+    "id": "20230526030500",
+    "title": "[Showcase] AdaptUI, Shape",
+    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiShapeLabelSample",
     "id": "20230526022755",
     "title": "LabelShape",

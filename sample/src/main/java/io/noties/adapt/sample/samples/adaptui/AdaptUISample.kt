@@ -17,7 +17,6 @@ import io.noties.adapt.Item
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -71,6 +70,7 @@ import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.dip
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
 import java.util.Arrays

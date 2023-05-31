@@ -7,7 +7,7 @@ import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.dip
+import io.noties.adapt.ui.util.dip
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
 @AdaptSample(

@@ -13,7 +13,6 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.dip
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -40,7 +39,6 @@ import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.element.viewPager
-import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.enabled
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.layout
@@ -54,6 +52,7 @@ import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.dip
 import io.noties.debug.Debug
 import kotlin.math.abs
 

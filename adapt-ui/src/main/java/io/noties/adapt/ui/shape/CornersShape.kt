@@ -100,6 +100,9 @@ class CornersShape(
             val tb = trailingBottom.dip.toFloat()
             val bl = bottomLeading.dip.toFloat()
 
+            // TODO: we could manually do this:
+            //  1. see if radius is the same, if so -> rounded-rect
+            //  2. then... check the axis, and if the same add additional padding?
             path.addRoundRect(
                 rectF,
                 floatArrayOf(

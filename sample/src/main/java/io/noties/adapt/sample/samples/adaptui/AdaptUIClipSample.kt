@@ -1,16 +1,15 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -18,14 +17,28 @@ import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Image
+import io.noties.adapt.ui.element.VStack
+import io.noties.adapt.ui.element.View
+import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.imageScaleType
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.foreground
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.shape.ArcShape
+import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.CircleShape
+import io.noties.adapt.ui.shape.CornersShape
+import io.noties.adapt.ui.shape.LabelShape
+import io.noties.adapt.ui.shape.OvalShape
+import io.noties.adapt.ui.shape.Rectangle
+import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.dip
 
 @AdaptSample(
     id = "20230220160509",
@@ -33,12 +46,10 @@ import io.noties.adapt.ui.util.Gravity
     description = "Create a circle avatar view with shape clipping",
     tags = ["shape", "clip"]
 )
-class AdaptUIClipSample : SampleView() {
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+class AdaptUIClipSample : AdaptUISampleView() {
 
-    override fun render(view: View) {
-        ViewFactory.addChildren(view as ViewGroup) {
+    override fun ViewFactory<LayoutParams>.body() {
+        VStack {
 
             HStack {
 
@@ -57,7 +68,70 @@ class AdaptUIClipSample : SampleView() {
                     .layout(0, FILL, 1F)
 
             }.layout(FILL, 256)
-        }
+
+            ZStack {
+                View().layoutFill()
+                    .background(Colors.black)
+            }.layout(FILL, 128)
+                .background(
+                    ShapeDrawable(
+                        RoundRectShape(
+                            listOf(0, 4, 16, 32)
+                                .map { it.dip.toFloat() }
+                                .flatMap { listOf(it, it) }
+                                .toFloatArray(),
+                            null,
+                            null
+                        )
+                    )
+                )
+                .foreground { Rectangle().fill(Colors.orange) }
+                .clipToOutline()
+
+            // Arc is not supported, Line, Text, Label
+            listOf(
+                RoundedRectangleShape(24).also {
+                    it.padding(bottom = -24)
+                },
+                ArcShape(0F, 220F),
+                CapsuleShape {
+                    sizeRelative(1F, 0.25F, Gravity.center)
+                },
+                CircleShape(),
+                CornersShape(24, 24),
+                OvalShape(),
+                RoundedRectangleShape(12)
+            ).windowed(3, 3, true)
+                .forEach { shapes ->
+                    HStack {
+                        for (shape in shapes) {
+                            shape.fill(Colors.black)
+                            View()
+                                .layout(0, 128, 1F)
+                                .layoutMargin(4)
+                                .ifAvailable(Build.VERSION_CODES.M) {
+                                    it.foreground {
+                                        Rectangle {
+                                            fill(Colors.orange)
+
+                                            LabelShape(shape::class.java.simpleName)
+                                                .also { add(it) }
+                                                .textGravity(Gravity.center)
+                                                .textSize(16)
+                                                .textColor(Colors.white)
+                                        }
+                                    }
+                                }
+                                .background(shape)
+                                .onView { it.outlineProvider = ViewOutlineProvider.BACKGROUND }
+                                .clipToOutline()
+                        }
+                    }.padding(8)
+                        .background(Colors.black)
+                        .layout(FILL, WRAP)
+                }
+
+        }.layoutFill()
     }
 
     @Suppress("FunctionName")
@@ -90,8 +164,7 @@ class AdaptUIClipSample : SampleView() {
 
 @Suppress("ClassName", "unused")
 private class __AdaptUIClipSample(context: Context, attributeSet: AttributeSet?) :
-    PreviewLayout(context, attributeSet) {
-    init {
-        AdaptUIClipSample().render(this)
-    }
+    AdaptUISamplePreview(context, attributeSet) {
+    override val sample: AdaptUISampleView
+        get() = AdaptUIClipSample()
 }
