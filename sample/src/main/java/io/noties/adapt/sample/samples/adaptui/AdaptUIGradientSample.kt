@@ -4,7 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 import io.noties.adapt.Item
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
@@ -31,7 +34,7 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.ZStackSquare
+import io.noties.adapt.ui.widget.ZStackSquare
 
 @AdaptSample(
     id = "20230517155636",
@@ -163,9 +166,12 @@ class AdaptUIGradientSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIGradientSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIGradientSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUIGradientSample()
-
 }

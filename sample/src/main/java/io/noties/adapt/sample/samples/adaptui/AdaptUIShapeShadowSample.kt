@@ -10,8 +10,10 @@ import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewUILayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -258,13 +260,12 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShapeShadowSample(context: Context, attrs: AttributeSet?) :
-    PreviewUILayout(context, attrs) {
-    override fun ViewFactory<LayoutParams>.body() {
-
-        with(AdaptUIShapeShadowSample()) {
-            context = this@PreviewAdaptUIShapeShadowSample.context
-            body()
-        }
-    }
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIShapeShadowSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIShapeShadowSample()
 }

@@ -10,7 +10,8 @@ import android.view.inputmethod.EditorInfo
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -142,10 +143,12 @@ class AdaptUITextSample : SampleView() {
     }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUITextSample(context: Context, attributeSet: AttributeSet) :
-    PreviewLayout(context, attributeSet) {
-    init {
-        AdaptUITextSample().render(this)
-    }
+private class Preview__AdaptUITextSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUITextSample()
 }

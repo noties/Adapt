@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.sticky
+package io.noties.adapt.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet

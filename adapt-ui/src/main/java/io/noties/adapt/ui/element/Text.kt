@@ -128,7 +128,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     fontStyle: Int = Typeface.NORMAL
 ) = textTypeface(font, TypefaceStyle(fontStyle))
 
-fun <V: TextView, LP: LayoutParams> ViewElement<V, LP>.textTypeface(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
     typeface: Typeface? = null,
     typefaceStyle: TypefaceStyle = TypefaceStyle.normal
 ): ViewElement<V, LP> = onView {
@@ -396,4 +396,14 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textOnTextChanged(
             action(s)
         }
     })
+}
+
+/**
+ * Letter spacing
+ * @see TextView.setLetterSpacing
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textLetterSpacing(
+    em: Float = 0F
+): ViewElement<V, LP> = onView {
+    it.letterSpacing = em
 }

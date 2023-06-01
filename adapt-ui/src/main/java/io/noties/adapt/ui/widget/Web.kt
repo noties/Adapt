@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.web
+package io.noties.adapt.ui.widget
 
 import android.annotation.SuppressLint
 import android.app.Activity

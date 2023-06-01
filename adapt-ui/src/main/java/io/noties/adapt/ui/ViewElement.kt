@@ -7,6 +7,37 @@ import io.noties.adapt.ui.util.DynamicIterator.Companion.dynamicIterator
 class ViewElement<V : View, LP : LayoutParams>(
     private val provider: (Context) -> V
 ) {
+    companion object {
+        internal const val renderingMaxDifferenceDuringSinglePass = 42
+        internal const val renderingMaxLoopsLayoutView = 5
+
+        /**
+         * A special factory method to initialize [ViewElement] with already created [View],
+         * for example, was inflated from XML, was received as an argument. Allows customizing
+         * regular views with fluent AdaptUI extensions:
+         * ```kotlin
+         * val textView: TextView = findViewById(R.id.my_text_view)
+         *
+         * ViewElement.create(textView)
+         *   .textSize(16)
+         *   .textShadow(8)
+         *   .background {
+         *     RoundedRectangle(12).fill(Color.RED)
+         *   }
+         *   // if specific layout params are required, then
+         *   //     `.castLayout` and `.ifCastLayout` extensions can be used
+         *   .castLayout(MarginLayoutParams::class)
+         *   // NB! rendering would automatically happen with `view.post` queue. If you want
+         *   //     to render _now_, then explicit `render` call can be used
+         *   .render()
+         * ```
+         */
+        fun <V : View> create(
+            view: V
+        ): ViewElement<V, LayoutParams> = ViewElement<V, LayoutParams> { view }
+            .also { it.init(view.context) }
+    }
+
 
     lateinit var view: V
 
@@ -161,10 +192,5 @@ class ViewElement<V : View, LP : LayoutParams>(
 
     private val renderRunnable: Runnable = Runnable {
         render()
-    }
-
-    companion object {
-        internal const val renderingMaxDifferenceDuringSinglePass = 42
-        internal const val renderingMaxLoopsLayoutView = 5
     }
 }

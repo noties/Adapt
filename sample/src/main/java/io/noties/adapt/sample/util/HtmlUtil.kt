@@ -13,3 +13,5 @@ object HtmlUtil {
         }
     }
 }
+
+fun String.html() = HtmlUtil.fromHtml(this)

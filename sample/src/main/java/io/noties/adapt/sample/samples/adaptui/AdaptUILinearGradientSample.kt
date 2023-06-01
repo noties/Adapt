@@ -13,7 +13,10 @@ import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -168,10 +171,12 @@ class AdaptUILinearGradientSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUILinearGradientSample(
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUILinearGradientSample(
     context: Context,
     attrs: AttributeSet?
-) : AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUILinearGradientSample()
 }

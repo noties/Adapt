@@ -24,10 +24,10 @@ open class TypefaceStyle(val value: Int) {
 
     override fun toString(): String {
         val name = when (value) {
-            Typeface.BOLD_ITALIC -> "bold.italic"
-            Typeface.BOLD -> "bold"
-            Typeface.ITALIC -> "italic"
-            Typeface.NORMAL -> "normal"
+            Typeface.BOLD_ITALIC -> "BOLD_ITALIC"
+            Typeface.BOLD -> "BOLD"
+            Typeface.ITALIC -> "ITALIC"
+            Typeface.NORMAL -> "NORMAL"
             else -> "<unknown>"
         }
         return "TypefaceStyle($value=\"$name\")"

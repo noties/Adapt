@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:background="@color/primary"
@@ -31,11 +31,21 @@
                 style="@style/AppBarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/app_bar_height"
+                android:layout_marginLeft="@dimen/app_bar_height"
+                android:layout_marginRight="@dimen/app_bar_height"
                 android:gravity="center"
                 tools:text="Sample name jksjksjk" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/app_bar_code"
+                android:layout_width="@dimen/app_bar_height"
+                android:layout_height="@dimen/app_bar_height"
+                android:layout_gravity="end"
+                android:scaleType="center"
+                android:src="@drawable/ic_code_24"
+                tools:ignore="ContentDescription" />
+
+        </FrameLayout>
 
         <View style="@style/AppBarDivider" />
 

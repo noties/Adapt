@@ -1,8 +1,13 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
@@ -15,7 +20,7 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onElementView
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.sticky.VStackReverseDrawingOrder
+import io.noties.adapt.ui.widget.VStackReverseDrawingOrder
 import io.noties.adapt.ui.sticky.stickyVerticalScrollContainer
 import io.noties.adapt.ui.sticky.stickyView
 import io.noties.debug.Debug
@@ -85,4 +90,14 @@ class AdaptUIStickySample : AdaptUISampleView() {
     private fun <LP : LayoutParams> ViewFactory<LP>.Regular(text: String) = Text(text)
         .padding(8)
         .background(Colors.orange)
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIStickySample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIStickySample()
 }

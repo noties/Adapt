@@ -1,7 +1,6 @@
 package io.noties.adapt.ui.sticky
 
 import android.view.View
-import android.view.View.OnAttachStateChangeListener
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnPreDrawListener
 import io.noties.adapt.ui.LayoutParams
@@ -9,6 +8,8 @@ import io.noties.adapt.ui.R
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.onViewAttachedOnce
 import io.noties.adapt.ui.util.addOnScrollChangedListener
+import io.noties.adapt.ui.util.onAttachedOnce
+import io.noties.adapt.ui.util.onDetachedOnce
 
 // adapt-ui helper to mark a view as the sticky scroll container
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.stickyVerticalScrollContainer(
@@ -79,7 +80,7 @@ class StickyVerticalScroll private constructor(
         scrollContainer.addOnScrollChangedListener { _, _, _ ->
             onScrolled()
         }
-        scrollContainer.onDetached {
+        scrollContainer.onDetachedOnce {
             scrollContainer.removeOnLayoutChangeListener(onLayoutChangeListener)
             scrollContainer.setTag(tagStickyScrollViewId, null)
         }
@@ -183,7 +184,7 @@ class StickyVerticalScroll private constructor(
 
         if (!view.isAttachedToWindow) {
             val throwable = Throwable()
-            view.onAttached {
+            view.onAttachedOnce {
                 addStickyViewInternal(view, throwable)
             }
             return
@@ -198,7 +199,7 @@ class StickyVerticalScroll private constructor(
         }
 
         views.add(ViewEntry(view))
-        view.onDetached { removeStickyView(view) }
+        view.onDetachedOnce { removeStickyView(view) }
 
         recalculateViewPositions()
     }
@@ -263,27 +264,4 @@ class StickyVerticalScroll private constructor(
             stickyViewDecoration(view, isSticky)
         }
     }
-}
-
-private inline fun View.onAttached(crossinline block: () -> Unit) {
-    val listener = object : OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(v: View?) {
-            removeOnAttachStateChangeListener(this)
-            block()
-        }
-
-        override fun onViewDetachedFromWindow(v: View?) = Unit
-    }
-    addOnAttachStateChangeListener(listener)
-}
-
-private inline fun View.onDetached(crossinline block: () -> Unit) {
-    val listener = object : OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(v: View?) = Unit
-        override fun onViewDetachedFromWindow(v: View?) {
-            removeOnAttachStateChangeListener(this)
-            block()
-        }
-    }
-    addOnAttachStateChangeListener(listener)
 }

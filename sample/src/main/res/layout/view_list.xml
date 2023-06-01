@@ -20,9 +20,10 @@
             <ImageView
                 android:layout_width="@dimen/app_bar_height"
                 android:layout_height="@dimen/app_bar_height"
+                android:layout_marginStart="-28dip"
                 android:contentDescription="@null"
-                android:paddingTop="@dimen/_4"
-                android:paddingBottom="@dimen/_8"
+                android:paddingTop="16dip"
+                android:paddingBottom="16dip"
                 android:scaleType="centerInside"
                 android:src="@drawable/logo" />
 
@@ -30,9 +31,7 @@
                 style="@style/AppBarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/app_bar_height"
                 android:gravity="center"
-                android:paddingTop="@dimen/_4"
                 android:text="@string/app_name"
                 tools:ignore="RtlHardcoded" />
 

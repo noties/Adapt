@@ -34,7 +34,7 @@ import io.noties.adapt.ui.util.ColorStateListBuilder
     description = "<em>TextView</em> and siblings &mdash; <em>EditText</em>, <em>Button</em>, etc",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseText2Sample : AdaptUISampleView() {
+class AdaptUIShowcaseText2 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         Text("This is some of the text ".repeat(10))
             .layout(FILL, WRAP)
@@ -63,8 +63,8 @@ class AdaptUIShowcaseText2Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseText2Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseText2(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseText2Sample()
+        get() = AdaptUIShowcaseText2()
 }

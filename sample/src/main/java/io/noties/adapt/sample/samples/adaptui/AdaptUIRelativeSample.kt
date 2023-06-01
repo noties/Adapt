@@ -7,7 +7,10 @@ import android.view.View.OnAttachStateChangeListener
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -80,10 +83,13 @@ class AdaptUIRelativeSample : AdaptUISampleView() {
     }
 }
 
-@Suppress("ClassName")
-private class Preview_AdaptUIRelativeSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIRelativeSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUIRelativeSample()
 }
 

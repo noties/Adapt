@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.noties.adapt.Adapt
@@ -17,6 +16,8 @@ import io.noties.adapt.Item
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -41,11 +42,9 @@ import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.gradient.LinearGradient
-import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
-import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
@@ -672,43 +671,12 @@ class AdaptUISample : SampleView() {
     }
 }
 
-@Suppress("ClassName")
-class __AdaptUISample(context: Context, attributeSet: AttributeSet) :
-    FrameLayout(context, attributeSet) {
-    init {
-        ViewFactory.addChildren<FrameLayout, LayoutParams>(this) {
-            ZStack {
-                Text("This is text!")
-                    .textSize(20)
-                    .textGravity(Gravity.center)
-                    .padding(horizontal = 16 + 16 + 8, vertical = 12)
-                    .background(RoundedRectangleShape(9) {
-                        Circle {
-                            fill(Color.YELLOW)
-                            size(24, 24, Gravity.trailing.center)
-                            translate(x = -16)
-                        }
-                        fill(
-                            LinearGradient.edges { top.leading to bottom.trailing }
-                                .setColors(Color.CYAN, Color.GREEN)
-                        )
-                    })
-                    .layoutMargin(16)
-                    .elevation(8)
-                    .layout(FILL, WRAP)
-
-                View()
-                    .layout(FILL, FILL)
-                    .background(CircleShape {
-                        fill(RadialGradient.center().setColors(Color.MAGENTA, Color.YELLOW))
-                        gravity(Gravity.leading.top)
-                        Rectangle {
-                            stroke(Color.BLACK, 2)
-                        }
-                    })
-            }.layoutFill()
-                .noClip()
-                .padding(16)
-        }
-    }
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUISample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUISample()
 }

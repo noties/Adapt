@@ -1,11 +1,15 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.content.Context
 import android.graphics.Color
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
@@ -73,4 +77,14 @@ class FlexboxUISample : SampleView() {
                 .flexWrap(FlexWrap.wrap)
         }
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__FlexboxUISample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = FlexboxUISample()
 }

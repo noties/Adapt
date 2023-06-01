@@ -16,18 +16,17 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.LabelShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230526030500",
-    title = "[Showcase] AdaptUI, Shape",
-    description = "Control graphics with a <em>Shape</em>",
+    title = "[Showcase] AdaptUI, Shape #1",
+    description = "<em>RectangleShape</em>, <em>CircleShape</em>, <em>TextShape</em>, <em>CornersShape</em>, <em>RoundedRectangleShape</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseShape1Sample : AdaptUISampleView() {
+class AdaptUIShowcaseShape1 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         View()
             .layoutFill()
@@ -66,8 +65,8 @@ class AdaptUIShowcaseShape1Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseShape1Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseShape1(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseShape1Sample()
+        get() = AdaptUIShowcaseShape1()
 }

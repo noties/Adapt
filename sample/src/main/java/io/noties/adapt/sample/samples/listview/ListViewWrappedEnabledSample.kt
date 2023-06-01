@@ -1,6 +1,8 @@
 package io.noties.adapt.sample.samples.listview
 
+import android.content.Context
 import android.graphics.Color
+import android.util.AttributeSet
 import android.view.View
 import android.widget.ListView
 import io.noties.adapt.Item
@@ -11,6 +13,8 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.backgroundColor
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 
 @AdaptSample(
     id = "20210326214950",
@@ -55,4 +59,14 @@ class ListViewWrappedEnabledSample : SampleView() {
             }
         )
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__ListViewWrappedEnabledSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = ListViewWrappedEnabledSample()
 }

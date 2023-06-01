@@ -1,6 +1,8 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.content.Context
 import android.graphics.Typeface
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -11,6 +13,8 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHey
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHo
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.textStylePrimary
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -97,4 +101,14 @@ class AdaptUIExtensionsSample : SampleView() {
         fun ViewElement<*, *>.heyHo() = this
             .background(Colors.accent)
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIExtensionsSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIExtensionsSample()
 }

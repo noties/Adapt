@@ -29,7 +29,7 @@ import io.noties.adapt.ui.padding
     description = "Combine common styles to be reused",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseStyleSample : AdaptUISampleView() {
+class AdaptUIShowcaseStyle : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -85,8 +85,8 @@ class AdaptUIShowcaseStyleSample : AdaptUISampleView() {
     ) = this.style(style.invoke(TextStyles))
 }
 
-private class PreviewAdaptUIShowcaseStyleSample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseStyle(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseStyleSample()
+        get() = AdaptUIShowcaseStyle()
 }

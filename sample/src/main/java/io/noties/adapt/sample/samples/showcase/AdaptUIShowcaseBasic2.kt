@@ -26,7 +26,7 @@ import io.noties.adapt.ui.util.Gravity
     description = "Shows basic concepts and usage &mdash; <em>VScroll</em>, <em>HScroll</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseBasic2Sample : AdaptUISampleView() {
+class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         // There 2 scroll containers:
         //  - VScroll (ScrollView)
@@ -63,8 +63,8 @@ class AdaptUIShowcaseBasic2Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseBasic2Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseBasic2(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseBasic2Sample()
+        get() = AdaptUIShowcaseBasic2()
 }

@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.util
+package io.noties.adapt.ui.widget
 
 import android.content.Context
 import android.widget.FrameLayout

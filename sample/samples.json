@@ -1,16 +1,57 @@
 [
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3Sample",
-    "id": "20230530152155",
-    "title": "[Showcase] AdaptUI, Shape",
-    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e #3",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape5",
+    "id": "20230601102605",
+    "title": "[Showcase] AdaptUI, Shape #5",
+    "description": "\u003cem\u003eTextShape\u003c/em\u003e, only Android.O+",
     "tags": [
       "adapt-ui",
       "showcase"
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawableSample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape4",
+    "id": "20230601101434",
+    "title": "[Showcase] AdaptUI, Shape #4",
+    "description": "\u003cem\u003eLabelShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeComposition",
+    "id": "20230601100213",
+    "title": "[Showcase] AdaptUI shape composition",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "shape",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseCircleAvatar",
+    "id": "20230531162848",
+    "title": "[Showcase] Circle Avatar",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3",
+    "id": "20230530152155",
+    "title": "[Showcase] AdaptUI, Shape #3",
+    "description": "\u003cem\u003eAssetShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawable",
     "id": "20230530151621",
     "title": "[Showcase] ShapeDrawable usage",
     "description": "stateful hotspot",
@@ -20,20 +61,20 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2",
     "id": "20230526030500",
-    "title": "[Showcase] AdaptUI, Shape",
-    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e #2",
+    "title": "[Showcase] AdaptUI, Shape #2",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eArcShape\u003c/em\u003e, \u003cem\u003eOvalShape\u003c/em\u003e, \u003cem\u003eCapsule\u003c/em\u003e, \u003cem\u003eLine\u003c/em\u003e",
     "tags": [
       "adapt-ui",
       "showcase"
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1",
     "id": "20230526030500",
-    "title": "[Showcase] AdaptUI, Shape",
-    "description": "Control graphics with a \u003cem\u003eShape\u003c/em\u003e",
+    "title": "[Showcase] AdaptUI, Shape #1",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eCircleShape\u003c/em\u003e, \u003cem\u003eTextShape\u003c/em\u003e, \u003cem\u003eCornersShape\u003c/em\u003e, \u003cem\u003eRoundedRectangleShape\u003c/em\u003e",
     "tags": [
       "adapt-ui",
       "showcase"
@@ -51,7 +92,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyleSample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyle",
     "id": "20230522113544",
     "title": "[Showcase] AdaptUI, element style",
     "description": "Combine common styles to be reused",
@@ -61,7 +102,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2",
     "id": "20230520123338",
     "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element #2",
     "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
@@ -71,7 +112,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1",
     "id": "20230520122012",
     "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element",
     "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
@@ -81,7 +122,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReferenceSample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference",
     "id": "20230520013122",
     "title": "[Showcase] AdaptUI reference elements",
     "description": "Access to created elements as regular objects",
@@ -91,7 +132,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlowSample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlow",
     "id": "20230520005529",
     "title": "[Showcase] AdaptUI control flow",
     "description": "\u003cem\u003eFor loop\u003c/em\u003e, \u003cem\u003eforEach\u003c/em\u003e, \u003cem\u003eif-else\u003c/em\u003e, \u003cem\u003ewhile\u003c/em\u003e",
@@ -101,7 +142,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2",
     "id": "20230520002917",
     "title": "[Showcase] AdaptUI basic2",
     "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVScroll\u003c/em\u003e, \u003cem\u003eHScroll\u003c/em\u003e",
@@ -111,7 +152,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1Sample",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1",
     "id": "20230519160703",
     "title": "[Showcase] AdaptUI basic",
     "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVStack\u003c/em\u003e, \u003cem\u003eHStack\u003c/em\u003e, \u003cem\u003eZStack\u003c/em\u003e",

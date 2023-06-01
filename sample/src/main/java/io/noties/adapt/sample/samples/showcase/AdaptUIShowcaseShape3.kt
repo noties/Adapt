@@ -22,39 +22,40 @@ import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230530152155",
-    title = "[Showcase] AdaptUI, Shape",
-    description = "Control graphics with a <em>Shape</em> #3",
+    title = "[Showcase] AdaptUI, Shape #3",
+    description = "<em>AssetShape</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseShape3Sample : AdaptUISampleView() {
+class AdaptUIShowcaseShape3 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
-        // TODO: shape composition
         VStack {
             View()
                 .layoutFill()
                 .background {
+                    // asset accepts Drawable
                     Asset(
                         RippleDrawable(
                             ColorStateList.valueOf(Colors.orange),
                             null,
-                            // actual shape seems to be ignored, ripple just uses ti to clip rect bounds
+                            // actual shape seems to be ignored, ripple just uses it to clip rect bounds
                             RectangleShape().newDrawable()
                         )
-                    )
-                        .size(128, 128, Gravity.center)
-                        .apply {
-                            Rectangle {
-                                stroke(Colors.black, 1)
-                            }
+                    ) {
+                        size(128, 128, Gravity.center)
+
+                        // a child of Asset will receive parent bounds
+                        Rectangle {
+                            stroke(Colors.black, 1)
                         }
+                    }
                 }
                 .onClick { }
         }.layoutFill()
     }
 }
 
-private class PreviewAdaptUIShowcaseShape3Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseShape3(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseShape3Sample()
+        get() = AdaptUIShowcaseShape3()
 }

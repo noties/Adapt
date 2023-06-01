@@ -16,6 +16,7 @@ import io.noties.adapt.ItemLayout
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.ui.DividerOverlay
 import io.noties.adapt.sample.ui.SearchBar
+import io.noties.adapt.sample.util.html
 import io.noties.adapt.sample.util.normalized
 
 class SampleViewList(
@@ -85,7 +86,7 @@ class SampleViewList(
         }
 
         override fun bind(holder: Holder) {
-            holder.name.text = sample.name
+            holder.name.text = sample.name.html()
             holder.description.textOrGone(sample.description)
             holder.tags.textOrGone(tags)
 

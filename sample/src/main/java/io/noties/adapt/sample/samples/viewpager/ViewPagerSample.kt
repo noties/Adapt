@@ -32,7 +32,6 @@ import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.pager.AdaptPagerWrapContent
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.CircleShape
@@ -40,6 +39,7 @@ import io.noties.adapt.ui.shape.CornersShape
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.widget.AdaptPagerWrapContent
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.debug.Debug
 import kotlin.math.roundToInt

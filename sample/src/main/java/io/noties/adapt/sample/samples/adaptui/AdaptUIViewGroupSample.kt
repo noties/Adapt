@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -103,10 +104,12 @@ class AdaptUIViewGroupSample : SampleView() {
     }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUIViewGroupSample(context: Context, attributeSet: AttributeSet) :
-    PreviewLayout(context, attributeSet) {
-    init {
-        AdaptUIViewGroupSample().render(this)
-    }
+private class Preview__AdaptUIViewGroupSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIViewGroupSample()
 }

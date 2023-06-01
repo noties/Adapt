@@ -1,12 +1,16 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.util.AttributeSet
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.Toast
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -22,11 +26,11 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.visible
-import io.noties.adapt.ui.web.Web
-import io.noties.adapt.ui.web.WebViewPlaceholder
-import io.noties.adapt.ui.web.webChromeClient
-import io.noties.adapt.ui.web.webClient
-import io.noties.adapt.ui.web.webOnElementReady
+import io.noties.adapt.ui.widget.Web
+import io.noties.adapt.ui.widget.WebViewPlaceholder
+import io.noties.adapt.ui.widget.webChromeClient
+import io.noties.adapt.ui.widget.webClient
+import io.noties.adapt.ui.widget.webOnElementReady
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -124,4 +128,14 @@ class AdaptUIWebSample : AdaptUISampleView() {
             }
         }
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIWebSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIWebSample()
 }

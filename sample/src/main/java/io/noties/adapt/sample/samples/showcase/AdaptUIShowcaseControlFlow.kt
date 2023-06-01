@@ -23,7 +23,7 @@ import io.noties.adapt.ui.layoutFill
     description = "<em>For loop</em>, <em>forEach</em>, <em>if-else</em>, <em>while</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseControlFlowSample : AdaptUISampleView() {
+class AdaptUIShowcaseControlFlow : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -61,8 +61,8 @@ class AdaptUIShowcaseControlFlowSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseControlFlowSample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseControlFlow(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseControlFlowSample()
+        get() = AdaptUIShowcaseControlFlow()
 }

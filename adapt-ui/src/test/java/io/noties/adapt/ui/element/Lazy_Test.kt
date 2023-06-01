@@ -2,7 +2,7 @@ package io.noties.adapt.ui.element
 
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.renderView
-import io.noties.adapt.ui.util.LazyView
+import io.noties.adapt.ui.widget.LazyView
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.verify

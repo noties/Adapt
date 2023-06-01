@@ -1,15 +1,15 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
 import android.util.AttributeSet
-import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -19,7 +19,6 @@ import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
-import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.imageScaleType
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.foreground
@@ -38,7 +37,6 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.dip
 
 @AdaptSample(
     id = "20230220160509",
@@ -69,25 +67,6 @@ class AdaptUIClipSample : AdaptUISampleView() {
 
             }.layout(FILL, 256)
 
-//            ZStack {
-//                View().layoutFill()
-//                    .background(Colors.black)
-//            }.layout(FILL, 128)
-//                .background(
-//                    ShapeDrawable(
-//                        RoundRectShape(
-//                            listOf(0, 4, 16, 32)
-//                                .map { it.dip.toFloat() }
-//                                .flatMap { listOf(it, it) }
-//                                .toFloatArray(),
-//                            null,
-//                            null
-//                        )
-//                    )
-//                )
-//                .foreground { Rectangle().fill(Colors.orange) }
-//                .clipToOutline()
-
             // Arc is not supported, Line, Text, Label
             listOf(
                 RoundedRectangleShape(24).also {
@@ -95,7 +74,7 @@ class AdaptUIClipSample : AdaptUISampleView() {
                 },
                 ArcShape(0F, 220F),
                 CapsuleShape {
-                    sizeRelative(1F, 0.25F, Gravity.center)
+                    sizeRelative(1F, 0.35F, Gravity.center)
                 },
                 CircleShape(),
                 CornersShape(24, 24),
@@ -105,9 +84,9 @@ class AdaptUIClipSample : AdaptUISampleView() {
                 .forEach { shapes ->
                     HStack {
                         for (shape in shapes) {
-                            shape.fill(Colors.black)
+//                            shape.fill(Colors.black)
                             View()
-                                .layout(0, 128, 1F)
+                                .layout(0, 96, 1F)
                                 .layoutMargin(4)
                                 .ifAvailable(Build.VERSION_CODES.M) {
                                     it.foreground {
@@ -123,7 +102,7 @@ class AdaptUIClipSample : AdaptUISampleView() {
                                     }
                                 }
                                 .background(shape)
-                                .onView { it.outlineProvider = ViewOutlineProvider.BACKGROUND }
+//                                .onView { it.outlineProvider = ViewOutlineProvider.BACKGROUND }
                                 .clipToOutline()
                         }
                     }.padding(8)
@@ -162,9 +141,12 @@ class AdaptUIClipSample : AdaptUISampleView() {
     }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-private class __AdaptUIClipSample(context: Context, attributeSet: AttributeSet?) :
-    AdaptUISamplePreview(context, attributeSet) {
-    override val sample: AdaptUISampleView
+private class Preview__AdaptUIClipSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUIClipSample()
 }

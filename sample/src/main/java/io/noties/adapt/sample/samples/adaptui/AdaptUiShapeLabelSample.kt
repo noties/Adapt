@@ -2,7 +2,10 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -51,8 +54,12 @@ class AdaptUiShapeLabelSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUiShapeLabelSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUiShapeLabelSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUiShapeLabelSample()
 }

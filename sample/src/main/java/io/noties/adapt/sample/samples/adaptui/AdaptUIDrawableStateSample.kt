@@ -6,7 +6,10 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -240,9 +243,12 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIDrawableStateSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIDrawableStateSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
         get() = AdaptUIDrawableStateSample()
-
 }

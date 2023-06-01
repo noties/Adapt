@@ -1,5 +1,7 @@
 package io.noties.adapt.sample.samples.adaptui
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.ItemGenerator
@@ -7,6 +9,8 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardItem
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
 import io.noties.adapt.ui.background
@@ -74,4 +78,14 @@ class AdaptUIItemSample : SampleView() {
             }
         }
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIItemSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIItemSample()
 }

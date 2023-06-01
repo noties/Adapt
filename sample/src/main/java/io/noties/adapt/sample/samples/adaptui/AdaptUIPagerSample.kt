@@ -6,13 +6,13 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -261,13 +261,12 @@ class AdaptUIPagerSample : SampleView() {
     }.pagerPageWidthRatio(pageWidthRatio)
 }
 
-// Preview for the sample
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUIPagerSample(context: Context, attributeSet: AttributeSet) :
-    FrameLayout(context, attributeSet) {
-    init {
-        App.mock(context)
-        id = R.id.frame_layout
-        AdaptUIPagerSample().render(this)
-    }
+private class Preview__AdaptUIPagerSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIPagerSample()
 }

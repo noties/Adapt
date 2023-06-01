@@ -18,6 +18,8 @@ import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import io.noties.adapt.ui.util.addOnScrollChangedListener
 import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.onAttachedOnce
+import io.noties.adapt.ui.util.onDetachedOnce
 import io.noties.adapt.ui.util.resolveDefaultSelectableDrawable
 import kotlin.reflect.KMutableProperty0
 
@@ -504,14 +506,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedOnce(
     block: (V) -> Unit
 ): ViewElement<V, LP> = onView { view ->
-    view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(v: View?) {
-            block(view)
-            view.removeOnAttachStateChangeListener(this)
-        }
-
-        override fun onViewDetachedFromWindow(v: View?) = Unit
-    })
+    view.onAttachedOnce(block)
 }
 
 /**
@@ -520,13 +515,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedOnce(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewDetachedOnce(
     block: (V) -> Unit
 ): ViewElement<V, LP> = onView { view ->
-    view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(v: View?) = Unit
-        override fun onViewDetachedFromWindow(v: View?) {
-            block(view)
-            view.removeOnAttachStateChangeListener(this)
-        }
-    })
+    view.onDetachedOnce(block)
 }
 
 interface OnViewAttachedStateChangedContainer {

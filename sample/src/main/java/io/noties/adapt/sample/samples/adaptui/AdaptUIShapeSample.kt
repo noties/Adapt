@@ -15,7 +15,8 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.explore.ExploreShapePath
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
@@ -684,9 +685,12 @@ class AdaptUIShapeSample : SampleView() {
         }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUIShapeSample(context: Context, attrs: AttributeSet?) : PreviewLayout(context, attrs) {
-    init {
-        AdaptUIShapeSample().render(this)
-    }
+private class Preview__AdaptUIShapeSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIShapeSample()
 }

@@ -10,7 +10,8 @@ import android.view.inputmethod.EditorInfo
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.accessibilityDescription
@@ -121,11 +122,14 @@ class AdaptUIAccessibilitySample : SampleView() {
 //    frame.addView(this)
 //    parent.addView(frame, index)
 //}
+//
 
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUIAccessibilitySample(context: Context, attributeSet: AttributeSet) :
-    PreviewLayout(context, attributeSet) {
-    init {
-        AdaptUIAccessibilitySample().render(this)
-    }
+private class Preview__AdaptUIAccessibilitySample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIAccessibilitySample()
 }

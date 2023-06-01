@@ -9,7 +9,8 @@ import io.noties.adapt.Item
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.background
@@ -117,9 +118,12 @@ class AdaptUIItemsSample : SampleView() {
     }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-class __AdaptUIItemsSample(context: Context, attrs: AttributeSet?) : PreviewLayout(context, attrs) {
-    init {
-        AdaptUIItemsSample().render(this)
-    }
+private class Preview__AdaptUIItemsSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIItemsSample()
 }

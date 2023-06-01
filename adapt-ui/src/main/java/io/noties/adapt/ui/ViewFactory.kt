@@ -2,8 +2,8 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
-import android.view.View.OnAttachStateChangeListener
 import android.view.ViewGroup
+import io.noties.adapt.ui.util.onAttachedOnce
 
 typealias LayoutParams = ViewGroup.LayoutParams
 
@@ -160,14 +160,7 @@ class ViewFactory<out LP : LayoutParams>(
 
             if (renderOnAttach) {
                 // we assume that layout params would be already processed by parent
-                view.addOnAttachStateChangeListener(object : OnAttachStateChangeListener {
-                    override fun onViewAttachedToWindow(v: View?) {
-                        view.removeOnAttachStateChangeListener(this)
-                        root.render()
-                    }
-
-                    override fun onViewDetachedFromWindow(v: View?) = Unit
-                })
+                view.onAttachedOnce { root.render() }
             } else {
                 // trigger render now
                 root.render()

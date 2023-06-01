@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.sticky
+package io.noties.adapt.ui.widget
 
 import org.junit.Assert.*
 import org.junit.Test

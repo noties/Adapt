@@ -277,4 +277,21 @@ class ViewElement_Test {
         assertEquals(false, element.isInitialized)
         element.render()
     }
+
+    @Test
+    fun create() {
+        // creates viewElement with existing view
+
+        val view = mockt<View>()
+        val element = ViewElement.create(view)
+
+        assertEquals(true, element.isInitialized)
+        assertEquals(view, element.view)
+
+        element
+            .enabled(false)
+            .renderView {
+                verify(view).isEnabled = eq(false)
+            }
+    }
 }

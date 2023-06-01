@@ -15,7 +15,6 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.textAllCaps
 import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textItalic
@@ -34,7 +33,7 @@ import io.noties.adapt.ui.util.TypefaceStyle
     description = "<em>TextView</em> and siblings &mdash; <em>EditText</em>, <em>Button</em>, etc",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseText1Sample : AdaptUISampleView() {
+class AdaptUIShowcaseText1 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -68,8 +67,8 @@ class AdaptUIShowcaseText1Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseText1Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseText1(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseText1Sample()
+        get() = AdaptUIShowcaseText1()
 }

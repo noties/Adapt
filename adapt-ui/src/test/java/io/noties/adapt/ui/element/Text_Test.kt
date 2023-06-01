@@ -639,5 +639,22 @@ class Text_Test {
         }
     }
 
+    @Test
+    fun textLetterSpacing() {
+        val inputs = listOf(
+            0F,
+            0.25F,
+            -0.5F
+        )
+
+        for (em in inputs) {
+            newTextElement()
+                .textLetterSpacing(em)
+                .renderView {
+                    verify(this).letterSpacing = eq(em)
+                }
+        }
+    }
+
     private fun newTextElement() = newElementOfType<TextView>()
 }

@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.util
+package io.noties.adapt.ui.widget
 
 import android.content.Context
 import android.view.View
@@ -8,7 +8,6 @@ import android.widget.ImageView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.newElement
 import io.noties.adapt.ui.newElementOfType
-import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith

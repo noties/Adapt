@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
     description = "stateful hotspot",
     tags = ["showcase", "adapt-ui"]
 )
-class AdaptUIShowcaseShapeDrawableSample : AdaptUISampleView() {
+class AdaptUIShowcaseShapeDrawable : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             View()
@@ -64,9 +64,9 @@ class AdaptUIShowcaseShapeDrawableSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseShapeDrawable(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseShape(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseShapeDrawableSample()
+        get() = AdaptUIShowcaseShapeDrawable()
 
 }

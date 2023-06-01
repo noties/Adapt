@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+final def gitBranch = {
+    "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+}.memoize()
+
 android {
 
     compileSdkVersion config['target-sdk']
@@ -13,6 +17,8 @@ android {
         targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
+
+        buildConfigField 'String', 'GIT_BUILD_BRANCH', "\"${gitBranch()}\""
     }
 
     lintOptions {
@@ -21,7 +27,19 @@ android {
 
     sourceSets {
         main {
-            java.srcDirs += '../sample-utils/annotation'
+            java {
+                srcDirs += '../sample-utils/annotation'
+                // does not work :'(
+                exclude '**/Preview__*'
+//                excludes += '**/Preview__**'
+            }
+
+            // does not work :'(
+            kotlin {
+                exclude '**/Preview__*'
+//                exclude '**/Preview__*.kt'
+//                excludes += '**/Preview__*.kt'
+            }
         }
     }
 

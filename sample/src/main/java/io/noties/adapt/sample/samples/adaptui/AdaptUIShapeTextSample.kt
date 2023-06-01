@@ -5,9 +5,11 @@ import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
+import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.HtmlUtil
-import io.noties.adapt.sample.util.PreviewUILayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -23,7 +25,6 @@ import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.LabelShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
@@ -202,11 +203,12 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShapeTextSample(context: Context, attrs: AttributeSet?) :
-    PreviewUILayout(context, attrs) {
-    override fun ViewFactory<LayoutParams>.body() {
-        with(AdaptUIShapeTextSample()) {
-            body()
-        }
-    }
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIShapeTextSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIShapeTextSample()
 }

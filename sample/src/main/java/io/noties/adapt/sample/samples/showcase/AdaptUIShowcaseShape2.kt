@@ -10,29 +10,22 @@ import io.noties.adapt.sample.samples.adaptui.Colors
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.View
-import io.noties.adapt.ui.element.textGravity
-import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.shape.Arc
 import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.shape.Corners
-import io.noties.adapt.ui.shape.LabelShape
 import io.noties.adapt.ui.shape.Line
 import io.noties.adapt.ui.shape.Oval
 import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230526030500",
-    title = "[Showcase] AdaptUI, Shape",
-    description = "Control graphics with a <em>Shape</em> #2",
+    title = "[Showcase] AdaptUI, Shape #2",
+    description = "<em>RectangleShape</em>, <em>ArcShape</em>, <em>OvalShape</em>, <em>Capsule</em>, <em>Line</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseShape2Sample : AdaptUISampleView() {
+class AdaptUIShowcaseShape2 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         View()
             .layoutFill()
@@ -69,8 +62,8 @@ class AdaptUIShowcaseShape2Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseShape2Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseShape2(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseShape2Sample()
+        get() = AdaptUIShowcaseShape2()
 }

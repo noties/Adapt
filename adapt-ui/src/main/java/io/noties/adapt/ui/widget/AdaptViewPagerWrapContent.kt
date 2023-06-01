@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.pager
+package io.noties.adapt.ui.widget
 
 import android.content.Context
 import android.os.Build

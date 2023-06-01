@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Build
 import android.transition.TransitionManager
+import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -20,6 +21,8 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.children
 import io.noties.adapt.sample.util.hex
 import io.noties.adapt.sample.util.withAlphaComponent
@@ -1007,4 +1010,14 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             })
         }
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AdaptUIFlexInteractiveSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUIFlexInteractiveSample()
 }

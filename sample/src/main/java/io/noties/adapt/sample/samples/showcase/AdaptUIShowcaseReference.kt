@@ -22,7 +22,7 @@ import io.noties.adapt.ui.layout
     description = "Access to created elements as regular objects",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseReferenceSample : AdaptUISampleView() {
+class AdaptUIShowcaseReference : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         // Utility for VScroll { VStack { /**/ } }
         //  another one: HScrollStack
@@ -61,8 +61,8 @@ class AdaptUIShowcaseReferenceSample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseReferenceSample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseReference(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseReferenceSample()
+        get() = AdaptUIShowcaseReference()
 }

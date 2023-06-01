@@ -25,6 +25,12 @@ interface ShapeFactory {
     object NoOp : ShapeFactory {
         override fun add(shape: Shape) = Unit
     }
+
+    companion object {
+        fun create(block: ShapeFactory.() -> Shape): Shape {
+            return block(NoOp)
+        }
+    }
 }
 
 @Suppress("FunctionName")

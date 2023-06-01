@@ -33,7 +33,7 @@ import io.noties.adapt.ui.util.Gravity
     description = "Shows basic concepts and usage &mdash; <em>VStack</em>, <em>HStack</em>, <em>ZStack</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseBasic1Sample : AdaptUISampleView() {
+class AdaptUIShowcaseBasic1 : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         // There are 3 basic containers:
         //  - VStack (Vertical LinearLayout)
@@ -72,8 +72,8 @@ class AdaptUIShowcaseBasic1Sample : AdaptUISampleView() {
     }
 }
 
-private class PreviewAdaptUIShowcaseBasic1Sample(context: Context, attrs: AttributeSet?) :
+private class PreviewAdaptUIShowcaseBasic1(context: Context, attrs: AttributeSet?) :
     AdaptUISamplePreview(context, attrs) {
     override val sample: AdaptUISampleView
-        get() = AdaptUIShowcaseBasic1Sample()
+        get() = AdaptUIShowcaseBasic1()
 }

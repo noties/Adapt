@@ -11,7 +11,8 @@ import android.widget.TextView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.PreviewLayout
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -241,10 +242,12 @@ class AdaptUICastSample : SampleView() {
     }
 }
 
+@Preview
 @Suppress("ClassName", "unused")
-private class __AdaptUICastSample(context: Context, attributeSet: AttributeSet?) :
-    PreviewLayout(context, attributeSet) {
-    init {
-        AdaptUICastSample().render(this)
-    }
+private class Preview__AdaptUICastSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AdaptUICastSample()
 }
