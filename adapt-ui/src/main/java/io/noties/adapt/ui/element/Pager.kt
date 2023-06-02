@@ -7,6 +7,7 @@ import androidx.annotation.FloatRange
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.R
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.shape.Shape
@@ -92,6 +93,12 @@ abstract class ViewPagerOnPageChangeListener : ViewPager.OnPageChangeListener {
     lateinit var viewPager: ViewPager
 
     val pagesCount: Int get() = viewPager.adapter?.count ?: 0
+
+    val pageElements: List<ViewElement<out View, ViewPagerLayoutParams>>
+        get() = (viewPager.adapter as? PagerElementAdapter)
+            ?.items
+            ?.map { it.element }
+            ?: emptyList()
 
     override fun onPageScrolled(
         position: Int,
@@ -212,6 +219,14 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageChangedList
     it.addOnPageChangeListener(onPageChangeListener)
 }
 
+fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerOnPageSelectedListener(
+    onPageSelectedListener: ViewPagerOnPageChangeListener.(page: Int) -> Unit
+) = pagerOnPageChangedListener(object : ViewPagerOnPageChangeListener() {
+    override fun onPageSelected(position: Int) {
+        onPageSelectedListener(this, position)
+    }
+})
+
 /**
  * Marks a child of [ViewPager] as decor view (persist between pages)
  */
@@ -261,6 +276,10 @@ internal class PagerItem(
 
 internal class PagerElementAdapter(val items: List<PagerItem>) : PagerAdapter() {
 
+    companion object {
+        val ID_SELECTED = R.id.adaptui_internal_viewpager_page_selected
+    }
+
     override fun getCount(): Int = items.size
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -284,7 +303,14 @@ internal class PagerElementAdapter(val items: List<PagerItem>) : PagerAdapter() 
                 item.layoutParams.onPageSelectedListener?.also { listener ->
                     vp.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                         override fun onPageSelected(p: Int) {
-                            listener(position == p)
+                            // deliver event only if selection state changes
+                            //  additionally deliver initial event
+                            val isSelected = position == p
+                            val currentTag = v.getTag(ID_SELECTED) as? Boolean
+                            if (currentTag == null || currentTag != isSelected) {
+                                v.setTag(ID_SELECTED, isSelected)
+                                listener(isSelected)
+                            }
                         }
                     })
                 }

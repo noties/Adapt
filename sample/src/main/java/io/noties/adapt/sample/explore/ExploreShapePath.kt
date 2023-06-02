@@ -76,10 +76,13 @@ object ExploreShapePath {
 
             lastRect.set(bounds)
 
+            // TODO: top-left can be used in path.offset
             val leading = bounds.left
             val top = bounds.top
             val width = bounds.width()
             val height = bounds.height()
+
+            path.offset(0F, 0F)
 
             steps.forEach { step ->
                 step.contribute(path, leading, top, width, height)

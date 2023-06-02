@@ -104,9 +104,7 @@ class ViewFactory<out LP : LayoutParams>(
         val context: Context,
         val viewGroup: ViewGroup?,
         val layoutParams: LP,
-        // can request to render on first attach, this is helpful when inside adapter context
-        //  and initially view is assigned default layoutParameters, not the ones that parent would
-        //  use
+        // can request to render on first attach
         val renderOnAttach: Boolean = false
     ) {
 

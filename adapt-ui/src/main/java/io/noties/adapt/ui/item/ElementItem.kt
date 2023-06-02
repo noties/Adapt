@@ -26,7 +26,12 @@ abstract class ElementItem<R : Any>(
             // NB! we might create layout-params, but they might not be the ones that
             //  parent uses, but we could have some customization rely on certain layouts,
             //  this is why it is better to postpone rendering until view is properly attached
-            .renderOnAttach()
+            // UPD, we actually cannot do it like this. Items assumed to be ready after this
+            //  function exits, so caller might immediately call `bind`. For example,
+            //  when there is a reference with lateinit properties, they would not be initialized
+            //  and this would cause a crash (as reference assigns view in onView callback
+            //  which would not be triggered until view is attached)
+//            .renderOnAttach()
             .create(ref) { body(it) }
         return Holder(view, ref)
     }

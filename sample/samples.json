@@ -1,5 +1,45 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2",
+    "id": "20230602002749",
+    "title": "[Showcase] AdaptUI, Reference views and elements",
+    "description": "Assign views and elements with `.reference` utility extension",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseItem",
+    "id": "20230602001541",
+    "title": "[Showcase] AdaptUI, Item",
+    "description": "Different usage of \u003cem\u003eItem\u003c/em\u003e (including its siblings) in different contexts: directly in UI layout, in a \u003cem\u003eViewGroup\u003c/em\u003e, \u003cem\u003eRecyclerView\u003c/em\u003e or \u003cem\u003eListView\u003c/em\u003e (via \u003cem\u003eAlertDialog\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseImage",
+    "id": "20230601144200",
+    "title": "[Showcase] AdaptUI, Image",
+    "description": "\u003cem\u003eImage\u003c/em\u003e, \u003cem\u003eImageView\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePager",
+    "id": "20230601135039",
+    "title": "[Showcase] AdaptUI, Pager element",
+    "description": "\u003cem\u003ePager\u003c/em\u003e, \u003cem\u003eViewPager\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape5",
     "id": "20230601102605",
     "title": "[Showcase] AdaptUI, Shape #5",

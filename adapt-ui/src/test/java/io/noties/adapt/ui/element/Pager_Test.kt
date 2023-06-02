@@ -6,11 +6,14 @@ import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.newElement
 import io.noties.adapt.ui.newElementOfType
+import io.noties.adapt.ui.newElementOfTypeLayout
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import org.junit.After
@@ -31,6 +34,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -466,6 +470,36 @@ class Pager_Test {
             assertEquals(ratio, lp.pageWidthRatio)
             assertEquals(ratio, adapter.getPageWidth(it))
         }
+    }
+
+    @Test
+    fun `ViewPagerOnPageChangeListener - pageElements`() {
+        val listener = object: ViewPagerOnPageChangeListener() {
+
+        }
+
+        val viewPager = mockt<ViewPager>()
+        listener.viewPager = viewPager
+
+        // initially 0
+        assertEquals(0, listener.pagesCount)
+        assertEquals(viewPager, listener.viewPager)
+        assertEquals(0, listener.pageElements.size)
+
+        val pageItems = listOf(
+            PagerItem(newElementOfTypeLayout(), ViewPagerLayoutParams()),
+            PagerItem(newElementOfTypeLayout(), ViewPagerLayoutParams()),
+            PagerItem(newElementOfTypeLayout(), ViewPagerLayoutParams()),
+        )
+
+        val adapter = PagerElementAdapter(pageItems)
+        whenever(viewPager.adapter).thenReturn(adapter)
+
+        assertEquals(3, listener.pagesCount)
+        assertEquals(
+            pageItems.map { it.element },
+            listener.pageElements
+        )
     }
 
     private fun newViewPager() = newElementOfType<ViewPager>()

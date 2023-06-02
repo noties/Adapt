@@ -18,6 +18,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.never
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
@@ -281,8 +282,10 @@ class ViewElement_Test {
     @Test
     fun create() {
         // creates viewElement with existing view
+        val view = mockt<View> {
+            whenever(mock.context).thenReturn(mockt())
+        }
 
-        val view = mockt<View>()
         val element = ViewElement.create(view)
 
         assertEquals(true, element.isInitialized)
