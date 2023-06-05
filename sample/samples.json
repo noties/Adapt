@@ -13,7 +13,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseItem",
     "id": "20230602001541",
     "title": "[Showcase] AdaptUI, Item",
-    "description": "Different usage of \u003cem\u003eItem\u003c/em\u003e (including its siblings) in different contexts: directly in UI layout, in a \u003cem\u003eViewGroup\u003c/em\u003e, \u003cem\u003eRecyclerView\u003c/em\u003e or \u003cem\u003eListView\u003c/em\u003e (via \u003cem\u003eAlertDialog\u003c/em\u003e",
+    "description": "Different usage of \u003cem\u003eItem\u003c/em\u003e (including its siblings) in different contexts: directly in UI layout, in a \u003cem\u003eViewGroup\u003c/em\u003e, \u003cem\u003eRecyclerView\u003c/em\u003e or \u003cem\u003eListView\u003c/em\u003e (via \u003cem\u003eAlertDialog\u003c/em\u003e)",
     "tags": [
       "adapt-ui",
       "showcase"

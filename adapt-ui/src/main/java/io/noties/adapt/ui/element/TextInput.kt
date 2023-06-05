@@ -4,14 +4,15 @@ import android.widget.EditText
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.util.InputType
 
 /**
  * @see EditText
- * @see android.view.inputmethod.EditorInfo for `inputType` arguments
+ * @see InputType
  */
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.TextInput(
-    inputType: Int? = null
+    inputType: InputType? = null
 ): ViewElement<EditText, LP> = Element(ElementViewFactory.TextInput) { et ->
-    inputType?.also { et.inputType = it }
+    inputType?.also { et.inputType = it.value }
 }

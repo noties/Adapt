@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
@@ -34,6 +33,7 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RectangleShape
+import io.noties.adapt.ui.util.InputType
 
 @AdaptSample(
     id = "20221009162741",
@@ -80,7 +80,7 @@ class AdaptUIAccessibilitySample : SampleView() {
 
                         Spacer()
 
-                        input = TextInput(EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME)
+                        input = TextInput(InputType.text.personName)
                             .textSize(16)
                             .layoutWrap()
 

@@ -2,7 +2,6 @@ package io.noties.adapt.ui.util
 
 import android.content.res.ColorStateList
 import android.util.StateSet
-import io.noties.adapt.ui.state.DrawableState
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -160,6 +159,7 @@ class ColorStateListBuilder_Test {
         var states: Array<IntArray>? = null
         var colors: IntArray? = null
 
+        @Suppress("TestFunctionName", "unused")
         @Implementation
         fun __constructor__(states: Array<IntArray>, colors: IntArray) {
             this.states = states

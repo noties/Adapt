@@ -5,9 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import io.noties.adapt.ui.state.DrawableState
-import io.noties.adapt.ui.state.DrawableStateSet
 import io.noties.adapt.ui.testutil.mockt
+import io.noties.adapt.ui.util.DrawableState
+import io.noties.adapt.ui.util.DrawableStateSet
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,7 +16,6 @@ import org.mockito.ArgumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config

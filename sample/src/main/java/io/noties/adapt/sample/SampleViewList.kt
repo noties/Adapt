@@ -67,6 +67,7 @@ class SampleViewList(
         return sample.name.normalized().contains(text)
                 || true == sample.description?.toString()?.normalized()?.contains(text)
                 || sample.tags.count { it.normalized().contains(text) } > 0
+                || sample.id == text
     }
 
     class SampleItem(

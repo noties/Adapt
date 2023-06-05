@@ -1,8 +1,8 @@
 package io.noties.adapt.ui.element
 
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import io.noties.adapt.ui.obtainView
+import io.noties.adapt.ui.util.InputType
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -25,19 +25,19 @@ class TextInput_Test {
     fun factory() {
         val mocked = Mockito.mock(EditText::class.java, Mockito.RETURNS_MOCKS)
         ElementViewFactory.TextInput = { mocked }
-        assertEquals(mocked, obtainView { TextInput(0) })
+        assertEquals(mocked, obtainView { TextInput(null) })
     }
 
     @Test
     fun init() {
         val inputs = listOf(
-            1,
-            2,
-            EditorInfo.TYPE_CLASS_PHONE
+            InputType.none,
+            InputType.text.capWords.personName.autoComplete,
+            InputType.phone
         )
         for (input in inputs) {
             val view = obtainView { TextInput(input) } as EditText
-            assertEquals(input, view.inputType)
+            assertEquals(input.value, view.inputType)
         }
     }
 }

@@ -498,6 +498,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
             return true
         }
     })
+    // trigger invalidation
+    view.invalidate()
 }
 
 /**
@@ -518,8 +520,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewDetachedOnce(
     view.onDetachedOnce(block)
 }
 
-interface OnViewAttachedStateChangedContainer {
-    fun removeOnViewAttachedStateChangedListener()
+interface OnViewAttachedStateChangedRegistration {
+    fun unregisterOnViewAttachedStateChanged()
 }
 
 /**
@@ -529,13 +531,13 @@ interface OnViewAttachedStateChangedContainer {
  * + `attached` - boolean indicating the state, true - view becomes attached, false - detached
  * NB! This is a callback when view is attached to [Window], not its parent
  * @see View.addOnAttachStateChangeListener
- * @see OnViewAttachedStateChangedContainer
+ * @see OnViewAttachedStateChangedRegistration
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
-    block: OnViewAttachedStateChangedContainer.(view: V, attached: Boolean) -> Unit
+    block: OnViewAttachedStateChangedRegistration.(view: V, attached: Boolean) -> Unit
 ): ViewElement<V, LP> = onView { view ->
     view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener,
-        OnViewAttachedStateChangedContainer {
+        OnViewAttachedStateChangedRegistration {
         override fun onViewAttachedToWindow(v: View) {
             notify(v, true)
         }
@@ -549,7 +551,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
             block(v as V, attached)
         }
 
-        override fun removeOnViewAttachedStateChangedListener() {
+        override fun unregisterOnViewAttachedStateChanged() {
             view.removeOnAttachStateChangeListener(this)
         }
     })

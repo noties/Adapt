@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.state
+package io.noties.adapt.ui.util
 
 import android.content.res.Resources
 import android.view.View

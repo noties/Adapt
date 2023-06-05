@@ -13,13 +13,13 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 
 @Suppress("FunctionName")
-fun <LP: LayoutParams> ViewFactory<LP>.Recycler(
+fun <LP : LayoutParams> ViewFactory<LP>.Recycler(
     hasFixedSize: Boolean = true
 ): ViewElement<RecyclerView, LP> = Element(ElementViewFactory.Recycler) {
     it.setHasFixedSize(hasFixedSize)
 }
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerLinearLayoutManager(
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerLinearLayoutManager(
     isVertical: Boolean = true,
     reverseLayout: Boolean = false
 ) = onView {
@@ -30,13 +30,13 @@ fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerLinearLayoutM
     )
 }
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerGridLayoutManager(
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerGridLayoutManager(
     spanCount: Int,
     spanSizeLookup: ((RecyclerView, spanCount: Int, position: Int) -> Int)? = null
 ) = onView {
     val manager = GridLayoutManager(it.context, spanCount)
     spanSizeLookup?.also { ssl ->
-        manager.spanSizeLookup = object: SpanSizeLookup() {
+        manager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return ssl(it, spanCount, position)
             }
@@ -45,27 +45,37 @@ fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerGridLayoutMan
     it.layoutManager = manager
 }
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerLayoutManager(
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerLayoutManager(
     manager: LayoutManager
 ) = onView {
     it.layoutManager = manager
 }
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerDefaultItemAnimator(
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerDefaultItemAnimator(
 ) = recyclerItemAnimator(DefaultItemAnimator())
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerItemAnimator(
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerItemAnimator(
     animator: ItemAnimator
 ) = onView {
     it.itemAnimator = animator
 }
 
-fun <V: RecyclerView, LP: LayoutParams> ViewElement<V, LP>.recyclerOnScrollChanged(
-    callback: (RecyclerView, deltaX: Int, deltaY: Int) -> Unit
-) = onView {
-    it.addOnScrollListener(object: OnScrollListener() {
+interface RecyclerOnScrollChangedRegistration {
+    fun unregisterOnScrollChanged()
+}
+
+fun <V : RecyclerView, LP : LayoutParams> ViewElement<V, LP>.recyclerOnScrollChanged(
+    callback: RecyclerOnScrollChangedRegistration.(RecyclerView, deltaX: Int, deltaY: Int) -> Unit
+) = onView { recycler ->
+    val listener = object : OnScrollListener(), RecyclerOnScrollChangedRegistration {
+
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            callback(recyclerView, dx, dy)
+            callback(this, recyclerView, dx, dy)
         }
-    })
+
+        override fun unregisterOnScrollChanged() {
+            recycler.removeOnScrollListener(this)
+        }
+    }
+    recycler.addOnScrollListener(listener)
 }

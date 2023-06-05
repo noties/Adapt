@@ -1,4 +1,4 @@
-package io.noties.adapt.ui.state
+package io.noties.adapt.ui.util
 
 import android.content.res.Resources
 import android.graphics.drawable.StateListDrawable
@@ -13,7 +13,8 @@ import kotlin.reflect.KProperty
 
 /**
  * `pressed` is not reported without a stateful drawable for the `android.R.attr.state_pressed`, as
- * a workaround a [StatefulShape], [StateListDrawable] can be used with pressed state defined. Or a stateful drawable
+ * a workaround a [io.noties.adapt.ui.shape.StatefulShape], [StateListDrawable] can be used with
+ * pressed state defined. Or a stateful drawable
  * with this state defined, for example, `backgroundDefaultSelectable()` or `foregroundDefaultSelectable()`.
  * Additionally, a regular shape can be turned into stateful drawable with `shape.newDrawable().stateful()`
  */

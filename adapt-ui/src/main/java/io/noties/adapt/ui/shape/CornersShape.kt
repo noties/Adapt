@@ -38,7 +38,8 @@ class CornersShape(
 
     private val cache = Cache()
 
-    override fun clone(): CornersShape = CornersShape(leadingTop, topTrailing, trailingBottom, bottomLeading)
+    override fun clone(): CornersShape =
+        CornersShape(leadingTop, topTrailing, trailingBottom, bottomLeading)
 
     override fun toStringDedicatedProperties(): String {
         return "leadingTop=$leadingTop, topTrailing=$topTrailing, trailingBottom=$trailingBottom, bottomLeading=$bottomLeading"
@@ -100,9 +101,6 @@ class CornersShape(
             val tb = trailingBottom.dip.toFloat()
             val bl = bottomLeading.dip.toFloat()
 
-            // TODO: we could manually do this:
-            //  1. see if radius is the same, if so -> rounded-rect
-            //  2. then... check the axis, and if the same add additional padding?
             path.addRoundRect(
                 rectF,
                 floatArrayOf(

@@ -25,6 +25,7 @@ import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.dip
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -652,6 +653,25 @@ class Text_Test {
                 .textLetterSpacing(em)
                 .renderView {
                     verify(this).letterSpacing = eq(em)
+                }
+        }
+    }
+
+    @Test
+    fun textInputType() {
+        val inputs = listOf(
+            InputType.none,
+            InputType.text.capWords.uri.multiline.autoCorrect,
+            InputType.phone,
+            InputType.number.signed.password,
+            InputType.dateTime.time
+        )
+
+        for (input in inputs) {
+            newTextElement()
+                .textInputType(input)
+                .renderView {
+                    verify(this).inputType = eq(input.value)
                 }
         }
     }

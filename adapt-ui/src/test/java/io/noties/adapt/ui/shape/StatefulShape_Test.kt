@@ -3,8 +3,8 @@ package io.noties.adapt.ui.shape
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
-import io.noties.adapt.ui.state.DrawableState
-import io.noties.adapt.ui.state.DrawableStateSet
+import io.noties.adapt.ui.util.DrawableState
+import io.noties.adapt.ui.util.DrawableStateSet
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

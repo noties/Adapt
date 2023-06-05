@@ -42,10 +42,10 @@ import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.Text
-import io.noties.adapt.ui.state.DrawableState
-import io.noties.adapt.ui.state.onDrawableStateChange
+import io.noties.adapt.ui.util.DrawableState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
+import io.noties.adapt.ui.util.onDrawableStateChange
 import io.noties.debug.Debug
 
 @AdaptSample(

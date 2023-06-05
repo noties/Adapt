@@ -918,7 +918,7 @@ class ViewElement_Extensions_Test {
     @Test
     fun onViewAttachedStateChanged() {
         class Ref(
-            var container: OnViewAttachedStateChangedContainer? = null,
+            var container: OnViewAttachedStateChangedRegistration? = null,
             var view: View? = null,
             var attached: Boolean? = null,
         )
@@ -957,7 +957,7 @@ class ViewElement_Extensions_Test {
                 ref = unsubscribeRef
 
                 // unsubscribe
-                container!!.removeOnViewAttachedStateChangedListener()
+                container!!.unregisterOnViewAttachedStateChanged()
 
                 // ref is the same, must not change
                 Assert.assertEquals(System.identityHashCode(unsubscribeRef), System.identityHashCode(ref))

@@ -19,6 +19,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 import io.noties.adapt.ui.util.TypefaceStyle
 import io.noties.adapt.ui.util.dip
@@ -407,3 +408,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textLetterSpacing(
 ): ViewElement<V, LP> = onView {
     it.letterSpacing = em
 }
+
+/**
+ * InputType
+ * @see TextView.setInputType
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
+    inputType: InputType
+) = onView { it.inputType = inputType.value }

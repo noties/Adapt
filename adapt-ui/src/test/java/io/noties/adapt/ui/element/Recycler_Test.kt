@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
-import io.noties.adapt.ui.testutil.mockt
 import org.junit.After
 import org.junit.Assert
 import org.junit.Test
@@ -166,8 +165,11 @@ class Recycler_Test {
 
         val (dx, dy) = 101 to 987
 
+        lateinit var registration: RecyclerOnScrollChangedRegistration
+
         newElementOfType<RecyclerView>()
             .recyclerOnScrollChanged { _, deltaX, deltaY ->
+                registration = this
                 called.set(true)
                 Assert.assertEquals(
                     "dx",
@@ -181,10 +183,18 @@ class Recycler_Test {
                 )
             }
             .renderView {
-                val captor = ArgumentCaptor.forClass(RecyclerView.OnScrollListener::class.java)
-                verify(this).addOnScrollListener(captor.capture())
+                val listener = kotlin.run {
+                    val captor = ArgumentCaptor.forClass(RecyclerView.OnScrollListener::class.java)
+                    verify(this).addOnScrollListener(captor.capture())
+                    captor.value
+                }
 
-                captor.value.onScrolled(this, dx, dy)
+                listener.onScrolled(this, dx, dy)
+
+                Assert.assertNotNull(registration)
+
+                registration.unregisterOnScrollChanged()
+                verify(this).removeOnScrollListener(eq(listener))
             }
 
         Assert.assertEquals(true, called.get())

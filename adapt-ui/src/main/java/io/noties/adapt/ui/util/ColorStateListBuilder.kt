@@ -3,7 +3,6 @@ package io.noties.adapt.ui.util
 import android.content.res.ColorStateList
 import android.util.StateSet
 import androidx.annotation.ColorInt
-import io.noties.adapt.ui.state.DrawableState
 
 class ColorStateListBuilder {
 

@@ -2,7 +2,7 @@ package io.noties.adapt.ui.shape
 
 import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
-import io.noties.adapt.ui.state.DrawableState
+import io.noties.adapt.ui.util.DrawableState
 
 class StatefulShape {
 

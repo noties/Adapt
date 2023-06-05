@@ -6,8 +6,8 @@ import android.graphics.Outline
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import io.noties.adapt.ui.state.DrawableState
-import io.noties.adapt.ui.state.DrawableStateSet
+import io.noties.adapt.ui.util.DrawableState
+import io.noties.adapt.ui.util.DrawableStateSet
 import kotlin.math.roundToInt
 
 open class ShapeDrawable<R : Any> protected constructor(

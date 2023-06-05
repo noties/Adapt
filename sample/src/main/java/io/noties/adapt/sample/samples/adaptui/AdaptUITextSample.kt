@@ -10,6 +10,10 @@ import android.view.inputmethod.EditorInfo
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.explore.ExploreEditorInfo
+import io.noties.adapt.sample.explore.ExploreEditorInfo.textImeOptions
+import io.noties.adapt.sample.explore.ExploreEditorInfo.textInputType
+import io.noties.adapt.sample.explore.ExplorePreviewDrawBounds.previewDrawBounds
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.hex
@@ -46,6 +50,7 @@ import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.InputType
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -57,6 +62,17 @@ class AdaptUITextSample : SampleView() {
     override val layoutResId: Int
         get() = R.layout.view_sample_frame
 
+    init {
+        // TODO: really important to clear variation before ORing with other
+        val uri = EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_URI
+        val clearVariation = uri and EditorInfo.TYPE_MASK_VARIATION.inv()
+        val autoComplete = clearVariation or EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE
+        val ac = ExploreEditorInfo.InputType.text.uri.autoComplete
+        val ec =
+            EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_NORMAL or EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE
+        Debug.i("ac:${ac.value} ec:$ec, uri:$uri clear:$clearVariation autoComplete:$autoComplete")
+    }
+
     override fun render(view: View) {
         val child = ViewFactory.createView(view.context) {
             VScroll {
@@ -67,16 +83,22 @@ class AdaptUITextSample : SampleView() {
                     MyText()
                 }
             }.layoutFill()
+                .previewDrawBounds()
         }
         (view as ViewGroup).addView(child)
     }
 
     @Suppress("FunctionName")
     private fun ViewFactory<ViewGroup.MarginLayoutParams>.MyTextInput() {
-        TextInput(EditorInfo.TYPE_CLASS_PHONE)
+        TextInput(InputType.phone)
             .textSize(16)
             .textColor(Colors.black)
             .textHint("Some phone!")
+//            .textInputType(ExploreEditorInfo.InputType.text.uri.noSuggestions.capWords)
+            .textImeOptions(ExploreEditorInfo.ImeOptions.actionGo.noExactUi)
+            .onView {
+                it.imeActionId
+            }
             .padding(horizontal = 16, vertical = 12)
             .layoutMargin(horizontal = 16, vertical = 8)
             .background(StatefulShape.drawable {
