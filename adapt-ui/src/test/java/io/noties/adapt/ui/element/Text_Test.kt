@@ -17,15 +17,20 @@ import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.obtainView
 import io.noties.adapt.ui.renderView
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
+import io.noties.adapt.ui.util.TypefaceStyle
 import io.noties.adapt.ui.util.dip
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -36,10 +41,10 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.RETURNS_MOCKS
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.eq
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.never
 import org.mockito.kotlin.whenever
@@ -134,27 +139,27 @@ class Text_Test {
     }
 
     @Test
-    fun `textFont - default`() {
+    fun `textTypeface - default`() {
         newTextElement()
-            .textFont()
+            .textTypeface()
             .renderView {
                 verify(this).setTypeface(eq(null), eq(Typeface.NORMAL))
             }
     }
 
     @Test
-    fun textFont() {
+    fun textTypeface() {
         val inputs = listOf(
-            null to Typeface.NORMAL,
-            Typeface.MONOSPACE to (Typeface.BOLD or Typeface.ITALIC)
+            null to TypefaceStyle.normal,
+            Typeface.MONOSPACE to TypefaceStyle.bold.italic
         )
         for ((typeface, style) in inputs) {
             newTextElement()
-                .textFont(typeface, style)
+                .textTypeface(typeface, style)
                 .renderView {
                     verify(this).setTypeface(
                         eq(typeface),
-                        eq(style)
+                        eq(style.value)
                     )
                 }
         }
@@ -462,8 +467,8 @@ class Text_Test {
 
     @Test
     fun textGradient() {
-        val gradient = io.noties.adapt.ui.testutil.mockt<Gradient>()
-        val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
+        val gradient = mockt<Gradient>()
+        val paint = mockt<TextPaint>()
 
         newTextElement()
             .textGradient(gradient)
@@ -527,7 +532,7 @@ class Text_Test {
 
                     // fails with InvalidUseOfMatchersException if eq is used..
                     verify(this).setShadowLayer(
-                        org.mockito.kotlin.eq(input.radius.dip.toFloat()),
+                        eq(input.radius.dip.toFloat()),
                         xy.capture(),
                         xy.capture(),
                         c.capture(),
@@ -548,7 +553,7 @@ class Text_Test {
     fun textBold() {
         val inputs = listOf(
             null to null,
-            io.noties.adapt.ui.testutil.mockt<Typeface>() to Typeface.ITALIC
+            mockt<Typeface>() to Typeface.ITALIC
         )
 
         for ((typeface, style) in inputs) {
@@ -563,8 +568,8 @@ class Text_Test {
                 .renderView {
                     val expectedStyle = (style ?: 0) or Typeface.BOLD
                     verify(this).setTypeface(
-                        org.mockito.kotlin.eq(typeface),
-                        org.mockito.kotlin.eq(expectedStyle)
+                        eq(typeface),
+                        eq(expectedStyle)
                     )
                 }
         }
@@ -574,7 +579,7 @@ class Text_Test {
     fun textItalic() {
         val inputs = listOf(
             null to null,
-            io.noties.adapt.ui.testutil.mockt<Typeface>() to Typeface.BOLD
+            mockt<Typeface>() to Typeface.BOLD
         )
 
         for ((typeface, style) in inputs) {
@@ -589,8 +594,8 @@ class Text_Test {
                 .renderView {
                     val expectedStyle = (style ?: 0) or Typeface.ITALIC
                     verify(this).setTypeface(
-                        org.mockito.kotlin.eq(typeface),
-                        org.mockito.kotlin.eq(expectedStyle)
+                        eq(typeface),
+                        eq(expectedStyle)
                     )
                 }
         }
@@ -600,14 +605,14 @@ class Text_Test {
     fun textUnderline() {
         val inputs = listOf(true, false)
         for (input in inputs) {
-            val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
+            val paint = mockt<TextPaint>()
             newTextElement()
                 .also {
                     whenever(it.view.paint).thenReturn(paint)
                 }
                 .textUnderline(input)
                 .renderView {
-                    verify(paint).isUnderlineText = org.mockito.kotlin.eq(input)
+                    verify(paint).isUnderlineText = eq(input)
                 }
         }
     }
@@ -616,14 +621,14 @@ class Text_Test {
     fun textStrikeThrough() {
         val inputs = listOf(true, false)
         for (input in inputs) {
-            val paint = io.noties.adapt.ui.testutil.mockt<TextPaint>()
+            val paint = mockt<TextPaint>()
             newTextElement()
                 .also {
                     whenever(it.view.paint).thenReturn(paint)
                 }
                 .textStrikeThrough(input)
                 .renderView {
-                    verify(paint).isStrikeThruText = org.mockito.kotlin.eq(input)
+                    verify(paint).isStrikeThruText = eq(input)
                 }
         }
     }
@@ -635,7 +640,7 @@ class Text_Test {
             newTextElement()
                 .textSelectable(input)
                 .renderView {
-                    verify(this).setTextIsSelectable(org.mockito.kotlin.eq(input))
+                    verify(this).setTextIsSelectable(eq(input))
                 }
         }
     }
@@ -672,6 +677,97 @@ class Text_Test {
                 .textInputType(input)
                 .renderView {
                     verify(this).inputType = eq(input.value)
+                }
+        }
+    }
+
+    @Test
+    fun textImeOptions() {
+        val inputs = listOf(
+            ImeOptions.none,
+            ImeOptions.actionDone.noEnterAction.noExactUi.forceAscii,
+            ImeOptions.navigatePrevious
+        )
+
+        for (input in inputs) {
+            newTextElement()
+                .textImeOptions(input)
+                .renderView {
+                    verify(this).imeOptions = eq(input.value)
+                }
+        }
+    }
+
+    @Test
+    fun `textImeOptions - action`() {
+        // none triggers all
+        // action would be delivered if it is requested
+
+        fun mockAction(): (TextView, ImeOptions) -> Boolean {
+            val action: (TextView, ImeOptions) -> Boolean = mockt()
+            whenever(action.invoke(any(), any())).thenReturn(true)
+            return action
+        }
+
+        val inputs = listOf(
+            ImeOptions.none to mockAction(),
+            ImeOptions.actionDone to mockAction(),
+            ImeOptions.actionNext.forceAscii.noExactUi to mockAction()
+        )
+
+        for ((options, action) in inputs) {
+            newTextElement()
+                .textImeOptions(options, action)
+                .renderView {
+
+                    val listener = kotlin.run {
+                        val captor = ArgumentCaptor.forClass(OnEditorActionListener::class.java)
+                        verify(this).setOnEditorActionListener(captor.capture())
+                        captor.value
+                    }
+
+                    val expectedActionId = options.value and EditorInfo.IME_MASK_ACTION
+                    if (expectedActionId == 0) {
+                        // all events must be delivered
+                        listOf(
+                            ImeOptions.actionSearch,
+                            ImeOptions.actionDone,
+                            ImeOptions.actionSend
+                        ).forEach {
+                            assertEquals(
+                                options.toString(),
+                                true,
+                                listener.onEditorAction(this, it.value, null)
+                            )
+                            verify(action).invoke(eq(this), eq(ImeOptions(it.value)))
+                        }
+                    } else {
+                        // just our action must be delivered
+                        listOf(
+                            ImeOptions.none,
+                            ImeOptions.actionDone,
+                            ImeOptions.actionSend,
+                            ImeOptions.actionSearch,
+                            ImeOptions.actionNext,
+                            ImeOptions.actionGo,
+                            ImeOptions.actionPrevious,
+                            ImeOptions.actionUnspecified,
+                        )
+                            .filter {
+                                it.value != expectedActionId
+                            }
+                            .forEach {
+                                assertEquals(
+                                    options.toString(),
+                                    false,
+                                    listener.onEditorAction(this, it.value, null)
+                                )
+                                verify(action, never()).invoke(any(), any())
+                            }
+
+                        listener.onEditorAction(this, expectedActionId, null)
+                        verify(action).invoke(eq(this), eq(ImeOptions(expectedActionId)))
+                    }
                 }
         }
     }

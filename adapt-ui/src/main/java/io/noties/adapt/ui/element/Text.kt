@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -19,6 +20,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 import io.noties.adapt.ui.util.TypefaceStyle
@@ -386,14 +388,14 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSelectable(
  * Text changed [TextWatcher.afterTextChanged]
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textOnTextChanged(
-    action: (CharSequence?) -> Unit
+    action: (Editable) -> Unit
 ): ViewElement<V, LP> = onView {
     it.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
             Unit
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-        override fun afterTextChanged(s: Editable?) {
+        override fun afterTextChanged(s: Editable) {
             action(s)
         }
     })
@@ -416,3 +418,26 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textLetterSpacing(
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
     inputType: InputType
 ) = onView { it.inputType = inputType.value }
+
+/**
+ * Ime Options
+ * @see TextView.setImeOptions
+ * @see TextView.setOnEditorActionListener
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
+    imeOptions: ImeOptions,
+    onActionListener: ((V, action: ImeOptions) -> Boolean)? = null
+) = onView {
+    it.imeOptions = imeOptions.value
+
+    onActionListener?.also { listener ->
+        val action = imeOptions.value and EditorInfo.IME_MASK_ACTION
+        it.setOnEditorActionListener { _, actionId, _ ->
+            if (action != 0 && actionId != action) {
+                false
+            } else {
+                listener(it, ImeOptions(actionId))
+            }
+        }
+    }
+}

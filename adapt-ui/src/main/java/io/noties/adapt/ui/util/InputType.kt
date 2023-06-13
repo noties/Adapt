@@ -69,4 +69,17 @@ open class InputType(val value: Int) {
     override fun toString(): String {
         return "${javaClass.simpleName}(value=$value)"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is InputType) return false
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value
+    }
 }
