@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.Item;
+import io.noties.adapt.util.ItemUtils;
 import io.noties.adapt.viewgroup.AdaptViewGroup;
 
 // @since $UNRELEASED;
@@ -32,7 +33,7 @@ public abstract class AdaptPreviewLayout extends FrameLayout {
         final ViewGroup layout = createLayout(context);
         final Adapt adapt = createAdapt(layout);
 
-        adapt.setItems(items());
+        adapt.setItems(ItemUtils.assignIdsAccordingToIndex(items()));
     }
 
     @NonNull
