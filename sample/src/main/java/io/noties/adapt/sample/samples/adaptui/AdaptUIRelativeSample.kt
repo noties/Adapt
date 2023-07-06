@@ -37,7 +37,7 @@ class AdaptUIRelativeSample : AdaptUISampleView() {
                     block(v)
                 }
 
-                override fun onViewDetachedFromWindow(v: View?) = Unit
+                override fun onViewDetachedFromWindow(v: View) = Unit
             })
         }
 

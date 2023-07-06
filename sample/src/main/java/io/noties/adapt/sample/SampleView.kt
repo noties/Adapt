@@ -28,6 +28,7 @@ import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.util.onAttachedOnce
 import io.noties.debug.Debug
 
 abstract class SampleView {
@@ -55,15 +56,10 @@ abstract class SampleView {
             val sampleView = inflater.inflate(layoutResId, container, false)
             container.addView(sampleView)
 
-            view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                override fun onViewAttachedToWindow(v: View?) {
-                    view.removeOnAttachStateChangeListener(this)
-                    ItemGenerator.reset()
-                    render(sampleView)
-                }
-
-                override fun onViewDetachedFromWindow(v: View?) = Unit
-            })
+            view.onAttachedOnce {
+                ItemGenerator.reset()
+                render(sampleView)
+            }
         }
 
         fun processAppBar(view: View) {

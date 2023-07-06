@@ -61,7 +61,7 @@ object ExploreAdaptUIShapeTransition {
             }
         }
         animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {
                 // TODO: as most of the properties would need to have bounds,
                 //  we need to trigger first draw
                 properties.forEach { it.onBeforeStarted() }
@@ -69,8 +69,8 @@ object ExploreAdaptUIShapeTransition {
                 // TODO: here we must trigger filling the bounds.. can we expose it?
             }
 
-            override fun onAnimationEnd(animation: Animator?) = onFinished()
-            override fun onAnimationCancel(animation: Animator?) = onFinished()
+            override fun onAnimationEnd(animation: Animator) = onFinished()
+            override fun onAnimationCancel(animation: Animator) = onFinished()
             private fun onFinished() = properties.forEach { p -> p.onFinished() }
         })
 

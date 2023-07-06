@@ -67,8 +67,8 @@ class OnScrollChangedListenerDelegate private constructor(val view: View) {
     init {
         // unregister all when view is detached from window
         view.addOnAttachStateChangeListener(object : OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View?) = Unit
-            override fun onViewDetachedFromWindow(v: View?) {
+            override fun onViewAttachedToWindow(v: View) = Unit
+            override fun onViewDetachedFromWindow(v: View) {
                 view.removeOnAttachStateChangeListener(this)
                 view.setTag(tagId, null)
                 view.setOnScrollChangeListener(null)
@@ -110,8 +110,8 @@ private class OnScrollChangedListenerDelegatePreM(
     }
 
     private val onAttachStateChangeListener = object : OnAttachStateChangeListener {
-        override fun onViewAttachedToWindow(v: View?) = Unit
-        override fun onViewDetachedFromWindow(v: View?) {
+        override fun onViewAttachedToWindow(v: View) = Unit
+        override fun onViewDetachedFromWindow(v: View) {
             unregister()
         }
     }

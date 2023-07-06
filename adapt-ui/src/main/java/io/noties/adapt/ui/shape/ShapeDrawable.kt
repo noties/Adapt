@@ -45,7 +45,7 @@ open class ShapeDrawable<R : Any> protected constructor(
     private var stateful: Stateful<R>? = null
     private var hotspot: Hotspot<R>? = null
 
-    override fun onBoundsChange(bounds: Rect?) {
+    override fun onBoundsChange(bounds: Rect) {
         super.onBoundsChange(bounds)
         invalidateSelf()
     }
