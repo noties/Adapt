@@ -56,6 +56,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.layoutAlign(
     baseline?.also { addRule(RelativeLayout.ALIGN_BASELINE, this, it) }
 }
 
+// TODO: should those be by default true?
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.layoutAlignParent(
     horizontal: Boolean? = null,
     vertical: Boolean? = null
@@ -66,6 +67,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.layoutAlignParent(
     bottom = vertical
 )
 
+// TODO: should those be by default true?
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.layoutAlignParent(
     leading: Boolean? = null,
     top: Boolean? = null,

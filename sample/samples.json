@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIInflateSample",
+    "id": "20230615000044",
+    "title": "[Explore] AdaptUI \u003cem\u003eInflate\u003c/em\u003e element",
+    "description": "Inflate view from XML and use in AdaptUI",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2",
     "id": "20230602002749",
     "title": "[Showcase] AdaptUI, Reference views and elements",
@@ -101,20 +110,20 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1",
     "id": "20230526030500",
-    "title": "[Showcase] AdaptUI, Shape #2",
-    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eArcShape\u003c/em\u003e, \u003cem\u003eOvalShape\u003c/em\u003e, \u003cem\u003eCapsule\u003c/em\u003e, \u003cem\u003eLine\u003c/em\u003e",
+    "title": "[Showcase] AdaptUI, Shape #1",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eCircleShape\u003c/em\u003e, \u003cem\u003eTextShape\u003c/em\u003e, \u003cem\u003eCornersShape\u003c/em\u003e, \u003cem\u003eRoundedRectangleShape\u003c/em\u003e",
     "tags": [
       "adapt-ui",
       "showcase"
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2",
     "id": "20230526030500",
-    "title": "[Showcase] AdaptUI, Shape #1",
-    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eCircleShape\u003c/em\u003e, \u003cem\u003eTextShape\u003c/em\u003e, \u003cem\u003eCornersShape\u003c/em\u003e, \u003cem\u003eRoundedRectangleShape\u003c/em\u003e",
+    "title": "[Showcase] AdaptUI, Shape #2",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eArcShape\u003c/em\u003e, \u003cem\u003eOvalShape\u003c/em\u003e, \u003cem\u003eCapsule\u003c/em\u003e, \u003cem\u003eLine\u003c/em\u003e",
     "tags": [
       "adapt-ui",
       "showcase"

@@ -21,5 +21,3 @@ fun <LP : LayoutParams> ViewFactory<LP>.VStack(
     },
     children
 )
-
-val VStackDefaultGravity: Gravity get() = Gravity.center.top

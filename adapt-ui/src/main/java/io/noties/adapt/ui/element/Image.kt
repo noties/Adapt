@@ -105,7 +105,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
  * @see io.noties.adapt.ui.util.ColorStateListBuilder
  */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
-    colorStateList: ColorStateList,
+    colorStateList: ColorStateList?,
     mode: PorterDuff.Mode? = null
 ): ViewElement<V, LP> = onView { view ->
     view.imageTintList = colorStateList

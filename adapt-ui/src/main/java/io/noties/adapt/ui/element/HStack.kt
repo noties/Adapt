@@ -21,5 +21,3 @@ fun <LP : LayoutParams> ViewFactory<LP>.HStack(
     },
     children
 )
-
-val HStackDefaultGravity: Gravity get() = Gravity.center.leading

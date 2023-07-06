@@ -117,7 +117,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 
 /**
  * @see View.setBackground
- * @see Shape.Companion.builder
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     block: ShapeFactoryBuilder
@@ -161,7 +160,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
  * @see View.setForeground
  * @see View.setForegroundGravity
  * @see Shape.newDrawable
- * @see Shape.Companion.builder
  * @see ShapeFactory
  */
 @RequiresApi(Build.VERSION_CODES.M)
@@ -503,7 +501,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
 }
 
 /**
- * NB! This is a callback when view is attached to [Window], not its parent
+ * NB! This is a callback when view is attached to [android.view.Window], not its parent
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedOnce(
     block: (V) -> Unit
@@ -512,7 +510,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedOnce(
 }
 
 /**
- * NB! This is a callback when view is attached to [Window], not its parent
+ * NB! This is a callback when view is attached to [android.view.Window], not its parent
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewDetachedOnce(
     block: (V) -> Unit
@@ -529,7 +527,7 @@ interface OnViewAttachedStateChangedRegistration {
  * `block` callback receives 2 arguments:
  * + `view` - view that has callback registered
  * + `attached` - boolean indicating the state, true - view becomes attached, false - detached
- * NB! This is a callback when view is attached to [Window], not its parent
+ * NB! This is a callback when view is attached to [android.view.Window], not its parent
  * @see View.addOnAttachStateChangeListener
  * @see OnViewAttachedStateChangedRegistration
  */
@@ -560,6 +558,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewAttachedStateChanged(
 /**
  * Checks if specified SDK version is available (a device runs greater or equal SDK version
  * than specified)
+ * If `else` behaviour is required, it is better to use an explicit block:
+ * ```kotlin
+ * element
+ *   .also {
+ *     if (Build.VERSION_CODES.M >= Build.VERSION.SDK_INT) {
+ *       it.foreground()
+ *     } else {
+ *       it.background()
+ *     }
+ *   }
+ * ```
  */
 @ChecksSdkIntAtLeast(parameter = 1, lambda = 2)
 inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
@@ -572,20 +581,6 @@ inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
     return this
 }
 
-@ChecksSdkIntAtLeast(parameter = 1, lambda = 2)
-inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.ifAvailable(
-    version: Int,
-    block: (ViewElement<V, LP>) -> Unit,
-    `else`: (ViewElement<V, LP>) -> Unit
-): ViewElement<V, LP> {
-    if (Build.VERSION.SDK_INT >= version) {
-        block(this)
-    } else {
-        `else`(this)
-    }
-    return this
-}
-
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
     block: (ViewElement<V, LP>) -> Unit
 ): ViewElement<V, LP> {
@@ -594,7 +589,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onElementView(
     }
 }
 
-fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayout(
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayoutChanged(
     callback: (V, width: Int, height: Int) -> Unit
 ): ViewElement<V, LP> = onView {
     it.addOnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
@@ -613,4 +608,27 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewLayout(
  * ```
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.indent() = this
+
+/**
+ * An extension to execute [block] if [condition] is `true`.
+ * If `if/else` is required it is better to use an explicit block:
+ * ```kotlin
+ * element
+ *   .also {
+ *     if (condition) {
+ *       it.elevation(4)
+ *     } else {
+ *       it.elevation(0)
+ *     }
+ *   }
+ * ```
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.doIf(
+    condition: Boolean,
+    block: (ViewElement<V, LP>) -> Unit
+) = this.also {
+    if (condition) {
+        block(it)
+    }
+}
 

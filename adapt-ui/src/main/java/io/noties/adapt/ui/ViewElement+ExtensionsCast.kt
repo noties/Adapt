@@ -7,7 +7,8 @@ import kotlin.reflect.KClass
  * Casts a [ViewElement] to specified view type. If cast fails an exception
  * is raised - [AdaptClassCastException]
  * There should be no need to cast element _down_, as by default this element
- * has all parent extensions available
+ * has all parent extensions available.
+ * Please note that if element is not yet initialized, casting would happen
  * @see ifCastView
  */
 fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
@@ -60,7 +61,7 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
 
     return onView {
         if (matches()) {
-            it.post { deliver() }
+            deliver()
         }
     }
 }
@@ -129,11 +130,10 @@ fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
         return this
     }
 
-    val element = this
     return onLayoutParams {
         // here we are inside rendering phase, post to view, to customize and render
         if (matches()) {
-            element.view.post { deliver() }
+            deliver()
         }
     }
 }

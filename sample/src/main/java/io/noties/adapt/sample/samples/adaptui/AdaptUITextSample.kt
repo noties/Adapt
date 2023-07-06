@@ -147,14 +147,10 @@ class AdaptUITextSample : SampleView() {
                 it.textBreakStrategy(BreakStrategy.highQuality)
             }
             .ifAvailable(
-                Build.VERSION_CODES.O,
-                {
-                    it.textAutoSize(8)
-                },
-                {
-                    // not available, else branch
-                }
-            )
+                Build.VERSION_CODES.O
+            ) {
+                it.textAutoSize(8)
+            }
             .textOnTextChanged {
                 Debug.i("text:'$it'")
             }

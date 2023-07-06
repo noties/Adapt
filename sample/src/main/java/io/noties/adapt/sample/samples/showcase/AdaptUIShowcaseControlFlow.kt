@@ -50,12 +50,9 @@ class AdaptUIShowcaseControlFlow : AdaptUISampleView() {
 
             // version check
             Text()
-                .ifAvailable(
-                    Build.VERSION_CODES.M,
-                    { it.text("M is available! :)") },
-                    // else is optional and can be omitted
-                    { it.text("M is not available :(") }
-                )
+                .ifAvailable(Build.VERSION_CODES.M) {
+                    it.text("M is available! :)")
+                }
 
         }.layoutFill()
     }

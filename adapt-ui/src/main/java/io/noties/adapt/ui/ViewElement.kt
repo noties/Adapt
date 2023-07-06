@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import io.noties.adapt.ui.util.DynamicIterator.Companion.dynamicIterator
 
-class ViewElement<V : View, LP : LayoutParams>(
+open class ViewElement<V : View, LP : LayoutParams>(
     private val provider: (Context) -> V
 ) {
     companion object {

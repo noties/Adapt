@@ -75,3 +75,12 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.clipToPadding(
 fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.noClip(): ViewElement<V, LP> =
     this.clipChildren(false)
         .clipToPadding(false)
+
+/**
+ * @see ViewGroup.setTransitionGroup
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.transitionGroup(
+    transitionGroup: Boolean = true
+): ViewElement<V, LP> = onView {
+    it.isTransitionGroup = transitionGroup
+}

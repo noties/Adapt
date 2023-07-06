@@ -14,6 +14,7 @@ import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
@@ -32,9 +33,12 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.verifyNoInteractions
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import org.mockito.verification.VerificationMode
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowSystemClock
 import org.robolectric.util.ReflectionHelpers
@@ -701,12 +705,13 @@ class ViewElement_Extensions_Test {
             Output(null, null, null, null)
         }
 
-        val input: OnScrollChangedListenerRegistration.(View, dx: Int, dy: Int) -> Unit = { v, dx, dy ->
-            output.registration = this
-            output.view = v
-            output.dx = dx
-            output.dy = dy
-        }
+        val input: OnScrollChangedListenerRegistration.(View, dx: Int, dy: Int) -> Unit =
+            { v, dx, dy ->
+                output.registration = this
+                output.view = v
+                output.dx = dx
+                output.dy = dy
+            }
 
         newElement()
             .onViewScrollChanged(input)
@@ -960,7 +965,10 @@ class ViewElement_Extensions_Test {
                 container!!.unregisterOnViewAttachedStateChanged()
 
                 // ref is the same, must not change
-                Assert.assertEquals(System.identityHashCode(unsubscribeRef), System.identityHashCode(ref))
+                Assert.assertEquals(
+                    System.identityHashCode(unsubscribeRef),
+                    System.identityHashCode(ref)
+                )
                 Assert.assertNull(ref.container)
                 Assert.assertNull(ref.view)
                 Assert.assertNull(ref.attached)
@@ -1008,7 +1016,7 @@ class ViewElement_Extensions_Test {
     fun onViewLayout() {
         val callbacks: (View, Int, Int) -> Unit = io.noties.adapt.ui.testutil.mockt()
         val element = newElement()
-            .onViewLayout(callbacks)
+            .onViewLayoutChanged(callbacks)
         verify(callbacks, org.mockito.kotlin.never()).invoke(
             org.mockito.kotlin.any(),
             anyInt(),
@@ -1030,6 +1038,44 @@ class ViewElement_Extensions_Test {
             org.mockito.kotlin.eq(100 - 10),
             org.mockito.kotlin.eq(50 - 20),
         )
+    }
+
+    @Test
+    fun indent() {
+        // indent does nothing
+        val view = mockt<View> {
+            whenever(this.mock.context).thenReturn(RuntimeEnvironment.getApplication())
+        }
+        val element = ViewElement.create(view)
+        verify(view, times(1)).context
+
+        Assert.assertEquals(0, element.viewBlocks.size)
+        Assert.assertEquals(0, element.layoutParamsBlocks.size)
+
+        element.indent()
+
+        Assert.assertEquals(0, element.viewBlocks.size)
+        Assert.assertEquals(0, element.layoutParamsBlocks.size)
+
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun doIf() {
+        val inputs = listOf(false, true)
+        for (input in inputs) {
+            newElement()
+                .doIf(input) {
+                    it.enabled(false)
+                }
+                .renderView {
+                    if (input) {
+                        verify(this).isEnabled = org.mockito.kotlin.eq(false)
+                    } else {
+                        verify(this, org.mockito.kotlin.never()).isEnabled = org.mockito.kotlin.any()
+                    }
+                }
+        }
     }
 
     private fun <T> mode(value: T?): VerificationMode = if (value == null) never() else times(1)

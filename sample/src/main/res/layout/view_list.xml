@@ -41,6 +41,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="150dip"
+        android:layout_height="100dip"
+        android:src="@drawable/ic_code_24"
+        android:tint="@color/accent"
+        android:scaleType="centerInside"/>
+
     <io.noties.adapt.sample.ui.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
