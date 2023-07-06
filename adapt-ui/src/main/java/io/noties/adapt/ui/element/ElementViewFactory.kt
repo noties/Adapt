@@ -10,6 +10,20 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.element.ElementViewFactory.HScroll
+import io.noties.adapt.ui.element.ElementViewFactory.HStack
+import io.noties.adapt.ui.element.ElementViewFactory.Image
+import io.noties.adapt.ui.element.ElementViewFactory.Pager
+import io.noties.adapt.ui.element.ElementViewFactory.Progress
+import io.noties.adapt.ui.element.ElementViewFactory.Recycler
+import io.noties.adapt.ui.element.ElementViewFactory.Spacer
+import io.noties.adapt.ui.element.ElementViewFactory.Text
+import io.noties.adapt.ui.element.ElementViewFactory.TextInput
+import io.noties.adapt.ui.element.ElementViewFactory.VScroll
+import io.noties.adapt.ui.element.ElementViewFactory.VStack
+import io.noties.adapt.ui.element.ElementViewFactory.View
+import io.noties.adapt.ui.element.ElementViewFactory.ZStack
 
 /**
  * Factories for all elements
@@ -49,7 +63,13 @@ object ElementViewFactory {
     fun reset() {
         HScroll = { HorizontalScrollView(it) }
         HStack = { LinearLayout(it) }
-        Image = { ImageView(it) }
+        Image = {
+            ImageView(it).also { imageView ->
+                imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                imageView.layoutParams =
+                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            }
+        }
         Pager = { androidx.viewpager.widget.ViewPager(it) }
         Progress = { ProgressBar(it) }
         Recycler = { androidx.recyclerview.widget.RecyclerView(it) }

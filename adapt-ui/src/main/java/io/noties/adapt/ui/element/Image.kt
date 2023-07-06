@@ -4,32 +4,17 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
+import android.widget.ImageView.ScaleType
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 
-/**
- * Element for [ImageView].
- * By default uses [ImageView.ScaleType.CENTER_INSIDE] scaleType
- */
 @Suppress("FunctionName")
-fun <LP : LayoutParams> ViewFactory<LP>.Image(
-    scaleType: ImageView.ScaleType? = null
-): ViewElement<ImageView, LP> = Element(ElementViewFactory.Image) {
-    it.scaleType = scaleType ?: ImageView.ScaleType.CENTER_INSIDE
-}
-
-/**
- * @see ImageView.setImageResource
- */
-@Suppress("FunctionName", "unused")
-fun <LP : LayoutParams> ViewFactory<LP>.Image(
-    @DrawableRes resourceId: Int,
-    scaleType: ImageView.ScaleType? = null
-): ViewElement<ImageView, LP> = Image(scaleType).image(resourceId)
+fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> =
+    Element(ElementViewFactory.Image)
 
 /**
  * @see ImageView.setImageDrawable
@@ -37,8 +22,15 @@ fun <LP : LayoutParams> ViewFactory<LP>.Image(
 @Suppress("FunctionName", "unused")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(
     drawable: Drawable?,
-    scaleType: ImageView.ScaleType? = null
-): ViewElement<ImageView, LP> = Image(scaleType).image(drawable)
+): ViewElement<ImageView, LP> = Image().image(drawable)
+
+/**
+ * @see ImageView.setImageResource
+ */
+@Suppress("FunctionName", "unused")
+fun <LP : LayoutParams> ViewFactory<LP>.Image(
+    @DrawableRes resourceId: Int,
+): ViewElement<ImageView, LP> = Image().image(resourceId)
 
 /**
  * @see ImageView.setImageBitmap
@@ -46,8 +38,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.Image(
 @Suppress("FunctionName", "unused")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(
     bitmap: Bitmap?,
-    scaleType: ImageView.ScaleType? = null
-): ViewElement<ImageView, LP> = Image(scaleType).image(bitmap)
+): ViewElement<ImageView, LP> = Image().image(bitmap)
 
 /**
  * @see ImageView.setImageResource
@@ -81,7 +72,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
  * @see ImageView.setScaleType
  */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
-    scaleType: ImageView.ScaleType
+    scaleType: ScaleType
 ): ViewElement<V, LP> = onView {
     it.scaleType = scaleType
 }

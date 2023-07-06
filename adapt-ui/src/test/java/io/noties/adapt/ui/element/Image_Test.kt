@@ -34,12 +34,9 @@ class Image_Test {
 
     @Test
     fun init() {
-        val inputs = listOf(
-            null,
-            ImageView.ScaleType.FIT_XY
-        )
+        val inputs = ImageView.ScaleType.values().toList()
         for (input in inputs) {
-            val view = obtainView { Image(input) }
+            val view = obtainView { Image().imageScaleType(input) }
             assertEquals(ImageView::class.java, view::class.java)
             assertDefaultInit(view, input)
         }
@@ -48,39 +45,34 @@ class Image_Test {
     @Test
     fun `init - resource`() {
         val inputs = listOf(
-            1 to null,
-            2 to ImageView.ScaleType.FIT_XY
+            1,
+            2
         )
-        for ((id, scaleType) in inputs) {
-            val view = obtainView { Image(id, scaleType) }
+        for (id in inputs) {
+            val view = obtainView { Image(id) }
             assertEquals(ImageView::class.java, view::class.java)
-            assertDefaultInit(view, scaleType)
         }
     }
 
     @Test
     fun `init - drawable`() {
         val inputs = listOf(
-            mock(Drawable::class.java) to null,
-            mock(Drawable::class.java) to ImageView.ScaleType.FIT_XY
+            mock(Drawable::class.java)
         )
-        for ((drawable, scaleType) in inputs) {
-            val view = obtainView { Image(drawable, scaleType) }
+        for (drawable in inputs) {
+            val view = obtainView { Image(drawable) }
             assertEquals(ImageView::class.java, view::class.java)
-            assertDefaultInit(view, scaleType)
         }
     }
 
     @Test
     fun `init - bitmap`() {
         val inputs = listOf(
-            mock(Bitmap::class.java) to null,
-            mock(Bitmap::class.java) to ImageView.ScaleType.FIT_XY
+            mock(Bitmap::class.java)
         )
-        for ((bitmap, scaleType) in inputs) {
-            val view = obtainView { Image(bitmap, scaleType) }
+        for (bitmap in inputs) {
+            val view = obtainView { Image(bitmap) }
             assertEquals(ImageView::class.java, view::class.java)
-            assertDefaultInit(view, scaleType)
         }
     }
 

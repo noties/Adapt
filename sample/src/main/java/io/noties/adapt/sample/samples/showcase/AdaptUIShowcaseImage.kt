@@ -7,7 +7,6 @@ import android.widget.ImageView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.explore.ExploreClipToOutline
 import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.sample.samples.adaptui.Colors
 import io.noties.adapt.sample.util.Preview
@@ -15,13 +14,10 @@ import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
-import io.noties.adapt.ui.backgroundDefaultSelectable
-import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.imageScaleType
 import io.noties.adapt.ui.element.imageTint
-import io.noties.adapt.ui.foreground
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
@@ -35,7 +31,7 @@ import io.noties.adapt.ui.util.ColorStateListBuilder
     description = "<em>Image</em>, <em>ImageView</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseImage: AdaptUISampleView() {
+class AdaptUIShowcaseImage : AdaptUISampleView() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -49,7 +45,7 @@ class AdaptUIShowcaseImage: AdaptUISampleView() {
                 .imageTint(Colors.black)
                 .background(RectangleShape().stroke(Colors.black))
 
-            Image(R.drawable.ic_close_24, ImageView.ScaleType.FIT_CENTER)
+            Image(R.drawable.ic_close_24)
                 .layout(64, 64)
                 .imageTint(ColorStateListBuilder.create {
                     setPressed(Colors.orange)
@@ -59,7 +55,7 @@ class AdaptUIShowcaseImage: AdaptUISampleView() {
                 .ifAvailable(Build.VERSION_CODES.M) {
                     it.foregroundDefaultSelectable()
                 }
-                .onClick {  }
+                .onClick { }
         }
     }
 }

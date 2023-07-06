@@ -121,7 +121,7 @@ class AdaptUIClipSample : AdaptUISampleView() {
         }
 
         // the key is clipToOutline + proper background shape
-        Image(R.drawable.ic_shuffle_24_white, ImageView.ScaleType.FIT_CENTER)
+        Image(R.drawable.ic_shuffle_24_white)
             .layout(256, 256)
             .background(circle().copy {
                 fill(Colors.white)

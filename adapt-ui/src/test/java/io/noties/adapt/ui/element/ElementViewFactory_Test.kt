@@ -11,13 +11,16 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.assertViewFactory
 import io.noties.adapt.ui.assertViewFactory2
 import org.junit.After
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @Suppress("ClassName", "TestFunctionName")
@@ -138,5 +141,16 @@ class ElementViewFactory_Test {
             FrameLayout::class.java,
             ElementViewFactory::ZStack
         ) { ZStack { } }
+    }
+
+    @Test
+    fun `default - image`() {
+        val imageView = ElementViewFactory.Image(RuntimeEnvironment.getApplication())
+        Assert.assertEquals(ImageView.ScaleType.FIT_CENTER, imageView.scaleType)
+
+        val layoutParams = imageView.layoutParams
+        Assert.assertNotNull(layoutParams)
+        Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.width)
+        Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.height)
     }
 }
