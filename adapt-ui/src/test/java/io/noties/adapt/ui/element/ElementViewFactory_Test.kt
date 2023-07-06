@@ -153,4 +153,13 @@ class ElementViewFactory_Test {
         Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.width)
         Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.height)
     }
+
+    @Test
+    fun `default - progress`() {
+        val progressBar = ElementViewFactory.Progress(RuntimeEnvironment.getApplication())
+        val layoutParams = progressBar.layoutParams
+        Assert.assertNotNull(layoutParams)
+        Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.width)
+        Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.height)
+    }
 }

@@ -71,7 +71,12 @@ object ElementViewFactory {
             }
         }
         Pager = { androidx.viewpager.widget.ViewPager(it) }
-        Progress = { ProgressBar(it) }
+        Progress = {
+            ProgressBar(it).also { progressBar ->
+                progressBar.layoutParams =
+                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            }
+        }
         Recycler = { androidx.recyclerview.widget.RecyclerView(it) }
         Spacer = { android.view.View(it) }
         Text = { TextView(it) }
