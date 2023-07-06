@@ -32,6 +32,7 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -320,6 +321,26 @@ class ViewFactory_Test {
                 t.message!!.contains("ViewFactory has elements consumed")
             )
         }
+    }
+
+    @Test
+    fun `original layoutParams`() {
+        // if element's view contains layout-params, do not update them with defaults
+
+        val layoutParams = FrameLayout.LayoutParams(2, 99)
+        val view = mockt<View> {
+            whenever(mock.context).thenReturn(context)
+            whenever(mock.layoutParams).thenReturn(layoutParams)
+        }
+
+        val element = ViewElement.create(view)
+
+        val createdView = ViewFactory.createView(context) {
+            add(element)
+        }
+
+        assertEquals(view, createdView)
+        assertLayoutParams(layoutParams, createdView.layoutParams)
     }
 
     // a primitive version for equals... platform LP do not have it implemented...

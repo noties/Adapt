@@ -154,7 +154,11 @@ class ViewFactory<out LP : LayoutParams>(
 
             val view = root.init(context)
 
-            view.layoutParams = layoutParams
+            // NB! apply layout params only if original view does not contain them
+            //  if it does, use them
+            if (view.layoutParams == null) {
+                view.layoutParams = layoutParams
+            }
 
             if (renderOnAttach) {
                 // we assume that layout params would be already processed by parent
