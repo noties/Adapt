@@ -10,7 +10,6 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
-import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -46,6 +45,7 @@ import io.noties.adapt.ui.util.DrawableState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.onDrawableStateChange
+import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.debug.Debug
 
 @AdaptSample(

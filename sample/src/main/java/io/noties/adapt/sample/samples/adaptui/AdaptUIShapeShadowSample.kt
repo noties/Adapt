@@ -14,7 +14,6 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
-import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptRecyclerView
@@ -55,6 +54,7 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.translation
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.debug.Debug
 
 @AdaptSample(

@@ -24,6 +24,9 @@ import io.noties.adapt.ui.foreground
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.ifCastView
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.preview.preview
+import io.noties.adapt.ui.preview.previewBounds
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.util.Gravity
@@ -48,6 +51,12 @@ class AdaptUIInflateSample : AdaptUISampleView() {
                 }
                 .inflatedView(R.id.title_view) {
                     it.text("Inflated view")
+                        .padding(16)
+//                        .padding(top = 0, bottom = 0)
+                        .preview {
+//                            it.previewLayout()
+                            it.text("InPreview")
+                        }
                 }
                 .ifAvailable(Build.VERSION_CODES.M) {
                     it.foreground { Capsule() }
@@ -63,6 +72,9 @@ class AdaptUIInflateSample : AdaptUISampleView() {
                 .castView(LinearLayout::class)
                 .stackGravity(Gravity.center.vertical)
         }.layoutFill()
+            .preview {
+                it.previewBounds()
+            }
     }
 }
 

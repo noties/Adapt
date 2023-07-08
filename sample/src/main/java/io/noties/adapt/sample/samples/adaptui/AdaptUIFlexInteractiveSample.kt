@@ -25,7 +25,6 @@ import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.children
 import io.noties.adapt.sample.util.hex
-import io.noties.adapt.sample.util.withAlphaComponent
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -90,6 +89,7 @@ import io.noties.adapt.ui.util.ColorStateListBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.pxToDip
+import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.debug.Debug
 import kotlin.math.roundToInt
 
