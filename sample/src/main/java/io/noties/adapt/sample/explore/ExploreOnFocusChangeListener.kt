@@ -1,6 +1,7 @@
 package io.noties.adapt.sample.explore
 
 import android.view.View
+import io.noties.adapt.sample.R
 import io.noties.adapt.sample.explore.ExploreOnFocusChangeListener.OnFocusChangedListenerRegistration
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
@@ -43,8 +44,7 @@ object ExploreOnFocusChangeListener {
                 }
             }
 
-            // TODO: proper id
-            private const val tagId = 0
+            private const val tagId = R.id.adapt_internal_on_focus_delegate
         }
 
         private val listeners = CopyOnWriteArrayList<View.OnFocusChangeListener>()

@@ -19,6 +19,9 @@ object ExploreShapePath {
             steps.add(Step.Move(Dimension.Exact(x), Dimension.Exact(y)))
         }
 
+        // move-relative should use the dimension? and how to move relative to the previous point?
+        //  do we need another name?
+
         fun line(x: Int, y: Int) = this.also {
             steps.add(Step.Line(Dimension.Exact(x), Dimension.Exact(y)))
         }

@@ -31,7 +31,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.stickyView() = this.also { 
 }
 
 /**
- * NB! This class is intended to be used with [LinearLayoutReverseDrawingOrder] inside a
+ * NB! This class is intended to be used with [io.noties.adapt.ui.widget.LinearLayoutReverseDrawingOrder] inside a
  * scrolling parent view. This class modifies original view\'s [View.setTranslationY] attribute,
  * so for a sticky view to be on top, parent view-group must draw children in reverse order (starting
  * from the bottom), making a sticky view be drawn atop on views underneath.

@@ -1,0 +1,93 @@
+package io.noties.adapt.sample.explore
+
+import android.graphics.drawable.Drawable
+import android.view.View
+import android.view.View.MeasureSpec
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.widget.FrameLayout
+import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.shape.Shape
+import io.noties.adapt.ui.shape.ShapeFactory
+import io.noties.adapt.ui.shape.ShapeFactoryBuilder
+import io.noties.adapt.ui.util.onDetachedOnce
+
+object ExploreOverlay {
+
+    // detect when removed
+    //  view - onDetached
+    //  drawable -> when callback is null
+
+    fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.overlay3(
+        builder: ViewFactory<FrameLayout.LayoutParams>.() -> Unit
+    ) = onView { viewGroup ->
+        val frameLayout = FrameLayout(viewGroup.context)
+        frameLayout.layoutParams =
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+
+        ViewFactory.addChildren(frameLayout, builder)
+
+        // required to measure and layout manually, as overlay does not do it
+        //  by itself
+        fun measureAndLayout() {
+            frameLayout.measure(
+                MeasureSpec.makeMeasureSpec(viewGroup.width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(viewGroup.height, MeasureSpec.EXACTLY)
+            )
+            frameLayout.layout(0, 0, viewGroup.width, viewGroup.height)
+        }
+
+        measureAndLayout()
+
+        viewGroup.overlay.add(frameLayout)
+
+        val listener: View.OnLayoutChangeListener =
+            View.OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                measureAndLayout()
+            }
+
+        viewGroup.addOnLayoutChangeListener(listener)
+
+        // NB! when overlay is removed, it would receive _regular_ detached event,
+        //  unregister layout listener
+        frameLayout.onDetachedOnce { viewGroup.removeOnLayoutChangeListener(listener) }
+    }
+
+    fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overlay(
+        builder: ShapeFactoryBuilder
+    ) = overlay(builder(ShapeFactory.NoOp))
+
+    fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overlay(
+        shape: Shape
+    ) = overlay(shape.newDrawable())
+
+    fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overlay(
+        drawable: Drawable
+    ) = onView { view ->
+
+        fun syncStateAndBounds() {
+            drawable.state = view.drawableState
+            drawable.setBounds(0, 0, view.width, view.height)
+        }
+
+        syncStateAndBounds()
+
+        view.overlay.add(drawable)
+
+        view.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                // drawable was removed from overlay
+                if (drawable.callback == null) {
+                    view.viewTreeObserver
+                        .takeIf { it.isAlive }
+                        ?.removeOnPreDrawListener(this)
+                } else {
+                    syncStateAndBounds()
+                }
+                return true
+            }
+        })
+    }
+}

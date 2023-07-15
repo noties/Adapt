@@ -168,10 +168,27 @@ object ExploreRemoteViews {
         // TODO: we actually can have predefined layouts for basic views and them just add them!
 //        remoteViews.addView()
 
+        // TODO: width and height seem to be problematic.. as there is no access to layout params
+        //  hm, can be done with padding (to some extent) -
+        //  views.setViewPadding(R.id.vieId, left, top, right, bottom);
+        //  (so we could always use match_parent and then modify padding... but would we receive
+        //  a notification if overall widget layout changes?)..
+
+        // TODO: it would be nice to have a preview of resulting widget... at least when developing
+
+        // TODO: another option is to draw created layout to bitmap, but this is not most
+        //  flexible, as we have no exact size of the widget. maybe we could create basic structure
+        //  with added views and then just draw to them desired content. this is interesting actually
+        // so, we can base it on vstack/hstack and relative layout... hm (cannot access layout params)
+        //  so, only vstack. we create a view-group in layout. then add spacer (a frame layout) with weight
+        //  and we only need to do it for basic structure components, children can be whatever they like,
+        //  after component size/layout is established... but still
+
         remoteViews.factory {
             Text(0)
                 .text("")
                 .textColor(0)
+                .textSize(16)
         }
     }
 }

@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.explore.ExploreAutofill
+import io.noties.adapt.sample.explore.ExploreAutofill.autofillEnabled
+import io.noties.adapt.sample.explore.ExploreAutofill.autofillHint
+import io.noties.adapt.sample.explore.ExploreAutofill.autofillRequestOnFocusWhenEmpty
 import io.noties.adapt.sample.explore.ExplorePreviewDrawBounds.previewDrawBounds
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
@@ -111,6 +115,13 @@ class AdaptUITextSample : SampleView() {
                     padding(1)
                 })
             })
+            .ifAvailable(Build.VERSION_CODES.O) {
+                it
+                    .autofillEnabled(true)
+                    .autofillHint(ExploreAutofill.AutofillHint.name)
+                    .autofillRequestOnFocusWhenEmpty()
+            }
+
     }
 
     @Suppress("FunctionName")

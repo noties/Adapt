@@ -1,5 +1,14 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDynamicItemSample",
+    "id": "20230715105856",
+    "title": "[Explore] Dynamic Item",
+    "description": "Direct usage of an \u003cem\u003eItem\u003c/em\u003e inside ViewFactory builder",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePreview",
     "id": "20230708163019",
     "title": "[Showcase] Layout preview",

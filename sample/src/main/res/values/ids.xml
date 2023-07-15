@@ -5,4 +5,6 @@
     <item name="app_bar_back" type="id" />
 
     <item name="divider_overlay_drawable" type="id" />
+
+    <item name="adapt_internal_on_focus_delegate" type="id" />
 </resources>

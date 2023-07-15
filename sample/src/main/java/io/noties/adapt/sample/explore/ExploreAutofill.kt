@@ -46,7 +46,7 @@ object ExploreAutofill {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.autofillHint(
+    fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.autofillHint(
         hint: AutofillHint?
     ) = onView {
         val hints = hint?.rawValue?.let { value -> arrayOf(value) } ?: emptyArray()
@@ -62,13 +62,17 @@ object ExploreAutofill {
 //            }
 //        }
 
+    // TODO: rename to process autofil on focus and cancel autofill when has no focus
     // there is little sense to do it for other views
     @RequiresApi(Build.VERSION_CODES.O)
     fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.autofillRequestOnFocusWhenEmpty() =
         onFocusChanged { view, hasFocus ->
+            val manager = view.context.getSystemService(AutofillManager::class.java)
             if (hasFocus && view.length() == 0) {
-                val manager = view.context.getSystemService(AutofillManager::class.java)
                 manager?.requestAutofill(view)
+                manager?.notifyViewEntered(view)
+            } else {
+                manager?.notifyViewExited(view)
             }
         }
 

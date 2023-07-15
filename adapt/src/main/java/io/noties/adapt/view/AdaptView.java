@@ -87,6 +87,20 @@ public class AdaptView implements Adapt {
                 ? layoutInflater
                 : LayoutInflater.from(viewGroup.getContext());
 
+        final View placeholderView = configuration.placeholderView;
+        final int placeholderViewIndex = placeholderView != null
+                ? viewGroup.indexOfChild(placeholderView)
+                : -1;
+        // Validate that placeholder view is a child of view-group
+        if (placeholderView != null && placeholderViewIndex < 0) {
+            throw AdaptException.create(String.format(
+                    Locale.ROOT,
+                    "Placeholder-view is not a child of view-group, placeholder:%s view-group:%s",
+                    placeholderView,
+                    viewGroup
+            ));
+        }
+
         final View view;
         final Item<?> item = configuration.item;
         if (item != null) {
@@ -97,15 +111,32 @@ public class AdaptView implements Adapt {
             view.setTag(ID_HOLDER, holder);
             view.setTag(ID_ITEM, item);
 
-            viewGroup.addView(view);
+            if (placeholderView != null) {
+                // replace created view in place of placeholder
+                viewGroup.removeViewAt(placeholderViewIndex);
+                viewGroup.addView(view, placeholderViewIndex);
+            } else {
+                // else just add it
+                viewGroup.addView(view);
+            }
 
             //noinspection unchecked,rawtypes
             ((Item) item).bind(holder);
 
         } else {
-            // we still need to create a mock view, so later we can add real one at the correct place
-            view = newEmptyView();
-            viewGroup.addView(view);
+            if (placeholderView == null) {
+                // we still need to create a mock view, so later we can add real one at the correct place
+                view = newEmptyView();
+                viewGroup.addView(view);
+            } else {
+                // else, just keep the placeholder
+                view = placeholderView;
+            }
+        }
+
+        if (placeholderView != null) {
+            // clear the reference to it
+            configuration.placeholderView = null;
         }
 
         this.view = view;
@@ -265,6 +296,9 @@ public class AdaptView implements Adapt {
         @Nullable
         Item<?> item;
 
+        @Nullable
+        View placeholderView;
+
         /**
          * @see #changeHandlerTransitionSelf()
          * @see #changeHandlerTransitionParent()
@@ -285,6 +319,12 @@ public class AdaptView implements Adapt {
         @NonNull
         public Configuration item(@NonNull Item<?> item) {
             this.item = item;
+            return this;
+        }
+
+        @NonNull
+        public Configuration placeholderView(@NonNull View placeholderView) {
+            this.placeholderView = placeholderView;
             return this;
         }
 
