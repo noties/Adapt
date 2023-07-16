@@ -37,7 +37,8 @@ class AdaptUIShowcaseShape3 : AdaptUISampleView() {
                         RippleDrawable(
                             ColorStateList.valueOf(Colors.orange),
                             null,
-                            // actual shape seems to be ignored, ripple just uses it to clip rect bounds
+                            // actual shape is ignored, ripple just uses
+                            //   it to clip rect bounds
                             RectangleShape().newDrawable()
                         )
                     ) {

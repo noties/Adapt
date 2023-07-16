@@ -39,7 +39,7 @@ class AdaptUIShowcaseImage : AdaptUISampleView() {
                 .layout(FILL, 128)
                 .imageScaleType(ImageView.ScaleType.FIT_XY)
 
-            // by default CENTER_INSIDE is used as scaleType
+            // by default FIT_CENTER is used as scaleType
             Image(R.drawable.ic_search_24)
                 .layout(64, 64)
                 .imageTint(Colors.black)

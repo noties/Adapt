@@ -22,7 +22,7 @@ import io.noties.debug.Debug
 @AdaptSample(
     id = "20230602002749",
     title = "[Showcase] AdaptUI, Reference views and elements",
-    description = "Assign views and elements with `.reference` utility extension",
+    description = "Assign views and elements with <em>.reference</em> utility extension",
     tags = ["adapt-ui", "showcase"]
 )
 class AdaptUIShowcaseReference2 : AdaptUISampleView() {
@@ -41,9 +41,10 @@ class AdaptUIShowcaseReference2 : AdaptUISampleView() {
         VStack {
 
             Text("This is some text")
-                // would assign view to provided property when view would be available
-                //  `::textView` references parent class (`this::textView` cannot be used here
-                //  as `this` refers to ViewFactory)
+                // would assign view to provided property when
+                //   view would be available `::textView` references
+                //   parent class (`this::textView` cannot be used here
+                //   as `this` refers to ViewFactory)
                 .reference(::textView)
                 // the same as:
 //                .onView { textView = it }
@@ -53,8 +54,9 @@ class AdaptUIShowcaseReference2 : AdaptUISampleView() {
 //                .also { textElement = it }
 
             Image()
-                // somehow IDE is not suggesting private properties of a class, when start with `::`
-                //  this is why it is more convenient to use a special holder class
+                // somehow IDE is not suggesting private properties
+                //   of a class, when start with `::` this is why
+                //   it is more convenient to use a special holder class
                 .reference(ref::imageView)
                 .reference(ref::imageElement)
 

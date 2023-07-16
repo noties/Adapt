@@ -1,12 +1,37 @@
 <img src="./art/logo_social.png" width="90%" alt="logo" />
 
-# Adapt
-
-`Adapt` &mdash; `RecyclerView.Adapter` only shorter.
+# Adapt &amp; AdaptUI 
 
 `Adapt` is a UI library to create decoupled widget components. They can be
   used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
-  no code involved. One `Item` to rule them all. XML layout preview enabled.
+  no code involved. One `Item` to rule them all. Layout preview enabled.
+
+`AdaptUI` is en enhanced Android view DSL builder that brings together dynamism 
+  and flexibility of `Adapt` to native Android views. It aims to provide convenience 
+  and peace of mind for developers, meanwhile fixing pain points 
+  of Android XML - missing composability, reuse and customization. They are all included out of box. 
+  It is a _disappearing_
+  view and layout builder that gives total control of created views, without imposing any
+  limitations or forcing the use of certain tools or compilers. A view is a view. As it should have been.
+
+## Install
+
+[![adapt](https://img.shields.io/maven-central/v/io.noties/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22adapt%22)
+
+```gradle
+implementation "io.noties:adapt:${adaptVersion}"
+```
+
+## AdaptUI
+<img src="./art/ui_showcase_text2.jpg" height="480px">
+
+All showcase previews can be accessed via [dedicate page](./PREVIEW_SHOWCASE.md)
+
+Documentation might still be a bit lacking, but most of the features in `adapt-ui` module
+  come with [dedicated sample](./sample/src/main/java/io/noties/adapt/sample/samples) class file. 
+  What better can explain the functionality than the code, right? ;)
+
+## Adapt
 
 `Adapt` components, which are called `Item`s, 
 can be displayed **without modification** in those parent widgets: 
@@ -35,14 +60,6 @@ can be displayed **without modification** in those parent widgets:
 ![XML layout-preview](./art/layout_preview.png)
 
 
-## Install
-
-[![adapt](https://img.shields.io/maven-central/v/io.noties/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22adapt%22)
-
-```gradle
-implementation "io.noties:adapt:${adaptVersion}"
-```
-
 ### Pros
 * Interchangeable items between `RecyclerView`, `ListView` (all children of `android.widget.AdapterView`) 
   and different `ViewGroup`s (same item is used without modification)
@@ -51,10 +68,6 @@ implementation "io.noties:adapt:${adaptVersion}"
 * Modular design is enforced, leading to re-usable view components
 * Ability to preview item in Layout Preview (by using `AdaptViewGroup`), display 
   available design components without launching on a device without leaving IDE
-
-### Cons
-* Targeted at relatively small lists, `Adapt` is not a direct replacement 
-  for a `RecyclerView.Adapter` containing huge/lazy lists
 
 ## Usage
 
