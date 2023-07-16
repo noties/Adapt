@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.samples.flex
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -21,6 +21,11 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.samples.adaptui.SeekBar
+import io.noties.adapt.sample.samples.adaptui.seekBarOnChanged
+import io.noties.adapt.sample.samples.adaptui.seekBarTint
+import io.noties.adapt.sample.samples.adaptui.seekBarValue
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.children

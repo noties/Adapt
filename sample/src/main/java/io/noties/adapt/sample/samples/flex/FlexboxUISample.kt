@@ -1,4 +1,4 @@
-package io.noties.adapt.sample.samples.adaptui
+package io.noties.adapt.sample.samples.flex
 
 import android.content.Context
 import android.graphics.Color

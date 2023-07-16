@@ -59,7 +59,7 @@
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2",
     "id": "20230602002749",
     "title": "[Showcase] AdaptUI, Reference views and elements",
-    "description": "Assign views and elements with `.reference` utility extension",
+    "description": "Assign views and elements with \u003cem\u003e.reference\u003c/em\u003e utility extension",
     "tags": [
       "adapt-ui",
       "showcase"
@@ -158,7 +158,7 @@
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2",
-    "id": "20230526030500",
+    "id": "20230526030501",
     "title": "[Showcase] AdaptUI, Shape #2",
     "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eArcShape\u003c/em\u003e, \u003cem\u003eOvalShape\u003c/em\u003e, \u003cem\u003eCapsule\u003c/em\u003e, \u003cem\u003eLine\u003c/em\u003e",
     "tags": [
@@ -329,7 +329,7 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample",
     "id": "20230402020404",
-    "title": "UI, RelativeLayout concept",
+    "title": "[Explore] UI, RelativeLayout concept",
     "description": "",
     "tags": []
   },
@@ -372,7 +372,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIFlexInteractiveSample",
+    "javaClassName": "io.noties.adapt.sample.samples.flex.AdaptUIFlexInteractiveSample",
     "id": "20221126000447",
     "title": "AdaptUI - Flex interactive guide",
     "description": "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
@@ -467,7 +467,7 @@
     ]
   },
   {
-    "javaClassName": "io.noties.adapt.sample.samples.adaptui.FlexboxUISample",
+    "javaClassName": "io.noties.adapt.sample.samples.flex.FlexboxUISample",
     "id": "20220612133759",
     "title": "Typed Flexbox layout build with adapt-ui extensions",
     "description": "",

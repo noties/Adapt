@@ -9,6 +9,10 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.explore.ExploreRelative.Relative
+import io.noties.adapt.sample.explore.ExploreRelative.layoutAlignParent
+import io.noties.adapt.sample.explore.ExploreRelative.layoutCenter
+import io.noties.adapt.sample.explore.ExploreRelative.layoutPosition
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
@@ -22,7 +26,7 @@ import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230402020404",
-    title = "UI, RelativeLayout concept"
+    title = "[Explore] UI, RelativeLayout concept"
 )
 class AdaptUIRelativeSample : AdaptUISampleView() {
 
