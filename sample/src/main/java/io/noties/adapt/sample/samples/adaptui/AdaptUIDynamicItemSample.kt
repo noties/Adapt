@@ -1,35 +1,46 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.explore.ExploreOverlay.overlay
-import io.noties.adapt.sample.explore.ExploreOverlay.overlay3
+import io.noties.adapt.sample.explore.ExploreDynamicItem.Item
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.clipToOutline
+import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
+import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.textBold
+import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.foregroundDefaultSelectable
+import io.noties.adapt.ui.ifAvailable
+import io.noties.adapt.ui.indent
+import io.noties.adapt.ui.item.ElementItem
+import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
-import io.noties.adapt.ui.layoutWrap
+import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
-import io.noties.adapt.ui.onViewPreDrawOnce
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.CircleShape
-import io.noties.adapt.ui.shape.RectangleShape
-import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.reference
+import io.noties.adapt.ui.shape.RoundedRectangleShape
+import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.withAlphaComponent
-import io.noties.debug.Debug
+import java.util.Date
 
 @AdaptSample(
     id = "20230715105856",
@@ -46,39 +57,94 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
                 .textGravity(Gravity.center)
                 .textBold()
                 .padding(16)
-                .overlay(StatefulShape.drawable {
-                    setPressed(CircleShape().fill(Colors.orange))
-                    setDefault(RectangleShape().fill(Colors.accent))
-                })
-                .foregroundDefaultSelectable()
-                .onClick { Debug.i("clicked") }
 
-//            Item(CardItem("D", Colors.orange, "This is item in layout"))
-//                .padding(48)
-//                .layoutMargin(48)
+            Item(MyMutableItem(1L, "D", "This is item in layout", Colors.orange))
+                .padding(48)
+                .layoutMargin(48)
 
-            Text("Some other text")
+            val (_, update) = Item(
+                MyMutableItem(
+                    2L,
+                    "UP",
+                    "This is item that we can update",
+                    Colors.accent
+                )
+            ) {
+                it.changeHandlerTransitionSelf()
+            }
+
+            Text("Some other text. Click me to update last item")
                 .padding(16)
+                .onClick {
+                    update {
+                        it.text = Date().toString()
+                    }
+                }
+
 
         }.layoutFill()
-            .overlay3 {
-                Text("NEW")
-                    .layoutWrap()
-                    .background(Colors.orange.withAlphaComponent(0.2F))
-                    .layoutGravity(Gravity.top.trailing)
-                    .padding(8)
-                    .onViewPreDrawOnce {
-//                        it.pivotX = -(it.width * 0.4F)
-//                        it.pivotY = it.height * 0.87F
-//                        it.pivotX = 0F
-//                        it.pivotY = 0F
-                        it.pivotX = it.width.toFloat()
-                        it.pivotY = it.height.toFloat()
-                        it.translationX -= 12.dip.toFloat()
-                        it.translationY += 8.dip.toFloat()
-                        it.rotation = 45F
-                    }
+            .noClip()
+    }
+
+    class MyMutableItem(
+        val id: Long,
+        var letter: String,
+        var text: String,
+        var color: Int
+    ) : ElementItem<MyMutableItem.Ref>(id, { Ref() }) {
+        class Ref {
+            lateinit var letterView: TextView
+            lateinit var textView: TextView
+        }
+
+        override fun bind(holder: Holder<Ref>) {
+            with(holder.ref) {
+                letterView.text = letter
+                letterView.setBackgroundColor(color)
+                textView.text = text
             }
+        }
+
+        override fun ViewFactory<ViewGroup.LayoutParams>.body(ref: Ref) {
+            val base = RoundedRectangleShape(12) {
+                fill(Colors.white)
+            }
+            ZStack {
+                // container that drops shadow
+                ZStack {
+                    // actual content that has clipToOutline, so content
+                    //  does not expand beyond rounded bounds
+                    HStack {
+                        Text()
+                            .reference(ref::letterView)
+                            .layout(96, 96)
+                            .textGravity(Gravity.center)
+                            .textColor(Colors.white)
+                            .textBold()
+                            .textSize(24)
+                        Text()
+                            .reference(ref::textView)
+                            .layoutGravity(Gravity.center.vertical)
+                            .layoutMargin(leading = 8)
+                            .textColor(Colors.black)
+                            .textSize(17)
+                    }.indent()
+                        .background(base.copy())
+                        .ifAvailable(Build.VERSION_CODES.M) {
+                            it.foregroundDefaultSelectable()
+                        }
+                        .clipToOutline()
+                }.indent()
+                        // unfortunately does not work on older platforms :'(
+//                    .background(base.copy { shadow(8, Colors.primary.withAlphaComponent(0.3F)) })
+                    .background(base)
+                    .elevation(8)
+                    .noClip()
+            }.indent()
+                .padding(16, 8)
+                .noClip()
+                .onClick {  }
+        }
     }
 }
 

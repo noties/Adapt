@@ -14,6 +14,7 @@ import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.testutil.assertDensity
 import io.noties.adapt.ui.testutil.mockt
 import io.noties.adapt.ui.testutil.value
 import io.noties.adapt.ui.util.Gravity
@@ -1073,6 +1074,83 @@ class ViewElement_Extensions_Test {
                         verify(this).isEnabled = org.mockito.kotlin.eq(false)
                     } else {
                         verify(this, org.mockito.kotlin.never()).isEnabled = org.mockito.kotlin.any()
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun pivot() {
+        assertDensity(1F)
+
+        val inputs = listOf(
+            null to null,
+            1 to null,
+            null to 2,
+            2 to 3
+        )
+
+        for ((x, y) in inputs) {
+            newElement()
+                .pivot(x, y)
+                .renderView {
+                    if (x != null) {
+                        verify(this).pivotX = eq(x.toFloat())
+                    } else {
+                        verify(this, never()).pivotX = anyFloat()
+                    }
+                    if (y != null) {
+                        verify(this).pivotY = eq(y.toFloat())
+                    } else {
+                        verify(this, never()).pivotY = anyFloat()
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun pivotRelative() {
+        val (w, h) = 100 to 999
+
+        val inputs = listOf(
+            null to null,
+            0.1F to null,
+            null to 2F,
+            -3F to 4F
+        )
+
+
+        for ((x, y) in inputs) {
+            val observer = mockt<ViewTreeObserver> {
+                whenever(mock.isAlive).thenReturn(true)
+            }
+            newElement()
+                .also {
+                    whenever(it.view.viewTreeObserver).thenReturn(observer)
+                    whenever(it.view.width).thenReturn(w)
+                    whenever(it.view.height).thenReturn(h)
+                }
+                .pivotRelative(x, y)
+                .renderView {
+
+                    val listener = kotlin.run {
+                        val captor = ArgumentCaptor.forClass(ViewTreeObserver.OnPreDrawListener::class.java)
+                        org.mockito.kotlin.verify(observer).addOnPreDrawListener(captor.capture())
+                        captor.value
+                    }
+
+                    listener.onPreDraw()
+
+                    if (x != null) {
+                        verify(this).pivotX = eq(x * w)
+                    } else {
+                        verify(this, never()).pivotX = anyFloat()
+                    }
+
+                    if (y != null){
+                        verify(this).pivotY = eq(y * h)
+                    } else {
+                        verify(this, never()).pivotY = anyFloat()
                     }
                 }
         }

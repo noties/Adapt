@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.explore.ExploreHexParser
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
@@ -30,6 +29,7 @@ import io.noties.adapt.ui.preview.previewBounds
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.hex
 
 @AdaptSample(
     id = "20230615000044",
@@ -43,7 +43,7 @@ class AdaptUIInflateSample : AdaptUISampleView() {
             Inflated(R.layout.item_plain)
                 .inflatedView(R.id.letter_view) {
                     it
-                        .textColor(ExploreHexParser.hex("#208F00FF"))
+                        .textColor(hex("#208F00FF"))
                         .text("42")
                         .background {
                             Circle { fill(Colors.orange) }

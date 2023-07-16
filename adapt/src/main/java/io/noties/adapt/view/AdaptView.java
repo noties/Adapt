@@ -296,6 +296,9 @@ public class AdaptView implements Adapt {
         @Nullable
         Item<?> item;
 
+        /**
+         * Provide placeholder value that `AdaptView` would use to create an anchor in parent layout
+         */
         @Nullable
         View placeholderView;
 

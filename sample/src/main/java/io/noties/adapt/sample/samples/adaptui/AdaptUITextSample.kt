@@ -16,7 +16,6 @@ import io.noties.adapt.sample.explore.ExploreAutofill.autofillRequestOnFocusWhen
 import io.noties.adapt.sample.explore.ExplorePreviewDrawBounds.previewDrawBounds
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
-import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.BreakStrategy
@@ -53,6 +52,7 @@ import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
+import io.noties.adapt.ui.util.hex
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -106,7 +106,7 @@ class AdaptUITextSample : SampleView() {
                 val base = RoundedRectangleShape(9)
                 setFocused(base.copy {
                     stroke(Colors.orange)
-                    fill(hex("#00000000"))
+                    fill(hex("#0000"))
                     padding(1)
                 })
                 setDefault(base.copy {

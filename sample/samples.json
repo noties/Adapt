@@ -1,5 +1,33 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb",
+    "id": "20230716140149",
+    "title": "[Showcase] AdaptUI Web element",
+    "description": "Usage of a \u003cem\u003eWebView\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPivotSample",
+    "id": "20230715160110",
+    "title": "Pivot",
+    "description": "Handling of pivot point (x,y) for scale and rotate",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIOverlaySample",
+    "id": "20230715153700",
+    "title": "Overlay with shape and view",
+    "description": "Add another \u003cem\u003eview\u003c/em\u003e, \u003cem\u003eshape\u003c/em\u003e or \u003cem\u003edrawable\u003c/em\u003e as an \u003cem\u003eoverlay\u003c/em\u003e",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDynamicItemSample",
     "id": "20230715105856",
     "title": "[Explore] Dynamic Item",

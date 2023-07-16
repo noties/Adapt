@@ -17,7 +17,6 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.explore.ExploreShapePath
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
-import io.noties.adapt.sample.util.hex
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -60,6 +59,7 @@ import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.hex
 import io.noties.adapt.ui.util.withAlphaComponent
 import kotlin.math.roundToInt
 
@@ -174,7 +174,7 @@ class AdaptUIShapeSample : SampleView() {
                 // add an asset
 
                 Capsule {
-                    fill(hex("#cccccc"))
+                    fill(hex("#ccc"))
                     size(height = 56, gravity = Gravity.center)
                     padding(4)
 

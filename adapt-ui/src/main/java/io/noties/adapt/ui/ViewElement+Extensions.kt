@@ -473,6 +473,39 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
     it.clipToOutline = clipToOutline
 }
 
+interface OnViewPreDrawRegistration {
+    fun unregisterOnPreDraw()
+}
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDraw(
+    block: OnViewPreDrawRegistration.(V) -> Unit
+): ViewElement<V, LP> = onView { view ->
+    view.viewTreeObserver
+        .takeIf { it.isAlive }
+        ?.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener,
+            OnViewPreDrawRegistration {
+            override fun onPreDraw(): Boolean {
+                // deliver callback
+                block(this, view)
+                // do not block drawing
+                return true
+            }
+
+            init {
+                // when detached, we should no longer receive updates
+                view.onDetachedOnce { unregisterOnPreDraw() }
+            }
+
+            override fun unregisterOnPreDraw() {
+                view.viewTreeObserver
+                    .takeIf { it.isAlive }
+                    ?.removeOnPreDrawListener(this)
+            }
+        })
+    // trigger view invalidation
+    view.invalidate()
+}
+
 /**
  * An utility function to trigger called in on-pre drawing state,
  * when view is measured and is going to be drawn on canvas.
@@ -481,24 +514,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.clipToOutline(
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
     block: (V) -> Unit
-): ViewElement<V, LP> = onView { view ->
-    val vto = view.viewTreeObserver.takeIf { it.isAlive } ?: return@onView
-    vto.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-        override fun onPreDraw(): Boolean {
-
-            block(view)
-
-            view.viewTreeObserver
-                .takeIf { it.isAlive }
-                ?.removeOnPreDrawListener(this)
-
-            // do not block drawing
-            return true
-        }
-    })
-    // trigger invalidation
-    view.invalidate()
+): ViewElement<V, LP> = onViewPreDraw {
+    block(it)
+    unregisterOnPreDraw()
 }
+
+// TODO: use normal and unregister on first event
 
 /**
  * NB! This is a callback when view is attached to [android.view.Window], not its parent
@@ -631,4 +652,37 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.doIf(
         block(it)
     }
 }
+
+/**
+ * Absolute values (in dp) from top-left of view bounds
+ * @see View.setPivotX
+ * @see View.setPivotY
+ * @see pivotRelative
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivot(
+    x: Int? = null,
+    y: Int? = null
+) = onView { view ->
+    x?.dip?.toFloat()?.also { view.pivotX = it }
+    y?.dip?.toFloat()?.also { view.pivotY = it }
+}
+
+/**
+ * Normally should be in [0..1] range, but they also could be negative, or exceed 0..1 range
+ * @see View.setPivotX
+ * @see View.setPivotY
+ * @see pivot
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
+    x: Float? = null,
+    y: Float? = null
+) = onViewPreDrawOnce { view ->
+    x?.also { view.pivotX = view.width * it }
+    y?.also { view.pivotY = view.height * it }
+}
+
+// when x and y have the same value, for example `0.5F` or `1F`
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
+    value: Float
+) = pivotRelative(value, value)
 
