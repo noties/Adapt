@@ -32,7 +32,8 @@
             android:contentDescription="@null"
             android:scaleType="centerInside"
             android:src="@drawable/ic_search_24"
-            android:tint="@color/search_bar_text_secondary" />
+            android:tint="@color/search_bar_text_secondary"
+            tools:ignore="UseAppTint"/>
 
         <ImageView
             android:id="@+id/clear"
@@ -45,7 +46,8 @@
             android:src="@drawable/ic_close_24"
             android:tint="@color/search_bar_text_secondary"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="UseAppTint"/>
 
         <view
             android:id="@+id/input"

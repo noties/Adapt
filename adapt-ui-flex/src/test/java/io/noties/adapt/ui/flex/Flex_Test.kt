@@ -277,14 +277,14 @@ class Flex_Test {
                         verify(this).dividerDrawableHorizontal = captor.capture()
                         val drawable = captor.value
                         Assert.assertEquals(h, drawable.intrinsicWidth)
-                        Assert.assertEquals(0, drawable.intrinsicHeight)
+                        Assert.assertEquals(-1, drawable.intrinsicHeight)
                     }
 
                     if (v != null) {
                         val captor = ArgumentCaptor.forClass(Drawable::class.java)
                         verify(this).dividerDrawableVertical = captor.capture()
                         val drawable = captor.value
-                        Assert.assertEquals(0, drawable.intrinsicWidth)
+                        Assert.assertEquals(-1, drawable.intrinsicWidth)
                         Assert.assertEquals(v, drawable.intrinsicHeight)
                     }
 

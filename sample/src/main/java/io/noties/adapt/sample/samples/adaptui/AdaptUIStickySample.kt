@@ -1,6 +1,7 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.foregroundDefaultSelectable
+import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onElementView
@@ -82,7 +84,9 @@ class AdaptUIStickySample : AdaptUISampleView() {
         .alpha(0.75F)
         .background(Colors.black)
         .textColor(Colors.white)
-        .foregroundDefaultSelectable()
+        .ifAvailable(Build.VERSION_CODES.M) {
+            it.foregroundDefaultSelectable()
+        }
         .stickyView()
         .onClick { Debug.i("click '$text'") }
 

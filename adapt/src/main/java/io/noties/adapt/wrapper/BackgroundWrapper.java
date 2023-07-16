@@ -1,5 +1,6 @@
 package io.noties.adapt.wrapper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
@@ -34,7 +35,7 @@ public class BackgroundWrapper extends ItemWrapper {
     @NonNull
     public static WrapperBuilder initSelectableItemBackground(@NonNull Context context) {
         final int[] attrs = {android.R.attr.selectableItemBackground};
-        final TypedArray array = context.obtainStyledAttributes(attrs);
+        @SuppressLint("ResourceType") final TypedArray array = context.obtainStyledAttributes(attrs);
         final Drawable drawable;
         try {
             drawable = array.getDrawable(0);

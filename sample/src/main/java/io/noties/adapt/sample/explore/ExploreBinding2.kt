@@ -11,6 +11,7 @@ import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.util.onAttachedOnce
 import io.noties.adapt.ui.util.onDetachedOnce
 
+@Suppress("StopShip")
 object ExploreBinding2 {
     // prop should handle the same values (ignore or deliver)
     interface Prop<T : Any?> {

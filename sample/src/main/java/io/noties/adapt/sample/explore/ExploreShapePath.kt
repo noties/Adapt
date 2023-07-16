@@ -6,6 +6,7 @@ import android.graphics.Rect
 import io.noties.adapt.ui.shape.Dimension
 import io.noties.adapt.ui.shape.Shape
 
+@Suppress("StopShip")
 object ExploreShapePath {
     class Path(block: Path.() -> Unit = {}) : Shape() {
 

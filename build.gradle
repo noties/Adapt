@@ -17,7 +17,7 @@ allprojects {
     }
 
     group = 'io.noties'
-    version = '5.0.0-SNAPSHOT'
+    version = '5.0.0'
 
     tasks.withType(Javadoc) {
         enabled(false)
