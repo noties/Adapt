@@ -3,12 +3,10 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.explore.ExploreDynamicItem.Item
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
@@ -16,9 +14,12 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
+import io.noties.adapt.ui.element.Item
 import io.noties.adapt.ui.element.Text
+import io.noties.adapt.ui.element.UpdateItem
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
+import io.noties.adapt.ui.element.referenceUpdate
 import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
@@ -39,7 +40,6 @@ import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.withAlphaComponent
 import java.util.Date
 
 @AdaptSample(
@@ -49,6 +49,9 @@ import java.util.Date
     tags = ["adapt-ui"]
 )
 class AdaptUIDynamicItemSample : AdaptUISampleView() {
+
+    private lateinit var updateItem: UpdateItem<MyMutableItem>
+
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -59,6 +62,8 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
                 .padding(16)
 
             Item(MyMutableItem(1L, "D", "This is item in layout", Colors.orange))
+                .referenceUpdate(::updateItem)
+                // customize item view
                 .padding(48)
                 .layoutMargin(48)
 
@@ -79,9 +84,10 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
                     update {
                         it.text = Date().toString()
                     }
+                    updateItem {
+                        it.text = Date().toString()
+                    }
                 }
-
-
         }.layoutFill()
             .noClip()
     }
@@ -135,7 +141,7 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
                         }
                         .clipToOutline()
                 }.indent()
-                        // unfortunately does not work on older platforms :'(
+                    // unfortunately does not work on older platforms :'(
 //                    .background(base.copy { shadow(8, Colors.primary.withAlphaComponent(0.3F)) })
                     .background(base)
                     .elevation(8)
@@ -143,7 +149,7 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
             }.indent()
                 .padding(16, 8)
                 .noClip()
-                .onClick {  }
+                .onClick { }
         }
     }
 }

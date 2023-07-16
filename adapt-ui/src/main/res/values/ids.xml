@@ -7,4 +7,6 @@
 
     <item name="adaptui_internal_scroll_delegate" type="id" />
     <item name="adaptui_internal_viewpager_page_selected" type="id" />
+
+    <item name="adaptui_internal_element_item" type="id" />
 </resources>
