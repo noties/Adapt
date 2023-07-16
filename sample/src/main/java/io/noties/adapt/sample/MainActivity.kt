@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
+import io.noties.adapt.sample.ui.OnBackPressedListenerFrameLayout
 import io.noties.adapt.sample.util.SampleUtil
 
 class MainActivity : Activity() {
 
+    private lateinit var onBackPressedListenerFrameLayout: OnBackPressedListenerFrameLayout
     private lateinit var viewAnimator: ViewAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        onBackPressedListenerFrameLayout = findViewById(R.id.on_back_pressed_listener)
         viewAnimator = findViewById(R.id.view_animator)
 
         val samples = SampleUtil.readSamples(this)
@@ -38,8 +41,10 @@ class MainActivity : Activity() {
         viewAnimator.showNext(sampleView.view(sample, viewAnimator))
     }
 
-
     override fun onBackPressed() {
+        if (onBackPressedListenerFrameLayout.onSoftBackPressed()) {
+            return
+        }
         if (!viewAnimator.goBack()) {
             super.onBackPressed()
         }

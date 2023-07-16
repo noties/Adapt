@@ -26,7 +26,7 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            tools:background="@color/colorPrimaryDark"
+            tools:background="@color/primaryDark"
             tools:text="A" />
 
         <View

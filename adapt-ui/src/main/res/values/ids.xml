@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="adaptui_internal_text_watcher" type="id" />
+
+    <item name="adaptui_internal_sticky_scroll_container" type="id"/>
+    <item name="adaptui_internal_sticky_scroll_view" type="id"/>
+
+    <item name="adaptui_internal_scroll_delegate" type="id" />
+    <item name="adaptui_internal_viewpager_page_selected" type="id" />
+
+    <item name="adaptui_internal_element_item" type="id" />
+</resources>

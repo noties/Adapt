@@ -1,7 +1,9 @@
 package io.noties.adapt.sample.samples.listview
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
+import android.util.AttributeSet
 import android.view.View
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
@@ -14,8 +16,10 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.backgroundColor
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.debug.Debug
-import java.util.*
+import java.util.Date
 
 @AdaptSample(
     id = "20210326220725",
@@ -64,4 +68,14 @@ class AlertDialogHasWrappedSample : SampleView() {
             }
             .show()
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__AlertDialogHasWrappedSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = AlertDialogHasWrappedSample()
 }

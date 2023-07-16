@@ -20,7 +20,7 @@ if (isRelease || isSnapshot) {
             publications {
                 release(MavenPublication) {
                     groupId group
-                    artifactId 'adapt'
+                    artifactId POM_ARTIFACT_ID
                     it.version version
 
                     pom {

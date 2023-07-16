@@ -1,5 +1,16 @@
-<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_animator"
+<io.noties.adapt.sample.ui.OnBackPressedListenerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/on_back_pressed_listener"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateFirstView="true" />
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <requestFocus />
+
+    <ViewAnimator
+        android:id="@+id/view_animator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateFirstView="true" />
+
+</io.noties.adapt.sample.ui.OnBackPressedListenerFrameLayout>

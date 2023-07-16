@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+final def gitBranch = {
+    "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+}.memoize()
+
 android {
 
     compileSdkVersion config['target-sdk']
@@ -13,6 +17,8 @@ android {
         targetSdkVersion config['target-sdk']
         versionCode 1
         versionName version
+
+        buildConfigField 'String', 'GIT_BUILD_BRANCH', "\"${gitBranch()}\""
     }
 
     lintOptions {
@@ -21,7 +27,19 @@ android {
 
     sourceSets {
         main {
-            java.srcDirs += '../sample-utils/annotation'
+            java {
+                srcDirs += '../sample-utils/annotation'
+                // does not work :'(
+                exclude '**/Preview__*'
+//                excludes += '**/Preview__**'
+            }
+
+            // does not work :'(
+            kotlin {
+                exclude '**/Preview__*'
+//                exclude '**/Preview__*.kt'
+//                excludes += '**/Preview__*.kt'
+            }
         }
     }
 
@@ -39,11 +57,19 @@ kapt {
 dependencies {
 
     implementation project(':adapt')
-    implementation deps['x-recycler-view']
+    implementation project(':adapt-ui')
+    implementation project(':adapt-ui-flex')
 
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation deps['x-recyclerview']
+    implementation deps['x-viewpager']
+    implementation deps['x-viewpager2']
 
     implementation 'io.noties:debug:5.1.0'
+
+    implementation deps['flexbox']
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    compileOnly 'androidx.appcompat:appcompat:1.6.1'
 
     kapt project(':sample-utils:processor')
 }

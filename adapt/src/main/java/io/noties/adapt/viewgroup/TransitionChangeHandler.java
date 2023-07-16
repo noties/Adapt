@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 /**
  * @see AdaptViewGroup.ChangeHandler
  * @see ViewGroupChangeHandler
  */
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
 
     /**
@@ -66,6 +64,17 @@ public class TransitionChangeHandler implements AdaptViewGroup.ChangeHandler {
         final ConfigurationImpl configuration = new ConfigurationImpl();
         configurator.configure(configuration);
         return new TransitionChangeHandler(configuration);
+    }
+
+    // @since $UNRELEASED;
+    @NonNull
+    public static TransitionChangeHandler createTransitionOnParent() {
+        return create(new Configurator() {
+            @Override
+            public void configure(@NonNull Configuration configuration) {
+                configuration.viewGroupProvider(new ParentViewGroupProvider());
+            }
+        });
     }
 
     @NonNull

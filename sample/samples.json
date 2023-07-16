@@ -1,5 +1,500 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb",
+    "id": "20230716140149",
+    "title": "[Showcase] AdaptUI Web element",
+    "description": "Usage of a \u003cem\u003eWebView\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPivotSample",
+    "id": "20230715160110",
+    "title": "Pivot",
+    "description": "Handling of pivot point (x,y) for scale and rotate",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIOverlaySample",
+    "id": "20230715153700",
+    "title": "Overlay with shape and view",
+    "description": "Add another \u003cem\u003eview\u003c/em\u003e, \u003cem\u003eshape\u003c/em\u003e or \u003cem\u003edrawable\u003c/em\u003e as an \u003cem\u003eoverlay\u003c/em\u003e",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDynamicItemSample",
+    "id": "20230715105856",
+    "title": "[Explore] Dynamic Item",
+    "description": "Direct usage of an \u003cem\u003eItem\u003c/em\u003e inside ViewFactory builder",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePreview",
+    "id": "20230708163019",
+    "title": "[Showcase] Layout preview",
+    "description": "Control how elements are rendering in layout preview window",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIInflateSample",
+    "id": "20230615000044",
+    "title": "[Explore] AdaptUI \u003cem\u003eInflate\u003c/em\u003e element",
+    "description": "Inflate view from XML and use in AdaptUI",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2",
+    "id": "20230602002749",
+    "title": "[Showcase] AdaptUI, Reference views and elements",
+    "description": "Assign views and elements with \u003cem\u003e.reference\u003c/em\u003e utility extension",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseItem",
+    "id": "20230602001541",
+    "title": "[Showcase] AdaptUI, Item",
+    "description": "Different usage of \u003cem\u003eItem\u003c/em\u003e (including its siblings) in different contexts: directly in UI layout, in a \u003cem\u003eViewGroup\u003c/em\u003e, \u003cem\u003eRecyclerView\u003c/em\u003e or \u003cem\u003eListView\u003c/em\u003e (via \u003cem\u003eAlertDialog\u003c/em\u003e)",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseImage",
+    "id": "20230601144200",
+    "title": "[Showcase] AdaptUI, Image",
+    "description": "\u003cem\u003eImage\u003c/em\u003e, \u003cem\u003eImageView\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePager",
+    "id": "20230601135039",
+    "title": "[Showcase] AdaptUI, Pager element",
+    "description": "\u003cem\u003ePager\u003c/em\u003e, \u003cem\u003eViewPager\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape5",
+    "id": "20230601102605",
+    "title": "[Showcase] AdaptUI, Shape #5",
+    "description": "\u003cem\u003eTextShape\u003c/em\u003e, only Android.O+",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape4",
+    "id": "20230601101434",
+    "title": "[Showcase] AdaptUI, Shape #4",
+    "description": "\u003cem\u003eLabelShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeComposition",
+    "id": "20230601100213",
+    "title": "[Showcase] AdaptUI shape composition",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "shape",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseCircleAvatar",
+    "id": "20230531162848",
+    "title": "[Showcase] Circle Avatar",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3",
+    "id": "20230530152155",
+    "title": "[Showcase] AdaptUI, Shape #3",
+    "description": "\u003cem\u003eAssetShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawable",
+    "id": "20230530151621",
+    "title": "[Showcase] ShapeDrawable usage",
+    "description": "stateful hotspot",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2",
+    "id": "20230526030501",
+    "title": "[Showcase] AdaptUI, Shape #2",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eArcShape\u003c/em\u003e, \u003cem\u003eOvalShape\u003c/em\u003e, \u003cem\u003eCapsule\u003c/em\u003e, \u003cem\u003eLine\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1",
+    "id": "20230526030500",
+    "title": "[Showcase] AdaptUI, Shape #1",
+    "description": "\u003cem\u003eRectangleShape\u003c/em\u003e, \u003cem\u003eCircleShape\u003c/em\u003e, \u003cem\u003eTextShape\u003c/em\u003e, \u003cem\u003eCornersShape\u003c/em\u003e, \u003cem\u003eRoundedRectangleShape\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiShapeLabelSample",
+    "id": "20230526022755",
+    "title": "LabelShape",
+    "description": "Shape that draws \u003ci\u003esimple\u003c/i\u003e single line text",
+    "tags": [
+      "adapt-ui",
+      "shape",
+      "text"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyle",
+    "id": "20230522113544",
+    "title": "[Showcase] AdaptUI, element style",
+    "description": "Combine common styles to be reused",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2",
+    "id": "20230520123338",
+    "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element #2",
+    "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1",
+    "id": "20230520122012",
+    "title": "[Showcase] AdaptUI \u003cem\u003eText\u003c/em\u003e element",
+    "description": "\u003cem\u003eTextView\u003c/em\u003e and siblings \u0026mdash; \u003cem\u003eEditText\u003c/em\u003e, \u003cem\u003eButton\u003c/em\u003e, etc",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference",
+    "id": "20230520013122",
+    "title": "[Showcase] AdaptUI reference elements",
+    "description": "Access to created elements as regular objects",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlow",
+    "id": "20230520005529",
+    "title": "[Showcase] AdaptUI control flow",
+    "description": "\u003cem\u003eFor loop\u003c/em\u003e, \u003cem\u003eforEach\u003c/em\u003e, \u003cem\u003eif-else\u003c/em\u003e, \u003cem\u003ewhile\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2",
+    "id": "20230520002917",
+    "title": "[Showcase] AdaptUI basic2",
+    "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVScroll\u003c/em\u003e, \u003cem\u003eHScroll\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1",
+    "id": "20230519160703",
+    "title": "[Showcase] AdaptUI basic",
+    "description": "Shows basic concepts and usage \u0026mdash; \u003cem\u003eVStack\u003c/em\u003e, \u003cem\u003eHStack\u003c/em\u003e, \u003cem\u003eZStack\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "showcase"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILinearGradientSample",
+    "id": "20230518004635",
+    "title": "UI, LinearGradient interactive",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "gradient",
+      "interactive",
+      "shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIGradientSample",
+    "id": "20230517155636",
+    "title": "UI, shape gradients",
+    "description": "LinearGradient, RadialGradient, SweepGradient",
+    "tags": [
+      "adapt-ui",
+      "gradient",
+      "graphics",
+      "shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample",
+    "id": "20230515172204",
+    "title": "TextShape",
+    "description": "Shape that draws text with \u003cem\u003eStaticLayout\u003c/em\u003e",
+    "tags": [
+      "adapt-ui",
+      "shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample",
+    "id": "20230513001821",
+    "title": "DrawableState",
+    "description": "Receive drawable state updates",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample",
+    "id": "20230512142056",
+    "title": "AdaptUI, shape shadow",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "shadow",
+      "shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIWebSample",
+    "id": "20230510172026",
+    "title": "WebView element",
+    "description": "",
+    "tags": [
+      "web",
+      "webview"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample",
+    "id": "20230403235622",
+    "title": "AdaptUI[Explore] sticky with reverse linear layout",
+    "description": "",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample",
+    "id": "20230402020404",
+    "title": "[Explore] UI, RelativeLayout concept",
+    "description": "",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample",
+    "id": "20230220160509",
+    "title": "AdaptUI, clip views",
+    "description": "Create a circle avatar view with shape clipping",
+    "tags": [
+      "clip",
+      "shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILazySample",
+    "id": "20230116182927",
+    "title": "AdaptUI, Lazy",
+    "description": "ViewStub-like behaviour in android-ui",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemSample",
+    "id": "20230116140759",
+    "title": "AdaptUI, Item inside ViewFactory",
+    "description": "Usage of an Item in ViewFactory when building UI view (AdaptView)",
+    "tags": [
+      "adapt-ui",
+      "adapt-view"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.view.AdaptViewConfigurationSample",
+    "id": "20230109182559",
+    "title": "AdaptView configuration",
+    "description": "",
+    "tags": [
+      "view"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.flex.AdaptUIFlexInteractiveSample",
+    "id": "20221126000447",
+    "title": "AdaptUI - Flex interactive guide",
+    "description": "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample",
+    "id": "20221016113609",
+    "title": "AdaptUI - extensions to style or customize elements",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUICastSample",
+    "id": "20221014142148",
+    "title": "AdaptUI, cast and ifCast sample",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample",
+    "id": "20221009162741",
+    "title": "AdaptUI - Accessibility",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-accessibility"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewGroupSample",
+    "id": "20221009161232",
+    "title": "AdaptUI - ViewGroup",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-viewgroup"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextSample",
+    "id": "20221008115412",
+    "title": "AdaptUI - Text \u0026 TextInput",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-text",
+      "ui-text-input"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIElementLayoutSample",
+    "id": "20221006152015",
+    "title": "AdaptUI layout attributes",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "ui-layout"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPagerSample",
+    "id": "20221006102210",
+    "title": "AdaptUI: Pager",
+    "description": "Usage of \u003cdef\u003ePager\u003c/def\u003e element (ViewPager)",
+    "tags": [
+      "adapt-ui",
+      "ui-pager"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeSample",
+    "id": "20220926220755",
+    "title": "AdaptUI, Shape usage",
+    "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
+    "tags": [
+      "adapt-ui",
+      "ui-shape"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemsSample",
+    "id": "20220926192547",
+    "title": "AdaptUI, adapt items",
+    "description": "ElementItem and ElementItemNoRef usage, single-file component",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.flex.FlexboxUISample",
+    "id": "20220612133759",
+    "title": "Typed Flexbox layout build with adapt-ui extensions",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "flexbox"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.viewpager.ViewPagerSample",
+    "id": "20220610113434",
+    "title": "ViewPager (androidx.viewpager)",
+    "description": "Usage with androidx.ViewPager",
+    "tags": [
+      "viewpager"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUISample",
+    "id": "20220523200713",
+    "title": "Adapt-UI sample",
+    "description": "usage of \u003ctt\u003eadapt-ui\u003c/tt\u003e module to build simple layouts in Kotlin",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.wrapper.MarginWrapperSample",
     "id": "20220404133658",
     "title": "MarginWrapper",

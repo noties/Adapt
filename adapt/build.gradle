@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 
 android {
+    // https://developer.android.com/studio/publish-library/prep-lib-release
+    // What this namespace represents? It doesn't seem to be used anywhere
+    namespace 'io.noties.adapt'
 
     compileSdkVersion config['target-sdk']
     buildToolsVersion config['build-tools']
@@ -8,8 +11,6 @@ android {
     defaultConfig {
         minSdkVersion config['min-sdk']
         targetSdkVersion config['target-sdk']
-        versionCode 1
-        versionName version
 
         // latest set of updates to build system (gradle, android-gradle plugin)
         //  stopped placing this value in `BuildConfig`, add manually
@@ -23,9 +24,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // https://developer.android.com/studio/publish-library/prep-lib-release
-    // What this namespace represents? It doesn't seem to be used anywhere
-    namespace 'io.noties.adapt'
     publishing {
         singleVariant('release') {
             withSourcesJar()
@@ -35,15 +33,14 @@ android {
 
 dependencies {
 
-    api 'androidx.annotation:annotation:1.3.0'
+    api deps['x-annotations']
 
-    compileOnly deps['x-recycler-view']
+    compileOnly deps['x-recyclerview']
+    compileOnly deps['x-viewpager']
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:3.8.0'
-
-    // https://github.com/robolectric/robolectric
-    testImplementation 'org.robolectric:robolectric:4.7.3'
+    testImplementation deps['junit4']
+    testImplementation deps['mockito']
+    testImplementation deps['robolectric']
 }
 
 apply from: '../publish.gradle'

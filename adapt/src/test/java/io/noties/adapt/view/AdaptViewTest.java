@@ -280,6 +280,52 @@ public class AdaptViewTest {
         verify(group, times(1)).addView(eq(item.itemView), eq(index));
     }
 
+    @Test
+    public void placeholder_notAttachedParent_fails() {
+
+        when(group.indexOfChild(any(View.class))).thenReturn(-1);
+
+        try {
+            adaptView(configuration -> configuration.placeholderView(mock(View.class)));
+            fail();
+        } catch (AdaptException e) {
+            //noinspection ConstantConditions
+            Assert.assertTrue(
+                    e.getMessage(),
+                    e.getMessage().contains("Placeholder-view is not a child of view-group")
+            );
+        }
+    }
+
+    @Test
+    public void placeholder() {
+        // when placeholder is specified -> it is used
+
+        final View placeholderView = mock(View.class);
+        when(group.indexOfChild(eq(placeholderView))).thenReturn(0);
+
+        final AdaptView adaptView = adaptView(configuration -> configuration.placeholderView(placeholderView));
+        Assert.assertEquals(placeholderView, adaptView.view());
+    }
+
+    @Test
+    public void placeholder_item() {
+        final MockItem<?> item = mockItem();
+        final View placeholderView = mock(View.class);
+        final int index = 989;
+        when(group.indexOfChild(placeholderView)).thenReturn(index);
+
+        final AdaptView adaptView = adaptView(configuration -> {
+            configuration.placeholderView(placeholderView);
+            configuration.item(item.item);
+        });
+
+        verify(group).removeViewAt(eq(index));
+        verify(group).addView(eq(item.itemView), eq(index));
+
+        Assert.assertEquals(item.itemView, adaptView.view());
+    }
+
     @NonNull
     private static MockItem<Item<Item.Holder>> mockItem() {
         //noinspection unchecked,rawtypes

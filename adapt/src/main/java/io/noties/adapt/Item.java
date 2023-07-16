@@ -87,6 +87,19 @@ public abstract class Item<H extends Item.Holder> {
         return getClass().getSimpleName() + "(id=" + id + ")";
     }
 
+    /**
+     * @since $UNRELEASED;
+     */
+    @Nullable
+    public H tryCastHolder(@NonNull Item.Holder holder) {
+        try {
+            //noinspection unchecked
+            return (H) holder;
+        } catch (ClassCastException e) {
+            return null;
+        }
+    }
+
 
     public static class Holder {
         private final View itemView;

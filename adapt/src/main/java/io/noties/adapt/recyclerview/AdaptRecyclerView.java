@@ -82,6 +82,18 @@ public class AdaptRecyclerView implements Adapt {
         return new AdaptRecyclerView(null, configuration);
     }
 
+    /**
+     * @since $UNRELEASED;
+     */
+    @Nullable
+    public static AdaptRecyclerView find(@NonNull RecyclerView recyclerView) {
+        final RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+        if (adapter instanceof AdapterImpl) {
+            return ((AdapterImpl) adapter).adaptRecyclerView();
+        }
+        return null;
+    }
+
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final Item.Holder holder;
@@ -99,24 +111,17 @@ public class AdaptRecyclerView implements Adapt {
 
     private final RecyclerView recyclerView;
     private final ConfigurationImpl configuration;
-    private final Adapter<? extends RecyclerView.ViewHolder> adapter;
-
-    // special storage to keep track of items and view-types
-    private final Map<Integer, Item<?>> store = new HashMap<>(3);
+    private final AdapterImpl adapter;
 
     private final DataSetChangeResultCallback changeResultCallback = new DataSetChangeResultCallback() {
         @NonNull
         @Override
         public RecyclerView.Adapter<?> applyItemsChange(@NonNull List<Item<?>> items) {
 
-            // release old items from referencing
-            store.clear();
-
-            for (Item<?> item : items) {
-                store.put(item.viewType(), item);
-            }
-
             AdaptRecyclerView.this.items = items;
+
+            // this is where we clear currently built factory and start filling it again
+            adapter.clearFactory();
 
             return adapter();
         }
@@ -178,14 +183,23 @@ public class AdaptRecyclerView implements Adapt {
 
     private class AdapterImpl extends Adapter<ItemViewHolder> {
 
+        private final Map<Integer, Item<?>> factory = new HashMap<>();
+
         private LayoutInflater inflater;
+
+        @NonNull
+        AdaptRecyclerView adaptRecyclerView() {
+            return AdaptRecyclerView.this;
+        }
 
         @NonNull
         @Override
         public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final Item<?> firstItem = store.get(viewType);
-            if (firstItem == null) {
-                throw AdaptException.create("Unexpected viewType: " + viewType);
+            final Item<?> item = factory.get(viewType);
+            if (item == null) {
+                throw AdaptException.create(
+                        "Item with a viewType:" + viewType + " not found, factory:" + factory
+                );
             }
 
             LayoutInflater inflater = this.inflater;
@@ -193,7 +207,7 @@ public class AdaptRecyclerView implements Adapt {
                 this.inflater = inflater = LayoutInflater.from(parent.getContext());
             }
 
-            final Item.Holder holder = firstItem.createHolder(inflater, parent);
+            final Item.Holder holder = item.createHolder(inflater, parent);
             holder.setAdapt(AdaptRecyclerView.this);
 
             return new ItemViewHolder(holder);
@@ -215,7 +229,13 @@ public class AdaptRecyclerView implements Adapt {
 
         @Override
         public int getItemViewType(int position) {
-            return items.get(position).viewType();
+            // lazily fill the factory
+            final Item<?> item = items.get(position);
+            final int viewType = item.viewType();
+            if (factory.get(viewType) == null) {
+                factory.put(viewType, item);
+            }
+            return viewType;
         }
 
         @Override
@@ -227,6 +247,10 @@ public class AdaptRecyclerView implements Adapt {
         @Override
         public Item<?> getItem(int position) {
             return items.get(position);
+        }
+
+        void clearFactory() {
+            factory.clear();
         }
     }
 

@@ -13,8 +13,8 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
 import io.noties.adapt.sample.samples.wrapper.background
 import io.noties.adapt.sample.samples.wrapper.onBind
-import io.noties.adapt.sample.util.dip
-import java.util.*
+import io.noties.adapt.ui.util.dip
+import java.util.Date
 
 @AdaptSample(
     id = "20210122143205",

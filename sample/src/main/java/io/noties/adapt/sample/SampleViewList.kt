@@ -16,6 +16,7 @@ import io.noties.adapt.ItemLayout
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.ui.DividerOverlay
 import io.noties.adapt.sample.ui.SearchBar
+import io.noties.adapt.sample.util.html
 import io.noties.adapt.sample.util.normalized
 
 class SampleViewList(
@@ -37,6 +38,7 @@ class SampleViewList(
                 val initialItems = samples.map {
                     SampleItem(it, onSampleClicked)
                 }
+
                 adapt.setItems(initialItems)
 
                 val searchBar: SearchBar = findViewById(R.id.search_bar)
@@ -65,6 +67,7 @@ class SampleViewList(
         return sample.name.normalized().contains(text)
                 || true == sample.description?.toString()?.normalized()?.contains(text)
                 || sample.tags.count { it.normalized().contains(text) } > 0
+                || sample.id == text
     }
 
     class SampleItem(
@@ -84,7 +87,7 @@ class SampleViewList(
         }
 
         override fun bind(holder: Holder) {
-            holder.name.text = sample.name
+            holder.name.text = sample.name.html()
             holder.description.textOrGone(sample.description)
             holder.tags.textOrGone(tags)
 

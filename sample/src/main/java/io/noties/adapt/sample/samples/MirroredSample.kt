@@ -1,5 +1,7 @@
 package io.noties.adapt.sample.samples
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,8 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PageIndicatorItem
+import io.noties.adapt.sample.util.Preview
+import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
@@ -181,4 +185,14 @@ class MirroredSample : SampleView() {
         override val title: String
             get() = "ViewGroup"
     }
+}
+
+@Preview
+@Suppress("ClassName", "unused")
+private class Preview__MirroredSample(
+    context: Context,
+    attrs: AttributeSet?
+) : PreviewSampleView(context, attrs) {
+    override val sampleView: SampleView
+        get() = MirroredSample()
 }

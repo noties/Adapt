@@ -14,6 +14,11 @@ public class IdWrapper extends ItemWrapper {
         return item -> new IdWrapper(item, id);
     }
 
+    @NonNull
+    public static Item<?> wrap(long id, @NonNull Item<?> item) {
+        return new IdWrapper(item, id);
+    }
+
     public IdWrapper(@NonNull Item<?> item, long id) {
         super(item, id);
     }

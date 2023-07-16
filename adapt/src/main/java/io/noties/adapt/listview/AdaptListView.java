@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -37,7 +36,6 @@ public class AdaptListView implements Adapt {
          * By default {@code true}
          */
         @NonNull
-        @CheckResult
         Configuration hasStableIds(boolean hasStableIds);
 
         /**
@@ -48,7 +46,6 @@ public class AdaptListView implements Adapt {
          * By default {@code false}
          */
         @NonNull
-        @CheckResult
         Configuration areAllItemsEnabled(boolean areAllItemsEnabled);
 
         /**
@@ -63,7 +60,6 @@ public class AdaptListView implements Adapt {
          * @see #include(Class, boolean)
          */
         @NonNull
-        @CheckResult
         Configuration include(@NonNull Class<? extends Item<?>> type);
 
         /**
@@ -73,16 +69,19 @@ public class AdaptListView implements Adapt {
          * @see #include(Class)
          */
         @NonNull
-        @CheckResult
         Configuration include(@NonNull Class<? extends Item<?>> type, boolean isEnabled);
 
         @NonNull
-        @CheckResult
         Configuration include(@NonNull Item.Key key);
 
         @NonNull
-        @CheckResult
         Configuration include(@NonNull Item.Key key, boolean isEnabled);
+
+        /**
+         * Prefill created AdaptListView instance with specified items
+         */
+        @NonNull
+        Configuration includeItems(@NonNull List<Item<?>> items);
     }
 
     public interface Configurator {
@@ -158,6 +157,16 @@ public class AdaptListView implements Adapt {
         return new AdaptListView(context, null, new ConfigurationImpl());
     }
 
+    @NonNull
+    public static AdaptListView createWithItems(
+            @NonNull Context context,
+            @NonNull List<Item<?>> items
+    ) {
+        final ConfigurationImpl impl = new ConfigurationImpl();
+        impl.includeItems(items);
+        return new AdaptListView(context, null, impl);
+    }
+
     @SuppressWarnings("rawtypes")
     @Nullable
     private final AdapterView adapterView;
@@ -202,6 +211,11 @@ public class AdaptListView implements Adapt {
         }
         this.viewTypes = viewTypes;
         this.isEnabled = isEnabled;
+
+        final List<Item<?>> items = configuration.items;
+        if (items != null) {
+            setItems(items);
+        }
     }
 
     @Nullable
@@ -373,6 +387,9 @@ public class AdaptListView implements Adapt {
 
         final Map<Item.Key, Boolean> types = new HashMap<>(3);
 
+        @Nullable
+        List<Item<?>> items;
+
         @NonNull
         @Override
         public Configuration hasStableIds(boolean hasStableIds) {
@@ -409,6 +426,16 @@ public class AdaptListView implements Adapt {
         @Override
         public Configuration include(@NonNull Item.Key key, boolean isEnabled) {
             types.put(key, isEnabled ? Boolean.TRUE : Boolean.FALSE);
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public Configuration includeItems(@NonNull List<Item<?>> items) {
+            this.items = items;
+            for (Item<?> item : items) {
+                include(Item.Key.of(item));
+            }
             return this;
         }
     }

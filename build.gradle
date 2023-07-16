@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.6.20'
+    ext.kotlin_version = '1.7.21'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -17,7 +17,7 @@ allprojects {
     }
 
     group = 'io.noties'
-    version = '4.0.0'
+    version = '5.0.0'
 
     tasks.withType(Javadoc) {
         enabled(false)
@@ -36,13 +36,30 @@ wrapper {
 ext {
 
     config = [
-            'min-sdk'        : 21,
-            'target-sdk'     : 30,
-            'build-tools'    : '30.0.3'
+            'min-sdk'    : 21,
+            'target-sdk' : 33,
+            'build-tools': '33.0.2'
     ]
 
     deps = [
+            'x-annotations' : 'androidx.annotation:annotation:1.5.0',
             // https://developer.android.com/jetpack/androidx/releases/recyclerview
-            'x-recycler-view': 'androidx.recyclerview:recyclerview:1.2.1'
+            'x-recyclerview': 'androidx.recyclerview:recyclerview:1.2.1',
+            'x-viewpager'   : 'androidx.viewpager:viewpager:1.0.0',
+            'x-viewpager2'  : 'androidx.viewpager2:viewpager2:1.0.0',
+
+            // https://github.com/google/flexbox-layout
+            'flexbox': 'com.google.android.flexbox:flexbox:3.0.0',
+
+            'junit4'        : 'junit:junit:4.13.2',
+
+            // https://github.com/mockito/mockito
+            'mockito'       : 'org.mockito:mockito-core:4.8.0',
+
+            // https://github.com/robolectric/robolectric
+            'robolectric'   : 'org.robolectric:robolectric:4.9',
+
+            // https://github.com/mockito/mockito-kotlin
+            'mockito-kotlin': 'org.mockito.kotlin:mockito-kotlin:4.0.0'
     ]
 }

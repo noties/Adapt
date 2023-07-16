@@ -103,7 +103,7 @@ class SearchBar(context: Context, attrs: AttributeSet) : LinearLayout(context, a
             val listener = onBackPressedListener
             val isBack = KeyEvent.KEYCODE_BACK == keyCode
             // event can be null, then consider this it as UP
-            val isUp = (KeyEvent.ACTION_UP == event?.action) ?: true
+            val isUp = (KeyEvent.ACTION_UP == event?.action)
             if (isBack && isUp) {
                 listener()
                 return true
@@ -118,7 +118,7 @@ class SearchBar(context: Context, attrs: AttributeSet) : LinearLayout(context, a
         override fun afterTextChanged(s: Editable) = Unit
     }
 
-    var View.isVisible: Boolean
+    private var View.isVisible: Boolean
         get() = View.VISIBLE == visibility
         set(value) {
             visibility = if (value) View.VISIBLE else View.GONE
@@ -138,7 +138,7 @@ class SearchBar(context: Context, attrs: AttributeSet) : LinearLayout(context, a
             }
         }
 
-        fun imm(view: View): InputMethodManager? =
+        private fun imm(view: View): InputMethodManager? =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     }
 }
