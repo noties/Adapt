@@ -20,7 +20,7 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
-    id = "20230526030500",
+    id = "20230526030501",
     title = "[Showcase] AdaptUI, Shape #2",
     description = "<em>RectangleShape</em>, <em>ArcShape</em>, <em>OvalShape</em>, <em>Capsule</em>, <em>Line</em>",
     tags = ["adapt-ui", "showcase"]

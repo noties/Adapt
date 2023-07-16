@@ -1,19 +1,5 @@
 # AdaptUI showcase
 
-<style>
-    #showcase_table {
-        text-align: left;
-    }
-
-    #showcase_table td {
-        vertical-align: top;
-    }
-
-    #showcase_table td img {
-        height: 200px;
-    }
-</style>
-
 <table width="100%" id="showcase_table">
     <tr>
         <th style="width: 40%">Name</th>
@@ -98,7 +84,7 @@
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape1.kt">AdaptUIShowcaseShape1</a>
             </div>
         </td>
-        <td><a href="./art/ui_showcase_shape2.jpg"><img src="./art/ui_showcase_shape2.jpg"></a></td>
+        <td><a href="./art/ui_showcase_shape1.jpg"><img src="./art/ui_showcase_shape1.jpg"></a></td>
         </tr><tr>
         <td>
             <div>
