@@ -2,6 +2,7 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
+import io.noties.adapt.ui.element.ElementViewFactory
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -20,6 +21,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.never
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @Suppress("ClassName")
@@ -296,5 +298,20 @@ class ViewElement_Test {
             .renderView {
                 verify(view).isEnabled = eq(false)
             }
+    }
+
+    @Test
+    fun contextWrapper() {
+        try {
+            val context = RuntimeEnvironment.getApplication()
+            ElementViewFactory.contextWrapper = { context }
+
+            val element = ViewElement<View, LayoutParams> { View(it) }
+            // pass mock
+            val view = element.init(mockt())
+            assertEquals(context, view.context)
+        } finally {
+            ElementViewFactory.reset()
+        }
     }
 }

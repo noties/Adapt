@@ -24,6 +24,7 @@ import io.noties.adapt.ui.element.ElementViewFactory.VScroll
 import io.noties.adapt.ui.element.ElementViewFactory.VStack
 import io.noties.adapt.ui.element.ElementViewFactory.View
 import io.noties.adapt.ui.element.ElementViewFactory.ZStack
+import io.noties.adapt.ui.element.ElementViewFactory.contextWrapper
 
 /**
  * Factories for all elements
@@ -40,8 +41,28 @@ import io.noties.adapt.ui.element.ElementViewFactory.ZStack
  * @see VScroll
  * @see VStack
  * @see ZStack
+ *
+ * Additionally provides mechanism to process supplied Context (wrapping, inspecting, etc)
+ * @see contextWrapper
  */
 object ElementViewFactory {
+    /**
+     * Special function to wrap supplied context before passing to one of the factory methods below.
+     * Can be useful to wrap supplied context into `ContextWrapper` to provide  various customizations.
+     * Added here because it is not always convenient to provide wrapped context to each ViewFactory call
+     * @see io.noties.adapt.ui.util.CachingContextWrapper
+     *
+     * __NB!__ none of the factories are calling this function directly. It is intended to be used
+     * by [io.noties.adapt.ui.ViewElement] and [io.noties.adapt.ui.ViewFactory].
+     *
+     * __NB!__ as children of view-groups are using context of parent view-group and they
+     * also are calling this wrapper function, it is possible that already wrapped context
+     * might be wrapped again. This is why it is important to check receiving context
+     * in order to detect if it has been processed already or not. For example, like
+     * [io.noties.adapt.ui.util.CachingContextWrapper] does it.
+     */
+    lateinit var contextWrapper: (Context) -> Context
+
     lateinit var HScroll: (Context) -> HorizontalScrollView
     lateinit var HStack: (Context) -> LinearLayout
     lateinit var Image: (Context) -> ImageView
@@ -61,6 +82,8 @@ object ElementViewFactory {
     }
 
     fun reset() {
+        // default implementation just returns received argument
+        contextWrapper = { it }
         HScroll = { HorizontalScrollView(it) }
         HStack = { LinearLayout(it) }
         Image = {

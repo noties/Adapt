@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIFactoryContextSample",
+    "id": "20231014222418",
+    "title": "UI, ElementViewFactory contextWrapper",
+    "description": "Provide context wrapper to customize Context",
+    "tags": [
+      "adapt-ui",
+      "context"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb",
     "id": "20230716140149",
     "title": "[Showcase] AdaptUI Web element",

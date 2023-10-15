@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import io.noties.adapt.ui.element.Element
+import io.noties.adapt.ui.element.ElementViewFactory
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -15,7 +16,6 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.testutil.assertDensity
 import io.noties.adapt.ui.testutil.mockt
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -341,6 +341,28 @@ class ViewFactory_Test {
 
         assertEquals(view, createdView)
         assertLayoutParams(layoutParams, createdView.layoutParams)
+    }
+
+    @Test
+    fun contextWrapper() {
+        val original = mockt<Context>()
+        val wrapped = mockt<Context>()
+
+        try {
+            ElementViewFactory.contextWrapper = { wrapped }
+
+            val inputs = listOf<(Context) -> ViewFactory<LayoutParams>>(
+                { ViewFactory(it) },
+                { ViewFactory(mockt<ViewGroup>{ whenever(mock.context).thenReturn(original) }) }
+            )
+
+            for (input in inputs) {
+                val factory = input(original)
+                assertEquals(wrapped, factory.context)
+            }
+        } finally {
+            ElementViewFactory.reset()
+        }
     }
 
     // a primitive version for equals... platform LP do not have it implemented...

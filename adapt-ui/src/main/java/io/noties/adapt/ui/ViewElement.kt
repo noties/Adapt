@@ -2,6 +2,7 @@ package io.noties.adapt.ui
 
 import android.content.Context
 import android.view.View
+import io.noties.adapt.ui.element.ElementViewFactory
 import io.noties.adapt.ui.util.DynamicIterator.Companion.dynamicIterator
 
 open class ViewElement<V : View, LP : LayoutParams>(
@@ -50,7 +51,7 @@ open class ViewElement<V : View, LP : LayoutParams>(
     internal val viewBlocks: MutableList<(V) -> Unit> = mutableListOf()
 
     fun init(context: Context): V {
-        view = provider(context)
+        view = provider(ElementViewFactory.contextWrapper(context))
         return view
     }
 

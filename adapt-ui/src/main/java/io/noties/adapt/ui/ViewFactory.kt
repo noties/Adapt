@@ -3,15 +3,18 @@ package io.noties.adapt.ui
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.ui.element.ElementViewFactory
 import io.noties.adapt.ui.util.onAttachedOnce
 
 typealias LayoutParams = ViewGroup.LayoutParams
 
 class ViewFactory<out LP : LayoutParams>(
-    val context: Context,
+    context: Context,
     viewGroup: ViewGroup? = null
 ) : ViewFactoryConstants {
     constructor(viewGroup: ViewGroup) : this(viewGroup.context, viewGroup)
+
+    val context: Context = ElementViewFactory.contextWrapper(context)
 
     private val _viewGroup: ViewGroup? = viewGroup
 
@@ -130,6 +133,9 @@ class ViewFactory<out LP : LayoutParams>(
             context, viewGroup, layoutParams, true
         )
 
+        // TODO: find a way to not specify Unit as argument (done so so it is easier
+        //  to call version with `ref`... as `() -> Unit` won't be generified,
+        //  so calling it with Unit as argument won't be possible
         fun create(
             children: ViewFactory<LP>.(Unit) -> Unit
         ): View = create(Unit, children)
@@ -152,7 +158,7 @@ class ViewFactory<out LP : LayoutParams>(
             @Suppress("UNCHECKED_CAST")
             val root = elements[0] as ViewElement<View, LP>
 
-            val view = root.init(context)
+            val view = root.init(factory.context)
 
             // NB! apply layout params only if original view does not contain them
             //  if it does, use them

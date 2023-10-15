@@ -1,5 +1,7 @@
 package io.noties.adapt.ui.element
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -19,6 +21,7 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -161,5 +164,46 @@ class ElementViewFactory_Test {
         Assert.assertNotNull(layoutParams)
         Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.width)
         Assert.assertEquals(LayoutParams.WRAP_CONTENT, layoutParams.height)
+    }
+
+    @Test
+    fun `contextWrapper - default`() {
+        // by default just returns supplied argument
+        val input = mock<Context>()
+        val actual = ElementViewFactory.contextWrapper(input)
+        Assert.assertEquals(input, actual)
+    }
+
+    @Test
+    fun `contextWrapper - elements`() {
+        // that all elements are using context from contextWrapper
+
+        val supplied = RuntimeEnvironment.getApplication()
+        val wrapped = ContextWrapper(supplied)
+
+        ElementViewFactory.contextWrapper = { wrapped }
+
+        val factories = listOf<Pair<String, ViewFactory<LinearLayout.LayoutParams>.(Unit) -> Unit>>(
+            "HScroll" to { HScroll {} },
+            "HStack" to { HStack {} },
+            "Image" to { Image() },
+            "Pager" to { Pager {} },
+            "Progress" to { Progress() },
+            "Recycler" to { Recycler() },
+            "Spacer" to { Spacer() },
+            "Text" to { Text() },
+            "TextInput" to { TextInput() },
+            "View" to { View() },
+            "VScroll" to { VScroll {} },
+            "VStack" to { VStack {} },
+            "ZStack" to { ZStack {} },
+        )
+
+        for ((name, factory) in factories) {
+            val view = ViewFactory.ViewCreator(supplied, null)
+                .layoutParams(LinearLayout.LayoutParams(0, 0))
+                .create(factory)
+            Assert.assertTrue("factory:$name expected:$wrapped actual:${view.context}", wrapped === view.context)
+        }
     }
 }
