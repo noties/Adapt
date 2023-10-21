@@ -47,7 +47,7 @@ class Circle_Test {
             val r = circle.buildRect(rect, 10)
             assertEquals(gravity.toString(), bounds.toShortString(), r.toShortString())
 
-            circle.drawShape(canvas, rect, mockt())
+            circle.drawShape(canvas, rect, mockt(), 1F)
             verify(canvas).drawCircle(
                 eq(bounds.centerX().toFloat()),
                 eq(bounds.centerY().toFloat()),

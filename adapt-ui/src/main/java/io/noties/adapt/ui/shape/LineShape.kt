@@ -52,7 +52,7 @@ class LineShape(
         return "fromX=$fromX, fromY=$fromY, toX=$toX, toY=$toY"
     }
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         // only draw stroke style (fill would be ignored)
         if (paint.style != Paint.Style.STROKE) {
             return
@@ -73,8 +73,8 @@ class LineShape(
         // we use path, as regular drawLine in some cases (non obvious)
         //  ignored dash effect
         val path = pathCache.set(
-            l + fromX.resolve(w), t + fromY.resolve(h),
-            l + toX.resolve(w), t + toY.resolve(h)
+            l + fromX.resolve(w, density), t + fromY.resolve(h, density),
+            l + toX.resolve(w, density), t + toY.resolve(h, density)
         )
 
         canvas.drawPath(path, paint)

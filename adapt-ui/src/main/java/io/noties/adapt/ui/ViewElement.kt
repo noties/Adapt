@@ -46,7 +46,7 @@ open class ViewElement<V : View, LP : LayoutParams>(
     var isRendering: Boolean = false
         private set
 
-    internal val layoutParamsBlocks: MutableList<(LP) -> Unit> = mutableListOf()
+    internal val layoutParamsBlocks: MutableList<V.(LP) -> Unit> = mutableListOf()
     internal val viewBlocks: MutableList<(V) -> Unit> = mutableListOf()
 
     fun init(context: Context): V {
@@ -62,7 +62,7 @@ open class ViewElement<V : View, LP : LayoutParams>(
     }
 
     fun onLayoutParams(
-        block: (LP) -> Unit
+        block: V.(LP) -> Unit
     ): ViewElement<V, LP> = this.also {
         it.layoutParamsBlocks.add(block)
         scheduleRendering()
@@ -102,7 +102,7 @@ open class ViewElement<V : View, LP : LayoutParams>(
                     val startSize = it.size
 
                     while (iterator.hasNext()) {
-                        iterator.next()(lp)
+                        iterator.next()(view, lp)
 
                         if (it.size - startSize > renderingMaxDifferenceDuringSinglePass) {
                             throw IllegalStateException(

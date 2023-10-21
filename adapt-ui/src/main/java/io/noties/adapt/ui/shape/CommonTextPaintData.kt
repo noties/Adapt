@@ -19,8 +19,8 @@ interface CommonTextPaintData {
     /**
      * Apply properties to supplied [TextPaint]
      */
-    fun applyTo(textPaint: TextPaint) {
-        textSize?.dip?.toFloat()?.also { textPaint.textSize = it }
+    fun applyTo(textPaint: TextPaint, density: Float) {
+        textSize?.dip(density)?.toFloat()?.also { textPaint.textSize = it }
         textColor?.also { textPaint.color = it }
 
         val typeface = textTypeface
@@ -56,11 +56,11 @@ interface CommonTextPaintData {
 
         // resolve(0) is a way to ensure only Exact dimensions
         textShadow
-            ?.let { it to (it.radius?.resolve(0) ?: 0) }
+            ?.let { it to (it.radius?.resolve(0, density) ?: 0) }
             ?.takeIf { it.second > 0 }
             ?.also { (shadow, radius) ->
-                val x = shadow.offsetX?.resolve(0) ?: 0
-                val y = shadow.offsetY?.resolve(0) ?: 0
+                val x = shadow.offsetX?.resolve(0, density) ?: 0
+                val y = shadow.offsetY?.resolve(0, density) ?: 0
                 textPaint.setShadowLayer(
                     radius.toFloat(),
                     x.toFloat(),

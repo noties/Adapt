@@ -16,19 +16,18 @@ class Dimension_Test {
     @Test
     fun exact() {
         // verify density value
-        val density = Resources.getSystem().displayMetrics.density
-        assertEquals(3F, density)
+        val density = 3F
 
         val exact = Dimension.Exact(22)
         // dimension is ignored, when value is exact
-        val value = exact.resolve(10001)
-        assertEquals(22.dip, value)
+        val value = exact.resolve(10001, density)
+        assertEquals(22.dip(density), value)
     }
 
     @Test
     fun relative() {
         val relative = Dimension.Relative(0.5F)
-        val value = relative.resolve(1000)
+        val value = relative.resolve(1000, 1F)
         assertEquals(500, value)
     }
 }

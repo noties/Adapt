@@ -52,6 +52,17 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
 
     private lateinit var updateItem: UpdateItem<MyMutableItem>
 
+    // Works in runtime, fails in preview :'(
+//    override fun render(view: View) {
+//        val vg = view as ViewGroup
+//        val context = vg.context.createWithDensity(4F)
+//        ViewFactory.newView(context, vg)
+//            .create {
+//                body()
+//            }
+//            .also { vg.addView(it) }
+//    }
+
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 

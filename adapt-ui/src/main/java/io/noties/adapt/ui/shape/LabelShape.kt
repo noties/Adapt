@@ -84,12 +84,12 @@ class LabelShape(
         return data.toString()
     }
 
-    override fun drawSelf(canvas: Canvas, bounds: Rect) {
-        super.drawSelf(canvas, bounds)
+    override fun drawSelf(canvas: Canvas, bounds: Rect, density: Float) {
+        super.drawSelf(canvas, bounds, density)
 
         val text = data.text ?: return
 
-        val textPaint = cache.textPaint(data)
+        val textPaint = cache.textPaint(data, density)
 
         // normal alignment, we would locate the whole text based on gravity
         textPaint.textAlign = Paint.Align.LEFT
@@ -116,10 +116,10 @@ class LabelShape(
         drawRect().set(rect)
 
         textRotation?.also {
-            it.draw(canvas, rect)
+            it.draw(canvas, rect, density)
         }
 
-        super.drawChildren(canvas, rect)
+        super.drawChildren(canvas, rect, density)
 
         canvas.drawText(
             text,
@@ -129,7 +129,7 @@ class LabelShape(
         )
     }
 
-    override fun drawChildren(canvas: Canvas, bounds: Rect) {
+    override fun drawChildren(canvas: Canvas, bounds: Rect, density: Float) {
         // no op, children are drawn from drawSelf (before text content)
     }
 
@@ -137,11 +137,13 @@ class LabelShape(
         private val paint = TextPaint(TextPaint.ANTI_ALIAS_FLAG)
 
         private var previousData: LabelShapeData? = null
+        private var previousDensity: Float = 0F
 
-        fun textPaint(data: LabelShapeData): TextPaint {
-            if (previousData != data) {
+        fun textPaint(data: LabelShapeData, density: Float): TextPaint {
+            if (previousData != data || previousDensity != density) {
                 previousData = data.copy()
-                data.applyTo(paint)
+                previousDensity = density
+                data.applyTo(paint, density)
             }
             return paint
         }

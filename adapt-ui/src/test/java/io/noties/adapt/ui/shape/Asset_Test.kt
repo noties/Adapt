@@ -111,7 +111,8 @@ class Asset_Test {
         asset.drawShape(
             canvas,
             rect,
-            paint
+            paint,
+            1F
         )
         verify(drawable).bounds = eq(rect)
         verify(drawable).alpha = eq(alpha)

@@ -16,6 +16,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
@@ -101,15 +102,18 @@ class Shape_Fill_Test {
             Shape.Fill(0, null)
         )
 
+        val density = 10987F
+
         for (input in inputs) {
             val shape = mock<Shape>()
 
-            input.draw(mock(), shape, mock())
+            input.draw(mock(), shape, mock(), density)
 
             verify(shape, never()).drawShape(
                 any(),
                 any(),
-                any()
+                any(),
+                ArgumentMatchers.eq(density)
             )
         }
     }
@@ -118,19 +122,21 @@ class Shape_Fill_Test {
     fun `draw - color`() {
         // if color is present, it should draw
         val input = 0xFF123456.toInt()
+        val density = 9F
 
         val fill = Shape.Fill(input, null)
         val shape = mock<Shape> {
             on { alpha } doReturn null
         }
 
-        fill.draw(mock(), shape, mock())
+        fill.draw(mock(), shape, mock(), density)
 
         val captor = argumentCaptor<Paint>()
         verify(shape).drawShape(
             any(),
             any(),
-            captor.capture()
+            captor.capture(),
+            ArgumentMatchers.eq(density)
         )
 
         val paint = captor.value
@@ -158,6 +164,8 @@ class Shape_Fill_Test {
             0F
         )
 
+        val density = 2F
+
         for (input in inputs) {
             for (alpha in alphas) {
 
@@ -166,17 +174,17 @@ class Shape_Fill_Test {
                     on { this.alpha } doReturn alpha
                 }
 
-                fill.draw(mock(), shape, mock())
+                fill.draw(mock(), shape, mock(), density)
 
                 val colorAlpha = Color.alpha(input)
                 val shapeAlpha = (colorAlpha * alpha).roundToInt()
 
                 if (shapeAlpha == 0) {
-                    verify(shape, never()).drawShape(any(), any(), any())
+                    verify(shape, never()).drawShape(any(), any(), any(), ArgumentMatchers.eq(density))
                 } else {
 
                     val captor = argumentCaptor<Paint>()
-                    verify(shape).drawShape(any(), any(), captor.capture())
+                    verify(shape).drawShape(any(), any(), captor.capture(), ArgumentMatchers.eq(density))
 
                     val paint = captor.value
 
@@ -202,19 +210,21 @@ class Shape_Fill_Test {
             1F
         )
 
+        val density = 7F
+
         for (alpha in alphas) {
             val shape = mock<Shape> {
                 on { this.alpha } doReturn alpha
             }
             val gradient = mock<Gradient>(defaultAnswer = Mockito.RETURNS_MOCKS)
             val fill = Shape.Fill(null, gradient)
-            fill.draw(mock(), shape, mock())
+            fill.draw(mock(), shape, mock(), density)
 
             if (0F == alpha) {
-                verify(shape, never()).drawShape(any(), any(), any())
+                verify(shape, never()).drawShape(any(), any(), any(), ArgumentMatchers.eq(density))
             } else {
                 val captor = argumentCaptor<Paint>()
-                verify(shape).drawShape(any(), any(), captor.capture())
+                verify(shape).drawShape(any(), any(), captor.capture(), ArgumentMatchers.eq(density))
 
                 val paint = captor.value
                 assertEquals(
@@ -223,7 +233,7 @@ class Shape_Fill_Test {
                 )
                 assertEquals((255 * alpha).roundToInt(), paint.alpha)
 
-                verify(gradient).createShader(any())
+                verify(gradient).createShader(any(), any())
                 assertNotNull("paint.shader", paint.shader)
             }
         }

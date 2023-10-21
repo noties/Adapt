@@ -14,6 +14,7 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.density
 import io.noties.adapt.ui.util.dip
 
 /**
@@ -37,13 +38,16 @@ fun <LP : LayoutParams> ViewFactory<LP>.Pager(
             val (decorItems, items) = factory.consumeElements()
                 .map {
                     @Suppress("UNCHECKED_CAST")
-                    val element = (it as ViewElement<out View, ViewPagerLayoutParams>)
+                    val element = (it as ViewElement<View, ViewPagerLayoutParams>)
                     val lp = ViewPagerLayoutParams()
                     lp.viewPager = vp
+                    // NB! at this point we do not have dedicated view, but we need to
+                    //  process the layout params, so we pass parent viewpager (it is
+                    //  used (most be) only to determine density, so _should be_ is fine)
                     // sync provided values with our layout params, do not call `render` here
                     // not _new api_, kotlin version which has the same name
                     //noinspection NewApi
-                    element.layoutParamsBlocks.forEach { it(lp) }
+                    element.layoutParamsBlocks.forEach { it(vp, lp) }
                     PagerItem(element, lp)
                 }
                 .partition { it.layoutParams.isDecor }
@@ -184,7 +188,7 @@ fun <V : ViewPager, LP : LayoutParams> ViewElement<V, LP>.pagerPageMargin(
     margin: Int,
     marginDrawable: Drawable? = null
 ) = onView {
-    it.pageMargin = margin.dip
+    it.pageMargin = margin.dip(it.density)
     it.setPageMarginDrawable(marginDrawable)
 }
 
@@ -270,7 +274,7 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerOnPageSelectedListener
 }
 
 internal class PagerItem(
-    val element: ViewElement<out View, ViewPagerLayoutParams>,
+    val element: ViewElement<View, ViewPagerLayoutParams>,
     val layoutParams: ViewPagerLayoutParams
 )
 

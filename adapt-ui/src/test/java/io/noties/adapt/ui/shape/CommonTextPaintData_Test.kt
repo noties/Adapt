@@ -45,7 +45,7 @@ class CommonTextPaintData_Test {
         for (impl in inputs) {
             val paint = mockt<TextPaint>()
 
-            impl.applyTo(paint)
+            impl.applyTo(paint, 1F)
 
             verify(paint).textSize = eq(textSize.toFloat())
         }
@@ -60,7 +60,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).color = eq(textColor)
         }
     }
@@ -74,7 +74,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).typeface = eq(typeface)
         }
     }
@@ -87,7 +87,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             // no typeface - fake bold text
             verify(paint).isFakeBoldText = eq(true)
         }
@@ -101,7 +101,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).textSkewX = eq(-0.25F)
         }
     }
@@ -118,7 +118,7 @@ class CommonTextPaintData_Test {
 
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
 
             val font = kotlin.run {
                 val captor = ArgumentCaptor.forClass(Typeface::class.java)
@@ -143,7 +143,7 @@ class CommonTextPaintData_Test {
 
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
 
             val font = kotlin.run {
                 val captor = ArgumentCaptor.forClass(Typeface::class.java)
@@ -168,7 +168,7 @@ class CommonTextPaintData_Test {
 
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
 
             val font = kotlin.run {
                 val captor = ArgumentCaptor.forClass(Typeface::class.java)
@@ -189,7 +189,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).isUnderlineText = eq(true)
         }
     }
@@ -202,7 +202,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).isStrikeThruText = eq(true)
         }
     }
@@ -230,7 +230,7 @@ class CommonTextPaintData_Test {
 
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).setShadowLayer(
                 eq(radius.toFloat()),
                 eq(offsetX.toFloat()),
@@ -249,7 +249,7 @@ class CommonTextPaintData_Test {
         )
         for (input in inputs) {
             val paint = mockt<TextPaint>()
-            input.applyTo(paint)
+            input.applyTo(paint, 1F)
             verify(paint).letterSpacing = eq(letterSpacing)
         }
     }

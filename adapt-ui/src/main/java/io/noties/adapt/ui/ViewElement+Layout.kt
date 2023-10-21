@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.density
 import io.noties.adapt.ui.util.dip
 
 /**
@@ -25,12 +26,12 @@ fun <V : View, LP : ViewGroup.LayoutParams> ViewElement<V, LP>.layout(
         it.width = width
     } else {
         // else exact dp values, convert to px
-        it.width = width.dip
+        it.width = width.dip(density)
     }
     if (height == MATCH_PARENT || height == WRAP_CONTENT) {
         it.height = height
     } else {
-        it.height = height.dip
+        it.height = height.dip(density)
     }
 }
 
@@ -130,8 +131,9 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     trailing: Int? = null,
     bottom: Int? = null
 ) = onLayoutParams { mlp ->
-    leading?.dip?.also { mlp.leftMargin = it }
-    top?.dip?.also { mlp.topMargin = it }
-    trailing?.dip?.also { mlp.rightMargin = it }
-    bottom?.dip?.also { mlp.bottomMargin = it }
+    val density = density
+    leading?.dip(density)?.also { mlp.leftMargin = it }
+    top?.dip(density)?.also { mlp.topMargin = it }
+    trailing?.dip(density)?.also { mlp.rightMargin = it }
+    bottom?.dip(density)?.also { mlp.bottomMargin = it }
 }

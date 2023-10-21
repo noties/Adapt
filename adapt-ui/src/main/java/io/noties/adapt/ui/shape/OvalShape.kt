@@ -17,12 +17,12 @@ class OvalShape(block: OvalShape.() -> Unit = {}) : Shape() {
     override fun clone(): OvalShape = OvalShape()
     override fun toStringDedicatedProperties(): String = ""
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         rectF.set(bounds)
         canvas.drawOval(rectF, paint)
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         outline.setOval(bounds)
     }
 }

@@ -477,7 +477,7 @@ class Text_Test {
             }
             .renderView {
                 // at this point nothing happens, as view has no dimensions
-                verify(gradient, never()).createShader(any())
+                verify(gradient, never()).createShader(any(), any())
 
                 val captor = argumentCaptor<View.OnLayoutChangeListener>()
                 verify(this).addOnLayoutChangeListener(captor.capture())
@@ -494,7 +494,7 @@ class Text_Test {
                 listener.onLayoutChange(this, 0, 0, 0, 0, 0, 0, 0, 0)
 
                 val boundsCaptor = argumentCaptor<Rect>()
-                verify(gradient).createShader(boundsCaptor.capture())
+                verify(gradient).createShader(boundsCaptor.capture(), any())
                 assertEquals(
                     Rect(0, 0, 50, 60).also {
                         it.left += paddingLeft

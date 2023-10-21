@@ -17,7 +17,7 @@ class CapsuleShape(block: CapsuleShape.() -> Unit = {}) : Shape() {
     override fun clone(): CapsuleShape = CapsuleShape()
     override fun toStringDedicatedProperties(): String = ""
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         val radius = radius(bounds)
 
         rectF.set(bounds)
@@ -30,7 +30,7 @@ class CapsuleShape(block: CapsuleShape.() -> Unit = {}) : Shape() {
         )
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         outline.setRoundRect(bounds, radius(bounds))
     }
 

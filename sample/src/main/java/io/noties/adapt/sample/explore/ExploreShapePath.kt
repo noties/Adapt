@@ -68,14 +68,14 @@ object ExploreShapePath {
             TODO("Not yet implemented")
         }
 
-        override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+        override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
             if (bounds != lastRect || path.isEmpty) {
-                buildPath(bounds)
+                buildPath(bounds, density)
             }
             canvas.drawPath(path, paint)
         }
 
-        private fun buildPath(bounds: Rect) {
+        private fun buildPath(bounds: Rect, density: Float) {
             path.rewind()
 
             lastRect.set(bounds)
@@ -89,7 +89,7 @@ object ExploreShapePath {
             path.offset(0F, 0F)
 
             steps.forEach { step ->
-                step.contribute(path, leading, top, width, height)
+                step.contribute(path, density, leading, top, width, height)
             }
         }
 
@@ -97,6 +97,7 @@ object ExploreShapePath {
         private sealed class Step() {
             abstract fun contribute(
                 path: android.graphics.Path,
+                density: Float,
                 leading: Int,
                 top: Int,
                 width: Int,
@@ -118,14 +119,15 @@ object ExploreShapePath {
             class Move(val x: Dimension, val y: Dimension) : Step() {
                 override fun contribute(
                     path: android.graphics.Path,
+                    density: Float,
                     leading: Int,
                     top: Int,
                     width: Int,
                     height: Int
                 ) {
                     path.moveTo(
-                        leading + x.resolve(width).toFloat(),
-                        top + y.resolve(height).toFloat()
+                        leading + x.resolve(width, density).toFloat(),
+                        top + y.resolve(height, density).toFloat()
                     )
                 }
             }
@@ -133,14 +135,15 @@ object ExploreShapePath {
             class Line(val x: Dimension, val y: Dimension) : Step() {
                 override fun contribute(
                     path: android.graphics.Path,
+                    density: Float,
                     leading: Int,
                     top: Int,
                     width: Int,
                     height: Int
                 ) {
                     path.lineTo(
-                        leading + x.resolve(width).toFloat(),
-                        top + y.resolve(height).toFloat()
+                        leading + x.resolve(width, density).toFloat(),
+                        top + y.resolve(height, density).toFloat()
                     )
                 }
             }
@@ -151,17 +154,18 @@ object ExploreShapePath {
             ) : Step() {
                 override fun contribute(
                     path: android.graphics.Path,
+                    density: Float,
                     leading: Int,
                     top: Int,
                     width: Int,
                     height: Int
                 ) {
-                    val endX = x.second.resolve(width)
-                    val endY = y.second.resolve(height)
+                    val endX = x.second.resolve(width, density)
+                    val endY = y.second.resolve(height, density)
                     // first is control point
                     path.quadTo(
-                        leading + x.first.resolve(width).toFloat(),
-                        top + y.first.resolve(height).toFloat(),
+                        leading + x.first.resolve(width, density).toFloat(),
+                        top + y.first.resolve(height, density).toFloat(),
                         leading + endX.toFloat(),
                         top + endY.toFloat()
                     )
@@ -171,6 +175,7 @@ object ExploreShapePath {
             object Close : Step() {
                 override fun contribute(
                     path: android.graphics.Path,
+                    density: Float,
                     leading: Int,
                     top: Int,
                     width: Int,

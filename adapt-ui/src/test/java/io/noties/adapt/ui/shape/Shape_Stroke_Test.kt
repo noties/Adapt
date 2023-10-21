@@ -144,7 +144,7 @@ class Shape_Stroke_Test {
         for (input in inputs) {
             val canvas = mockt<Canvas>()
             // important to use real object, not mock in order to see if canvas was called
-            input.draw(canvas, OvalShape(), mockt())
+            input.draw(canvas, OvalShape(), mockt(), 1F)
             verifyNoInteractions(canvas)
         }
     }
@@ -156,7 +156,7 @@ class Shape_Stroke_Test {
         // important to use real object, not mock in order to see if canvas was called
         val shape = RectangleShape().alpha(0F)
         val canvas = mockt<Canvas>()
-        stroke.draw(canvas, shape, mockt())
+        stroke.draw(canvas, shape, mockt(), 1F)
 
         verifyNoInteractions(canvas)
     }
@@ -168,7 +168,7 @@ class Shape_Stroke_Test {
         // important to use real object, not mock in order to see if canvas was called
         val shape = OvalShape().alpha(1F)
         val canvas = mockt<Canvas>()
-        stroke.draw(canvas, shape, mockt())
+        stroke.draw(canvas, shape, mockt(), 1F)
         verifyNoInteractions(canvas)
     }
 
@@ -187,16 +187,17 @@ class Shape_Stroke_Test {
                 on { this.alpha } doReturn 1F
             }
 
-            stroke.draw(canvas, shape, mockt())
+            stroke.draw(canvas, shape, mockt(), 1F)
 
             if (Color.alpha(input) == 0) {
-                verify(shape, never()).drawShape(any(), any(), any())
+                verify(shape, never()).drawShape(any(), any(), any(), any())
             } else {
                 val captor = argumentCaptor<Paint>()
                 verify(shape).drawShape(
                     eq(canvas),
                     any(),
-                    captor.capture()
+                    captor.capture(),
+                    eq(1F)
                 )
 
                 assertEquals(input.toHexString(), captor.value.color.toHexString())
@@ -230,18 +231,19 @@ class Shape_Stroke_Test {
                     on { this.alpha } doReturn alpha
                 }
 
-                stroke.draw(canvas, shape, mockt())
+                stroke.draw(canvas, shape, mockt(), 1F)
 
                 val expectedAlpha = (255 * ((Color.alpha(input) / 255F) * alpha)).roundToInt()
 
                 if (expectedAlpha == 0) {
-                    verify(shape, never()).drawShape(any(), any(), any())
+                    verify(shape, never()).drawShape(any(), any(), any(), any())
                 } else {
                     val captor = argumentCaptor<Paint>()
                     verify(shape).drawShape(
                         eq(canvas),
                         any(),
-                        captor.capture()
+                        captor.capture(),
+                        eq(1F)
                     )
 
                     assertEquals(
@@ -265,13 +267,14 @@ class Shape_Stroke_Test {
         val shape = mockt<Shape> {
             on { this.alpha } doReturn input
         }
-        stroke.draw(mockt(), shape, mockt())
+        stroke.draw(mockt(), shape, mockt(), 1F)
 
         val captor = argumentCaptor<Paint>()
         verify(shape).drawShape(
             any(),
             any(),
-            captor.capture()
+            captor.capture(),
+            eq(1F)
         )
 
         assertEquals((255 * input).roundToInt(), captor.value.alpha)

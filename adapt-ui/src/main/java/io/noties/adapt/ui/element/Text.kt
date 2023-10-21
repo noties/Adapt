@@ -24,6 +24,7 @@ import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 import io.noties.adapt.ui.util.TypefaceStyle
+import io.noties.adapt.ui.util.density
 import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
@@ -82,7 +83,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
 
         if (shaderBounds != rect || !rect.isEmpty) {
             shaderBounds.set(rect)
-            view.paint.shader = gradient.createShader(shaderBounds)
+            view.paint.shader = gradient.createShader(shaderBounds, view.density)
             view.invalidate()
         }
     }
@@ -101,10 +102,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textShadow(
     dx: Int? = null,
     dy: Int? = null
 ): ViewElement<V, LP> = onView {
+    val density = it.density
     it.setShadowLayer(
-        radius.dip.toFloat(),
-        dx?.dip?.toFloat() ?: 0F,
-        dy?.dip?.toFloat() ?: 0F,
+        radius.dip(density).toFloat(),
+        dx?.dip(density)?.toFloat() ?: 0F,
+        dy?.dip(density)?.toFloat() ?: 0F,
         color ?: it.currentTextColor
     )
 }

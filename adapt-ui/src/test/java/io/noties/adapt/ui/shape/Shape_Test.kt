@@ -763,7 +763,7 @@ class Shape_Test {
 
         for (shape in shapes()) {
             val rect = Rect(0, 0, 109, 765)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(rect, Shape::drawRect)
         }
     }
@@ -778,9 +778,9 @@ class Shape_Test {
                 trailing = 3,
                 bottom = 4
             )
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
-                Rect(1.dip, 2.dip, 100 - 3.dip, 200 - 4.dip),
+                Rect(1, 2, 100 - 3, 200 - 4),
                 Shape::drawRect
             )
         }
@@ -794,7 +794,7 @@ class Shape_Test {
                 25,
                 77
             )
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(0, 0, 25, 77),
                 Shape::drawRect
@@ -811,9 +811,9 @@ class Shape_Test {
                 20,
                 Gravity.bottom.trailing
             )
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
-                Rect(100 - 10.dip, 200 - 20.dip, 100, 200),
+                Rect(100 - 10, 200 - 20, 100, 200),
                 Shape::drawRect
             )
         }
@@ -829,13 +829,13 @@ class Shape_Test {
                 Gravity.bottom.trailing
             )
             shape.padding(4)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(
-                    100 - (10 - 4).dip,
-                    200 - (20 - 4).dip,
-                    100 - 4.dip,
-                    200 - 4.dip
+                    100 - (10 - 4),
+                    200 - (20 - 4),
+                    100 - 4,
+                    200 - 4
                 ),
                 Shape::drawRect
             )
@@ -848,7 +848,7 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(25)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(0, 0, 25, 200),
                 Shape::drawRect
@@ -859,7 +859,7 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(height = 15)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(0, 0, 100, 15),
                 Shape::drawRect
@@ -873,12 +873,12 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(25, gravity = Gravity.center)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(
-                    (100 - 25.dip) / 2,
+                    (100 - 25) / 2,
                     0, // should take full height
-                    (100 + 25.dip) / 2,
+                    (100 + 25) / 2,
                     200 // should take full height
                 ),
                 Shape::drawRect
@@ -889,11 +889,11 @@ class Shape_Test {
         for (shape in shapes()) {
             val rect = Rect(0, 0, 100, 200)
             shape.size(height = 15, gravity = Gravity.bottom)
-            shape.fillRect(rect, shape.drawRect)
+            shape.fillRect(rect, shape.drawRect, 1F)
             shape.assertEquals(
                 Rect(
                     0, // should take full width
-                    200 - 15.dip,
+                    200 - 15,
                     100, // should take full width
                     200
                 ),
@@ -913,7 +913,7 @@ class Shape_Test {
             val translation = Shape.Translation(Exact(3), Relative(0.25F))
             shape.padding(2)
                 .also { it.translation = translation }
-                .draw(canvas, rect)
+                .draw(canvas, rect, 1F)
             Assert.assertEquals(
                 "fillRect:$fillRect shape.drawRect:${shape.drawRect}",
                 fillRect,
@@ -943,7 +943,7 @@ class Shape_Test {
             val rotation = Shape.Rotation(1F, Exact(0), Relative(1F))
             shape.padding(2)
                 .also { it.rotation = rotation }
-                .draw(canvas, rect)
+                .draw(canvas, rect, 1F)
             Assert.assertEquals(
                 "fillRect$fillRect shape.drawRect:${shape.drawRect}",
                 fillRect,
@@ -1013,7 +1013,7 @@ class Shape_Test {
         val shape = RectangleShape().fill(6) // set fill color, so shape is drawn
 
         shape.hidden(true)
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, 1F)
 
         Mockito.verifyNoInteractions(canvas)
     }
@@ -1026,7 +1026,7 @@ class Shape_Test {
 
         Assert.assertTrue(bounds.toShortString(), bounds.isEmpty)
 
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, 1F)
 
         verifyNoInteractions(canvas)
     }
@@ -1042,7 +1042,7 @@ class Shape_Test {
             .fill(98712)
             .padding(11)
 
-        shape.draw(canvas, rect)
+        shape.draw(canvas, rect, 1F)
 
         verifyNoInteractions(canvas)
     }
@@ -1058,7 +1058,7 @@ class Shape_Test {
             .fill(765)
             .size(0, 0)
 
-        shape.draw(canvas, rect)
+        shape.draw(canvas, rect, 1F)
 
         verifyNoInteractions(canvas)
     }
@@ -1070,26 +1070,27 @@ class Shape_Test {
         val shape = OvalShape().fill(3)
 
         shape.translate(10, 20)
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, 1F)
 
         verify(canvas, times(1)).translate(
-            eq(10.dip.toFloat()),
-            eq(20.dip.toFloat())
+            eq(10F),
+            eq(20F)
         )
     }
 
     @Test
     fun `draw - translateRelative`() {
+        val density = 1F
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
         val bounds = Rect(0, 0, 100, 200)
         val shape = CapsuleShape().fill(-19)
 
         shape.translateRelative(0.5F, 0.25F)
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, density)
 
         verify(canvas, times(1)).translate(
-            eq(shape.translation?.x?.resolve(bounds.width())!!.toFloat()),
-            eq(shape.translation?.y?.resolve(bounds.height())!!.toFloat())
+            eq(shape.translation?.x?.resolve(bounds.width(), density)!!.toFloat()),
+            eq(shape.translation?.y?.resolve(bounds.height(), density)!!.toFloat())
         )
     }
 
@@ -1100,7 +1101,7 @@ class Shape_Test {
         val shape = RoundedRectangleShape(12).fill(-1908)
 
         shape.rotate(45F)
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, 1F)
 
         verify(canvas).rotate(
             eq(45F),
@@ -1115,14 +1116,16 @@ class Shape_Test {
         val children = (0 until 5)
             .map { io.noties.adapt.ui.testutil.mockt<Shape> { on { this.alpha } doReturn null } }
 
+        val density = 1F
+
         val shape = OvalShape {
             children.forEach(this::add)
         }
 
-        shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(0, 0, 100, 100))
+        shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(0, 0, 100, 100), 1F)
 
         children.forEach {
-            verify(it).draw(any(), any())
+            verify(it).draw(any(), any(), eq(density))
         }
     }
 
@@ -1138,6 +1141,8 @@ class Shape_Test {
             0.25F,
             0F
         )
+
+        val density = 1F
 
         for (input in inputs) {
             val children = listOf(
@@ -1157,14 +1162,14 @@ class Shape_Test {
                 alpha(input)
             }
 
-            shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(1, 2, 5, 8))
+            shape.draw(io.noties.adapt.ui.testutil.mockt(), Rect(1, 2, 5, 8), density)
 
             for (child in children) {
                 val expectedAlpha = (child.alpha ?: 1F) * (shape.alpha ?: 1F)
                 if (0F == expectedAlpha) {
-                    verify(child, never()).draw(any(), any())
+                    verify(child, never()).draw(any(), any(), any())
                 } else {
-                    verify(child).draw(any(), any())
+                    verify(child).draw(any(), any(), eq(density))
 
                     val captor = argumentCaptor<Float>()
                     verify(child, times(2)).alpha = captor.capture()
@@ -1194,7 +1199,7 @@ class Shape_Test {
 
         val canvas = io.noties.adapt.ui.testutil.mockt<Canvas>()
 
-        shape.draw(canvas, io.noties.adapt.ui.testutil.mockt())
+        shape.draw(canvas, io.noties.adapt.ui.testutil.mockt(), 1F)
 
         // verify no calls to canvas draw methods were issued
         verifyNoInteractions(canvas)

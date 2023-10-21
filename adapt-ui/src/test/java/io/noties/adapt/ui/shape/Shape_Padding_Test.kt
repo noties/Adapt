@@ -22,12 +22,13 @@ class Shape_Padding_Test {
             Rect(0, 0, 0, 0),
             Rect(-1, -1, -1, -1)
         )
+        val density = 1F
         val padding = Shape.Padding()
         for (input in inputs) {
             // create copy
             val out = padding.let {
                 val rect = input.copy()
-                it.copy { it.set(rect) }
+                it.copy { it.set(rect, density) }
                 rect
             }
             Assert.assertEquals(
@@ -98,7 +99,7 @@ class Shape_Padding_Test {
         for ((padding, bounds) in inputs) {
             val out = padding.copy().let {
                 val r = rect.copy()
-                it.set(r)
+                it.set(r, density)
                 r
             }
             Assert.assertEquals(

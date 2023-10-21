@@ -123,7 +123,7 @@ class ViewElement_Test {
 
     @Test
     fun `layoutBlock - add during rendering`() {
-        val callback: LayoutParams.() -> Unit = io.noties.adapt.ui.testutil.mockt()
+        val callback: View.(LayoutParams) -> Unit = io.noties.adapt.ui.testutil.mockt()
 
         val element = newElement()
             .useLayoutParams()
@@ -134,11 +134,11 @@ class ViewElement_Test {
             }
 
         assertEquals(1, element.layoutParamsBlocks.size)
-        verify(callback, never()).invoke(any())
+        verify(callback, never()).invoke(any(), any())
 
         element.render()
 
-        verify(callback, times(1)).invoke(any())
+        verify(callback, times(1)).invoke(any(), any())
     }
 
     @Test
@@ -146,7 +146,7 @@ class ViewElement_Test {
         val element = newElement()
             .useLayoutParams()
 
-        lateinit var block: LayoutParams.() -> Unit
+        lateinit var block: View.(LayoutParams) -> Unit
         block = {
             element.onLayoutParams(block)
         }
@@ -237,7 +237,7 @@ class ViewElement_Test {
             .useLayoutParams()
 
         lateinit var viewBlock: View.() -> Unit
-        val layoutBlock: LayoutParams.() -> Unit = {
+        val layoutBlock: View.(LayoutParams) -> Unit = {
             element.onView(viewBlock)
         }
 

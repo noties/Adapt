@@ -74,7 +74,7 @@ class Arc_Test {
         val arc = ArcShape(-1F, -2F, false)
         val canvas = mockt<Canvas>()
         val bounds = Rect(0, 0, 55, 33)
-        arc.drawShape(canvas, bounds, mockt())
+        arc.drawShape(canvas, bounds, mockt(), 1F)
         verify(canvas).drawArc(
             eq(RectF(bounds)),
             eq(-1F),

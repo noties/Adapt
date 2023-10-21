@@ -14,11 +14,11 @@ open class RectangleShape(block: RectangleShape.() -> Unit = {}) : Shape() {
     override fun clone(): RectangleShape = RectangleShape()
     override fun toStringDedicatedProperties(): String = ""
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         canvas.drawRect(bounds, paint)
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         outline.setRect(bounds)
     }
 }

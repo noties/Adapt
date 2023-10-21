@@ -183,23 +183,23 @@ class TextShape(
         return data.toString()
     }
 
-    override fun drawSelf(canvas: Canvas, bounds: Rect) {
+    override fun drawSelf(canvas: Canvas, bounds: Rect, density: Float) {
         // cannot draw for less than 1 lines (0, -1, -2, etc)
         data.textMaxLines?.also {
             if (it < 1) return
         }
 
-        val layout = cache.layout(data, bounds, contentBounds) ?: return
+        val layout = cache.layout(data, bounds, contentBounds, density) ?: return
 
         val textTranslationX = bounds.left
 
         val drawRect = drawRect().also { it.set(contentBounds) }
 
         // apply text rotation to content (and children)
-        textRotation?.draw(canvas, drawRect)
+        textRotation?.draw(canvas, drawRect, density)
 
         // NB! children are drawn before actual text (so would be displayed under text)
-        super.drawChildren(canvas, drawRect)
+        super.drawChildren(canvas, drawRect, density)
 
         val save = canvas.save()
         try {
@@ -216,7 +216,7 @@ class TextShape(
     }
 
     // NB! overridden, so we can draw children before text (otherwise it would overlay it)
-    override fun drawChildren(canvas: Canvas, bounds: Rect) = Unit
+    override fun drawChildren(canvas: Canvas, bounds: Rect, density: Float) = Unit
 
     internal class LayoutCache {
         private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
@@ -225,20 +225,24 @@ class TextShape(
 
         private var previousTextData: TextShapeData? = null
         private var previousWidth: Int = 0
+        private var previousDensity: Float = 0F
 
         // NB! contentBounds would be modified to indicate real text content size
         fun layout(
             textData: TextShapeData?,
             bounds: Rect,
-            contentBounds: Rect
+            contentBounds: Rect,
+            density: Float
         ): Layout? {
             val width = bounds.width()
 
             if (previousTextData == null ||
                 textData != previousTextData ||
                 layout == null ||
-                width != previousWidth
+                width != previousWidth ||
+                density != previousDensity
             ) {
+                previousDensity = density
                 previousTextData = textData?.copy()
                 previousWidth = width
 
@@ -250,7 +254,7 @@ class TextShape(
                     return null
                 }
 
-                textData.applyTo(textPaint)
+                textData.applyTo(textPaint, density)
 
                 layout = StaticLayout.Builder
                     .obtain(
@@ -281,7 +285,7 @@ class TextShape(
                             val mult = textLineSpacingMultiplier
                             if (add != null || mult != null) {
                                 builder.setLineSpacing(
-                                    add?.dip?.toFloat() ?: 0F,
+                                    add?.dip(density)?.toFloat() ?: 0F,
                                     mult ?: 1F
                                 )
                             }
@@ -318,7 +322,7 @@ class TextShape(
 
                 // NB! this called at the end (after already sending textPaint to layout,
                 //  because we need text bounds to create gradient)
-                shaderCache.shader(textData.textGradient, contentBounds, textPaint)
+                shaderCache.shader(textData.textGradient, contentBounds, textPaint, density)
             }
 
             return layout

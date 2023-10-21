@@ -51,7 +51,7 @@ class Capsule_Test {
             val paint = mockt<Paint>()
             val capsule = CapsuleShape()
             val radius = capsule.radius(input)
-            capsule.drawShape(canvas, input, paint)
+            capsule.drawShape(canvas, input, paint, 1F)
             val captor = argumentCaptor<RectF>()
             verify(canvas).drawRoundRect(
                 captor.capture(),

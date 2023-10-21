@@ -1,9 +1,12 @@
 package io.noties.adapt.ui
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import org.mockito.Mockito
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.robolectric.RuntimeEnvironment
 
 fun newElement(): ViewElement<View, ViewGroup.LayoutParams> = newElementOfType()
@@ -13,10 +16,13 @@ inline fun <reified V : View> newElementOfType(): ViewElement<V, ViewGroup.Layou
 }
 
 inline fun <reified V : View, reified LP : LayoutParams> newElementOfTypeLayout(): ViewElement<V, LP> {
-    return ViewElement<V, LP> { Mockito.mock(V::class.java) }.also {
-        val context = Mockito.mock(Context::class.java)
+    val context = Mockito.mock(Context::class.java).also {
+        whenever(it.resources).thenReturn(Resources.getSystem())
+    }
+    return ViewElement<V, LP> {
+        Mockito.mock(V::class.java).also { Mockito.`when`(it.context).thenReturn(context) }
+    }.also {
         it.init(context)
-        Mockito.`when`(it.view.context).thenReturn(context)
     }
 }
 

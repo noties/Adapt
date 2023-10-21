@@ -63,13 +63,13 @@ class AssetShape(
 
     override fun toStringDedicatedProperties(): String = "drawable=$drawable"
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         drawable.bounds = bounds
         drawable.alpha = paint.alpha
         drawable.draw(canvas)
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         drawable.bounds = bounds
         drawable.getOutline(outline)
     }

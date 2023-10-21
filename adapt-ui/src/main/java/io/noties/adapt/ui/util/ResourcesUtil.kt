@@ -17,15 +17,19 @@ import org.xmlpull.v1.XmlPullParser
  * - `12 pixels at 3F density` (4 * 3)
  * - etc
  */
-val Int.dip: Int
-    get() = (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+val Int.dip: Int get() = dip()
+
+fun Int.dip(density: Float = Resources.getSystem().displayMetrics.density): Int {
+    return (this * density + 0.5F).toInt()
+}
 
 /**
  * Converts back from raw pixels to dip, for example:
  * - `12.pxToDip` == `4` at 3F density (12 / 3)
  */
-val Int.pxToDip: Int get() = (this / Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+val Int.pxToDip: Int get() = pxToDip()
 
+fun Int.pxToDip(density: Float = Resources.getSystem().displayMetrics.density): Int = (this / density + 0.5F).toInt()
 
 fun Resources.createAttributeSet(
     @XmlRes xmlResId: Int

@@ -57,4 +57,10 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
+afterEvaluate {
+    tasks.named('check').configure {
+        dependsOn(tasks.named('lintRelease'))
+    }
+}
+
 apply from: '../publish.gradle'

@@ -45,12 +45,12 @@ class CornersShape(
         return "leadingTop=$leadingTop, topTrailing=$topTrailing, trailingBottom=$trailingBottom, bottomLeading=$bottomLeading"
     }
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
-        canvas.drawPath(buildPath(bounds), paint)
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
+        canvas.drawPath(buildPath(bounds, density), paint)
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
-        val path = buildPath(bounds)
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
+        val path = buildPath(bounds, density)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             outline.setPath(path)
@@ -60,13 +60,14 @@ class CornersShape(
         }
     }
 
-    private fun buildPath(bounds: Rect): Path {
-        return cache.path(this, bounds)
+    private fun buildPath(bounds: Rect, density: Float): Path {
+        return cache.path(this, bounds, density)
     }
 
     private class Cache {
         private val path = Path()
 
+        private var density: Float = 0F
         private var leadingTop: Int = 0
         private var topTrailing: Int = 0
         private var trailingBottom: Int = 0
@@ -75,13 +76,14 @@ class CornersShape(
         private val rect = Rect()
         private val rectF = RectF()
 
-        fun path(corners: CornersShape, bounds: Rect): Path {
+        fun path(corners: CornersShape, bounds: Rect, density: Float): Path {
             if (!path.isEmpty
                 && rect == bounds
                 && leadingTop == corners.leadingTop
                 && topTrailing == corners.topTrailing
                 && trailingBottom == corners.trailingBottom
                 && bottomLeading == corners.bottomLeading
+                && density == density
             ) {
                 return path
             }
@@ -89,6 +91,7 @@ class CornersShape(
             rect.set(bounds)
             rectF.set(bounds)
 
+            this.density = density
             leadingTop = corners.leadingTop
             topTrailing = corners.topTrailing
             trailingBottom = corners.trailingBottom
@@ -96,10 +99,10 @@ class CornersShape(
 
             path.rewind()
 
-            val lp = leadingTop.dip.toFloat()
-            val tt = topTrailing.dip.toFloat()
-            val tb = trailingBottom.dip.toFloat()
-            val bl = bottomLeading.dip.toFloat()
+            val lp = leadingTop.dip(density).toFloat()
+            val tt = topTrailing.dip(density).toFloat()
+            val tb = trailingBottom.dip(density).toFloat()
+            val bl = bottomLeading.dip(density).toFloat()
 
             path.addRoundRect(
                 rectF,

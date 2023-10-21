@@ -17,6 +17,7 @@ import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import io.noties.adapt.ui.util.addOnScrollChangedListener
+import io.noties.adapt.ui.util.density
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.onAttachedOnce
 import io.noties.adapt.ui.util.onDetachedOnce
@@ -202,11 +203,12 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.padding(
     trailing: Int? = null,
     bottom: Int? = null
 ): ViewElement<V, LP> = onView {
+    val density = it.density
     it.setPaddingRelative(
-        leading?.dip ?: it.paddingStart,
-        top?.dip ?: it.paddingTop,
-        trailing?.dip ?: it.paddingEnd,
-        bottom?.dip ?: it.paddingBottom
+        leading?.dip(density) ?: it.paddingStart,
+        top?.dip(density) ?: it.paddingTop,
+        trailing?.dip(density) ?: it.paddingEnd,
+        bottom?.dip(density) ?: it.paddingBottom
     )
 }
 
@@ -300,7 +302,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.rotate(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
     elevation: Int
 ): ViewElement<V, LP> = onView {
-    it.elevation = elevation.dip.toFloat()
+    it.elevation = elevation.dip(it.density).toFloat()
 }
 
 /**
@@ -314,9 +316,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.translation(
     y: Int? = null,
     z: Int? = null
 ): ViewElement<V, LP> = onView { view ->
-    x?.dip?.also { view.translationX = it.toFloat() }
-    y?.dip?.also { view.translationY = it.toFloat() }
-    z?.dip?.also { view.translationZ = it.toFloat() }
+    val density = view.density
+    x?.dip(density)?.also { view.translationX = it.toFloat() }
+    y?.dip(density)?.also { view.translationY = it.toFloat() }
+    z?.dip(density)?.also { view.translationZ = it.toFloat() }
 }
 
 /**
@@ -429,8 +432,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.minimumSize(
 ): ViewElement<V, LP> = onView { view ->
     // there is no point of using `unused` here, as null would suffice
     //  (cannot set null)
-    width?.dip?.also { view.minimumWidth = it }
-    height?.dip?.also { view.minimumHeight = it }
+    val density = view.density
+    width?.dip(density)?.also { view.minimumWidth = it }
+    height?.dip(density)?.also { view.minimumHeight = it }
 }
 
 /**
@@ -518,8 +522,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
     block(it)
     unregisterOnPreDraw()
 }
-
-// TODO: use normal and unregister on first event
 
 /**
  * NB! This is a callback when view is attached to [android.view.Window], not its parent
@@ -663,8 +665,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivot(
     x: Int? = null,
     y: Int? = null
 ) = onView { view ->
-    x?.dip?.toFloat()?.also { view.pivotX = it }
-    y?.dip?.toFloat()?.also { view.pivotY = it }
+    val density = view.density
+    x?.dip(density)?.toFloat()?.also { view.pivotX = it }
+    y?.dip(density)?.toFloat()?.also { view.pivotY = it }
 }
 
 /**

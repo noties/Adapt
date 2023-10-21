@@ -36,7 +36,7 @@ class LinearGradient internal constructor(
         it.tileMode = tileMode
     }
 
-    override fun createShader(bounds: Rect): Shader {
+    override fun createShader(bounds: Rect, density: Float): Shader {
 
         val colors = this.colors
         val positions = this.positions

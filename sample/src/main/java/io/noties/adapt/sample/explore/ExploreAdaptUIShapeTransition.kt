@@ -300,14 +300,15 @@ object ExploreAdaptUIShapeTransition {
             ) : DimensionHandler(property) {
 
                 private var startValue: Int = 0
+                private val density = Resources.getSystem().displayMetrics.density
 
                 override fun applyStartValue() {
-                    startValue = start?.resolve(resolver()) ?: 0
+                    startValue = start?.resolve(resolver(), density) ?: 0
                     property.set(Dimension.Exact(startValue.toDp()))
                 }
 
                 override fun applyUpdatedValue(fraction: Float) {
-                    val delta = (target?.resolve(resolver()) ?: 0) - startValue
+                    val delta = (target?.resolve(resolver(), density) ?: 0) - startValue
                     val value = (startValue + (fraction * delta)).toDp()
                     property.set(Dimension.Exact(value))
                 }

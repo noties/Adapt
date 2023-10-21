@@ -33,7 +33,7 @@ class Shape_Translation_Test {
 
         for (input in inputs) {
             val canvas = mockt<Canvas>()
-            input.draw(canvas, mockt())
+            input.draw(canvas, mockt(), 888F)
             verifyNoInteractions(canvas)
         }
     }
@@ -54,7 +54,7 @@ class Shape_Translation_Test {
                 exact.second?.let(::Exact)
             )
             val canvas = mockt<Canvas>()
-            translation.draw(canvas, mockt())
+            translation.draw(canvas, mockt(), 1F)
             verify(canvas).translate(
                 eq(expected.first),
                 eq(expected.second)
@@ -80,7 +80,7 @@ class Shape_Translation_Test {
                 exact.second?.let(::Relative)
             )
             val canvas = mockt<Canvas>()
-            translation.draw(canvas, rect)
+            translation.draw(canvas, rect, 1F)
             verify(canvas).translate(
                 eq(expected.first),
                 eq(expected.second)

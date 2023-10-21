@@ -49,15 +49,19 @@ class ShapeDrawable_Test {
 
     @Test
     fun draw() {
+        val density = 1F
         val bounds = Rect(0, 0, 10, 22)
         val shape = mockt<Shape>()
-        val drawable = ShapeDrawable.createActual(shape, Unit).also { it.bounds = bounds }
+        val drawable = ShapeDrawable.createActual(shape, Unit).also {
+            it.bounds = bounds
+            it.density = density
+        }
         val canvas = mockt<Canvas>()
 
         assertEquals(shape, drawable.shape)
         drawable.draw(canvas)
 
-        verify(shape).draw(eq(canvas), eq(bounds))
+        verify(shape).draw(eq(canvas), eq(bounds), eq(density))
     }
 
     @Test
@@ -108,14 +112,18 @@ class ShapeDrawable_Test {
 
     @Test
     fun getOutline() {
+        val density = 765F
         val bounds = Rect(0, 0, 11, 22)
         val shape = mockt<Shape>()
         val outline = mockt<Outline>()
 
-        val drawable = ShapeDrawable.createActual(shape, Unit).also { it.bounds = bounds }
+        val drawable = ShapeDrawable.createActual(shape, Unit).also {
+            it.bounds = bounds
+            it.density = density
+        }
         drawable.getOutline(outline)
 
-        verify(shape).outline(eq(outline), eq(bounds))
+        verify(shape).outline(eq(outline), eq(bounds), eq(density))
     }
 
     @Test

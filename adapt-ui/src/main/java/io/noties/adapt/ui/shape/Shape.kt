@@ -283,6 +283,14 @@ abstract class Shape : ShapeFactory {
 
     //NB! all properties are `open` in order to be mocked in tests
 
+    // TODO: we could just add here density property and send to required
+    //  parts..
+    //  1. what sets it? when shape is added to the view? can it be used outside view-context?
+    //  2. should shapeDrawable be responsible?
+    //  3. should we allow changing it arbitrary? like, allow customization of it
+    //  4. should we, when set, send it to children?
+    //  5. should we, when shape is added, set it to it too?
+
     open var hidden: Boolean? = null
 
     open var width: Dimension? = null
@@ -313,7 +321,7 @@ abstract class Shape : ShapeFactory {
 
     fun drawRect(): Rect = drawRect
 
-    open fun draw(canvas: Canvas, bounds: Rect) {
+    open fun draw(canvas: Canvas, bounds: Rect, density: Float) {
 
         // shape is hidden, no draw
         if (true == hidden) {
@@ -325,8 +333,10 @@ abstract class Shape : ShapeFactory {
             return
         }
 
+//        val density = resolveDensity()
+
         // prepare bounds
-        fillRect(bounds, drawRect)
+        fillRect(bounds, drawRect, density)
 
         // if bounds are empty after padding w/h modification - do not draw
         if (drawRect.isEmpty) {
@@ -336,30 +346,30 @@ abstract class Shape : ShapeFactory {
         val save = canvas.save()
         try {
 
-            translation?.draw(canvas, drawRect)
+            translation?.draw(canvas, drawRect, density)
 
-            rotation?.draw(canvas, drawRect)
+            rotation?.draw(canvas, drawRect, density)
 
-            shadow?.draw(canvas, this, drawRect)
+            shadow?.draw(canvas, this, drawRect, density)
 
-            fill?.draw(canvas, this, drawRect)
+            fill?.draw(canvas, this, drawRect, density)
 
-            stroke?.draw(canvas, this, drawRect)
+            stroke?.draw(canvas, this, drawRect, density)
 
-            drawSelf(canvas, drawRect)
+            drawSelf(canvas, drawRect, density)
 
-            drawChildren(canvas, drawRect)
+            drawChildren(canvas, drawRect, density)
 
         } finally {
             canvas.restoreToCount(save)
         }
     }
 
-    abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint)
+    abstract fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float)
 
-    protected open fun drawSelf(canvas: Canvas, bounds: Rect) = Unit
+    protected open fun drawSelf(canvas: Canvas, bounds: Rect, density: Float) = Unit
 
-    protected open fun drawChildren(canvas: Canvas, bounds: Rect) {
+    protected open fun drawChildren(canvas: Canvas, bounds: Rect, density: Float) {
         val alpha = this.alpha
 
         //noinspection NewApi
@@ -374,7 +384,7 @@ abstract class Shape : ShapeFactory {
                 it.alpha = childDrawAlpha
 
                 // draw the shape
-                it.draw(canvas, bounds)
+                it.draw(canvas, bounds, density)
 
                 // restore initial value
                 it.alpha = childAlpha
@@ -382,30 +392,30 @@ abstract class Shape : ShapeFactory {
         }
     }
 
-    open fun outline(outline: Outline, bounds: Rect) {
+    open fun outline(outline: Outline, bounds: Rect, density: Float) {
 
         if (true == hidden) {
             outline.setEmpty()
             return
         }
 
-        fillRect(bounds, outlineRect)
+        fillRect(bounds, outlineRect, density)
 
         translation?.x
-            ?.resolve(bounds.width())
+            ?.resolve(bounds.width(), density)
             ?.also {
                 outlineRect.left += it
                 outlineRect.right += it
             }
 
         translation?.y
-            ?.resolve(bounds.height())
+            ?.resolve(bounds.height(), density)
             ?.also {
                 outlineRect.top += it
                 outlineRect.bottom += it
             }
 
-        outlineShape(outline, outlineRect)
+        outlineShape(outline, outlineRect, density)
 
         // if we have generic alpha -> use it
         //  if we have fill colors and it has alpha -> use it, else just 1F
@@ -418,14 +428,14 @@ abstract class Shape : ShapeFactory {
             ?: 1F)
     }
 
-    open fun outlineShape(outline: Outline, bounds: Rect) {
+    open fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         outline.setRect(bounds)
     }
 
-    internal fun fillRect(bounds: Rect, rect: Rect) {
+    internal fun fillRect(bounds: Rect, rect: Rect, density: Float) {
 
-        val width = this.width?.resolve(bounds.width())
-        val height = this.height?.resolve(bounds.height())
+        val width = this.width?.resolve(bounds.width(), density)
+        val height = this.height?.resolve(bounds.height(), density)
 
         // we need to apply gravity only if we have both sizes... (no reason to add gravity
         //  if we match bounds)
@@ -460,7 +470,7 @@ abstract class Shape : ShapeFactory {
 
         // padding is applied to internal, so, we have width and height,
         //  and padding is applied in inner space
-        padding?.set(rect)
+        padding?.set(rect, density)
     }
 
     final override fun toString(): String {
@@ -472,8 +482,9 @@ abstract class Shape : ShapeFactory {
 
         private var shader: Shader? = null
         private var gradient: Gradient? = null
+        private var density: Float? = null
 
-        fun shader(gradient: Gradient?, bounds: Rect, paint: Paint) {
+        fun shader(gradient: Gradient?, bounds: Rect, paint: Paint, density: Float) {
             // if received gradient is null
             if (gradient == null) {
                 this.shader = null
@@ -485,14 +496,16 @@ abstract class Shape : ShapeFactory {
             if (gradient == this.gradient
                 && bounds == this.bounds
                 && paint.shader == shader
+                && density == this.density
             ) {
                 return
             }
 
             this.gradient = gradient
             this.bounds.set(bounds)
+            this.density = density
 
-            gradient.createShader(bounds).also {
+            gradient.createShader(bounds, density).also {
                 this.shader = it
                 paint.shader = it
             }
@@ -505,7 +518,7 @@ abstract class Shape : ShapeFactory {
         var trailing: Dimension? = null,
         var bottom: Dimension? = null,
     ) {
-        fun set(bounds: Rect) {
+        fun set(bounds: Rect, density: Float) {
             // in case we have size specified... we apply padding to specified size?
             //  not the whole bounds? So, we have 24x24, and padding 2, this makes available
             //  width 20 (24 - 2 -2) and height 20 (24 - 2 - 2), instead of checking initial
@@ -516,10 +529,10 @@ abstract class Shape : ShapeFactory {
             // padding is applied to internal, so, we have width and height,
             //  and padding is applied in inner space
             // MARK! Layout direction
-            leading?.resolve(w)?.also { bounds.left += it }
-            top?.resolve(h)?.also { bounds.top += it }
-            trailing?.resolve(w)?.also { bounds.right -= it }
-            bottom?.resolve(h)?.also { bounds.bottom -= it }
+            leading?.resolve(w, density)?.also { bounds.left += it }
+            top?.resolve(h, density)?.also { bounds.top += it }
+            trailing?.resolve(w, density)?.also { bounds.right -= it }
+            bottom?.resolve(h, density)?.also { bounds.bottom -= it }
         }
 
         fun copy(block: Padding.() -> Unit = {}): Padding =
@@ -558,7 +571,7 @@ abstract class Shape : ShapeFactory {
         var y: Dimension? = null
     ) {
 
-        fun draw(canvas: Canvas, bounds: Rect) {
+        fun draw(canvas: Canvas, bounds: Rect, density: Float) {
             // NB! we resolve x and y based on width/height, but we
             //  can receive bounds with left||top != 0, so we
             //  need to adjust for that values also
@@ -566,8 +579,8 @@ abstract class Shape : ShapeFactory {
             //  we must not add bounds.left.. in fact.. we do we add it anyway?
             //  value is resolved based on proper dimensions, so just passing that
             //  values to canvas should be fine
-            val translationX = x?.resolve(bounds.width())?.toFloat() ?: 0F
-            val translationY = y?.resolve(bounds.height())?.toFloat() ?: 0F
+            val translationX = x?.resolve(bounds.width(), density)?.toFloat() ?: 0F
+            val translationY = y?.resolve(bounds.height(), density)?.toFloat() ?: 0F
             if (translationX != 0F || translationY != 0F) {
                 canvas.translate(translationX, translationY)
             }
@@ -604,14 +617,14 @@ abstract class Shape : ShapeFactory {
         var centerY: Dimension? = null
     ) {
 
-        fun draw(canvas: Canvas, bounds: Rect) {
+        fun draw(canvas: Canvas, bounds: Rect, density: Float) {
             val degrees = this.degrees ?: return
             // NB! received bounds can have left||top != 0, we need to adjust
             //  centerX and centerY according to it (only if value is present, otherwise
             //  rect.centerX and centerY should return proper values)
-            val cx = centerX?.resolve(bounds.width())?.plus(bounds.left)?.toFloat()
+            val cx = centerX?.resolve(bounds.width(), density)?.plus(bounds.left)?.toFloat()
                 ?: bounds.centerX().toFloat()
-            val cy = centerY?.resolve(bounds.height())?.plus(bounds.top)?.toFloat()
+            val cy = centerY?.resolve(bounds.height(), density)?.plus(bounds.top)?.toFloat()
                 ?: bounds.centerY().toFloat()
             canvas.rotate(degrees, cx, cy)
         }
@@ -660,23 +673,23 @@ abstract class Shape : ShapeFactory {
         fun copy(block: Shadow.() -> Unit = {}): Shadow =
             Shadow(radius, color, offsetX, offsetY).also(block)
 
-        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect, density: Float) {
             val radius = this.radius?.let {
-                it.resolve(bounds.width())
+                it.resolve(bounds.width(), density)
                     .takeIf { v -> v > 0 }
-                    ?: it.resolve(bounds.height()).takeIf { v -> v > 0 }
+                    ?: it.resolve(bounds.height(), density).takeIf { v -> v > 0 }
             } ?: return
 
             val color = this.color ?: Color.BLACK
 
             rect.set(bounds)
 
-            offsetX?.resolve(bounds.width())?.also { x ->
+            offsetX?.resolve(bounds.width(), density)?.also { x ->
                 rect.left += x
                 rect.right += x
             }
 
-            offsetY?.resolve(bounds.height())?.also { y ->
+            offsetY?.resolve(bounds.height(), density)?.also { y ->
                 rect.top += y
                 rect.bottom += y
             }
@@ -698,7 +711,7 @@ abstract class Shape : ShapeFactory {
 //                .createShader(rect)
             paint.maskFilter = maskFilterCache.maskFilter(radius.toFloat())
 
-            shape.drawShape(canvas, rect, paint)
+            shape.drawShape(canvas, rect, paint, density)
         }
 
         override fun equals(other: Any?): Boolean {
@@ -761,7 +774,7 @@ abstract class Shape : ShapeFactory {
 
         fun copy(block: Fill.() -> Unit = {}): Fill = Fill(color, gradient).also(block)
 
-        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect, density: Float) {
             val fillColor = this.color ?: 0
             val fillGradient = this.gradient
 
@@ -803,10 +816,10 @@ abstract class Shape : ShapeFactory {
             }
 
             // cache would clear shader is gradient is null
-            shaderCache.shader(gradient, bounds, fillPaint)
+            shaderCache.shader(gradient, bounds, fillPaint, density)
 
             // finally draw the shape with paint initialized
-            shape.drawShape(canvas, bounds, fillPaint)
+            shape.drawShape(canvas, bounds, fillPaint, density)
         }
 
         override fun equals(other: Any?): Boolean {
@@ -856,7 +869,7 @@ abstract class Shape : ShapeFactory {
             gradient
         ).also(block)
 
-        fun draw(canvas: Canvas, shape: Shape, bounds: Rect) {
+        fun draw(canvas: Canvas, shape: Shape, bounds: Rect, density: Float) {
             val strokeWidth = this.width ?: 1
 
             // if we have no stroke, do not draw
@@ -875,7 +888,7 @@ abstract class Shape : ShapeFactory {
                 return
             }
 
-            strokePaint.strokeWidth = strokeWidth.dip.toFloat()
+            strokePaint.strokeWidth = strokeWidth.dip(density).toFloat()
             strokePaint.color = if (hasColor) strokeColor else defaultFillColor
 
             val alpha = shape.alpha
@@ -888,11 +901,11 @@ abstract class Shape : ShapeFactory {
                 return
             }
 
-            effectCache.effect(this, strokePaint)
+            effectCache.effect(this, strokePaint, density)
 
-            shaderCache.shader(gradient, bounds, strokePaint)
+            shaderCache.shader(gradient, bounds, strokePaint, density)
 
-            shape.drawShape(canvas, bounds, strokePaint)
+            shape.drawShape(canvas, bounds, strokePaint, density)
         }
 
         override fun equals(other: Any?): Boolean {
@@ -927,10 +940,10 @@ abstract class Shape : ShapeFactory {
             private var lastDashWidth: Int? = null
             private var lastDashGap: Int? = null
 
-            fun effect(stroke: Stroke, paint: Paint) {
-                val dashWidth = stroke.dashWidth?.dip
+            fun effect(stroke: Stroke, paint: Paint, density: Float) {
+                val dashWidth = stroke.dashWidth?.dip(density)
                 if (dashWidth != null) {
-                    val dashGap = stroke.dashGap?.dip ?: (dashWidth / 4)
+                    val dashGap = stroke.dashGap?.dip(density) ?: (dashWidth / 4)
                     if (lastDashWidth != dashWidth
                         || lastDashGap != dashGap
                         || paint.pathEffect == null

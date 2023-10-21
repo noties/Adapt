@@ -55,7 +55,7 @@ class RadialGradient internal constructor(
         it.tileMode = tileMode
     }
 
-    override fun createShader(bounds: Rect): Shader {
+    override fun createShader(bounds: Rect, density: Float): Shader {
 
         val point = when (type) {
             is Edge -> if (type.edge == null) {
@@ -70,7 +70,8 @@ class RadialGradient internal constructor(
         }
 
         val radius =
-            (this.radius?.resolve(min(bounds.width(), bounds.height())) ?: radius(bounds)).toFloat()
+            (this.radius?.resolve(min(bounds.width(), bounds.height()), density)
+                ?: radius(bounds)).toFloat()
 
         // radial can take _power_ argument to indicate the radius
         //  so, 0.5F is equal, 0.25F initial color takes 1/4th with second one taking the rest 0.75

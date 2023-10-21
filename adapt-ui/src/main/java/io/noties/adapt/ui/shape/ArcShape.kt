@@ -34,7 +34,7 @@ class ArcShape(
         return "startAngle=$startAngle, sweepAngle=$sweepAngle, useCenter=$useCenter"
     }
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         rectF.set(bounds)
         canvas.drawArc(
             rectF,

@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.gradient
 
+import android.content.res.Resources
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.Shader
@@ -8,7 +9,10 @@ import androidx.annotation.ColorInt
 import io.noties.adapt.ui.util.toHexString
 
 abstract class Gradient {
-    abstract fun createShader(bounds: Rect): Shader
+    abstract fun createShader(
+        bounds: Rect,
+        density: Float = Resources.getSystem().displayMetrics.density
+    ): Shader
 
     companion object {
         @CheckResult

@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.shape
 
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.Outline
@@ -13,7 +14,7 @@ import kotlin.math.roundToInt
 open class ShapeDrawable<R : Any> protected constructor(
     val shape: Shape,
     val ref: R
-) : Drawable() {
+) : Drawable(), DensityAwareDrawable {
 
     companion object {
 
@@ -42,6 +43,8 @@ open class ShapeDrawable<R : Any> protected constructor(
         fun <R : Any> createActual(shape: Shape, ref: R) = ShapeDrawable(shape, ref)
     }
 
+    override var density: Float = Resources.getSystem().displayMetrics.density
+
     private var stateful: Stateful<R>? = null
     private var hotspot: Hotspot<R>? = null
 
@@ -51,13 +54,13 @@ open class ShapeDrawable<R : Any> protected constructor(
     }
 
     override fun draw(canvas: Canvas) {
-        shape.draw(canvas, bounds)
+        shape.draw(canvas, bounds, density)
     }
 
     override fun getIntrinsicWidth(): Int {
         // NB! relative dimension would not report intrinsic value (we have no reference)
         return shape.width
-            ?.resolve(0)
+            ?.resolve(0, density)
             ?.takeIf { it != 0 }
             ?: super.getIntrinsicWidth()
     }
@@ -65,7 +68,7 @@ open class ShapeDrawable<R : Any> protected constructor(
     override fun getIntrinsicHeight(): Int {
         // NB! relative dimension would not report intrinsic value (we have no reference)
         return shape.height
-            ?.resolve(0)
+            ?.resolve(0, density)
             ?.takeIf { it != 0 }
             ?: super.getIntrinsicHeight()
     }
@@ -85,7 +88,7 @@ open class ShapeDrawable<R : Any> protected constructor(
     override fun getOpacity(): Int = PixelFormat.OPAQUE
 
     override fun getOutline(outline: Outline) {
-        shape.outline(outline, bounds)
+        shape.outline(outline, bounds, density)
     }
 
     fun invalidate(block: ShapeDrawable<R>.(R) -> Unit) {

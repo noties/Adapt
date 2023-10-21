@@ -32,7 +32,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             null,
             Rect(),
-            paint
+            paint,
+            1F
         )
 
         verify(paint).shader = eq(null)
@@ -49,7 +50,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient,
             rect,
-            paint1
+            paint1,
+            2F
         )
 
         val captor1 = ArgumentCaptor.forClass(Shader::class.java)
@@ -63,7 +65,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient,
             rect,
-            paint2
+            paint2,
+            2F
         )
         verify(paint2, never()).shader = any(Shader::class.java)
     }
@@ -84,7 +87,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient,
             rect1,
-            paint1
+            paint1,
+            3F
         )
 
         val captor1 = ArgumentCaptor.forClass(Shader::class.java)
@@ -98,7 +102,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient,
             rect2,
-            paint2
+            paint2,
+            7F
         )
         val captor2 = ArgumentCaptor.forClass(Shader::class.java)
         verify(paint2).shader = captor2.capture()
@@ -121,7 +126,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient1,
             rect,
-            paint1
+            paint1,
+            4F
         )
 
         val captor1 = ArgumentCaptor.forClass(Shader::class.java)
@@ -135,7 +141,8 @@ class Shape_ShaderCache_Test {
         cache.shader(
             gradient2,
             rect,
-            paint2
+            paint2,
+            5F
         )
         val captor2 = ArgumentCaptor.forClass(Shader::class.java)
         verify(paint2).shader = captor2.capture()

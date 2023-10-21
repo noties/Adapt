@@ -24,7 +24,7 @@ class CircleShape(block: CircleShape.() -> Unit = {}) : Shape() {
     override fun clone(): CircleShape = CircleShape()
     override fun toStringDedicatedProperties(): String = ""
 
-    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint) {
+    override fun drawShape(canvas: Canvas, bounds: Rect, paint: Paint, density: Float) {
         val radius = radius(bounds)
         val rect = buildRect(bounds, radius)
         canvas.drawCircle(
@@ -35,7 +35,7 @@ class CircleShape(block: CircleShape.() -> Unit = {}) : Shape() {
         )
     }
 
-    override fun outlineShape(outline: Outline, bounds: Rect) {
+    override fun outlineShape(outline: Outline, bounds: Rect, density: Float) {
         val radius = radius(bounds)
         val rect = buildRect(bounds, radius)
         val centerX = rect.centerX()

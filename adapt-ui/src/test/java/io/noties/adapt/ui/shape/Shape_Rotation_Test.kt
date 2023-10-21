@@ -1,6 +1,5 @@
 package io.noties.adapt.ui.shape
 
-import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Rect
 import io.noties.adapt.ui.testutil.mockt
@@ -25,7 +24,7 @@ class Shape_Rotation_Test {
         Assert.assertNull("rotation.degrees", rotation.degrees)
 
         val canvas = mockt<Canvas>()
-        rotation.draw(canvas, mockt())
+        rotation.draw(canvas, mockt(), 999F)
 
         verifyNoInteractions(canvas)
     }
@@ -34,9 +33,7 @@ class Shape_Rotation_Test {
     fun `center - bounds`() {
         // center x and center y must resolve proper bounds from width/height
         //  or fallback to supplied bounds centerX and centerY
-
-        // verify density
-        Assert.assertEquals("density", 1F, Resources.getSystem().displayMetrics.density)
+        val density = 1F
 
         val rect = Rect(0, 0, 100, 200)
 
@@ -59,7 +56,7 @@ class Shape_Rotation_Test {
                 it.centerX = input.first.first
                 it.centerY = input.first.second
             }
-            rotation.draw(canvas, Rect(rect))
+            rotation.draw(canvas, Rect(rect), density)
 
             val cx = input.second.first ?: rect.centerX().toFloat()
             val cy = input.second.second ?: rect.centerY().toFloat()

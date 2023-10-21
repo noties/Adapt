@@ -24,7 +24,7 @@ class SweepGradient internal constructor(
         fun angle(angle: Float) = Builder(Angle(angle))
     }
 
-    override fun createShader(bounds: Rect): Shader {
+    override fun createShader(bounds: Rect, density: Float): Shader {
 
         val point = when (type) {
             is Edge -> if (type.edge == null) {
