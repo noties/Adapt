@@ -350,6 +350,8 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
 }
 
 /**
+ * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
+ * for this to work.
  * Supplied values are in SP (so, 12 == 12.sp)
  * @see TextView.setAutoSizeTextTypeUniformWithPresetSizes
  */
@@ -361,6 +363,8 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
 }
 
 /**
+ * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
+ * for this to work.
  * Supplied values are in SP. Maximum value by default uses current [TextView.getTextSize]
  * @see TextView.setAutoSizeTextTypeUniformWithConfiguration
  */
