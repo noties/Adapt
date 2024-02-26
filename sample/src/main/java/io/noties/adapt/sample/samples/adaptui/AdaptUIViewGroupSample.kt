@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -80,7 +84,7 @@ class AdaptUIViewGroupSample : SampleView() {
 
             Text("CLICK ME")
                 .padding(horizontal = 16, vertical = 8)
-                .textColor(Colors.white)
+                .textColor { white }
                 .background(StatefulShape.drawable {
                     val base = RectangleShape {
                         fill(Colors.orange)

@@ -9,6 +9,8 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.SystemClock
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
 import kotlin.math.roundToInt
 
 // NB! it discards received paint (so, no fill, nor stroke would function)
@@ -51,6 +53,15 @@ class AssetShape(
     fun tint(@ColorInt color: Int) = this.apply {
         drawable = drawable.mutate().also { it.setTint(color) }
     }
+
+    /**
+     * ```kotlin
+     * Asset {
+     *   tint { main }
+     * }
+     * ```
+     */
+    inline fun tint(builder: ColorsBuilder) = tint(builder(Colors))
 
     fun tint(colorStateList: ColorStateList) = this.apply {
         drawable = drawable.mutate().also { it.setTintList(colorStateList) }

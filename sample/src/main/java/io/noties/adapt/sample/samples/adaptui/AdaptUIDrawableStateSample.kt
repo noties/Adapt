@@ -8,10 +8,16 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
@@ -20,10 +26,10 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textAllCaps
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.focusable
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -165,7 +171,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
         label: String
     ) = Text(label)
         .textSize(21)
-        .textFont(Typeface.MONOSPACE)
+        .textTypeface(Typeface.MONOSPACE)
         .textAllCaps()
         .textColor(Colors.white)
         .textSingleLine()
@@ -235,7 +241,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                     textSize(18)
                     textStrikethrough()
                     textGravity(Gravity.leading.bottom)
-                    textColor(Colors.accent)
+                    textColor { accent }
                     padding(8)
                 }
             }

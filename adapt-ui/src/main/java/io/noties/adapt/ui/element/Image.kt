@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import androidx.annotation.ColorInt
@@ -11,6 +12,8 @@ import androidx.annotation.DrawableRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
 
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> =
@@ -87,6 +90,10 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     @ColorInt color: Int,
     mode: PorterDuff.Mode? = null
 ): ViewElement<V, LP> = imageTint(ColorStateList.valueOf(color), mode)
+
+inline fun <V: ImageView, LP: LayoutParams> ViewElement<V, LP>.imageTint(
+    block: ColorsBuilder
+) = imageTint(block(Colors))
 
 /**
  * Null value for the `mode` argument would not set it, otherwise tint value becomes

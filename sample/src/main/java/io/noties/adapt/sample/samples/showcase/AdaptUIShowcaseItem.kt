@@ -10,7 +10,7 @@ import io.noties.adapt.listview.AdaptListView
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
@@ -120,7 +120,7 @@ class AdaptUIShowcaseItem : AdaptUISampleView() {
             Text()
                 .reference(ref::textView2)
                 .textSize(17)
-                .textColor(Colors.black)
+                .textColor { black }
                 .padding(16, 12)
                 .onView {
                     Debug.e(it)

@@ -3,6 +3,10 @@ package io.noties.adapt.ui.shape
 import android.graphics.Typeface
 import android.text.TextPaint
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.text.TextSizes
+import io.noties.adapt.ui.app.text.TextSizesBuilder
 import io.noties.adapt.ui.util.dip
 
 interface CommonTextPaintData {
@@ -85,6 +89,12 @@ interface CommonTextPaintDataSetter<THIS : CommonTextPaintData> : CommonTextPain
         textSize: Int?
     ) = (this as THIS).also { it.textSize = textSize }
 
+    fun textSize(
+        builder: TextSizesBuilder
+    ) = (this as THIS).also {
+        it.textSize = builder(TextSizes)
+    }
+
     /**
      * Set text color
      * @see TextPaint.setColor
@@ -92,6 +102,12 @@ interface CommonTextPaintDataSetter<THIS : CommonTextPaintData> : CommonTextPain
     fun textColor(
         @ColorInt textColor: Int?
     ) = (this as THIS).also { it.textColor = textColor }
+
+    fun textColor(
+        builder: ColorsBuilder
+    ) = (this as THIS).also {
+        it.textColor = builder(Colors)
+    }
 
     /**
      * Set text Typeface

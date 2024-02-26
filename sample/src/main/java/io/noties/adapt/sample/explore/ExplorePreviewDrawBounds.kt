@@ -3,12 +3,12 @@ package io.noties.adapt.sample.explore
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.util.children
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.shape.Label
-import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 
 object ExplorePreviewDrawBounds {

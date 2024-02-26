@@ -8,4 +8,6 @@
     <dimen name="_8">8dip</dimen>
     <dimen name="_16">16dip</dimen>
 
+    <dimen name="some_scaled_dimen">17sp</dimen>
+
 </resources>

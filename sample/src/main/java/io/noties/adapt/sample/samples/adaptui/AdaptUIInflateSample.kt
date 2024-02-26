@@ -7,11 +7,16 @@ import android.widget.LinearLayout
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.castView
 import io.noties.adapt.ui.element.Inflated
 import io.noties.adapt.ui.element.VStack
@@ -65,9 +70,9 @@ class AdaptUIInflateSample : AdaptUISampleView() {
 //                    it.background(Colors.black)
 //                }
                 .layoutFill()
-                .background(Colors.yellow)
+                .backgroundColor { yellow }
                 .ifCastView(LinearLayout::class) {
-                    it.background(Colors.accent)
+                    it.backgroundColor { accent }
                 }
                 .castView(LinearLayout::class)
                 .stackGravity(Gravity.center.vertical)

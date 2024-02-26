@@ -19,10 +19,10 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -139,7 +139,7 @@ class ViewElement_ExtensionsCast_Test {
         assertFalse(element.isInitialized)
 
         element.ifCastView(EditText::class) {
-            it.background(12)
+            it.backgroundColor(12)
         }
 
         element.init(RuntimeEnvironment.getApplication())

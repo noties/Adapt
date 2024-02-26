@@ -14,9 +14,13 @@ import io.noties.adapt.sample.explore.ExploreAutofill.autofillEnabled
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillHint
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillRequestOnFocusWhenEmpty
 import io.noties.adapt.sample.explore.ExplorePreviewDrawBounds.previewDrawBounds
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.BreakStrategy
 import io.noties.adapt.ui.element.HyphenationFrequency
@@ -83,7 +87,7 @@ class AdaptUITextSample : SampleView() {
     private fun ViewFactory<ViewGroup.MarginLayoutParams>.MyTextInput() {
         TextInput(InputType.text)
             .textSize(16)
-            .textColor(Colors.black)
+            .textColor { black }
             .textHint("Some phone!")
 //            .textInputType(ExploreEditorInfo.InputType.text.uri.noSuggestions.capWords)
 //            .textImeOptions(ExploreEditorInfo.ImeOptions.actionGo.noExactUi)

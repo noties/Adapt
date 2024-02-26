@@ -163,9 +163,7 @@ class ItemElement<H : Item.Holder, I : Item<H>, LP : LayoutParams>(
         }
 
         private fun endTransitions(viewGroup: ViewGroup) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                TransitionManager.endTransitions(viewGroup)
-            }
+            TransitionManager.endTransitions(viewGroup)
         }
     }
 

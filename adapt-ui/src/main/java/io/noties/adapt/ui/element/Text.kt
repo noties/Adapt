@@ -18,8 +18,14 @@ import androidx.annotation.StringRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.text.TextSizes
+import io.noties.adapt.ui.app.text.TextSizesBuilder
+import io.noties.adapt.ui.app.text.TextStyles
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
@@ -45,6 +51,20 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSize(
 }
 
 /**
+ * Text size
+ * ```kotlin
+ * Text()
+ *   .textSize { body }
+ * ```
+ * @see TextView.setTextSize
+ * @see textSize
+ * @see TextSizes
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSize(
+    builder: TextSizesBuilder,
+) = textSize(builder(TextSizes))
+
+/**
  * @see textColor(android.content.res.ColorStateList)
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
@@ -52,6 +72,18 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
 ): ViewElement<V, LP> = onView {
     it.setTextColor(color)
 }
+
+/**
+ * Text color
+ * ```kotlin
+ * Text()
+ *   .textColor { main }
+ * ```
+ * @see Colors
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
+    builder: ColorsBuilder
+) = textColor(builder(Colors))
 
 /**
  * @see io.noties.adapt.ui.util.ColorStateListBuilder
@@ -120,6 +152,18 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
 }
 
 /**
+ * Text gravity
+ * ```kotlin
+ * Text()
+ *   .textGravity { center.vertical }
+ * ```
+ * @see Gravity
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
+    builder: GravityBuilder
+) = textGravity(builder(Gravity))
+
+/**
  * Typeface
  * @see TextView.setTypeface
  * @see textTypeface
@@ -137,6 +181,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
 ): ViewElement<V, LP> = onView {
     it.setTypeface(typeface, typefaceStyle.value)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
+    typeface: Typeface? = null,
+    builder: TypefaceStyle.Companion.() -> TypefaceStyle
+) = textTypeface(typeface, builder(TypefaceStyle))
 
 /**
  * Makes text typeface style **bold**.
@@ -238,6 +287,18 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
 
 /**
  * Hint text color
+ * ```kotlin
+ * Text()
+ *   .textHintColor { placeholder }
+ * ```
+ * @see Colors
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
+    builder: ColorsBuilder
+) = textHintColor(builder(Colors))
+
+/**
+ * Hint text color
  * @see TextView.setHintTextColor
  * @see io.noties.adapt.ui.util.ColorStateListBuilder
  */
@@ -280,7 +341,6 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSingleLine(
 /**
  * HyphenationFrequency
  */
-@RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
 value class HyphenationFrequency(val value: Int) {
     companion object {
@@ -293,7 +353,6 @@ value class HyphenationFrequency(val value: Int) {
 /**
  * @see TextView.setHyphenationFrequency
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
     hyphenationFrequency: HyphenationFrequency
 ): ViewElement<V, LP> = onView {
@@ -304,7 +363,6 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequenc
  * BreakStrategy
  * @see TextView.setBreakStrategy
  */
-@RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
 value class BreakStrategy(val value: Int) {
     companion object {
@@ -317,7 +375,6 @@ value class BreakStrategy(val value: Int) {
 /**
  * @see TextView.setBreakStrategy
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
     breakStrategy: BreakStrategy
 ): ViewElement<V, LP> = onView {
@@ -445,3 +502,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
         }
     }
 }
+
+inline fun <V: TextView, LP: LayoutParams> ViewElement<V, LP>.textStyle(
+    builder: TextStyles.() -> ElementStyle<V, LP>
+) = style(builder(TextStyles))

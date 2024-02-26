@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -20,9 +22,10 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
@@ -65,9 +68,9 @@ class AdaptUIElementLayoutSample : SampleView() {
     private fun ViewFactory<LayoutParams>.Header(text: String) {
         Text(text)
             .text(text)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textBold()
             .textSize(16)
-            .textColor(Colors.black)
+            .textColor { black }
             .padding(horizontal = 16, vertical = 8)
     }
 

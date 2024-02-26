@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewAnimator
+import io.noties.adapt.sample.explore.TextSizesExplore
 import io.noties.adapt.sample.ui.OnBackPressedListenerFrameLayout
 import io.noties.adapt.sample.util.SampleUtil
 
@@ -16,6 +17,8 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        TextSizesExplore.hey()
 
         onBackPressedListenerFrameLayout = findViewById(R.id.on_back_pressed_listener)
         viewAnimator = findViewById(R.id.view_animator)

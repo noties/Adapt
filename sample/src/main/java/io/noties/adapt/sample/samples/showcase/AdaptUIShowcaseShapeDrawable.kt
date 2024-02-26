@@ -5,7 +5,8 @@ import android.util.AttributeSet
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
 import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -37,12 +38,12 @@ class AdaptUIShowcaseShapeDrawable : AdaptUISampleView() {
                     // by default circle is using Gravity.center
                     val hotspot = CircleShape()
                         .size(radius * 2, radius * 2, Gravity.leading.top)
-                        .fill(Colors.orange)
+                        .fill { orange }
                         // hidden until pressed event is received
                         .hidden(true)
                     val drawable = ShapeDrawable {
                         Rectangle {
-                            fill(Colors.black)
+                            fill { black }
                             add(hotspot)
                         }
                     }.stateful {

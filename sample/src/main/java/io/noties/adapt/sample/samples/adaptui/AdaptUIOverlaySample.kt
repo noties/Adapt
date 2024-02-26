@@ -7,11 +7,16 @@ import androidx.annotation.ColorInt
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Image
 import io.noties.adapt.ui.element.Text
@@ -30,7 +35,6 @@ import io.noties.adapt.ui.overlayView
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.hex
 import io.noties.adapt.ui.util.withAlphaComponent
 
 @AdaptSample(
@@ -84,8 +88,8 @@ class AdaptUIOverlaySample : AdaptUISampleView() {
         .padding(16)
         .textGravity(Gravity.center)
         .textSize(21)
-        .textColor(Colors.black)
-        .background(backgroundColor.withAlphaComponent(0.2F))
+        .textColor { black }
+        .backgroundColor(backgroundColor.withAlphaComponent(0.2F))
 
     @Suppress("unused")
     private val Colors.overlay: Int get() = hex("#f00")

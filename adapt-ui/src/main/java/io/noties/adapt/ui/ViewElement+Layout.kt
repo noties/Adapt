@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 
 /**
@@ -90,6 +91,19 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravit
 }
 
 /**
+ * Specifies `layout_gravity` for a view inside LinearLayout (`VStack` or `HStack`)
+ * ```kotlin
+ * VStack {
+ *   View().layoutGravity { center }
+ * }
+ * ```
+ */
+@JvmName("linearLayoutGravity")
+inline fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
+    builder: GravityBuilder
+) = layoutGravity(builder(Gravity))
+
+/**
  * Specifies `layout_gravity` for a view inside FrameLayout (`ZStack`)
  */
 @JvmName("frameLayoutGravity")
@@ -98,6 +112,14 @@ fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity
 ): ViewElement<V, FLP> = onLayoutParams {
     it.gravity = gravity.value
 }
+
+/**
+ * Specifies `layout_gravity` for a view inside FrameLayout (`ZStack`)
+ */
+@JvmName("frameLayoutGravity")
+inline fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
+    builder: GravityBuilder
+) = layoutGravity(builder(Gravity))
 
 /**
  * Specifies value for all layout margins: `start`, `top`, `end` and `bottom`.

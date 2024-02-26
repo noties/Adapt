@@ -9,6 +9,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactoryConstants
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.newElement
 import io.noties.adapt.ui.newElementOfType
 import io.noties.adapt.ui.newElementOfTypeLayout
@@ -88,8 +89,8 @@ class ElementStyleTest {
     @Test
     fun `style overrides previous values`() {
         newElement()
-            .background(1)
-            .style(ElementStyle.generic { it.background(2) })
+            .backgroundColor(1)
+            .style(ElementStyle.generic { it.backgroundColor(2) })
             .renderView {
                 val captor = ArgumentCaptor.forClass(Int::class.java)
                 verify(this, times(2)).setBackgroundColor(captor.capture())
@@ -103,8 +104,8 @@ class ElementStyleTest {
     @Test
     fun `style value overridden`() {
         newElement()
-            .style(ElementStyle.generic { it.background(3) })
-            .background(4)
+            .style(ElementStyle.generic { it.backgroundColor(3) })
+            .backgroundColor(4)
             .renderView {
                 val captor = ArgumentCaptor.forClass(Int::class.java)
                 verify(this, times(2)).setBackgroundColor(captor.capture())

@@ -23,6 +23,7 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ViewPagerOnPageChangeListener
 import io.noties.adapt.ui.element.pagerOnPageChangedListener
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
@@ -149,7 +150,7 @@ class ViewPagerSample : SampleView() {
                 Text()
                     .textSize(21)
                     .textColor(Color.BLACK)
-                    .textFont(fontStyle = Typeface.BOLD)
+                    .textBold()
                     .layoutMargin(leading = 8)
                     .reference(ref::textView)
                     .reference(ref::textElement)

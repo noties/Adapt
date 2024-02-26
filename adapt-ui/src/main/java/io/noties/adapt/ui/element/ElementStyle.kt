@@ -11,6 +11,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.style(
     style.block.invoke(ViewFactoryConstants.Impl, it)
 }
 
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.style(
+    block: ElementStyle.Companion.() -> ElementStyle<V, LP>
+) = style(block(ElementStyle))
+
 class ElementStyle<in V : View, in LP : LayoutParams> private constructor(
     val block: ViewFactoryConstants.(ViewElement<@UnsafeVariance V, @UnsafeVariance LP>) -> Unit
 ) {
@@ -20,15 +24,15 @@ class ElementStyle<in V : View, in LP : LayoutParams> private constructor(
         ) = ElementStyle(block)
 
         fun generic(
-            block: ViewFactoryConstants.(ViewElement<out View, out LayoutParams>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<View, LayoutParams>) -> Unit
         ) = ElementStyle(block)
 
         fun <V : View> view(
-            block: ViewFactoryConstants.(ViewElement<V, out LayoutParams>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<V, LayoutParams>) -> Unit
         ) = ElementStyle(block)
 
         fun <LP : LayoutParams> layout(
-            block: ViewFactoryConstants.(ViewElement<out View, LP>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<View, LP>) -> Unit
         ) = ElementStyle(block)
 
         fun <V : View, LP : LayoutParams> viewLayout(

@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
  */
 fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
     klass: KClass<RV>,
-): ViewElement<out RV, LP> {
+): ViewElement<RV, LP> {
 
     fun matches() = klass.java.isAssignableFrom(this.view::class.java)
     fun deliver(cause: Throwable?) {
@@ -39,18 +39,18 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
     }
 
     @Suppress("UNCHECKED_CAST")
-    return this as ViewElement<out RV, LP>
+    return this as ViewElement<RV, LP>
 }
 
 fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
     klass: KClass<RV>,
-    block: (ViewElement<out RV, LP>) -> Unit
+    block: (ViewElement<RV, LP>) -> Unit
 ): ViewElement<V, LP> {
 
     fun matches() = klass.java.isAssignableFrom(this.view::class.java)
     fun deliver() {
         @Suppress("UNCHECKED_CAST")
-        block(this as ViewElement<out RV, LP>)
+        block(this as ViewElement<RV, LP>)
         render()
     }
 
@@ -72,9 +72,9 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
 //inline fun <reified RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
 //): ViewElement<V, out RLP> where RLP : LP = castLayout<_, _, _>(RLP::class)
 
-fun <RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
+fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.castLayout(
     klass: KClass<RLP>
-): ViewElement<V, out RLP> where RLP : LP {
+): ViewElement<V, RLP> {
     fun matches(): Boolean = klass.java.isAssignableFrom(view.layoutParams::class.java)
     fun deliver(cause: Throwable?) {
         throw AdaptClassCastException(
@@ -99,18 +99,18 @@ fun <RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
     // here casting would not fail and always succeed
     //  crash would happen only when trying to access casted object
     @Suppress("UNCHECKED_CAST")
-    return this as ViewElement<V, out RLP>
+    return this as ViewElement<V, RLP>
 }
 
 fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
     klass: KClass<RLP>,
-    block: (ViewElement<V, out RLP>) -> Unit
+    block: (ViewElement<V, RLP>) -> Unit
 ): ViewElement<V, LP> {
 
     fun matches(): Boolean = klass.java.isAssignableFrom(view.layoutParams::class.java)
     fun deliver() {
         @Suppress("UNCHECKED_CAST")
-        block(this as ViewElement<V, out RLP>)
+        block(this as ViewElement<V, RLP>)
         render()
     }
 
@@ -144,7 +144,7 @@ fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
 )
 fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
     view: Class<RV>,
-): ViewElement<out RV, LP> = castView(view.kotlin)
+): ViewElement<RV, LP> = castView(view.kotlin)
 
 @Suppress("DeprecatedCallableAddReplaceWith")
 @Deprecated(
@@ -152,22 +152,22 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
 )
 fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
     view: Class<RV>,
-    block: (ViewElement<out RV, LP>) -> Unit
+    block: (ViewElement<RV, LP>) -> Unit
 ): ViewElement<V, LP> = ifCastView(view.kotlin, block)
 
 @Suppress("DeprecatedCallableAddReplaceWith")
 @Deprecated(
     "Use kotlin class instead, for example - `MarginLayoutParams::class`"
 )
-fun <RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
+fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.castLayout(
     layoutParams: Class<RLP>,
-): ViewElement<V, out RLP> where RLP : LP = castLayout(layoutParams.kotlin)
+): ViewElement<V, RLP> = castLayout(layoutParams.kotlin)
 
 @Suppress("DeprecatedCallableAddReplaceWith")
 @Deprecated("Use kotlin class instead, for example - `MarginLayoutParams::class`")
 fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
     layoutParams: Class<RLP>,
-    block: (ViewElement<V, out RLP>) -> Unit
+    block: (ViewElement<V, RLP>) -> Unit
 ): ViewElement<V, LP> = ifCastLayout(layoutParams.kotlin, block)
 
 internal class AdaptClassCastException(

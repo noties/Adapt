@@ -9,6 +9,7 @@ import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScrollStack
 import io.noties.adapt.ui.element.View
@@ -45,7 +46,7 @@ class AdaptUIShowcaseReference : AdaptUISampleView() {
 
             // NB! element is of View type, not TextView,
             //  so `.text*` functions are not available
-            ifElement.background(Color.GRAY)
+            ifElement.backgroundColor(Color.GRAY)
 
             // reference a collection of elements (already added to parent)
             val elements = (0 until 100)

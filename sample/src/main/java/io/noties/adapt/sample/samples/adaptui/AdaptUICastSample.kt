@@ -11,12 +11,18 @@ import android.widget.TextView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.castLayout
 import io.noties.adapt.ui.castView
 import io.noties.adapt.ui.element.Element
@@ -26,9 +32,9 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.ifCastLayout
 import io.noties.adapt.ui.ifCastView
 import io.noties.adapt.ui.layout
@@ -97,7 +103,7 @@ class AdaptUICastSample : SampleView() {
                     //  very helpful as it won't point to the actual
                     //  call there this happened
 
-                    Element { CheckBox(it) as TextView }
+                    Element { CheckBox(it) }
                         .text("Unsafe cast (success)")
                         .textSize(16)
                         .padding(16)
@@ -113,6 +119,7 @@ class AdaptUICastSample : SampleView() {
                         .also { element ->
                             element.onClick {
                                 try {
+                                    @Suppress("UNCHECKED_CAST")
                                     (element as ViewElement<CheckBox, *>).render {
                                         it.checked(true)
                                     }
@@ -130,7 +137,10 @@ class AdaptUICastSample : SampleView() {
     private fun ViewFactory<LayoutParams>.Title(title: String) = Text(title)
         .textColor(Colors.black)
         .textSize(21)
-        .textFont(fontStyle = Typeface.BOLD)
+        .textTypeface { bold }
+        .textTypeface(Typeface.DEFAULT_BOLD) {
+            bold
+        }
 
     @Suppress("FunctionName")
     private fun ViewFactory<ViewGroup.MarginLayoutParams>.Button(title: String) = Text(title)
@@ -180,13 +190,13 @@ class AdaptUICastSample : SampleView() {
                         element.ifCastView(CheckBox::class) {
                             it.checked(true)
                                 .layout(FILL, 128)
-                                .background(Colors.orange)
+                                .backgroundColor { orange }
                         }.render()
                     } else {
                         element.castView(CheckBox::class)
                             .checked(true)
                             .layout(FILL, 128)
-                            .background(Colors.orange)
+                            .backgroundColor { orange }
                             .render()
                     }
                 }
@@ -220,13 +230,14 @@ class AdaptUICastSample : SampleView() {
                 .onClick {
                     if (isIf) {
                         element.ifCastLayout(LinearLayout.LayoutParams::class) {
-                            it.background(Colors.orange)
+                            it
+                                .backgroundColor { orange }
                                 .layout(FILL, 128)
 
                         }.render()
                     } else {
                         element.castLayout(LinearLayout.LayoutParams::class)
-                            .background(Colors.orange)
+                            .backgroundColor { orange }
                             .layout(FILL, 128)
                             .render()
                     }

@@ -9,10 +9,13 @@ import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardItem
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -43,7 +46,7 @@ class AdaptUIItemSample : SampleView() {
 
                 Text("This is just some inline text")
                     .textSize(16)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .padding(16)
 
                 View()

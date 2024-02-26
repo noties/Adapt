@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,20 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHey
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHo
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.textStylePrimary
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layout
@@ -54,7 +56,7 @@ class AdaptUIExtensionsSample : SampleView() {
                     Text("heyHo")
                         .heyHo() // after this no longer ViewElement<TextView, LinearLayout.LayoutParams>
                         // only generic functions are available to all views and all layout params
-                        .background(Colors.orange)
+                        .backgroundColor { orange }
                 }
             }
         }
@@ -65,19 +67,19 @@ class AdaptUIExtensionsSample : SampleView() {
         // becomes available to all subclasses of TextView with any LayoutParams
         fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStylePrimary() = this
             .textSize(16)
-            .textColor(Colors.primary)
+            .textColor { primary }
             .textGravity(Gravity.top)
-            .textFont(fontStyle = Typeface.BOLD)
+            .textBold()
 
         // becomes available to only TextView elements (no subclasses would be allowed,
         //  no AppCompatTextView, EditText, no Button, no CheckBox, etc)
         fun <LP : LayoutParams> ViewElement<TextView, LP>.textStyleSecondary() = this
             .textSize(17)
-            .textColor(Colors.primary)
+            .textColor { primary }
 
         // becomes available to only TextView inside a LinearLayout
         fun <LP : LinearLayout.LayoutParams> ViewElement<TextView, LP>.textStyleAdditional() = this
-            .textColor(Colors.primary)
+            .textColor { primary }
             .textGravity(Gravity.center)
             .layoutWeight(1F)
 
@@ -85,7 +87,7 @@ class AdaptUIExtensionsSample : SampleView() {
         // Extension also does not need to return ViewElement, but in this case
         //  no further calls for customization would be available
         fun ViewElement<*, *>.heyHey() {
-            background(Colors.primary)
+            backgroundColor { primary }
             padding(48)
         }
 
@@ -99,7 +101,7 @@ class AdaptUIExtensionsSample : SampleView() {
         // it is possible to return this, but this would have types erased and thus
         //  type information missing
         fun ViewElement<*, *>.heyHo() = this
-            .background(Colors.accent)
+            .backgroundColor { accent }
     }
 }
 

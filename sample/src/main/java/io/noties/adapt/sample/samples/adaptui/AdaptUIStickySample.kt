@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.textColor
@@ -22,9 +25,9 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onElementView
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.widget.VStackReverseDrawingOrder
 import io.noties.adapt.ui.sticky.stickyVerticalScrollContainer
 import io.noties.adapt.ui.sticky.stickyView
+import io.noties.adapt.ui.widget.VStackReverseDrawingOrder
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -82,8 +85,8 @@ class AdaptUIStickySample : AdaptUISampleView() {
     private fun <LP : LayoutParams> ViewFactory<LP>.Sticky(text: String) = Text(text)
         .padding(16)
         .alpha(0.75F)
-        .background(Colors.black)
-        .textColor(Colors.white)
+        .backgroundColor { black }
+        .textColor { white }
         .ifAvailable(Build.VERSION_CODES.M) {
             it.foregroundDefaultSelectable()
         }
@@ -93,7 +96,7 @@ class AdaptUIStickySample : AdaptUISampleView() {
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.Regular(text: String) = Text(text)
         .padding(8)
-        .background(Colors.orange)
+        .backgroundColor { orange }
 }
 
 @Preview

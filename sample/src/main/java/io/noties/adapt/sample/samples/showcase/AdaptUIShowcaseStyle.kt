@@ -12,6 +12,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.ElementStyle
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -67,7 +68,7 @@ class AdaptUIShowcaseStyle : AdaptUISampleView() {
     }
 
     private val backgrounded = ElementStyle.generic {
-        it.background(Color.GRAY)
+        it.backgroundColor(Color.GRAY)
             .padding(16)
     }
 

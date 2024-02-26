@@ -7,7 +7,9 @@ import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.preview.AdaptPreviewLayout
 import io.noties.adapt.sample.App
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -17,7 +19,6 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
-import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.createLayoutParams
@@ -33,7 +34,7 @@ class AdaptUIElementItem(val text: String) :
             Text()
                 // already SP
                 .textSize(16)
-                .textColor(Colors.black)
+                .textColor { black }
                 .textGravity(Gravity.center)
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)

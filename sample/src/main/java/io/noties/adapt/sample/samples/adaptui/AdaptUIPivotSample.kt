@@ -10,11 +10,15 @@ import android.util.AttributeSet
 import android.view.ViewGroup.MarginLayoutParams
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.hex
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.textColor
@@ -33,7 +37,6 @@ import io.noties.adapt.ui.pivot
 import io.noties.adapt.ui.pivotRelative
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
-import io.noties.adapt.ui.util.hex
 
 @AdaptSample(
     id = "20230715160110",
@@ -48,7 +51,7 @@ class AdaptUIPivotSample : AdaptUISampleView() {
             Text("Click to rotate around pivot point.\nLong click to scale up or down")
                 .textGravity(Gravity.center.horizontal)
                 .textSize(16)
-                .textColor(Colors.black)
+                .textColor { black }
                 .padding(16)
 
             // Default pivot values (should be at view center)
@@ -76,10 +79,10 @@ class AdaptUIPivotSample : AdaptUISampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : MarginLayoutParams> ViewFactory<LP>.PivotElement() = Text("PIVOT")
-        .textColor(Colors.black)
+        .textColor { black }
         .textSize(16)
         .layoutWrap()
-        .background(Colors.yellow)
+        .backgroundColor { yellow }
         .layoutMargin(16)
         .padding(16)
         .also { el ->
@@ -149,9 +152,7 @@ class AdaptUIPivotSample : AdaptUISampleView() {
     }
 }
 
-@Suppress("unused")
-private val Colors.pivot: Int
-    get() = hex("#f00")
+private val Colors.pivot by hex("#f00")
 
 @Preview
 @Suppress("ClassName", "unused")

@@ -13,11 +13,16 @@ import io.noties.adapt.sample.explore.ExploreRelative.Relative
 import io.noties.adapt.sample.explore.ExploreRelative.layoutAlignParent
 import io.noties.adapt.sample.explore.ExploreRelative.layoutCenter
 import io.noties.adapt.sample.explore.ExploreRelative.layoutPosition
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutWrap
@@ -68,19 +73,19 @@ class AdaptUIRelativeSample : AdaptUISampleView() {
 
             val el = Text("alignParent{leading,top}")
                 .padding(16)
-                .background(Colors.orange)
+                .backgroundColor { orange }
                 .layoutWrap()
                 .layoutAlignParent(leading = true, top = true)
 
             Text("below")
                 .padding(16)
-                .background(Colors.accent)
+                .backgroundColor { accent }
                 .layoutPosition(below = el)
                 .layoutCenter(horizontal = true)
 
             Text("alignTrailing")
                 .padding(16)
-                .background(Colors.primary)
+                .backgroundColor { primary }
                 .layoutPosition(toTrailing = el)
 
         }.layoutFill()

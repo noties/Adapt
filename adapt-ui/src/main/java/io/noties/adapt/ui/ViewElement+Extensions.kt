@@ -1,5 +1,6 @@
 package io.noties.adapt.ui
 
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.SystemClock
@@ -10,7 +11,10 @@ import android.view.ViewTreeObserver
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
-import androidx.annotation.RequiresApi
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.dimen.Dimens
+import io.noties.adapt.ui.app.dimen.DimensBuilder
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.ShapeFactoryBuilder
@@ -92,11 +96,33 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
  * Background
  * @see View.setBackgroundColor
  */
+@Deprecated(
+    "Use `backgroundColor` instead",
+    replaceWith = ReplaceWith("backgroundColor(color)", imports = ["io.noties.adapt.ui.backgroundColor"])
+)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
+    @ColorInt color: Int
+) = backgroundColor(color)
+
+/**
+ * Background
+ * @see View.setBackgroundColor
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundColor(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
     it.setBackgroundColor(color)
 }
+
+/**
+ * Background that receives [Colors] instance to provide named color values
+ * ```kotlin
+ * Text()
+ *   .background { main }
+ * ```
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundColor(builder: ColorsBuilder) =
+    backgroundColor(builder(Colors))
 
 /**
  * @see View.setBackground
@@ -131,12 +157,27 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
         it.background = resolveDefaultSelectableDrawable(it.context)
     }
 
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
+    @ColorInt color: Int
+) = foreground(ColorDrawable(color))
+
+/**
+ * Foreground color
+ * ```kotlin
+ * View()
+ *   .foregroundColor { main }
+ * ```
+ * @see Colors
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
+    builder: ColorsBuilder
+) = foregroundColor(builder(Colors))
+
 /**
  * Foreground
  * @see View.setForeground
  * @see View.setForegroundGravity
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     drawable: Drawable?,
     gravity: Gravity? = null
@@ -150,7 +191,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
  * @see View.setForegroundGravity
  * @see Shape.newDrawable
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     gravity: Gravity? = null
@@ -162,7 +202,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
  * @see Shape.newDrawable
  * @see ShapeFactory
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     gravity: Gravity? = null,
     block: ShapeFactoryBuilder
@@ -171,7 +210,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
 /**
  * @see View.setForeground
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable(): ViewElement<V, LP> =
     onView {
         it.foreground = resolveDefaultSelectableDrawable(it.context)
@@ -302,6 +340,18 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
 ): ViewElement<V, LP> = onView {
     it.elevation = elevation.dip.toFloat()
 }
+
+/**
+ * Elevation
+ * ```kotlin
+ * View()
+ *   .elevation { elevationLight }
+ * ```
+ * @see View.setElevation
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
+    builder: DimensBuilder
+) = elevation(builder(Dimens))
 
 /**
  * Translation
@@ -518,8 +568,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
     block(it)
     unregisterOnPreDraw()
 }
-
-// TODO: use normal and unregister on first event
 
 /**
  * NB! This is a callback when view is attached to [android.view.Window], not its parent

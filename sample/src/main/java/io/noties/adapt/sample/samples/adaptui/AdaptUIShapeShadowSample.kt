@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
@@ -12,11 +11,17 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptRecyclerView
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.Recycler
@@ -26,8 +31,8 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.recyclerGridLayoutManager
 import io.noties.adapt.ui.element.textAutoSize
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -230,7 +235,7 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                         Text("The title of the card!")
                             .textSize(20)
                             .textColor(Colors.orange)
-                            .textFont(fontStyle = Typeface.BOLD)
+                            .textBold()
                             .translation(x = -16, y = -16)
 
                         Text("The text on top is clipped, so no content would exit the card area")

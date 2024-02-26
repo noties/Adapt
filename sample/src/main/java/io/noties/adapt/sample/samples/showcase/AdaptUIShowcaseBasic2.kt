@@ -9,6 +9,7 @@ import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.HScroll
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -43,19 +44,19 @@ class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
                     HStack(Gravity.center) {
                         Text("1")
                             .padding(72, 48)
-                            .background(Color.RED)
+                            .backgroundColor(Color.RED)
                         Text("2")
                             .padding(72, 32)
-                            .background(Color.GREEN)
+                            .backgroundColor(Color.GREEN)
                         Text("3")
                             .padding(72, 24)
-                            .background(Color.BLUE)
+                            .backgroundColor(Color.BLUE)
                     }
                 }
 
                 Text("This will fill")
                     .layout(FILL, 0, 1F)
-                    .background(Color.YELLOW)
+                    .backgroundColor(Color.YELLOW)
             }
         }.layoutFill()
             // fillViewPort

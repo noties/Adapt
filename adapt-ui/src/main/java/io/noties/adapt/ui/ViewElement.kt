@@ -31,6 +31,10 @@ open class ViewElement<V : View, LP : LayoutParams>(
          *   //     to render _now_, then explicit `render` call can be used
          *   .render()
          * ```
+         * If created `ViewElement` needs also layout parameters, then regular extensions:
+         * - `castLayout` - which casts received layout params and fails when mismatched
+         * - `ifCastLayout` - which allows selectively apply certain layout configuration
+         *  if received parameters would be of the same type only (and without affecting the rest)
          */
         fun <V : View> create(
             view: V

@@ -4,12 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.App
 
 /**
  * @since $UNRELEASED;
  */
 abstract class AdaptUIPreviewLayout(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
     init {
+        PreviewApplication.install(context)
+
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
         initialize(this)

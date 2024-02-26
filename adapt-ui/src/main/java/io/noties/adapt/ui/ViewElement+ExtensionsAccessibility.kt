@@ -1,9 +1,7 @@
 package io.noties.adapt.ui
 
-import android.os.Build
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 
 /**
@@ -75,7 +73,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLabelFor(
 /**
  * @see View.setAccessibilityTraversalBefore
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefore(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
@@ -85,7 +82,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefor
 /**
  * @see View.setAccessibilityTraversalBefore
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefore(
     provider: () -> ViewElement<out View, *>,
 ): ViewElement<V, LP> = this.also {
@@ -97,7 +93,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefor
 /**
  * @see View.setAccessibilityTraversalAfter
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
@@ -107,7 +102,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter
 /**
  * @see View.setAccessibilityTraversalAfter
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter(
     provider: () -> ViewElement<out View, *>,
 ): ViewElement<V, LP> = this.also {

@@ -15,7 +15,9 @@ import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.sample.items.ControlItem
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.sample.util.SampleUtil
 import io.noties.adapt.sample.util.html
 import io.noties.adapt.ui.ViewElement

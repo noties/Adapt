@@ -12,8 +12,11 @@ import android.graphics.Shader
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import kotlin.math.roundToInt
@@ -86,6 +89,10 @@ abstract class Shape : ShapeFactory {
 
     fun gravity(gravity: Gravity) = this.also {
         this.gravity = gravity
+    }
+
+    fun gravity(builder: GravityBuilder) = this.also {
+        gravity(builder(Gravity))
     }
 
     /**
@@ -230,6 +237,10 @@ abstract class Shape : ShapeFactory {
             this.color = color
             this.gradient = null
         }
+    }
+
+    fun fill(builder: ColorsBuilder) = this.also {
+        fill(builder(Colors))
     }
 
     fun fill(gradient: Gradient?): Shape = this.also {

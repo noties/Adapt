@@ -15,7 +15,6 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.testutil.assertDensity
 import io.noties.adapt.ui.testutil.mockt
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -207,7 +206,7 @@ class ViewFactory_Test {
         val padding = 101
 
         val element = newElement()
-            .background(background)
+            .backgroundColor(background)
             .padding(padding)
 
         val lp = FrameLayout.LayoutParams(123, LayoutParams.MATCH_PARENT)

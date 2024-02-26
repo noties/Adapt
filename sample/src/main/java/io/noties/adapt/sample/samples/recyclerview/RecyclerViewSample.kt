@@ -9,7 +9,7 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textColor
@@ -50,7 +50,7 @@ class RecyclerViewSample : SampleView() {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             Text(text)
                 .textSize(24)
-                .textColor(Colors.black)
+                .textColor { black }
                 .textGravity(Gravity.center)
                 .onLayoutParams {
                     Debug.e("lp:$it")

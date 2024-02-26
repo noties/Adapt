@@ -24,7 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyFloat
 import org.mockito.Mockito.anyInt
@@ -33,8 +32,8 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 import org.mockito.verification.VerificationMode
@@ -459,7 +458,7 @@ class ViewElement_Extensions_Test {
     fun `background - color`() {
         val input = 0xFFff0000.toInt()
         newElement()
-            .background(input)
+            .backgroundColor(input)
             .renderView {
                 verify(this).setBackgroundColor(eq(input))
             }
@@ -1073,7 +1072,8 @@ class ViewElement_Extensions_Test {
                     if (input) {
                         verify(this).isEnabled = org.mockito.kotlin.eq(false)
                     } else {
-                        verify(this, org.mockito.kotlin.never()).isEnabled = org.mockito.kotlin.any()
+                        verify(this, org.mockito.kotlin.never()).isEnabled =
+                            org.mockito.kotlin.any()
                     }
                 }
         }
@@ -1134,7 +1134,8 @@ class ViewElement_Extensions_Test {
                 .renderView {
 
                     val listener = kotlin.run {
-                        val captor = ArgumentCaptor.forClass(ViewTreeObserver.OnPreDrawListener::class.java)
+                        val captor =
+                            ArgumentCaptor.forClass(ViewTreeObserver.OnPreDrawListener::class.java)
                         org.mockito.kotlin.verify(observer).addOnPreDrawListener(captor.capture())
                         captor.value
                     }
@@ -1147,7 +1148,7 @@ class ViewElement_Extensions_Test {
                         verify(this, never()).pivotX = anyFloat()
                     }
 
-                    if (y != null){
+                    if (y != null) {
                         verify(this).pivotY = eq(y * h)
                     } else {
                         verify(this, never()).pivotY = anyFloat()

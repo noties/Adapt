@@ -89,3 +89,5 @@ open class Gravity(@GravityInt val value: Int) {
         return expected == (value and VERTICAL_GRAVITY_MASK)
     }
 }
+
+typealias GravityBuilder = Gravity.Companion.() -> Gravity

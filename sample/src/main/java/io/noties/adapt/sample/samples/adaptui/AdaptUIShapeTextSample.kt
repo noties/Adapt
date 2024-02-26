@@ -7,11 +7,18 @@ import android.util.AttributeSet
 import androidx.annotation.RequiresApi
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.HtmlUtil
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -52,7 +59,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 Text("!!!Text shape is available only since O (26)")
                     .textSize(18)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .layoutWrap()
                     .layoutGravity(Gravity.center)
                 return@VStack
@@ -76,8 +83,8 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
         Text {
             text("Hello there! ".repeat(10))
             textSize(21)
-            textColor(Colors.white)
-            textGravity(Gravity.center)
+            textColor { white }
+            textGravity { center }
             textMaxLines(4)
             textShadow(4, color = Colors.orange)
             textBold()
@@ -86,7 +93,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             textUnderline()
             textStrikethrough()
 
-            fill(Colors.yellow)
+            fill { yellow }
 //            sizeRelative(0.5F, 0.5F, gravity = Gravity.center)
             padding(24)
 
@@ -106,7 +113,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             }
 
             Circle {
-                fill(Colors.accent)
+                fill { accent }
             }
         }
     }

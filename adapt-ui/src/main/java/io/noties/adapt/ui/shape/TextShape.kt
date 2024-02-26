@@ -16,6 +16,7 @@ import io.noties.adapt.ui.element.HyphenationFrequency
 import io.noties.adapt.ui.element.JustificationMode
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
@@ -59,6 +60,12 @@ interface BaseTextShapeDataSetter<THIS : BaseTextShapeData> : BaseTextShapeData 
         textGravity: Gravity?
     ) = (this as THIS).also {
         it.textGravity = textGravity
+    }
+
+    fun textGravity(
+        builder: GravityBuilder
+    ) = (this as THIS).also {
+        this.textGravity = builder(Gravity)
     }
 
     /**

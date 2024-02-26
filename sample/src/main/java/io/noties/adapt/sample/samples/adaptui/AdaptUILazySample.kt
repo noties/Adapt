@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Lazy
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -37,7 +40,7 @@ class AdaptUILazySample : SampleView() {
 
                 Text("Some text at top")
                     .textSize(24)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .padding(horizontal = 16)
                     .padding(top = 24, bottom = 8)
 
@@ -45,13 +48,13 @@ class AdaptUILazySample : SampleView() {
 
                     // layout params of parent can be used
                     Text("layout_weight:1")
-                        .background(Colors.orange)
+                        .backgroundColor { orange }
                         .padding(16)
                         .layoutWeight(1F)
 
                     // multiple views can be _lazy_ -> all would be added to parent
                     Text("another layout_weight:1")
-                        .background(Colors.accent)
+                        .backgroundColor { accent }
                         .padding(16)
                         .layoutWeight(1F)
                 }

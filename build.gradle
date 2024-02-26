@@ -17,7 +17,7 @@ allprojects {
     }
 
     group = 'io.noties'
-    version = '5.0.0'
+    version = '5.1.0-SNAPSHOT'
 
     tasks.withType(Javadoc) {
         enabled(false)
@@ -29,14 +29,14 @@ task clean(type: Delete) {
 }
 
 wrapper {
-    gradleVersion '7.3.3'
+    gradleVersion '7.4'
     distributionType 'all'
 }
 
 ext {
 
     config = [
-            'min-sdk'    : 21,
+            'min-sdk'    : 23,
             'target-sdk' : 33,
             'build-tools': '33.0.2'
     ]

@@ -9,11 +9,15 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.ZStack
@@ -54,17 +58,17 @@ class AdaptUIWebSample : AdaptUISampleView() {
                 ZStack {
                     Text("WebView inflation failed for the first time, please stand-by")
                         .textSize(16)
-                        .textColor(Colors.black)
+                        .textColor { black }
                         .layoutWrap()
                         .layoutGravity(Gravity.center)
                         .padding(16)
                 }.layoutFill()
-                    .background(Colors.orange)
+                    .backgroundColor { orange }
 
             }.layoutFill()
                 .webOnElementReady {
                     // process created web view
-                    it.background(Colors.accent)
+                    it.backgroundColor { accent }
                 }
 
             val progress = Progress()
@@ -110,7 +114,7 @@ class AdaptUIWebSample : AdaptUISampleView() {
         ViewFactory.addChildren<WebViewPlaceholder, FrameLayout.LayoutParams>(webViewPlaceholder) {
             Text("Failed to inflate WebView")
                 .textSize(21)
-                .textColor(Colors.primary)
+                .textColor { primary }
                 .layoutWrap()
                 .layoutGravity(Gravity.center)
                 .padding(16)

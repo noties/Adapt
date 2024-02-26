@@ -4,7 +4,6 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.clipChildren
 import io.noties.adapt.ui.clipToPadding
 import io.noties.adapt.ui.element.Element
@@ -35,8 +35,8 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.scrollFillViewPort
 import io.noties.adapt.ui.element.textAllCaps
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textSize
@@ -63,7 +63,6 @@ import io.noties.adapt.ui.shape.OvalShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
-import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
@@ -288,7 +287,7 @@ class AdaptUISample : SampleView() {
                     })
                 Element(::Button)
                     .textSize(17)
-                    .textFont(null, Typeface.BOLD)
+                    .textBold()
                     .reference(ref::textView)
                     .reference(ref::textViewNullable)
                     .also { ref.textViewElement = it }
@@ -319,7 +318,7 @@ class AdaptUISample : SampleView() {
 
                 paragraph()
                     .layout(FILL, WRAP)
-                    .background(Color.RED)
+                    .backgroundColor(Color.RED)
                     .layoutMargin(8)
 
                 HStack {
@@ -328,7 +327,7 @@ class AdaptUISample : SampleView() {
                     Spacer()
                     View()
                         .layout(1, 16)
-                        .background(Color.GREEN)
+                        .backgroundColor(Color.GREEN)
                     Spacer()
                     Text()
                         .reference(ref::valueView)
@@ -355,7 +354,7 @@ class AdaptUISample : SampleView() {
         private fun ViewFactory<LinearLayout.LayoutParams>.square(color: Int) {
             View()
                 .layout(128, 128)
-                .background(color)
+                .backgroundColor(color)
                 .layoutMargin(horizontal = 2)
         }
 
@@ -366,7 +365,7 @@ class AdaptUISample : SampleView() {
                 .textSize(12)
                 .textColor(Color.WHITE)
                 .padding(16)
-                .background(Color.RED)
+                .backgroundColor(Color.RED)
 
         // this does not return anything, it is valid, but no further customization
         //  would be available
@@ -376,7 +375,7 @@ class AdaptUISample : SampleView() {
                 .textColor(Color.RED)
                 .textGravity(Gravity.trailing)
                 .padding(12)
-                .background(Color.BLACK)
+                .backgroundColor(Color.BLACK)
         }
 
         // this would allow configuring layout params of ViewGroup,
@@ -387,7 +386,7 @@ class AdaptUISample : SampleView() {
                 .textSize(48)
                 .padding(24)
                 .textColor(Color.GRAY)
-                .background(Color.CYAN)
+                .backgroundColor(Color.CYAN)
 
         override fun bind(holder: Holder<References>) {
             with(holder.ref) {
@@ -403,7 +402,7 @@ class AdaptUISample : SampleView() {
                 Text("This is button")
                     .textColor(Color.WHITE)
                     .textGravity(Gravity.center)
-                    .textFont(fontStyle = Typeface.BOLD)
+                    .textBold()
                     .textSize(16)
                     .padding(horizontal = 16, vertical = 8)
                     .background(background)
@@ -476,7 +475,7 @@ class AdaptUISample : SampleView() {
                 VStack {
                     Text("First line")
                         .textSize(24)
-                        .textFont(fontStyle = Typeface.BOLD)
+                        .textBold()
                     Text("Second line")
                         .textSize(16)
                 }.background(background)
@@ -487,7 +486,7 @@ class AdaptUISample : SampleView() {
             }.clipToPadding(false)
                 .clipChildren(false)
                 .padding(16)
-                .background(0x10000000)
+                .backgroundColor(0x10000000)
         }
 
         private val background = StatefulShape.drawable {
@@ -519,7 +518,7 @@ class AdaptUISample : SampleView() {
                     VStack {
                         Text("The title")
                             .textSize(21)
-                            .textFont(fontStyle = Typeface.BOLD)
+                            .textBold()
                             .textColor(Color.BLACK)
                         Text("350")
                             .textSize(16)
@@ -535,7 +534,7 @@ class AdaptUISample : SampleView() {
                             setActivated(Color.BLUE)
                             setDefault(Color.WHITE)
                         })
-                        .textFont(fontStyle = Typeface.BOLD)
+                        .textBold()
                         .padding(horizontal = 24, vertical = 8)
                         .onView {
                             it.background = toggleDrawable
@@ -545,11 +544,7 @@ class AdaptUISample : SampleView() {
                         }
                 }.padding(8)
                     .padding(bottom = 12)
-                    .pressable(RoundedRectangleShape(12) {
-                        stroke(Color.BLACK, 2)
-                        fill(Color.WHITE)
-                        padding(1)
-                    })
+                    .pressable()
                     .onClick {
                         Debug.i("pressable clicked!")
                     }
@@ -573,7 +568,6 @@ class AdaptUISample : SampleView() {
             }
 
         private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pressable(
-            shape: Shape
         ): ViewElement<V, LP> = onView { view ->
 
             val distance = 6

@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.graphics.Typeface
 import android.text.TextPaint
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 
 interface BaseLabelShapeData : CommonTextPaintData {
     var text: String?
@@ -26,6 +27,12 @@ interface BaseLabelShapeDataSetter<THIS : BaseLabelShapeData> : BaseLabelShapeDa
         textGravity: Gravity?
     ) = (this as THIS).also {
         it.textGravity = textGravity
+    }
+
+    fun textGravity(
+        builder: GravityBuilder
+    ) = (this as THIS).also {
+        it.textGravity = builder(Gravity)
     }
 
     fun textRotation(

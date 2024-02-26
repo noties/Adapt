@@ -21,11 +21,16 @@ import io.noties.adapt.sample.App
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.Colors
 import io.noties.adapt.sample.samples.adaptui.SeekBar
 import io.noties.adapt.sample.samples.adaptui.seekBarOnChanged
 import io.noties.adapt.sample.samples.adaptui.seekBarTint
 import io.noties.adapt.sample.samples.adaptui.seekBarValue
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.sample.util.children
@@ -33,6 +38,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.activated
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundDefaultSelectable
 import io.noties.adapt.ui.clipToOutline
@@ -44,10 +50,12 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.flex.AlignContent
 import io.noties.adapt.ui.flex.AlignItems
 import io.noties.adapt.ui.flex.AlignSelf
@@ -139,9 +147,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.renderInTransition(block: (ViewElement<V, LP>) -> Unit) {
         val group = (view as? ViewGroup) ?: (view.parent as ViewGroup)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            TransitionManager.endTransitions(group)
-        }
+        TransitionManager.endTransitions(group)
         block(this)
         TransitionManager.beginDelayedTransition(group)
         render()
@@ -151,8 +157,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     private fun <LP : FlexboxLayout.LayoutParams> ViewFactory<LP>.FlexItem(text: String): ViewElement<TextView, LP> =
         Text(text)
             .textSize(16)
-            .textColor(Colors.white)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textColor { white }
+            .textBold()
             .padding(horizontal = 16, vertical = 8)
             .background {
                 RoundedRectangle(8) {
@@ -222,7 +228,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .ifAvailable(Build.VERSION_CODES.M) {
                     it.onView {
                         it.thumbTintList = ColorStateListBuilder.create {
-                            set(android.R.attr.state_checked, Colors.white)
+                            setChecked(Colors.white)
                             setDefault(hex("#505a64"))
                         }
                     }
@@ -295,6 +301,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val base = AssetShape(drawable) {
             size(s, s, Gravity.center.bottom)
             tint(Colors.black.withAlphaComponent(0.2F))
+            tint { accent }
         }
         add(base)
         add(base.copy {
@@ -466,7 +473,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 fun <LP : LayoutParams> ViewFactory<LP>.TextEntry(isMinus: Boolean) =
                     Text(if (isMinus) "-" else "+")
                         .padding(horizontal = 8)
-                        .textFont(Typeface.MONOSPACE)
+                        .textTypeface(Typeface.MONOSPACE)
                         .textColor(Colors.black)
                         .textSize(20)
                         .background(CornersShape {
@@ -525,7 +532,6 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 fun View.flexLP(): FlexboxLayout.LayoutParams =
                     layoutParams as FlexboxLayout.LayoutParams
 
-                @SuppressLint("SetTextI18n")
                 fun Ref.updateGrow(own: Float, total: Float) {
                     val ownValue = own.roundToInt()
                     if (ownValue == 0) {
@@ -533,6 +539,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         growIndicator.text = "0"
                     } else {
                         view.isActivated = true
+                        @SuppressLint("SetTextI18n")
                         growIndicator.text = "$ownValue / ${total.roundToInt()}"
                     }
                 }
@@ -710,6 +717,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layoutMargin(top = 2)
                 .onView { tv ->
                     (tv.parent as View).onGlobalLayout {
+                        @SuppressLint("SetTextI18n")
                         tv.text = "Actual size: ${it.width.pxToDip}"
                     }
                 }
@@ -826,7 +834,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         Text(name)
             .textSize(24)
             .textColor(Colors.primary)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textBold()
             .padding(horizontal = 16)
             .padding(top = 24, bottom = 8)
 
@@ -900,7 +908,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) = Text("$name:")
         .textSize(16)
         .textColor(if (isActive) Colors.yellow else Colors.black)
-        .textFont(Typeface.DEFAULT_BOLD)
+        .textBold()
 
     @Suppress("FunctionName")
     private fun <T, LP : LayoutParams> ViewFactory<LP>.DropDown(

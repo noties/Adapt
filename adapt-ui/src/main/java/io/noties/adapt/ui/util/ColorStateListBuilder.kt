@@ -48,6 +48,9 @@ class ColorStateListBuilder {
     fun setSelected(@ColorInt color: Int) = set(DrawableState.selected, color)
     fun setChecked(@ColorInt color: Int) = set(DrawableState.checked, color)
 
+    // TODO: version with Colors.() -> Int
+    //  setEnabled { white }
+
     fun setDefault(@ColorInt color: Int) = set(emptySet(), color)
 
     @Deprecated(

@@ -4,10 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
@@ -33,7 +37,7 @@ class AdaptUiShapeLabelSample : AdaptUISampleView() {
                     LabelShape {
                         text("Hello there! \uD83D\uDE18")
                             .textSize(20)
-                            .textColor(Colors.black)
+                            .textColor { black }
                             .textGravity(Gravity.center)
                             .textBold()
 //                        textRotation(45F, 1F, 0F)
