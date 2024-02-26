@@ -18,6 +18,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Image
@@ -110,7 +111,7 @@ class AdaptUIClipSample : AdaptUISampleView() {
                                 .clipToOutline()
                         }
                     }.padding(8)
-                        .background(Colors.black)
+                        .backgroundColor { black }
                         .layout(FILL, WRAP)
                 }
 

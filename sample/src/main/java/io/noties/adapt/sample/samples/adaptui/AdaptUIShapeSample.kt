@@ -538,6 +538,7 @@ class AdaptUIShapeSample : SampleView() {
         }
 
         // in order to invalidate a shape we would need to reference ShapeDrawable
+        @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
         lateinit var drawable: ShapeDrawable<Ref>
 
         View()

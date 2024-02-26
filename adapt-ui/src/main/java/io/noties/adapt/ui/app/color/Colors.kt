@@ -38,6 +38,8 @@ object Colors {
         blue
     )
 
+    operator fun invoke(@ColorRes resId: Int) = res(resId)
+
     // hm, if we create a-new, activity might be not initialized and thus
     //  we might use context from previous activity, or just application
     val context: Context get() = (App.topMostActivity ?: App.shared)

@@ -7,6 +7,7 @@ final def gitBranch = {
 }.memoize()
 
 android {
+    namespace 'io.noties.adapt.sample'
 
     compileSdkVersion config['target-sdk']
     buildToolsVersion config['build-tools']
