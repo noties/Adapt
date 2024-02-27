@@ -10,7 +10,6 @@ import kotlin.reflect.KProperty
 
 object ViewStyles
 
-
 fun style(
     block: ViewFactoryConstants.(ViewElement<View, LayoutParams>) -> Unit
 ) = ViewStylesProperty(block)

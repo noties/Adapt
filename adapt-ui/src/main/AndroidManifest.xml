@@ -3,7 +3,7 @@
     <application>
         <provider
             android:exported="false"
-            android:authorities="io.noties.adapt.ui.appinit"
+            android:authorities="${applicationId}.adaptuiappinit"
             android:name=".app.AppInitializationProvider" />
     </application>
 </manifest>
