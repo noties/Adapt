@@ -54,7 +54,7 @@ fun Resources.createAttributeSet(
     null
 }
 
-internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
+fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
     val array = context.obtainStyledAttributes(intArrayOf(attr))
     try {
         return array.getDrawable(0)
@@ -68,7 +68,7 @@ internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable
     return null
 }
 
-internal fun resolveDefaultSelectableDrawable(context: Context): Drawable? = resolveDrawableAttr(
+fun resolveDefaultSelectableDrawable(context: Context): Drawable? = resolveDrawableAttr(
     context,
     android.R.attr.selectableItemBackground
 )

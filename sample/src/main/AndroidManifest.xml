@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".explore.PreviewInActivity"
+            android:exported="true"/>
+
         <receiver
             android:name=".explore.ExploreAppWidgetBroadcastReceiver"
             android:exported="false">

@@ -461,6 +461,15 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
  * @see View.setVerticalScrollBarEnabled
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
+    value: Boolean
+) = scrollBarsEnabled(horizontal = value, vertical = value)
+
+/**
+ * Scroll bars
+ * @see View.setHorizontalScrollBarEnabled
+ * @see View.setVerticalScrollBarEnabled
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
     horizontal: Boolean? = null,
     vertical: Boolean? = null
 ): ViewElement<V, LP> = onView {
@@ -733,4 +742,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
     value: Float
 ) = pivotRelative(value, value)
+
+fun <V: View, LP: LayoutParams> ViewElement<V, LP>.requestFocus() = onView {
+    it.requestFocus()
+}
 

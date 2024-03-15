@@ -122,6 +122,12 @@ public class AdaptViewPager implements Adapt {
 
     @Nullable
     public View findViewForAdapterPosition(int position) {
+        // it is possible that this method might be called when there is no data yet
+        //  with `0` item as position
+        if (position < 0 || position >= items.size()) {
+            return null;
+        }
+
         //noinspection rawtypes
         final Item item = items.get(position);
 

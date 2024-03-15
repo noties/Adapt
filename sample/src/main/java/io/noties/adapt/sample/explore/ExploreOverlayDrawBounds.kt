@@ -11,12 +11,14 @@ import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.shape.Label
 import io.noties.adapt.ui.shape.RectangleShape
 
-object ExplorePreviewDrawBounds {
-    // TODO: this can be an extension for all views
-    fun <V : View, LP : LayoutParams> ViewElement<V, LP>.previewDrawBounds() = onView { view ->
+// Renamed, as `preview` might be considered to be used only in actual layout-preview
+//  `overlayDrawBounds` (which could be used with `ifPreview { it.overlayDrawBounds() }`
+object ExploreOverlayDrawBounds {
+    fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overlayDrawBounds() = onView { view ->
         fun process(view: View) {
             PreviewBoundsDrawable(view, Colors.black)
             if (view is ViewGroup) {
+                // can we also check the level? so, we could nest wrap children
                 view.children.forEach { process(it) }
             }
         }
@@ -24,15 +26,12 @@ object ExplorePreviewDrawBounds {
     }
 
     private class PreviewBoundsDrawable(
-//        val root: ViewGroup,
         val view: View,
         @ColorInt val color: Int
     ) {
 
         private val drawable = RectangleShape {
-//            padding(1)
             stroke(color, 1)
-//            Rectangle { stroke(color, 1) }
             Label(view::class.java.simpleName)
                 .textSize(11)
                 .textColor(color)

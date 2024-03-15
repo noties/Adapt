@@ -13,7 +13,7 @@ import io.noties.adapt.sample.explore.ExploreAutofill
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillEnabled
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillHint
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillRequestOnFocusWhenEmpty
-import io.noties.adapt.sample.explore.ExplorePreviewDrawBounds.previewDrawBounds
+import io.noties.adapt.sample.explore.ExploreOverlayDrawBounds.overlayDrawBounds
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
@@ -78,7 +78,7 @@ class AdaptUITextSample : SampleView() {
                     MyText()
                 }
             }.layoutFill()
-                .previewDrawBounds()
+                .overlayDrawBounds()
         }
         (view as ViewGroup).addView(child)
     }
