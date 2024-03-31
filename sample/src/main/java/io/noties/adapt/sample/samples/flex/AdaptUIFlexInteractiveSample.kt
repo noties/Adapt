@@ -52,7 +52,6 @@ import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
 import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.element.textTypeface

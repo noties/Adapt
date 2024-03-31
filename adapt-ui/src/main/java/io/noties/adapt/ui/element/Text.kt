@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -27,7 +26,9 @@ import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.ImeOptions
+import io.noties.adapt.ui.util.ImeOptionsBuilder
 import io.noties.adapt.ui.util.InputType
+import io.noties.adapt.ui.util.InputTypeBuilder
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 import io.noties.adapt.ui.util.TypefaceStyle
 import io.noties.adapt.ui.util.dip
@@ -168,8 +169,9 @@ inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
  * @see TextView.setTypeface
  * @see textTypeface
  */
+// cannot replaceWith with different parameters (int vs TypefaceStyle)
 @Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use `textTypeface`")
+@Deprecated(message = "Use `textTypeface`")
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     font: Typeface? = null,
     fontStyle: Int = Typeface.NORMAL
@@ -481,28 +483,31 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
 ) = onView { it.inputType = inputType.value }
 
 /**
- * Ime Options
+ * InputType
+ * @see TextView.setInputType
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
+    builder: InputTypeBuilder
+) = onView { it.inputType = builder(InputType).value }
+
+/**
+ * Builder requires that action is specified last (terminating)
+ *
+ * ```kotlin
+ * Text("Hello")
+ *   .textImeOptions { noExtractUi.noFullScreen.actionDone { /*done callback*/ } }
+ * ```
  * @see TextView.setImeOptions
  * @see TextView.setOnEditorActionListener
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
-    imeOptions: ImeOptions,
-    onActionListener: ((V, action: ImeOptions) -> Boolean)? = null
+    builder: ImeOptionsBuilder
 ) = onView {
-    it.imeOptions = imeOptions.value
-
-    onActionListener?.also { listener ->
-        val action = imeOptions.value and EditorInfo.IME_MASK_ACTION
-        it.setOnEditorActionListener { _, actionId, _ ->
-            if (action != 0 && actionId != action) {
-                false
-            } else {
-                listener(it, ImeOptions(actionId))
-            }
-        }
-    }
+    val (rawValue, editorAction) = builder(ImeOptions)
+    it.imeOptions = rawValue
+    it.setOnEditorActionListener(editorAction)
 }
 
-inline fun <V: TextView, LP: LayoutParams> ViewElement<V, LP>.textStyle(
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStyle(
     builder: TextStyles.() -> ElementStyle<V, LP>
 ) = style(builder(TextStyles))

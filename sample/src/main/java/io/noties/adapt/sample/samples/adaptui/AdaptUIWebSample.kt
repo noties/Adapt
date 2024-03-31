@@ -20,9 +20,13 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.Text
+import io.noties.adapt.ui.element.Web
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.webChromeClient
+import io.noties.adapt.ui.element.webClient
+import io.noties.adapt.ui.element.webOnElementReady
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
@@ -30,11 +34,7 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.visible
-import io.noties.adapt.ui.widget.Web
 import io.noties.adapt.ui.widget.WebViewPlaceholder
-import io.noties.adapt.ui.widget.webChromeClient
-import io.noties.adapt.ui.widget.webClient
-import io.noties.adapt.ui.widget.webOnElementReady
 import io.noties.debug.Debug
 
 @AdaptSample(

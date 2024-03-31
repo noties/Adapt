@@ -13,6 +13,8 @@ import io.noties.adapt.ui.ViewFactory
  * and then replace self with children of the supplied factory. Multiple children
  * are supported. Setting visibility [View.VISIBLE] or [View.INVISIBLE] is the same
  * as calling [LazyView.inject] directly
+ *
+ * @see io.noties.adapt.ui.element.Lazy
  */
 @SuppressLint("ViewConstructor")
 open class LazyView internal constructor(

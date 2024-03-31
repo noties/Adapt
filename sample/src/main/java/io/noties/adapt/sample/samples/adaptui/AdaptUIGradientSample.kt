@@ -22,6 +22,7 @@ import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
+import io.noties.adapt.ui.element.ZStackSquare
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
@@ -40,7 +41,6 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.widget.ZStackSquare
 
 @AdaptSample(
     id = "20230517155636",

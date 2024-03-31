@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.viewpager
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -16,6 +15,7 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToPadding
+import io.noties.adapt.ui.element.AdaptPagerWrapContent
 import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -25,7 +25,6 @@ import io.noties.adapt.ui.element.ViewPagerOnPageChangeListener
 import io.noties.adapt.ui.element.pagerOnPageChangedListener
 import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
@@ -40,7 +39,6 @@ import io.noties.adapt.ui.shape.CornersShape
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.widget.AdaptPagerWrapContent
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.debug.Debug
 import kotlin.math.roundToInt

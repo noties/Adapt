@@ -8,13 +8,19 @@ import io.noties.adapt.sample.SampleView
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.sample.ui.color.black
-import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.sample.util.Preview
 import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.VStack
+import io.noties.adapt.ui.element.Web
+import io.noties.adapt.ui.element.webChromeClient
+import io.noties.adapt.ui.element.webClient
+import io.noties.adapt.ui.element.webLoad
+import io.noties.adapt.ui.element.webOnElementReady
+import io.noties.adapt.ui.element.webSettings
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
@@ -22,12 +28,6 @@ import io.noties.adapt.ui.overlay
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.withAlphaComponent
-import io.noties.adapt.ui.widget.Web
-import io.noties.adapt.ui.widget.webChromeClient
-import io.noties.adapt.ui.widget.webClient
-import io.noties.adapt.ui.widget.webLoad
-import io.noties.adapt.ui.widget.webOnElementReady
-import io.noties.adapt.ui.widget.webSettings
 
 @AdaptSample(
     id = "20230716140149",

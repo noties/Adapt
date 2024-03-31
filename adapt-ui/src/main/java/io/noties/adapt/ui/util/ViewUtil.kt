@@ -1,5 +1,8 @@
 package io.noties.adapt.ui.util
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import android.view.ViewTreeObserver.OnPreDrawListener
 import io.noties.adapt.ui.LayoutParams
@@ -54,3 +57,22 @@ fun <V : View> V.onDetachedOnce(block: (V) -> Unit) {
  * ```
  */
 val <V: View> V.element: ViewElement<V, LayoutParams> get() = ViewElement.create(this)
+
+/**
+ * Searches for the holding Activity
+ */
+val View.activity: Activity? get() {
+    var context: Context? = this.context
+    while (context != null) {
+        if (context is Activity) {
+            return context
+        }
+        context = (context as? ContextWrapper)?.baseContext
+    }
+    return null
+}
+
+/**
+ * Searches for focused view in dedicated to this view Activity
+ */
+val View.currentFocus: View? get() = activity?.currentFocus

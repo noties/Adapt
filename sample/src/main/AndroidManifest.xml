@@ -27,7 +27,11 @@
 
         <activity
             android:name=".explore.PreviewInActivity"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <activity
+            android:name=".samples.adaptui.ActivitySetContentUISampleActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".explore.ExploreAppWidgetBroadcastReceiver"

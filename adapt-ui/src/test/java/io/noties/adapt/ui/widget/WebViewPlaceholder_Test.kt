@@ -10,6 +10,11 @@ import android.widget.FrameLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.element.Web
+import io.noties.adapt.ui.element.webChromeClient
+import io.noties.adapt.ui.element.webClient
+import io.noties.adapt.ui.element.webLoad
+import io.noties.adapt.ui.element.webSettings
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.*
 import org.junit.Test

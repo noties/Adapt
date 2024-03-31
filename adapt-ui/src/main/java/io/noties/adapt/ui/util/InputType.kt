@@ -9,6 +9,8 @@ open class InputType(val value: Int) {
         val number: Number get() = Number()
         val phone: InputType get() = InputType(EditorInfo.TYPE_CLASS_PHONE)
         val dateTime: DateTime get() = DateTime()
+
+        fun raw(value: Int): InputType = InputType(value)
     }
 
     class Text(
@@ -83,3 +85,5 @@ open class InputType(val value: Int) {
         return value
     }
 }
+
+typealias InputTypeBuilder = InputType.Companion.() -> InputType

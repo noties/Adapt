@@ -18,6 +18,7 @@ import io.noties.adapt.ui.alpha
 import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
+import io.noties.adapt.ui.element.VStackReverseDrawingOrder
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -27,7 +28,6 @@ import io.noties.adapt.ui.onElementView
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.sticky.stickyVerticalScrollContainer
 import io.noties.adapt.ui.sticky.stickyView
-import io.noties.adapt.ui.widget.VStackReverseDrawingOrder
 import io.noties.debug.Debug
 
 @AdaptSample(

@@ -1,5 +1,43 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiTextInputImeOptionsSample",
+    "id": "20240331120232",
+    "title": "Text.textImeOptions",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIScrollIfScrollsSample",
+    "id": "20240327011222",
+    "title": "AdaptUI. Scroll if content scrolls else wrap height",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "recipe"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextInputTypeSample",
+    "id": "20240326221901",
+    "title": "Text.textInputType",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.ActivitySetContentUISample",
+    "id": "20240326215919",
+    "title": "Activity.setContentUI",
+    "description": "Helper function to set \u003ctt\u003eActivity\u0027s\u003c/tt\u003e content via \u003ctt\u003eAdaptUI\u003c/tt\u003e",
+    "tags": [
+      "adapt-ui",
+      "util"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb",
     "id": "20230716140149",
     "title": "[Showcase] AdaptUI Web element",

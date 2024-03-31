@@ -51,7 +51,7 @@ class ViewFactory<out LP : LayoutParams>(
 
         fun createView(
             context: Context,
-            children: ViewFactory<LayoutParams>.(Unit) -> Unit
+            children: ViewFactory<LayoutParams>.() -> Unit
         ): View = newView(context).create(children)
 
         fun <R : Any> createView(
@@ -131,8 +131,10 @@ class ViewFactory<out LP : LayoutParams>(
         )
 
         fun create(
-            children: ViewFactory<LP>.(Unit) -> Unit
-        ): View = create(Unit, children)
+            children: ViewFactory<LP>.() -> Unit
+        ): View = create(Unit) {
+            children()
+        }
 
         fun <R : Any> create(
             ref: R,

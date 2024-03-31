@@ -12,6 +12,9 @@ class App : Application() {
 
         fun mock(context: Context) {
             shared = App()
+                .also {
+                    io.noties.adapt.ui.app.App.shared = it
+                }
             shared.attachBaseContext(context)
         }
     }

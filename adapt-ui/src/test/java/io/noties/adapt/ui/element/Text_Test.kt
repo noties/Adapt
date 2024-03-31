@@ -40,13 +40,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.RETURNS_MOCKS
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -685,15 +687,15 @@ class Text_Test {
     fun textImeOptions() {
         val inputs = listOf(
             ImeOptions.none,
-            ImeOptions.actionDone.noEnterAction.noExactUi.forceAscii,
-            ImeOptions.navigatePrevious
+            ImeOptions.noEnterAction.noExtractUi.forceAscii,
+            ImeOptions.navigatePrevious.actionPrevious { }
         )
 
         for (input in inputs) {
             newTextElement()
-                .textImeOptions(input)
+                .textImeOptions { input }
                 .renderView {
-                    verify(this).imeOptions = eq(input.value)
+                    verify(this).imeOptions = eq(input.rawValue)
                 }
         }
     }
@@ -703,22 +705,19 @@ class Text_Test {
         // none triggers all
         // action would be delivered if it is requested
 
-        fun mockAction(): (TextView, ImeOptions) -> Boolean {
-            val action: (TextView, ImeOptions) -> Boolean = mockt()
-            whenever(action.invoke(any(), any())).thenReturn(true)
-            return action
-        }
+        val editorActionDone: () -> Unit = mockt()
+        val editorActionNext: () -> Unit = mockt()
 
         val inputs = listOf(
-            ImeOptions.none to mockAction(),
-            ImeOptions.actionDone to mockAction(),
-            ImeOptions.actionNext.forceAscii.noExactUi to mockAction()
+            ImeOptions.actionDone(editorActionDone) to editorActionDone,
+            ImeOptions.forceAscii.noExtractUi.actionNext(editorActionNext) to editorActionNext
         )
 
-        for ((options, action) in inputs) {
+        for ((input, action) in inputs) {
             newTextElement()
-                .textImeOptions(options, action)
+                .textImeOptions { input }
                 .renderView {
+                    val s = input.toString()
 
                     val listener = kotlin.run {
                         val captor = ArgumentCaptor.forClass(OnEditorActionListener::class.java)
@@ -726,48 +725,29 @@ class Text_Test {
                         captor.value
                     }
 
-                    val expectedActionId = options.value and EditorInfo.IME_MASK_ACTION
-                    if (expectedActionId == 0) {
-                        // all events must be delivered
-                        listOf(
-                            ImeOptions.actionSearch,
-                            ImeOptions.actionDone,
-                            ImeOptions.actionSend
-                        ).forEach {
-                            assertEquals(
-                                options.toString(),
-                                true,
-                                listener.onEditorAction(this, it.value, null)
-                            )
-                            verify(action).invoke(eq(this), eq(ImeOptions(it.value)))
-                        }
-                    } else {
-                        // just our action must be delivered
-                        listOf(
-                            ImeOptions.none,
-                            ImeOptions.actionDone,
-                            ImeOptions.actionSend,
-                            ImeOptions.actionSearch,
-                            ImeOptions.actionNext,
-                            ImeOptions.actionGo,
-                            ImeOptions.actionPrevious,
-                            ImeOptions.actionUnspecified,
-                        )
-                            .filter {
-                                it.value != expectedActionId
-                            }
-                            .forEach {
-                                assertEquals(
-                                    options.toString(),
-                                    false,
-                                    listener.onEditorAction(this, it.value, null)
-                                )
-                                verify(action, never()).invoke(any(), any())
-                            }
+                    // mock what system does with flags internally
+                    val platformActionId = input.rawValue and EditorInfo.IME_MASK_ACTION
 
-                        listener.onEditorAction(this, expectedActionId, null)
-                        verify(action).invoke(eq(this), eq(ImeOptions(expectedActionId)))
+                    // right now the action would be present, no need to deliver all events
+                    require(platformActionId != 0) { "right now the action would be present, no need to deliver all events" }
+
+                    assertEquals(
+                        s,
+                        true,
+                        listener.onEditorAction(this, platformActionId, null)
+                    )
+                    verify(action, times(1)).invoke()
+
+                    // send other events that would not trigger out action
+                    val others = listOf(
+                        ImeOptions.actionPrevious(),
+                        ImeOptions.actionGo()
+                    )
+                    for (other in others) {
+                        listener.onEditorAction(this, other.rawValue, null)
                     }
+                    // after other actions must still be 1 (as above)
+                    verify(action, times(1)).invoke()
                 }
         }
     }

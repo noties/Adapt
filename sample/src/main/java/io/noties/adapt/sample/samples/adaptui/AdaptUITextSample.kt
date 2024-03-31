@@ -1,6 +1,7 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -34,17 +35,20 @@ import io.noties.adapt.ui.element.textAutoSize
 import io.noties.adapt.ui.element.textBreakStrategy
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textEllipsize
+import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGradient
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textHint
 import io.noties.adapt.ui.element.textHyphenationFrequency
 import io.noties.adapt.ui.element.textImeOptions
+import io.noties.adapt.ui.element.textInputType
 import io.noties.adapt.ui.element.textMaxLines
 import io.noties.adapt.ui.element.textOnTextChanged
 import io.noties.adapt.ui.element.textSelectable
 import io.noties.adapt.ui.element.textShadow
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.gradient.RadialGradient
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
@@ -54,7 +58,6 @@ import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.ImeOptions
 import io.noties.adapt.ui.util.InputType
 import io.noties.adapt.ui.util.hex
 import io.noties.debug.Debug
@@ -89,21 +92,14 @@ class AdaptUITextSample : SampleView() {
             .textSize(16)
             .textColor { black }
             .textHint("Some phone!")
-//            .textInputType(ExploreEditorInfo.InputType.text.uri.noSuggestions.capWords)
-//            .textImeOptions(ExploreEditorInfo.ImeOptions.actionGo.noExactUi)
-            .textImeOptions(ImeOptions.actionSearch.noExactUi) { view, _ ->
-                val text = view.text.toString()
-                Debug.e("triggered action! view:'$text'")
-                true
+            .textImeOptions {
+                noExtractUi
+                    .noFullScreen
+                    .forceAscii
+                    .actionSearch {
+                        Debug.w("Triggered search action!")
+                    }
             }
-//            .onView {
-////                it.setImeActionLabel("WHAT", R.id.divider_overlay_drawable)
-//                it.setOnEditorActionListener { v, actionId, event ->
-//                    val eq = ImeOptions(actionId) == ImeOptions.actionSearch
-//                    Debug.i("actionId=${actionId}, event=${event} eq:$eq")
-//                    true
-//                }
-//            }
             .padding(horizontal = 16, vertical = 12)
             .layoutMargin(horizontal = 16, vertical = 8)
             .background(StatefulShape.drawable {
@@ -153,7 +149,11 @@ class AdaptUITextSample : SampleView() {
             .textHideIfEmpty()
             .textAllCaps()
             .textEllipsize(TextUtils.TruncateAt.END)
+            .textTypeface(Typeface.DEFAULT) { bold.italic }
             .textGravity(Gravity.center)
+            .textGravity { center }
+            .textInputType { text.password.multiline.autoComplete }
+            .textImeOptions { noExtractUi.noFullScreen.actionSearch { /*action triggered*/ } }
             .textSelectable()
 //            .textSingleLine(true)
             .textMaxLines(1)
