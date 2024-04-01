@@ -43,7 +43,7 @@ class VStack_Test {
         for ((gravity, block) in inputs) {
             val view = obtainView(block) as LinearLayout
             assertEquals(LinearLayout.VERTICAL, view.orientation)
-            assertEquals(gravity.value, view.gravity)
+            assertEquals(gravity.rawValue, view.gravity)
         }
     }
 

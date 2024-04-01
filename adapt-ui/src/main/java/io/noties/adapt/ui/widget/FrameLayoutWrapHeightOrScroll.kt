@@ -53,24 +53,37 @@ class FrameLayoutWrapHeightOrScroll(
 
         val child = content
 
-        // unspecified and without padding (yet)!
-        val childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-        child.measure(
-            MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-            childHeightSpec
-        )
+        // if child is wrapped, then measure pared scroll-view
+        if (child.parent != this) {
+            // measure scroll
+            getChildAt(0).measure(
+                MeasureSpec.makeMeasureSpec(
+                    width - paddingRight - paddingRight,
+                    MeasureSpec.EXACTLY
+                ),
+                MeasureSpec.makeMeasureSpec(
+                    height - paddingTop - paddingBottom,
+                    MeasureSpec.AT_MOST
+                )
+            )
+        } else {
+            // else measure the whole view (do not pass at-most, just let it be whatever
+            //  height it wants)
+            child.measure(
+                MeasureSpec.makeMeasureSpec(
+                    width - paddingRight - paddingLeft,
+                    MeasureSpec.EXACTLY
+                ),
+                MeasureSpec.makeMeasureSpec(
+                    0,
+                    MeasureSpec.UNSPECIFIED
+                )
+            )
+        }
 
         val childMeasuredHeight = child.measuredHeight
 
         val isOverflow = childMeasuredHeight > (height - paddingTop - paddingBottom)
-
-        if (child.parent != this) {
-            // additionally measure wrapper content
-            getChildAt(0).measure(
-                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-            )
-        }
 
         if (!isOverflow) {
             setMeasuredDimension(
@@ -81,6 +94,7 @@ class FrameLayoutWrapHeightOrScroll(
             unwrapContentFromScrollView()
 
         } else {
+            // just take maximum available (at-most)
             setMeasuredDimension(
                 width,
                 height

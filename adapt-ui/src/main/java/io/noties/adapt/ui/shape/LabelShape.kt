@@ -112,7 +112,7 @@ class LabelShape(
 
         (textGravity ?: Gravity.leading.top).also {
             android.view.Gravity.apply(
-                it.value,
+                it.rawValue,
                 width,
                 height,
                 bounds,

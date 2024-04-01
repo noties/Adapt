@@ -15,7 +15,7 @@ val HStackDefaultGravity: Gravity get() = Gravity.center.leading
 fun <V : LinearLayout, LP : LayoutParams> ViewElement<V, LP>.stackGravity(
     gravity: Gravity
 ) = onView {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
 
 /**

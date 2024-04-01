@@ -87,6 +87,7 @@ class LinearLayoutContentMeasuredLast : LinearLayout {
         var availableHeight = height - paddingTop - paddingBottom
 
         fun measureChild(child: View) {
+            // NB! measureChild takes care of padding (we are interested in horizontal primary)
             measureChild(
                 child,
                 childWidthMeasureSpec(width, child),
@@ -108,7 +109,7 @@ class LinearLayoutContentMeasuredLast : LinearLayout {
 
     private fun childWidthMeasureSpec(parentWidth: Int, child: View): Int {
         return MeasureSpec.makeMeasureSpec(
-            (parentWidth - paddingLeft - paddingRight - child.widthLayoutMargins()),
+            (parentWidth - child.widthLayoutMargins()),
             MeasureSpec.EXACTLY
         )
     }

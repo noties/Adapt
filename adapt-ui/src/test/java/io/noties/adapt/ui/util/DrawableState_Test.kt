@@ -84,7 +84,7 @@ class DrawableState_Test {
         )
 
         for ((expected, state) in inputs) {
-            Assert.assertEquals(expected, state.value)
+            Assert.assertEquals(expected, state.rawValue)
         }
     }
 
@@ -175,12 +175,12 @@ class DrawableStateSetTest {
         for (input in inputs) {
             // exact match
             assertState(
-                DrawableStateSet(intArrayOf(input.value)),
+                DrawableStateSet(intArrayOf(input.rawValue)),
                 setOf(input)
             )
             // one of many
             assertState(
-                DrawableStateSet(intArrayOf(0, 1, 2, input.value)),
+                DrawableStateSet(intArrayOf(0, 1, 2, input.rawValue)),
                 setOf(input)
             )
         }
@@ -207,7 +207,7 @@ class DrawableStateSetTest {
             for (set in windowed) {
 
                 // all exact
-                val all = set.map { it.value }.toIntArray()
+                val all = set.map { it.rawValue }.toIntArray()
 
                 Assert.assertEquals(
                     "containsAll:$set in [${all.contentToString()}]",
@@ -272,7 +272,7 @@ class DrawableStateSetTest {
             )
             Assert.assertEquals(
                 contains,
-                stateSet.contains(DrawableState(state.value))
+                stateSet.contains(DrawableState(state.rawValue))
             )
             Assert.assertEquals(
                 contains,

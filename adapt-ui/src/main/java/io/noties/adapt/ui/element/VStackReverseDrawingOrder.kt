@@ -17,7 +17,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.VStackReverseDrawingOrder(
     {
         LinearLayoutReverseDrawingOrder(it).also { ll ->
             ll.orientation = LinearLayout.VERTICAL
-            ll.gravity = gravity.value
+            ll.gravity = gravity.rawValue
         }
     },
     children

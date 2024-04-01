@@ -127,6 +127,6 @@ class InputType_Test {
     }
 
     private fun assertType(expected: Int, type: InputType) {
-        assertEquals(type.toString(), expected, type.value)
+        assertEquals(type.toString(), expected, type.rawValue)
     }
 }

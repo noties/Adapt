@@ -349,7 +349,7 @@ class ViewElement_Extensions_Test {
                 .renderView {
                     verify(this).foreground = eq(drawable)
                     verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
-                        gravity?.let { eq(it.value) } ?: anyInt()
+                        gravity?.let { eq(it.rawValue) } ?: anyInt()
                 }
         }
     }
@@ -371,7 +371,7 @@ class ViewElement_Extensions_Test {
                     val captor = ArgumentCaptor.forClass(Drawable::class.java)
                     verify(this).foreground = captor.capture()
                     verify(this, gravity?.let { times(1) } ?: never()).foregroundGravity =
-                        gravity?.let { eq(it.value) } ?: anyInt()
+                        gravity?.let { eq(it.rawValue) } ?: anyInt()
 
                     Assert.assertTrue(
                         "Foreground is instance of ShapeDrawable, class:${captor.value::class.java.name}",

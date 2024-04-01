@@ -24,7 +24,7 @@ class StatefulShape {
                 val states = if (key.isEmpty()) {
                     StateSet.WILD_CARD
                 } else {
-                    key.map { it.value }.toIntArray()
+                    key.map { it.rawValue }.toIntArray()
                 }
                 drawable.addState(states, value.newDrawable())
             }

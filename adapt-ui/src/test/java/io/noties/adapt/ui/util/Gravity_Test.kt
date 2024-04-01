@@ -57,7 +57,7 @@ class Gravity_Test {
         for (input in inputs) {
             assertEquals(
                 toString(input.first),
-                input.first.value,
+                input.first.rawValue,
                 input.second,
             )
         }
@@ -91,7 +91,7 @@ class Gravity_Test {
         for (input in inputs) {
             assertEquals(input.first, input.second)
             // check that raw equals with the same gravityValue
-            assertEquals(input.first, Gravity(input.first.value))
+            assertEquals(input.first, Gravity(input.first.rawValue))
         }
     }
 
@@ -259,8 +259,8 @@ class Gravity_Test {
         }
 
         { gravity ->
-            val text = method?.invoke(null, gravity.value)?.toString() ?: ""
-            "Gravity(${gravity.value} = [$text])"
+            val text = method?.invoke(null, gravity.rawValue)?.toString() ?: ""
+            "Gravity(${gravity.rawValue} = [$text])"
         }
     }
 }

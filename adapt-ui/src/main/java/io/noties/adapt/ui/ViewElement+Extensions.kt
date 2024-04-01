@@ -183,7 +183,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     gravity: Gravity? = null
 ): ViewElement<V, LP> = onView { view ->
     view.foreground = drawable
-    gravity?.also { view.foregroundGravity = it.value }
+    gravity?.also { view.foregroundGravity = it.rawValue }
 }
 
 /**

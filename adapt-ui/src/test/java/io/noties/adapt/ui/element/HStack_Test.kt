@@ -34,7 +34,7 @@ class HStack_Test {
         assertEquals(LinearLayout.HORIZONTAL, (view as LinearLayout).orientation)
 
         // default gravity
-        assertEquals(Gravity.leading.center.value, view.gravity)
+        assertEquals(Gravity.leading.center.rawValue, view.gravity)
     }
 
     @Test
@@ -47,7 +47,7 @@ class HStack_Test {
         assertEquals(LinearLayout.HORIZONTAL, (view as LinearLayout).orientation)
 
         // default gravity
-        assertEquals(gravity.value, view.gravity)
+        assertEquals(gravity.rawValue, view.gravity)
     }
 
     @Test

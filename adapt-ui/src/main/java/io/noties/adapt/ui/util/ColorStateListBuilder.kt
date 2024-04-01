@@ -23,7 +23,7 @@ class ColorStateListBuilder {
                 val key = if (it.first.isEmpty()) {
                     StateSet.WILD_CARD
                 } else {
-                    it.first.map { ds -> ds.value }.toIntArray()
+                    it.first.map { ds -> ds.rawValue }.toIntArray()
                 }
                 key to it.second
             }

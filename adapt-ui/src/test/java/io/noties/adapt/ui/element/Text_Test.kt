@@ -136,7 +136,7 @@ class Text_Test {
         newTextElement()
             .textGravity(input)
             .renderView {
-                verify(this).gravity = eq(input.value)
+                verify(this).gravity = eq(input.rawValue)
             }
     }
 
@@ -161,7 +161,7 @@ class Text_Test {
                 .renderView {
                     verify(this).setTypeface(
                         eq(typeface),
-                        eq(style.value)
+                        eq(style.rawValue)
                     )
                 }
         }
@@ -314,7 +314,7 @@ class Text_Test {
             Layout.HYPHENATION_FREQUENCY_FULL to HyphenationFrequency.full
         )
         for ((expected, input) in inputs) {
-            assertEquals(expected, input.value)
+            assertEquals(expected, input.rawValue)
         }
     }
 
@@ -330,7 +330,7 @@ class Text_Test {
             newTextElement()
                 .textHyphenationFrequency(input)
                 .renderView {
-                    verify(this).hyphenationFrequency = eq(input.value)
+                    verify(this).hyphenationFrequency = eq(input.rawValue)
                 }
         }
     }
@@ -343,7 +343,7 @@ class Text_Test {
             Layout.BREAK_STRATEGY_HIGH_QUALITY to BreakStrategy.highQuality
         )
         for ((expected, input) in inputs) {
-            assertEquals(expected, input.value)
+            assertEquals(expected, input.rawValue)
         }
     }
 
@@ -359,7 +359,7 @@ class Text_Test {
             newTextElement()
                 .textBreakStrategy(input)
                 .renderView {
-                    verify(this).breakStrategy = eq(input.value)
+                    verify(this).breakStrategy = eq(input.rawValue)
                 }
         }
     }
@@ -372,7 +372,7 @@ class Text_Test {
         )
 
         for ((expected, input) in inputs) {
-            assertEquals(expected, input.value)
+            assertEquals(expected, input.rawValue)
         }
     }
 
@@ -388,7 +388,7 @@ class Text_Test {
             newTextElement()
                 .textJustificationMode(input)
                 .renderView {
-                    verify(this).justificationMode = eq(input.value)
+                    verify(this).justificationMode = eq(input.rawValue)
                 }
         }
     }
@@ -678,7 +678,7 @@ class Text_Test {
             newTextElement()
                 .textInputType(input)
                 .renderView {
-                    verify(this).inputType = eq(input.value)
+                    verify(this).inputType = eq(input.rawValue)
                 }
         }
     }

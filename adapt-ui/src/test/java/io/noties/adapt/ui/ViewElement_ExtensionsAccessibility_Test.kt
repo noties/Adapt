@@ -65,7 +65,7 @@ class ViewElement_ExtensionsAccessibility_Test {
             newElement()
                 .accessibilityImportant(input)
                 .renderView {
-                    verify(this).importantForAccessibility = eq(input.value)
+                    verify(this).importantForAccessibility = eq(input.rawValue)
                 }
         }
     }
@@ -80,7 +80,7 @@ class ViewElement_ExtensionsAccessibility_Test {
             newElement()
                 .accessibilityImportant(input)
                 .renderView {
-                    verify(this).importantForAccessibility = eq(value.value)
+                    verify(this).importantForAccessibility = eq(value.rawValue)
                 }
         }
     }
@@ -169,7 +169,7 @@ class ViewElement_ExtensionsAccessibility_Test {
             newElement()
                 .accessibilityLiveRegion(input)
                 .renderView {
-                    verify(this).accessibilityLiveRegion = eq(input.value)
+                    verify(this).accessibilityLiveRegion = eq(input.rawValue)
                 }
 
         }

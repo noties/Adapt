@@ -442,7 +442,7 @@ class Pager_Test {
 
         val lp = view.layoutParams as ViewPagerLayoutParams
         assertTrue(lp.isDecor)
-        assertEquals(gravity.value, lp.gravity)
+        assertEquals(gravity.rawValue, lp.gravity)
     }
 
     @Test

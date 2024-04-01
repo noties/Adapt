@@ -96,7 +96,7 @@ class ColorStateListBuilder_Test {
                 val k = if (it.first.isEmpty()) {
                     StateSet.WILD_CARD
                 } else {
-                    it.first.map { it.value }.toIntArray()
+                    it.first.map { it.rawValue }.toIntArray()
                 }
                 k to it.second
             }
@@ -122,8 +122,8 @@ class ColorStateListBuilder_Test {
         val color = 9721
         val inputs: List<ColorStateListBuilder.() -> Unit> = listOf(
             { set(state, color) },
-            { set(DrawableState(state.value), color) },
-            { set(setOf(DrawableState(state.value)), color) },
+            { set(DrawableState(state.rawValue), color) },
+            { set(setOf(DrawableState(state.rawValue)), color) },
             { set(setOf(state), color) },
             { self.invoke(this, color) }
         )

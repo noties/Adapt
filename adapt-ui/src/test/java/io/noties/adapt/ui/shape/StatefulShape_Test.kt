@@ -271,7 +271,7 @@ class StatefulShape_Test {
             val state = if (k.isEmpty()) {
                 StateSet.WILD_CARD
             } else {
-                k.map { it.value }.toIntArray()
+                k.map { it.rawValue }.toIntArray()
             }
             assertShape(v, state)
         }
@@ -302,7 +302,7 @@ class StatefulShape_Test {
                 val k = if (it.first.isEmpty()) {
                     StateSet.WILD_CARD
                 } else {
-                    it.first.map { it.value }.toIntArray()
+                    it.first.map { it.rawValue }.toIntArray()
                 }
                 k to it.second
             }

@@ -201,9 +201,9 @@ class ShapeDrawable_Test {
         val trigger = noTrigger.withIndex()
             .map { (i, a) ->
                 when (i % 3) {
-                    0 -> a.plus(set[0].value)
-                    1 -> a.plus(set[1].value)
-                    2 -> a.plus(intArrayOf(set[0].value, set[1].value))
+                    0 -> a.plus(set[0].rawValue)
+                    1 -> a.plus(set[1].rawValue)
+                    2 -> a.plus(intArrayOf(set[0].rawValue, set[1].rawValue))
                     else -> error("Unexpected index")
                 }
             }

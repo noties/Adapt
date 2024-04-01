@@ -149,7 +149,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textShadow(
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
     gravity: Gravity
 ): ViewElement<V, LP> = onView {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
 
 /**
@@ -181,7 +181,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
     typeface: Typeface? = null,
     typefaceStyle: TypefaceStyle = TypefaceStyle.normal
 ): ViewElement<V, LP> = onView {
-    it.setTypeface(typeface, typefaceStyle.value)
+    it.setTypeface(typeface, typefaceStyle.rawValue)
 }
 
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
@@ -344,7 +344,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSingleLine(
  * HyphenationFrequency
  */
 @JvmInline
-value class HyphenationFrequency(val value: Int) {
+value class HyphenationFrequency(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE)
         val normal: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL)
@@ -358,15 +362,26 @@ value class HyphenationFrequency(val value: Int) {
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
     hyphenationFrequency: HyphenationFrequency
 ): ViewElement<V, LP> = onView {
-    it.hyphenationFrequency = hyphenationFrequency.value
+    it.hyphenationFrequency = hyphenationFrequency.rawValue
 }
+
+/**
+ * @see TextView.setHyphenationFrequency
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
+    builder: HyphenationFrequency.Companion.() -> HyphenationFrequency
+): ViewElement<V, LP> = textHyphenationFrequency(builder(HyphenationFrequency))
 
 /**
  * BreakStrategy
  * @see TextView.setBreakStrategy
  */
 @JvmInline
-value class BreakStrategy(val value: Int) {
+value class BreakStrategy(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val simple: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_SIMPLE)
         val balanced: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_BALANCED)
@@ -380,8 +395,15 @@ value class BreakStrategy(val value: Int) {
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
     breakStrategy: BreakStrategy
 ): ViewElement<V, LP> = onView {
-    it.breakStrategy = breakStrategy.value
+    it.breakStrategy = breakStrategy.rawValue
 }
+
+/**
+ * @see TextView.setBreakStrategy
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
+    builder: BreakStrategy.Companion.() -> BreakStrategy
+): ViewElement<V, LP> = textBreakStrategy(builder(BreakStrategy))
 
 /**
  * JustificationMode
@@ -391,7 +413,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @JvmInline
-value class JustificationMode(val value: Int) {
+value class JustificationMode(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_NONE)
         val interWord: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
@@ -405,8 +431,16 @@ value class JustificationMode(val value: Int) {
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
     mode: JustificationMode
 ): ViewElement<V, LP> = onView {
-    it.justificationMode = mode.value
+    it.justificationMode = mode.rawValue
 }
+
+/**
+ * @see JustificationMode
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
+    builder: JustificationMode.Companion.() -> JustificationMode
+): ViewElement<V, LP> = textJustificationMode(builder(JustificationMode))
 
 /**
  * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
@@ -480,7 +514,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textLetterSpacing(
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
     inputType: InputType
-) = onView { it.inputType = inputType.value }
+) = onView { it.inputType = inputType.rawValue }
 
 /**
  * InputType
@@ -488,7 +522,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
     builder: InputTypeBuilder
-) = onView { it.inputType = builder(InputType).value }
+) = onView { it.inputType = builder(InputType).rawValue }
 
 /**
  * Builder requires that action is specified last (terminating)

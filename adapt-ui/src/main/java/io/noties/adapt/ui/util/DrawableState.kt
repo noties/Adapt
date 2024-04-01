@@ -41,7 +41,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onDrawableStateChange(
 }
 
 @JvmInline
-value class DrawableState(@AttrRes val value: Int) {
+value class DrawableState(@AttrRes val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val pressed = DrawableState(android.R.attr.state_pressed)
         val focused = DrawableState(android.R.attr.state_focused)
@@ -69,7 +73,7 @@ value class DrawableState(@AttrRes val value: Int) {
     //  it it possible that this is a discarded impl, right now we do not receive negative values
 
     override fun toString(): String {
-        val name = attrResourceName(value)
+        val name = attrResourceName(rawValue)
         return "DrawableState($name)"
     }
 }
@@ -109,11 +113,11 @@ class DrawableStateSet(@AttrRes val state: IntArray) {
     companion object {
 
         fun contains(@AttrRes state: IntArray, drawableState: DrawableState): Boolean {
-            return state.contains(drawableState.value)
+            return state.contains(drawableState.rawValue)
         }
 
         fun containsAll(@AttrRes state: IntArray, set: Set<DrawableState>): Boolean {
-            return set.all { state.contains(it.value) }
+            return set.all { state.contains(it.rawValue) }
         }
 
         fun containsAny(@AttrRes state: IntArray, set: Set<DrawableState>): Boolean {
@@ -128,7 +132,7 @@ class DrawableStateSet(@AttrRes val state: IntArray) {
 
             override fun getValue(thisRef: DrawableStateSet, property: KProperty<*>): Boolean {
                 return cached ?: kotlin.run {
-                    thisRef.state.contains(state.value).also {
+                    thisRef.state.contains(state.rawValue).also {
                         cached = it
                     }
                 }

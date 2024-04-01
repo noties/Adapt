@@ -23,18 +23,18 @@ object ExploreRelative {
         { RelativeLayout(it) },
         {
             if (gravity != null) {
-                it.gravity = gravity.value
+                it.gravity = gravity.rawValue
             }
         },
         children
     )
 
-/*
-setIgnoreGravity(viewId), view would have ignored gravity
-setGravity
-setHorizontalGravity
-setVerticalGravity
- */
+    /*
+    setIgnoreGravity(viewId), view would have ignored gravity
+    setGravity
+    setHorizontalGravity
+    setVerticalGravity
+     */
 
     fun <V : View, LP : RelativeLayout.LayoutParams> ViewElement<V, LP>.layoutPosition(
         toLeading: ViewElement<*, LP>? = null,

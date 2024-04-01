@@ -2,7 +2,11 @@ package io.noties.adapt.ui.util
 
 import android.view.inputmethod.EditorInfo
 
-open class InputType(val value: Int) {
+open class InputType(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: InputType get() = InputType(EditorInfo.TYPE_NULL)
         val text: Text get() = Text()
@@ -14,15 +18,15 @@ open class InputType(val value: Int) {
     }
 
     class Text(
-        value: Int = EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_NORMAL
-    ) : InputType(value) {
+        rawValue: Int = EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_NORMAL
+    ) : InputType(rawValue) {
         // Capping, one of:
         // - cap characters
         // - cap words
         // - cap sentences
-        val capCharacters: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS)
-        val capWords: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_CAP_WORDS)
-        val capSentences: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES)
+        val capCharacters: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_CAP_CHARACTERS)
+        val capWords: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_CAP_WORDS)
+        val capSentences: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES)
 
         // VARIATION:
         //  - normal (default)
@@ -44,45 +48,45 @@ open class InputType(val value: Int) {
         val password: Text get() = Text(clearVariation or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD)
         val visiblePassword: Text get() = Text(clearVariation or EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
 
-        val autoCorrect: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_AUTO_CORRECT)
-        val autoComplete: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE)
-        val noSuggestions: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+        val autoCorrect: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_AUTO_CORRECT)
+        val autoComplete: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE)
+        val noSuggestions: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
 
-        val multiline: Text get() = Text(value or EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE)
+        val multiline: Text get() = Text(rawValue or EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE)
     }
 
     class Number(
-        value: Int = EditorInfo.TYPE_CLASS_NUMBER or EditorInfo.TYPE_NUMBER_VARIATION_NORMAL
-    ) : InputType(value) {
-        val signed: Number get() = Number(value or EditorInfo.TYPE_NUMBER_FLAG_SIGNED)
-        val decimal: Number get() = Number(value or EditorInfo.TYPE_NUMBER_FLAG_DECIMAL)
-        val password: Number get() = Number(value or EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD)
+        rawValue: Int = EditorInfo.TYPE_CLASS_NUMBER or EditorInfo.TYPE_NUMBER_VARIATION_NORMAL
+    ) : InputType(rawValue) {
+        val signed: Number get() = Number(rawValue or EditorInfo.TYPE_NUMBER_FLAG_SIGNED)
+        val decimal: Number get() = Number(rawValue or EditorInfo.TYPE_NUMBER_FLAG_DECIMAL)
+        val password: Number get() = Number(rawValue or EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD)
     }
 
     class DateTime(
-        value: Int = EditorInfo.TYPE_CLASS_DATETIME or EditorInfo.TYPE_DATETIME_VARIATION_NORMAL
-    ) : InputType(value) {
+        rawValue: Int = EditorInfo.TYPE_CLASS_DATETIME or EditorInfo.TYPE_DATETIME_VARIATION_NORMAL
+    ) : InputType(rawValue) {
         val date: DateTime get() = DateTime(clearVariation or EditorInfo.TYPE_DATETIME_VARIATION_DATE)
         val time: DateTime get() = DateTime(clearVariation or EditorInfo.TYPE_DATETIME_VARIATION_TIME)
     }
 
-    internal val clearVariation: Int get() = value and EditorInfo.TYPE_MASK_VARIATION.inv()
+    internal val clearVariation: Int get() = rawValue and EditorInfo.TYPE_MASK_VARIATION.inv()
 
     override fun toString(): String {
-        return "${javaClass.simpleName}(value=$value)"
+        return "${javaClass.simpleName}(value=$rawValue)"
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is InputType) return false
 
-        if (value != other.value) return false
+        if (rawValue != other.rawValue) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return value
+        return rawValue
     }
 }
 

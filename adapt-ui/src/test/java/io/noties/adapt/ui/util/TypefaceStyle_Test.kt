@@ -24,7 +24,7 @@ class TypefaceStyle_Test {
         )
 
         for ((expected, style) in inputs) {
-            Assert.assertEquals(style.toString(), expected, style.value)
+            Assert.assertEquals(style.toString(), expected, style.rawValue)
             Assert.assertEquals(style, TypefaceStyle(expected))
         }
     }

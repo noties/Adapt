@@ -76,7 +76,7 @@ class ViewElement_Layout_Test {
             .useLayoutParams(LinearLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
-                Assert.assertEquals(input.value, (layoutParams as LinearLayout.LayoutParams).gravity)
+                Assert.assertEquals(input.rawValue, (layoutParams as LinearLayout.LayoutParams).gravity)
             }
     }
 
@@ -87,7 +87,7 @@ class ViewElement_Layout_Test {
             .useLayoutParams(FrameLayout.LayoutParams(0, 0))
             .layoutGravity(input)
             .renderView {
-                Assert.assertEquals(input.value, (layoutParams as FrameLayout.LayoutParams).gravity)
+                Assert.assertEquals(input.rawValue, (layoutParams as FrameLayout.LayoutParams).gravity)
             }
     }
 

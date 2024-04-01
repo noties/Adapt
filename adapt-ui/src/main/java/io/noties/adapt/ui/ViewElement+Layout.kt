@@ -87,7 +87,7 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, LLP> = onLayoutParams {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
 
 /**
@@ -110,7 +110,7 @@ inline fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layou
 fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, FLP> = onLayoutParams {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
 
 /**

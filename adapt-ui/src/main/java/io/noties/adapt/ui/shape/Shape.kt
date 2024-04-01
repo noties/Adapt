@@ -446,7 +446,7 @@ abstract class Shape : ShapeFactory {
             val gravity = this.gravity
             if (gravity != null) {
                 android.view.Gravity.apply(
-                    gravity.value,
+                    gravity.rawValue,
                     w,
                     h,
                     bounds,

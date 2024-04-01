@@ -216,7 +216,7 @@ class ViewElement_ExtensionsCast_Test {
         try {
             success.render()
             assertEquals(
-                Gravity.bottom.value,
+                Gravity.bottom.rawValue,
                 (success.view.layoutParams as FrameLayout.LayoutParams).gravity
             )
         } catch (t: AdaptClassCastException) {
@@ -264,7 +264,7 @@ class ViewElement_ExtensionsCast_Test {
         action.run()
 
         assertEquals(
-            Gravity.bottom.value,
+            Gravity.bottom.rawValue,
             (element.view.layoutParams as FrameLayout.LayoutParams).gravity
         )
     }

@@ -1,5 +1,6 @@
 package io.noties.adapt.ui.util
 
+import android.annotation.SuppressLint
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
@@ -21,7 +22,10 @@ import androidx.annotation.GravityInt
  * so `Gravity.top` (y) has `.center`, `.leading` and `.trailing` (x).
  * And `Gravity.leading` (x) has `.center`, `.top` and `.bottom` (y).
  */
-open class Gravity(@GravityInt val value: Int) {
+open class Gravity(@GravityInt val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
 
     companion object {
 
@@ -32,16 +36,16 @@ open class Gravity(@GravityInt val value: Int) {
 
         val center = CenterGravity()
 
-        class VerticalGravity(@GravityInt value: Int) : Gravity(value) {
-            val leading = Gravity(value or START)
-            val center = Gravity(value or CENTER_HORIZONTAL)
-            val trailing = Gravity(value or END)
+        class VerticalGravity(@GravityInt rawValue: Int) : Gravity(rawValue) {
+            val leading = Gravity(rawValue or START)
+            val center = Gravity(rawValue or CENTER_HORIZONTAL)
+            val trailing = Gravity(rawValue or END)
         }
 
-        class HorizontalGravity(@GravityInt value: Int) : Gravity(value) {
-            val top = Gravity(value or TOP)
-            val center = Gravity(value or CENTER_VERTICAL)
-            val bottom = Gravity(value or BOTTOM)
+        class HorizontalGravity(@GravityInt rawValue: Int) : Gravity(rawValue) {
+            val top = Gravity(rawValue or TOP)
+            val center = Gravity(rawValue or CENTER_VERTICAL)
+            val bottom = Gravity(rawValue or BOTTOM)
         }
 
         class CenterGravity : Gravity(CENTER) {
@@ -57,7 +61,7 @@ open class Gravity(@GravityInt val value: Int) {
     }
 
     override fun toString(): String {
-        return "Gravity($value)"
+        return "Gravity($rawValue)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -66,27 +70,29 @@ open class Gravity(@GravityInt val value: Int) {
 
         other as Gravity
 
-        if (value != other.value) return false
+        if (rawValue != other.rawValue) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return value
+        return rawValue
     }
 
+    @SuppressLint("RtlHardcoded")
     fun hasLeading() = checkHorizontal(LEFT)
     fun hasTop() = checkVertical(TOP)
+    @SuppressLint("RtlHardcoded")
     fun hasTrailing() = checkHorizontal(RIGHT)
     fun hasBottom() = checkVertical(BOTTOM)
     fun hasCenter() = checkHorizontal(CENTER_HORIZONTAL) || checkVertical(CENTER_VERTICAL)
 
     private fun checkHorizontal(expected: Int): Boolean {
-        return expected == (value and HORIZONTAL_GRAVITY_MASK)
+        return expected == (rawValue and HORIZONTAL_GRAVITY_MASK)
     }
 
     private fun checkVertical(expected: Int): Boolean {
-        return expected == (value and VERTICAL_GRAVITY_MASK)
+        return expected == (rawValue and VERTICAL_GRAVITY_MASK)
     }
 }
 
