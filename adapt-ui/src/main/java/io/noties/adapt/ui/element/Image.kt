@@ -73,10 +73,38 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
  * Scale Type
  * @see ImageView.setScaleType
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder version with ImageScaleType")
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     scaleType: ScaleType
 ): ViewElement<V, LP> = onView {
     it.scaleType = scaleType
+}
+
+@JvmInline
+value class ImageScaleType(val rawValue: ScaleType) {
+    companion object {
+        val matrix get() = ImageScaleType(ScaleType.MATRIX)
+        val fitXY get() = ImageScaleType(ScaleType.FIT_XY)
+        val fitStart get() = ImageScaleType(ScaleType.FIT_START)
+        val fitCenter get() = ImageScaleType(ScaleType.FIT_CENTER)
+        val fitEnd get() = ImageScaleType(ScaleType.FIT_END)
+        val center get() = ImageScaleType(ScaleType.CENTER)
+        val centerCrop get() = ImageScaleType(ScaleType.CENTER_CROP)
+        val centerInside get() = ImageScaleType(ScaleType.CENTER_INSIDE)
+
+        fun raw(rawValue: ScaleType) = ImageScaleType(rawValue)
+    }
+}
+
+/**
+ * Scale Type
+ * @see ImageView.setScaleType
+ */
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
+    builder: ImageScaleType.Companion.() -> ImageScaleType
+): ViewElement<V, LP> = onView {
+    it.scaleType = builder(ImageScaleType).rawValue
 }
 
 /**
@@ -90,7 +118,7 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     mode: PorterDuff.Mode? = null
 ): ViewElement<V, LP> = imageTint(ColorStateList.valueOf(color), mode)
 
-inline fun <V: ImageView, LP: LayoutParams> ViewElement<V, LP>.imageTint(
+inline fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     block: ColorsBuilder
 ) = imageTint(block(Colors))
 

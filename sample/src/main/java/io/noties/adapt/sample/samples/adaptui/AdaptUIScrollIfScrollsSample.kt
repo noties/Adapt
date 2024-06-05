@@ -59,7 +59,7 @@ class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
                 HStack {
                     Image(R.drawable.ic_arrow_back_ios_24_white)
                         .layout(56, 56)
-                        .imageScaleType(ImageView.ScaleType.CENTER_INSIDE)
+                        .imageScaleType { centerInside }
                 }.layout(FILL, 56)
                     .backgroundColor { accent }
 

@@ -1,29 +1,13 @@
 package io.noties.adapt.ui.app.text
 
-import android.widget.TextView
-import io.noties.adapt.ui.LayoutParams
-import io.noties.adapt.ui.ViewElement
-import io.noties.adapt.ui.ViewFactoryConstants
-import io.noties.adapt.ui.element.ElementStyle
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
-
-object TextStyles
-
-
-fun textStyle(
-    block: ViewFactoryConstants.(ViewElement<TextView, LayoutParams>) -> Unit
-) = TextStylesProperty(block)
-
-
-class TextStylesProperty(
-    private val block: ViewFactoryConstants.(ViewElement<TextView, LayoutParams>) -> Unit
-): ReadOnlyProperty<TextStyles, ElementStyle<TextView, LayoutParams>> {
-    override fun getValue(
-        thisRef: TextStyles,
-        property: KProperty<*>
-    ): ElementStyle<TextView, LayoutParams> {
-        return ElementStyle(block)
-    }
-}
+// TextStyles should be available to TextView only, but right now I cannot
+//  specify it in generics -> limit extensions to accept only children of TextView, but do
+//  not allow specifying generic extensions, like padding (which are available to all views)
+//  Also, it seems to not be possible to _close_ extensions of layout, `Nothing` would just
+//  disable ALL extensions (even view-based)
+//object TextStyles {
+//    fun textStyle(
+//        block: ViewFactoryConstants.(ViewElement<TextView, *>) -> Unit
+//    ) = ElementStyle.view<TextView> { block(this, it) }
+//}
 

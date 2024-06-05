@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,11 @@ public class AdaptRecyclerView implements Adapt {
 
     @Nullable
     public RecyclerView recyclerView() {
-        return recyclerView;
+        final RecyclerView recyclerView = this.recyclerView;
+        if (recyclerView != null) {
+            return recyclerView;
+        }
+        return adapter.attachedRecyclerView();
     }
 
     @NonNull
@@ -187,9 +192,32 @@ public class AdaptRecyclerView implements Adapt {
 
         private LayoutInflater inflater;
 
+        @Nullable
+        private WeakReference<RecyclerView> attachedRecyclerView = null;
+
         @NonNull
         AdaptRecyclerView adaptRecyclerView() {
             return AdaptRecyclerView.this;
+        }
+
+        @Nullable
+        RecyclerView attachedRecyclerView() {
+            final WeakReference<RecyclerView> current = attachedRecyclerView;
+            return current != null ? current.get() : null;
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            attachedRecyclerView = new WeakReference<>(recyclerView);
+        }
+
+        @Override
+        public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+            final WeakReference<RecyclerView> current = attachedRecyclerView;
+            final RecyclerView currentRecyclerView = current != null ? current.get() : null;
+            if (currentRecyclerView == recyclerView) {
+                attachedRecyclerView = null;
+            }
         }
 
         @NonNull

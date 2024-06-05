@@ -89,7 +89,8 @@ class AdaptElement_Test {
 
         Assert.assertNotNull(ref.adaptViewPager2)
         // recycler adapter is used and view-pager2 is not persisted
-        Assert.assertNull(ref.adaptViewPager2?.recyclerView())
+        //  UPD, now we listen for `onAttachedToRecyclerView` and return it
+        Assert.assertNotNull(ref.adaptViewPager2?.recyclerView())
     }
 
     @Test

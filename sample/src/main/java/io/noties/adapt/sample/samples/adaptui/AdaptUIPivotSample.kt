@@ -17,7 +17,6 @@ import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
-import io.noties.adapt.ui.app.color.hex
 import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -152,7 +151,7 @@ class AdaptUIPivotSample : AdaptUISampleView() {
     }
 }
 
-private val Colors.pivot by hex("#f00")
+private val Colors.pivot get() = hex("#f00")
 
 @Preview
 @Suppress("ClassName", "unused")

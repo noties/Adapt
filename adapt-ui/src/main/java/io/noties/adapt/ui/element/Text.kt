@@ -21,7 +21,6 @@ import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.app.color.ColorsBuilder
 import io.noties.adapt.ui.app.text.TextSizes
 import io.noties.adapt.ui.app.text.TextSizesBuilder
-import io.noties.adapt.ui.app.text.TextStyles
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.GravityBuilder
@@ -314,11 +313,33 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
  * Ellipsize
  * @see TextView.setEllipsize
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use version with builder")
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
     truncateAt: TextUtils.TruncateAt
 ): ViewElement<V, LP> = onView {
     it.ellipsize = truncateAt
 }
+
+@JvmInline
+value class TextEllipsize(val rawValue: TextUtils.TruncateAt) {
+    companion object {
+        val start get() = TextEllipsize(TextUtils.TruncateAt.START)
+        val middle get() = TextEllipsize(TextUtils.TruncateAt.MIDDLE)
+        val end get() = TextEllipsize(TextUtils.TruncateAt.END)
+        val marquee get() = TextEllipsize(TextUtils.TruncateAt.MARQUEE)
+
+        fun raw(value: TextUtils.TruncateAt) = TextEllipsize(value)
+    }
+}
+
+/**
+ * Ellipsize
+ * @see TextView.setEllipsize
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
+    builder: TextEllipsize.Companion.() -> TextEllipsize
+): ViewElement<V, LP> = textEllipsize(builder(TextEllipsize).rawValue)
 
 /**
  * Maximum lines
@@ -541,7 +562,3 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
     it.imeOptions = rawValue
     it.setOnEditorActionListener(editorAction)
 }
-
-fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStyle(
-    builder: TextStyles.() -> ElementStyle<V, LP>
-) = style(builder(TextStyles))

@@ -98,7 +98,10 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
  */
 @Deprecated(
     "Use `backgroundColor` instead",
-    replaceWith = ReplaceWith("backgroundColor(color)", imports = ["io.noties.adapt.ui.backgroundColor"])
+    replaceWith = ReplaceWith(
+        "backgroundColor(color)",
+        imports = ["io.noties.adapt.ui.backgroundColor"]
+    )
 )
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     @ColorInt color: Int
@@ -435,20 +438,67 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewScrollChanged(
     }
 }
 
+@JvmInline
+value class OverScrollMode(val rawValue: Int) {
+    companion object {
+        val never: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_NEVER)
+        val always: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_ALWAYS)
+        val ifContentScrolls: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS)
+
+        fun raw(rawValue: Int) = OverScrollMode(rawValue)
+    }
+}
+
 /**
  * OverScrollMode
  * @see View.setOverScrollMode
  */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
+    builder: OverScrollMode.Companion.() -> OverScrollMode
+) = onView {
+    it.overScrollMode = builder(OverScrollMode).rawValue
+}
+
+/**
+ * OverScrollMode
+ * @see View.setOverScrollMode
+ */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Consider using overScrollMode builder version")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
     overScrollMode: Int
 ): ViewElement<V, LP> = onView {
     it.overScrollMode = overScrollMode
 }
 
+@JvmInline
+value class ScrollBarStyle(val rawValue: Int) {
+    companion object {
+        val insideOverlay: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        val insideInset: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        val outsideOverlay: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+        val outsideInset: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
+
+        fun raw(value: Int) = ScrollBarStyle(value)
+    }
+}
+
 /**
  * ScrollBarStyle
  * @see View.setScrollBarStyle
  */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
+    builder: ScrollBarStyle.Companion.() -> ScrollBarStyle
+): ViewElement<V, LP> = onView {
+    it.scrollBarStyle = builder(ScrollBarStyle).rawValue
+}
+
+/**
+ * ScrollBarStyle
+ * @see View.setScrollBarStyle
+ */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Prefer the builder version")
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
     scrollBarStyle: Int
 ): ViewElement<V, LP> = onView {
@@ -743,7 +793,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
     value: Float
 ) = pivotRelative(value, value)
 
-fun <V: View, LP: LayoutParams> ViewElement<V, LP>.requestFocus() = onView {
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.requestFocus() = onView {
     it.requestFocus()
 }
+
 

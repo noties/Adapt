@@ -53,10 +53,9 @@ class AdaptViewPagerWrapContent(context: Context) : ViewPager(context) {
     private fun heightSpec(originalWidthSpec: Int, originalHeightSpec: Int): Int? {
 
         val adapt = AdaptViewPager.find(this)
-        val heightMode = MeasureSpec.getMode(originalHeightSpec)
         val currentItem = this.currentItem
 
-        if (adapt == null || currentItem < 0 || MeasureSpec.AT_MOST != heightMode) {
+        if (adapt == null || currentItem < 0) {
             return null
         }
 

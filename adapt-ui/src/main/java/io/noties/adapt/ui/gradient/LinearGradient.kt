@@ -90,7 +90,29 @@ class LinearGradient internal constructor(
             return LinearGradient(
                 type,
                 createColors(*colors),
-                null
+                // spread equally
+                // A B => 0 1
+                // A B C => 0 (0.5) 1
+                // A B C D => 0 (0.33) (0.66) 1
+                run {
+                    val steps = colors.size
+                    if (steps < 2) {
+                        null
+                    } else {
+                        // 3 steps => 0F, 0.5F, 1F
+                        // 4 steps => 0F, 0.3334F, 0.6667F, 1F
+                        val step = 1F / (steps - 1)
+                        val out = FloatArray(colors.size)
+                        out[0] = 0F
+                        out[steps - 1] = 1F
+                        var currentValue = 0F
+                        for (i in (1 until steps - 1)) {
+                            currentValue += step
+                            out[i] = currentValue
+                        }
+                        out
+                    }
+                }
             )
         }
 

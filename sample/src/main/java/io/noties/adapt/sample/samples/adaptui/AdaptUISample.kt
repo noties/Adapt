@@ -167,8 +167,8 @@ class AdaptUISample : SampleView() {
 //    }
 
     private fun ViewElement<*, *>.myCustomStyle() = this
-        .scrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
-        .overScrollMode(View.OVER_SCROLL_NEVER)
+        .overScrollMode { never }
+        .scrollBarStyle { outsideOverlay }
         .padding(101)
 
     private fun bindAdapt(adapt: Adapt) {
