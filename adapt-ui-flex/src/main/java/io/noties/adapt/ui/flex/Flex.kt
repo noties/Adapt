@@ -2,18 +2,18 @@ package io.noties.adapt.ui.flex
 
 import android.view.View
 import android.view.ViewGroup.LayoutParams
-import com.google.android.flexbox.AlignContent as _AlignContent
-import com.google.android.flexbox.AlignItems as _AlignItems
-import com.google.android.flexbox.AlignSelf as _AlignSelf
-import com.google.android.flexbox.FlexDirection as _FlexDirection
-import com.google.android.flexbox.FlexWrap as _FlexWrap
 import com.google.android.flexbox.FlexboxLayout
-import com.google.android.flexbox.JustifyContent as _JustifyContent
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.ElementGroup
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.util.dip
+import com.google.android.flexbox.AlignContent as _AlignContent
+import com.google.android.flexbox.AlignItems as _AlignItems
+import com.google.android.flexbox.AlignSelf as _AlignSelf
+import com.google.android.flexbox.FlexDirection as _FlexDirection
+import com.google.android.flexbox.FlexWrap as _FlexWrap
+import com.google.android.flexbox.JustifyContent as _JustifyContent
 
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Flex(
@@ -28,42 +28,62 @@ fun <LP : LayoutParams> ViewFactory<LP>.Flex(
  * Customization of the FlexLayout
  */
 @JvmInline
-value class FlexDirection(@_FlexDirection val value: Int) {
+value class FlexDirection(@_FlexDirection val rawValue: Int) {
     companion object {
         val row: FlexDirection get() = FlexDirection(_FlexDirection.ROW)
         val column: FlexDirection get() = FlexDirection(_FlexDirection.COLUMN)
+
+        fun raw(@_FlexDirection value: Int) = FlexDirection(value)
     }
 
-    val reverse: FlexDirection get() = if (value == _FlexDirection.COLUMN) {
+    val reverse: FlexDirection get() = if (rawValue == _FlexDirection.COLUMN) {
         _FlexDirection.COLUMN_REVERSE
     } else {
         _FlexDirection.ROW_REVERSE
     }.let { FlexDirection(it) }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexDirection(
     flexDirection: FlexDirection
 ): ViewElement<V, LP> = onView {
-    it.flexDirection = flexDirection.value
+    it.flexDirection = flexDirection.rawValue
+}
+
+fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexDirection(
+    builder: FlexDirection.Companion.() -> FlexDirection
+): ViewElement<V, LP> = onView {
+    it.flexDirection = builder(FlexDirection).rawValue
 }
 
 @JvmInline
-value class FlexWrap(@_FlexWrap val value: Int) {
+value class FlexWrap(@_FlexWrap val rawValue: Int) {
     companion object {
         val nowrap: FlexWrap get() = FlexWrap(_FlexWrap.NOWRAP)
         val wrap: FlexWrap get() = FlexWrap(_FlexWrap.WRAP)
         val wrapReverse: FlexWrap get() = FlexWrap(_FlexWrap.WRAP_REVERSE)
+
+        fun raw(@_FlexWrap value: Int) = FlexWrap(value)
     }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexWrap(
     flexWrap: FlexWrap
 ): ViewElement<V, LP> = onView {
-    it.flexWrap = flexWrap.value
+    it.flexWrap = flexWrap.rawValue
+}
+
+fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexWrap(
+    builder: FlexWrap.Companion.() -> FlexWrap = { wrap }
+): ViewElement<V, LP> = onView {
+    it.flexWrap = builder(FlexWrap).rawValue
 }
 
 @JvmInline
-value class JustifyContent(@_JustifyContent val value: Int) {
+value class JustifyContent(@_JustifyContent val rawValue: Int) {
     companion object {
         val flexStart: JustifyContent get() = JustifyContent(_JustifyContent.FLEX_START)
         val flexEnd: JustifyContent get() = JustifyContent(_JustifyContent.FLEX_END)
@@ -71,34 +91,54 @@ value class JustifyContent(@_JustifyContent val value: Int) {
         val spaceBetween: JustifyContent get() = JustifyContent(_JustifyContent.SPACE_BETWEEN)
         val spaceAround: JustifyContent get() = JustifyContent(_JustifyContent.SPACE_AROUND)
         val spaceEvenly: JustifyContent get() = JustifyContent(_JustifyContent.SPACE_EVENLY)
+
+        fun raw(@_JustifyContent value: Int) = JustifyContent(value)
     }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexJustifyContent(
     justifyContent: JustifyContent
 ): ViewElement<V, LP> = onView {
-    it.justifyContent = justifyContent.value
+    it.justifyContent = justifyContent.rawValue
+}
+
+fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexJustifyContent(
+    builder: JustifyContent.Companion.() -> JustifyContent
+): ViewElement<V, LP> = onView {
+    it.justifyContent = builder(JustifyContent).rawValue
 }
 
 @JvmInline
-value class AlignItems(@_AlignItems val value: Int) {
+value class AlignItems(@_AlignItems val rawValue: Int) {
     companion object {
         val flexStart: AlignItems get() = AlignItems(_AlignItems.FLEX_START)
         val flexEnd: AlignItems get() = AlignItems(_AlignItems.FLEX_END)
         val center: AlignItems get() = AlignItems(_AlignItems.CENTER)
         val baseline: AlignItems get() = AlignItems(_AlignItems.BASELINE)
         val stretch: AlignItems get() = AlignItems(_AlignItems.STRETCH)
+
+        fun raw(@_AlignItems value: Int) = AlignItems(value)
     }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignItems(
     alignItems: AlignItems
 ): ViewElement<V, LP> = onView {
-    it.alignItems = alignItems.value
+    it.alignItems = alignItems.rawValue
+}
+
+fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignItems(
+    builder: AlignItems.Companion.() -> AlignItems
+): ViewElement<V, LP> = onView {
+    it.alignItems = builder(AlignItems).rawValue
 }
 
 @JvmInline
-value class AlignContent(@_AlignContent val value: Int) {
+value class AlignContent(@_AlignContent val rawValue: Int) {
     companion object {
         val flexStart: AlignContent get() = AlignContent(_AlignContent.FLEX_START)
         val flexEnd: AlignContent get() = AlignContent(_AlignContent.FLEX_END)
@@ -106,13 +146,23 @@ value class AlignContent(@_AlignContent val value: Int) {
         val spaceBetween: AlignContent get() = AlignContent(_AlignContent.SPACE_BETWEEN)
         val spaceAround: AlignContent get() = AlignContent(_AlignContent.SPACE_AROUND)
         val stretch: AlignContent get() = AlignContent(_AlignContent.STRETCH)
+
+        fun raw(@_AlignContent value: Int) = AlignContent(value)
     }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignContent(
     alignContent: AlignContent
 ): ViewElement<V, LP> = onView {
-    it.alignContent = alignContent.value
+    it.alignContent = alignContent.rawValue
+}
+
+fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignContent(
+    builder: AlignContent.Companion.() -> AlignContent
+): ViewElement<V, LP> = onView {
+    it.alignContent = builder(AlignContent).rawValue
 }
 
 // FlexboxLayout does not have gap support, but we can use a special drawable as divider
@@ -175,7 +225,7 @@ fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexShr
 }
 
 @JvmInline
-value class AlignSelf(@_AlignSelf val value: Int) {
+value class AlignSelf(@_AlignSelf val rawValue: Int) {
     companion object {
         val auto: AlignSelf get() = AlignSelf(_AlignSelf.AUTO)
         val flexStart: AlignSelf get() = AlignSelf(_AlignItems.FLEX_START)
@@ -183,13 +233,23 @@ value class AlignSelf(@_AlignSelf val value: Int) {
         val center: AlignSelf get() = AlignSelf(_AlignItems.CENTER)
         val baseline: AlignSelf get() = AlignSelf(_AlignItems.BASELINE)
         val stretch: AlignSelf get() = AlignSelf(_AlignItems.STRETCH)
+
+        fun raw(@_AlignSelf value: Int) = AlignSelf(value)
     }
 }
 
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use builder variant")
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexAlignSelf(
     alignSelf: AlignSelf
 ): ViewElement<V, LP> = onLayoutParams {
-    it.alignSelf = alignSelf.value
+    it.alignSelf = alignSelf.rawValue
+}
+
+fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexAlignSelf(
+    builder: AlignSelf.Companion.() -> AlignSelf
+): ViewElement<V, LP> = onLayoutParams {
+    it.alignSelf = builder(AlignSelf).rawValue
 }
 
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexMinSize(

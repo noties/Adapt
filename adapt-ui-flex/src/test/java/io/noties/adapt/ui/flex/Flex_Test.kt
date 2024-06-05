@@ -49,7 +49,7 @@ class Flex_Test {
         for (input in inputs) {
             Assert.assertEquals(
                 input.name,
-                input.flexDirection.value,
+                input.flexDirection.rawValue,
                 input.value
             )
         }
@@ -59,7 +59,7 @@ class Flex_Test {
     fun `flexDirection - unknown`() {
         Assert.assertEquals(
             _FlexDirection.ROW_REVERSE,
-            FlexDirection(777).reverse.value
+            FlexDirection(777).reverse.rawValue
         )
     }
 
@@ -76,7 +76,7 @@ class Flex_Test {
             newElementOfType<FlexboxLayout>()
                 .flexDirection(input)
                 .renderView {
-                    verify(this).flexDirection = eq(input.value)
+                    verify(this).flexDirection = eq(input.rawValue)
                 }
         }
     }
@@ -92,7 +92,7 @@ class Flex_Test {
         for ((flexWrap, value) in inputs) {
             Assert.assertEquals(
                 flexWrap.name,
-                flexWrap.get().value,
+                flexWrap.get().rawValue,
                 value
             )
         }
@@ -111,7 +111,7 @@ class Flex_Test {
             newElementOfType<FlexboxLayout>()
                 .flexWrap(input)
                 .renderView {
-                    verify(this).flexWrap = eq(input.value)
+                    verify(this).flexWrap = eq(input.rawValue)
                 }
         }
     }
@@ -130,7 +130,7 @@ class Flex_Test {
         for ((prop, value) in inputs) {
             Assert.assertEquals(
                 prop.name,
-                prop.get().value,
+                prop.get().rawValue,
                 value
             )
         }
@@ -152,7 +152,7 @@ class Flex_Test {
             newElementOfType<FlexboxLayout>()
                 .flexJustifyContent(input)
                 .renderView {
-                    verify(this).justifyContent = eq(input.value)
+                    verify(this).justifyContent = eq(input.rawValue)
                 }
         }
     }
@@ -170,7 +170,7 @@ class Flex_Test {
         for ((prop, value) in inputs) {
             Assert.assertEquals(
                 prop.name,
-                prop.get().value,
+                prop.get().rawValue,
                 value
             )
         }
@@ -191,7 +191,7 @@ class Flex_Test {
             newElementOfType<FlexboxLayout>()
                 .flexAlignItems(input)
                 .renderView {
-                    verify(this).alignItems = eq(input.value)
+                    verify(this).alignItems = eq(input.rawValue)
                 }
         }
     }
@@ -210,7 +210,7 @@ class Flex_Test {
         for ((prop, value) in inputs) {
             Assert.assertEquals(
                 prop.name,
-                prop.get().value,
+                prop.get().rawValue,
                 value
             )
         }
@@ -232,7 +232,7 @@ class Flex_Test {
             newElementOfType<FlexboxLayout>()
                 .flexAlignContent(input)
                 .renderView {
-                    verify(this).alignContent = eq(input.value)
+                    verify(this).alignContent = eq(input.rawValue)
                 }
         }
     }
@@ -342,7 +342,7 @@ class Flex_Test {
         for ((prop, value) in inputs) {
             Assert.assertEquals(
                 prop.name,
-                prop.get().value,
+                prop.get().rawValue,
                 value
             )
         }
@@ -364,7 +364,7 @@ class Flex_Test {
             newFlexboxChild()
                 .layoutFlexAlignSelf(input)
                 .renderWithLayoutParams {
-                    verify(it).alignSelf = eq(input.value)
+                    verify(it).alignSelf = eq(input.rawValue)
                 }
         }
     }

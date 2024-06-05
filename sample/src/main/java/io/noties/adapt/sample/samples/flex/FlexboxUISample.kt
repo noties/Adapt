@@ -14,12 +14,7 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textGravity
-import io.noties.adapt.ui.flex.AlignContent
-import io.noties.adapt.ui.flex.AlignItems
 import io.noties.adapt.ui.flex.Flex
-import io.noties.adapt.ui.flex.FlexDirection
-import io.noties.adapt.ui.flex.FlexWrap
-import io.noties.adapt.ui.flex.JustifyContent
 import io.noties.adapt.ui.flex.flexAlignContent
 import io.noties.adapt.ui.flex.flexAlignItems
 import io.noties.adapt.ui.flex.flexDirection
@@ -27,6 +22,7 @@ import io.noties.adapt.ui.flex.flexJustifyContent
 import io.noties.adapt.ui.flex.flexWrap
 import io.noties.adapt.ui.flex.layoutFlexGrow
 import io.noties.adapt.ui.flex.layoutFlexWrapBefore
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.util.Gravity
@@ -70,11 +66,19 @@ class FlexboxUISample : SampleView() {
                 Text("4")
                     .layoutFlexWrapBefore(true)
 
-            }.flexDirection(FlexDirection.row)
-                .flexJustifyContent(JustifyContent.center)
-                .flexAlignItems(AlignItems.center)
-                .flexAlignContent(AlignContent.center)
-                .flexWrap(FlexWrap.wrap)
+            }.indent()
+//                .flexDirection(FlexDirection.row)
+                .flexDirection { row }
+//                .flexJustifyContent(JustifyContent.center)
+                .flexJustifyContent { center }
+//                .flexAlignItems(AlignItems.center)
+                .flexAlignItems { center }
+//                .flexAlignContent(AlignContent.center)
+                .flexAlignContent { center }
+                // no arg is wrap by default
+                .flexWrap()
+                // or the same as:
+                .flexWrap { wrap }
         }
     }
 }

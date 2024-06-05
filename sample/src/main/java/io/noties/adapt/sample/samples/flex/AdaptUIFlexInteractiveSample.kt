@@ -73,6 +73,7 @@ import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.ifAvailable
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
@@ -190,7 +191,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     private fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.defaultFlexContainerStyle() =
         this
-            .flexAlignItems(AlignItems.stretch)
+//            .flexAlignItems(AlignItems.stretch)
+            .flexAlignItems { stretch }
             .padding(horizontal = 12, vertical = 4)
             .background(RoundedRectangleShape(2) {
                 stroke(Colors.black.withAlphaComponent(0.42F), 1, 8)
@@ -662,7 +664,9 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .background(OvalShape().fill(Colors.yellow))
                 .also { circles.add(it) }
 
-        }.flexAlignItems(AlignItems.stretch)
+        }.indent()
+//            .flexAlignItems(AlignItems.stretch)
+            .flexAlignItems { stretch }
             .background(RoundedRectangleShape(2) {
                 stroke(hex("#40ff0000"))
 //                padding(horizontal = 8)
@@ -744,7 +748,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 listOf("nowrap (default)" to FlexWrap.nowrap, "wrap" to FlexWrap.wrap)
             ) { selected ->
                 flex.renderInTransition {
-                    flex.flexWrap(selected.second)
+//                    flex.flexWrap(selected.second)
+                    flex.flexWrap { selected.second }
                 }
             }
                 .layout(0, WRAP, 1F)
@@ -774,7 +779,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layout(0, WRAP)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.wrap)
+//            .flexWrap(FlexWrap.wrap)
+            .flexWrap()
 
         AlignItemsDropDown(flex)
     }
@@ -804,7 +810,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layout(0, WRAP)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.wrap)
+//            .flexWrap(FlexWrap.wrap)
+            .flexWrap()
             .layout(FILL, 96 * 2 + 32)
 
         HStack {
@@ -822,7 +829,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 )
             ) { selected ->
                 flex.renderInTransition {
-                    flex.flexAlignContent(selected.second)
+//                    flex.flexAlignContent(selected.second)
+                    flex.flexAlignContent { selected.second }
                 }
             }.layout(0, WRAP, 1F)
         }
@@ -846,7 +854,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "row" to FlexDirection.row,
             "column" to FlexDirection.column
         )
-    ) { selected -> flex.renderInTransition { it.flexDirection(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexDirection { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.JustifyContentDropDown(
@@ -861,7 +869,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "space-around" to JustifyContent.spaceAround,
             "space-evenly" to JustifyContent.spaceEvenly
         )
-    ) { selected -> flex.renderInTransition { it.flexJustifyContent(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexJustifyContent { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.AlignItemsDropDown(
@@ -875,7 +883,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "flex-end" to AlignItems.flexEnd,
             "baseline" to AlignItems.baseline
         )
-    ) { selected -> flex.renderInTransition { it.flexAlignItems(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexAlignItems { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.AlignSelfDropDown(
@@ -895,7 +903,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) { selected ->
         flex.renderInTransition {
             val lp = element.view.layoutParams as FlexboxLayout.LayoutParams
-            lp.alignSelf = selected.second.value
+            lp.alignSelf = selected.second.rawValue
             element.view.requestLayout()
         }
     }
