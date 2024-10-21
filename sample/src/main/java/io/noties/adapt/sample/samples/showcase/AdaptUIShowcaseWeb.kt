@@ -42,7 +42,7 @@ class AdaptUIShowcaseWeb : AdaptUISampleView() {
             // Takes care of WebView inflation (which can fail when it is being updated)
             //  Also, automatically handles lifecycle events (start/stop, pause/resume, destroy)
             Web("https://example.org")
-                .layout(FILL, 0, 1F)
+                .layout(fill, 0, 1F)
 
             // More advanced
             Web(
@@ -53,7 +53,7 @@ class AdaptUIShowcaseWeb : AdaptUISampleView() {
                     Progress()
                         .layoutGravity(Gravity.center)
                 }
-            ).layout(FILL, 0, 1F)
+            ).layout(fill, 0, 1F)
                 .webSettings {
                     it.useWideViewPort = true
                 }

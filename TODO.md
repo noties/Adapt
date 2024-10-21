@@ -1,12 +1,22 @@
+- [ ] refactor DrawableState to be fluent, right now a little confusing, let it be:
+  `pressed.enabled` => DrawableState(attrs: Array<@Attr Int>)
+  DrawableStateSet.pressed (to check if contains should be renamed, like isPressed or hasPressed?)
+
+- [ ] VScroll and HScroll are actually expose ViewFactory<FrameLayout.LayoutParams>, so
+  nested children might be able to add certain FrameLayout elements or layout customization,
+  meanwhile they are in different context.
+
 * explicit tags in sample (enum?), define colors for each
 
 - [ ] `Text` autosize must be applied when text changes (maxLines?)
 - [ ] SHOW, a layout with rounded background, icon and text => just a text with padding and shape
   plus, clickable, foreground, cliptooutline
 - on view pred draw should have `once` as it delivers callback only once
-- [ ] shape, padding, for ex top, can result in rect.top be greater than bottom (we do not touch bottom)...
+- [ ] shape, padding, for ex top, can result in rect.top be greater than bottom (we do not touch
+  bottom)...
   NOPE, convert to dp
-- [ ] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which would cause name collision
+- [ ] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which
+  would cause name collision
 
 - [ ] common interface for shape and stateful-shape
 - [ ] StatfulShape.create instead of `drawable`
@@ -54,7 +64,7 @@
 - [x] castLayout when inside an adapt item is not working, as by default just viewgroup params are
   set because by default element-item is using default parameters provided by view-factory
 
-
 Size of adapt-ui release binary
+
 - `421KB` with toString and properties
 - `366KB` with static toString in shape and gradient

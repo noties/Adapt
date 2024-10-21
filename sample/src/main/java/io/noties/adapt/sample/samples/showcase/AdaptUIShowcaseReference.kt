@@ -41,7 +41,7 @@ class AdaptUIShowcaseReference : AdaptUISampleView() {
                 Text("Even system time")
             } else {
                 View()
-                    .layout(FILL, 48)
+                    .layout(fill, 48)
             }
 
             // NB! element is of View type, not TextView,

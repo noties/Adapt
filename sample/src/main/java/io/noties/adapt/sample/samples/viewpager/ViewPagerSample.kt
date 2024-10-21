@@ -28,9 +28,11 @@ import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
+import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
@@ -38,6 +40,7 @@ import io.noties.adapt.ui.shape.CircleShape
 import io.noties.adapt.ui.shape.CornersShape
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.debug.Debug
@@ -65,6 +68,12 @@ class ViewPagerSample : SampleView() {
                     .padding(16, 8)
                     .layoutMargin(top = 8)
                     .textSize(21)
+                    .textColorWithState {
+                        pressed.activated = 0
+                        pressed = 0
+                        activated = 0
+                        default = 0
+                    }
 
                 Element(::ViewPager)
                     .layout(FILL, 128)
@@ -74,7 +83,7 @@ class ViewPagerSample : SampleView() {
 
                 Text("Wrap height")
 
-                AdaptPagerWrapContent()
+                val adapt = AdaptPagerWrapContent()
                     .pagerOnPageChangedListener(object : ViewPagerOnPageChangeListener() {
                         override fun onPageSelected(position: Int) {
                             Debug.i("selected:$position count:$pagesCount vp:$viewPager")
@@ -88,6 +97,13 @@ class ViewPagerSample : SampleView() {
                 Text("At bottom")
                     .padding(16)
                     .textGravity(Gravity.center)
+                    .foregroundDefaultSelectable()
+                    .onClick {
+                        (items.dropLast(1) + PageItem("CHANGED!!"))
+                            .also {
+                                adapt.adapt.setItems(it)
+                            }
+                    }
             }
         }
     }

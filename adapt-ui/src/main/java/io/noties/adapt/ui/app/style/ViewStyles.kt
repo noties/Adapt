@@ -6,7 +6,9 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactoryConstants
 import io.noties.adapt.ui.element.ElementStyle
 
-object ViewStyles {
+interface ViewStyles {
+    companion object: ViewStyles
+
     fun style(
         block: ViewFactoryConstants.(ViewElement<View, LayoutParams>) -> Unit
     ) = ElementStyle.generic(block)

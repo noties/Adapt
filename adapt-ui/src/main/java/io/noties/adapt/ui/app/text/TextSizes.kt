@@ -4,7 +4,9 @@ import androidx.annotation.DimenRes
 import io.noties.adapt.ui.app.ContextHolder
 import kotlin.math.roundToInt
 
-object TextSizes : ContextHolder {
+interface TextSizes : ContextHolder {
+    companion object : TextSizes
+
     /**
      * Obtain scaled-pixel dimension resource
      */

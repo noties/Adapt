@@ -32,7 +32,6 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
-import io.noties.adapt.ui.util.Gravity
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -61,7 +60,7 @@ class AdaptUIShowcasePager : AdaptUISampleView() {
 
             }.indent()
                 // pager needs specific layout dimensions
-                .layout(FILL, 128)
+                .layout(fill, 128)
                 // offscreen page limit
                 .pagerOffscreenPageLimit(3)
                 .pagerOnPageSelectedListener { page ->
@@ -86,7 +85,7 @@ class AdaptUIShowcasePager : AdaptUISampleView() {
         @ColorInt color: Int
     ) = Text(title)
         .layoutFill()
-        .textGravity(Gravity.center)
+        .textGravity { center }
         .textSize(18)
         .pagerPageWidthRatio(0.82F)
         // content padding + shape padding

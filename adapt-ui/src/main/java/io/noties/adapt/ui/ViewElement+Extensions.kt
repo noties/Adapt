@@ -160,6 +160,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
         it.background = resolveDefaultSelectableDrawable(it.context)
     }
 
+/**
+ * Foreground color
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
     @ColorInt color: Int
 ) = foreground(ColorDrawable(color))

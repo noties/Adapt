@@ -34,6 +34,7 @@ abstract class ElementItem<R : Any>(
 //            .renderOnAttach()
             .create(ref) { body(it) }
         return Holder(view, ref)
+            .also { onRefReady(ref) }
     }
 
     /**
@@ -49,5 +50,10 @@ abstract class ElementItem<R : Any>(
      */
     protected open fun createLayoutParams(parent: ViewGroup): LayoutParams {
         return LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+    }
+
+    protected open fun onRefReady(ref: R) {
+        // no op by default, but could be used to process ref after it has been fully created
+        //  (after create method returns)
     }
 }

@@ -41,6 +41,8 @@ class AdaptUIShowcaseStyle : AdaptUISampleView() {
                 // TextStyles expect a sibling of a TextView
                 // overrides `textSize` specified before
                 .style(TextStyles.body)
+                // the same as above
+                .textStyle { body }
                 // overrides value from the style
                 .textSize(20)
 

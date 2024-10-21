@@ -8,7 +8,12 @@ import androidx.annotation.IntRange
 import io.noties.adapt.ui.app.ContextHolder
 import kotlin.math.roundToInt
 
-object Colors : ContextHolder {
+// define it as interface and implement it in companion
+//  so all extensions on val Color.main .. are available to both
+//  also gives ability to include in other _builders_ to provide defined in the project colors
+interface Colors : ContextHolder {
+    companion object : Colors
+
     @ColorInt
     fun res(@ColorRes resId: Int): Int = context.getColor(resId)
 

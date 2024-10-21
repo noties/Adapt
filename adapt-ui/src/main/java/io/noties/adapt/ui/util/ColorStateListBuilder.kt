@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.util.StateSet
 import androidx.annotation.ColorInt
 
+@Deprecated("Use io.noties.adapt.ui.state.ColorStateListBuilder")
 class ColorStateListBuilder {
 
     companion object {

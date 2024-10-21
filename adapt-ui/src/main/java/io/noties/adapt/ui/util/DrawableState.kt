@@ -18,6 +18,11 @@ import kotlin.reflect.KProperty
  * with this state defined, for example, `backgroundDefaultSelectable()` or `foregroundDefaultSelectable()`.
  * Additionally, a regular shape can be turned into stateful drawable with `shape.newDrawable().stateful()`
  */
+@Deprecated(
+    "Use ViewState instead",
+    // replaces the whole lambda, clearing everything that was there before
+//    replaceWith = ReplaceWith("onViewStateChange", imports = ["io.noties.adapt.ui.state.onViewStateChange"])
+)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onDrawableStateChange(
     action: (view: V, stateSet: DrawableStateSet) -> Unit
 ) = onView {
@@ -40,6 +45,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onDrawableStateChange(
     })
 }
 
+@Deprecated("Use ViewState")
 @JvmInline
 value class DrawableState(@AttrRes val rawValue: Int) {
 
@@ -53,6 +59,8 @@ value class DrawableState(@AttrRes val rawValue: Int) {
         val enabled = DrawableState(android.R.attr.state_enabled)
         val activated = DrawableState(android.R.attr.state_activated)
         val checked = DrawableState(android.R.attr.state_checked)
+
+        fun raw(@AttrRes value: Int) = DrawableState(value)
 
         fun attrResourceName(
             @AttrRes attr: Int,
@@ -78,6 +86,7 @@ value class DrawableState(@AttrRes val rawValue: Int) {
     }
 }
 
+@Deprecated("Use ViewState")
 class DrawableStateSet(@AttrRes val state: IntArray) {
     val pressed by Prop(DrawableState.pressed)
     val focused by Prop(DrawableState.focused)

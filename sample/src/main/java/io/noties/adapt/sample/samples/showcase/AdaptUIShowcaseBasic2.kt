@@ -55,7 +55,7 @@ class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
                 }
 
                 Text("This will fill")
-                    .layout(FILL, 0, 1F)
+                    .layout(fill, 0, 1F)
                     .backgroundColor(Color.YELLOW)
             }
         }.layoutFill()

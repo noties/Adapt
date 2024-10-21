@@ -118,6 +118,9 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     mode: PorterDuff.Mode? = null
 ): ViewElement<V, LP> = imageTint(ColorStateList.valueOf(color), mode)
 
+/**
+ * @see ImageView.setImageTintList
+ */
 inline fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     block: ColorsBuilder
 ) = imageTint(block(Colors))

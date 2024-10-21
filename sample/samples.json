@@ -1,5 +1,21 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewStateSample",
+    "id": "20241017013604",
+    "title": "AdaptUI ViewState",
+    "description": "Usage of ViewState (also known as \u0026quot;drawable state\u0026quot; on native Android layer), \u003ctt\u003epressed\u003c/tt\u003e, \u003ctt\u003efocused\u003c/tt\u003e and other android.R.attr attributes",
+    "tags": []
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.getter.AdaptGetterSample",
+    "id": "20240924213029",
+    "title": "AdaptGetter usage",
+    "description": "",
+    "tags": [
+      "adapt"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiTextInputImeOptionsSample",
     "id": "20240331120232",
     "title": "Text.textImeOptions",

@@ -110,7 +110,9 @@ class AdaptUIGradientSample : AdaptUISampleView() {
             add(RoundedRectangle(12) {
                 padding(4)
                 stroke(
-                    LinearGradient.angle(270F).setColors(Colors.black, Colors.orange),
+                    with(Colors) {
+                        LinearGradient.angle(270F).setColors(black, orange)
+                    },
                     8,
                     16,
                     4

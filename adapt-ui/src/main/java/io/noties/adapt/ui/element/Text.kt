@@ -21,6 +21,7 @@ import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.app.color.ColorsBuilder
 import io.noties.adapt.ui.app.text.TextSizes
 import io.noties.adapt.ui.app.text.TextSizesBuilder
+import io.noties.adapt.ui.app.text.TextStyles
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.GravityBuilder
@@ -38,6 +39,13 @@ fun <LP : LayoutParams> ViewFactory<LP>.Text(
     text: CharSequence? = null
 ): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
     text?.also { tv.text = it }
+}
+
+@Suppress("FunctionName")
+fun <LP : LayoutParams> ViewFactory<LP>.Text(
+    @StringRes resId: Int
+): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
+    tv.setText(resId)
 }
 
 /**
@@ -562,3 +570,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
     it.imeOptions = rawValue
     it.setOnEditorActionListener(editorAction)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStyle(
+    block: TextStyles.() -> ElementStyle<TextView, LayoutParams>
+) = this.style { block(TextStyles) }

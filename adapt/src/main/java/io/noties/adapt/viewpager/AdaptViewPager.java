@@ -212,6 +212,16 @@ public class AdaptViewPager implements Adapt {
         public float getPageWidth(int position) {
             return configuration.pageWidth;
         }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            if (!(object instanceof View)) {
+                return POSITION_NONE;
+            }
+
+            final Item<?> item = (Item<?>) ((View) object).getTag(ID_ITEM);
+            return items.indexOf(item);
+        }
     }
 
     private static class ConfigurationImpl implements Configuration {
