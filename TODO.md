@@ -1,6 +1,12 @@
-- [ ] refactor DrawableState to be fluent, right now a little confusing, let it be:
-  `pressed.enabled` => DrawableState(attrs: Array<@Attr Int>)
-  DrawableStateSet.pressed (to check if contains should be renamed, like isPressed or hasPressed?)
+- [ ] shape-drawable stateful handling
+
+- [ ]
+   > refactor DrawableState to be fluent, right now a little confusing, let it be:
+     `pressed.enabled` => DrawableState(attrs: Array<@Attr Int>)
+     DrawableStateSet.pressed (to check if contains should be renamed, like isPressed or hasPressed?)
+  
+  In the end changed implementation to `ViewState`, which is a little better abstraction
+  `DrawableState` and all its usages are deprecated 
 
 - [ ] VScroll and HScroll are actually expose ViewFactory<FrameLayout.LayoutParams>, so
   nested children might be able to add certain FrameLayout elements or layout customization,

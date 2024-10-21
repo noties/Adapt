@@ -98,7 +98,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] ShapeDrawable usage</h3>
+                <h3>ShapeDrawable usage</h3>
                 <span>stateful hotspot</span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeDrawable.kt">AdaptUIShowcaseShapeDrawable</a>
@@ -108,7 +108,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Shape #3</h3>
+                <h3>AdaptUI, Shape #3</h3>
                 <span><em>AssetShape</em></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape3.kt">AdaptUIShowcaseShape3</a>
@@ -118,7 +118,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] Circle Avatar</h3>
+                <h3>Circle Avatar</h3>
                 <span></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseCircleAvatar.kt">AdaptUIShowcaseCircleAvatar</a>
@@ -128,7 +128,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI shape composition</h3>
+                <h3>AdaptUI shape composition</h3>
                 <span></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeComposition.kt">AdaptUIShowcaseShapeComposition</a>
@@ -138,7 +138,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Shape #4</h3>
+                <h3>AdaptUI, Shape #4</h3>
                 <span><em>LabelShape</em></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape4.kt">AdaptUIShowcaseShape4</a>
@@ -148,7 +148,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Shape #5</h3>
+                <h3>AdaptUI, Shape #5</h3>
                 <span><em>TextShape</em>, only Android.O+</span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape5.kt">AdaptUIShowcaseShape5</a>
@@ -158,7 +158,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Pager element</h3>
+                <h3>AdaptUI, Pager element</h3>
                 <span><em>Pager</em>, <em>ViewPager</em></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePager.kt">AdaptUIShowcasePager</a>
@@ -168,7 +168,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Image</h3>
+                <h3>AdaptUI, Image</h3>
                 <span><em>Image</em>, <em>ImageView</em></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseImage.kt">AdaptUIShowcaseImage</a>
@@ -178,7 +178,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Item</h3>
+                <h3>AdaptUI, Item</h3>
                 <span>Different usage of <em>Item</em> (including its siblings) in different contexts: directly in UI layout, in a <em>ViewGroup</em>, <em>RecyclerView</em> or <em>ListView</em> (via <em>AlertDialog</em>)</span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseItem.kt">AdaptUIShowcaseItem</a>
@@ -188,7 +188,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI, Reference views and elements</h3>
+                <h3>AdaptUI, Reference views and elements</h3>
                 <span>Assign views and elements with `.reference` utility extension</span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseReference2.kt">AdaptUIShowcaseReference2</a>
@@ -198,7 +198,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] Layout preview</h3>
+                <h3>Layout preview</h3>
                 <span>Control how elements are rendering in layout preview window</span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePreview.kt">AdaptUIShowcasePreview</a>
@@ -208,7 +208,7 @@
         </tr><tr>
         <td>
             <div>
-                <h3>[Showcase] AdaptUI Web element</h3>
+                <h3>AdaptUI Web element</h3>
                 <span>Usage of a <em>WebView</em></span>
                 <br />
                 <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseWeb.kt">AdaptUIShowcaseWeb</a>

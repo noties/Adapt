@@ -1,18 +1,6 @@
 <img src="./art/logo_social.png" width="90%" alt="logo" />
 
-# Adapt &amp; AdaptUI 
-
-__Adapt__ is a UI library to create decoupled widget components. They can be
-  used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
-  no code involved. One `Item` to rule them all. Layout preview enabled.
-
-__AdaptUI__ is en enhanced Android view DSL builder that brings together dynamism 
-  and flexibility of __Adapt__ to native Android views. It aims to provide convenience 
-  and peace of mind for developers, meanwhile fixing pain points 
-  of Android XML - missing composability, reuse and customization. They are all included out of box. 
-  It is a _disappearing_
-  view and layout builder that gives total control of created views, without imposing any
-  limitations or forcing the use of certain tools or compilers. A view is a view. As it should have been.
+# Adapt &amp; AdaptUI
 
 ## Install
 
@@ -20,28 +8,46 @@ __AdaptUI__ is en enhanced Android view DSL builder that brings together dynamis
 
 ```gradle
 implementation "io.noties:adapt:${adaptVersion}"
+implementation "io.noties:adapt-kt:${adaptVersion}"
 implementation "io.noties:adapt-ui:${adaptVersion}"
 implementation "io.noties:adapt-ui-flex:${adaptVersion}"
 ```
 
 ## [AdaptUI](./adapt-ui/README.md)
+
+__AdaptUI__ is en enhanced Android view DSL builder that brings together dynamism
+and flexibility of __Adapt__ to native Android views. It aims to provide convenience
+and peace of mind for developers, meanwhile fixing pain points
+of Android XML - missing composability, reuse and customization. They are all included out of box.
+It is a _disappearing_
+view and layout builder that gives total control of created views, without imposing any
+limitations or forcing the use of certain tools or compilers. A view is a view. As it should have been.
+
 <img src="./art/ui_showcase_text2.jpg" height="480px">
+<br />
+<a href="./PREVIEW_SHOWCASE.md">More previews like this</a>
 
-🚧 All showcase previews can be accessed via [dedicate page](./PREVIEW_SHOWCASE.md)
+[Continue reading](./adapt-ui/README.md)
 
-🚧 Documentation might still be a bit lacking, but most of the features in `adapt-ui` module
-  come with a [dedicated sample](./sample/src/main/java/io/noties/adapt/sample/samples) class file. 
-  What better can explain the functionality than the code, right? ;)
+---
 
+🚧 \[Documentation is under construction]. Meanwhile, most of the features
+  come with a [dedicated sample or samples](./sample/src/main/java/io/noties/adapt/sample/samples). They include
+  always relevant code that could be also previewed in the [installed sample application](./releases/latest). 
+  Along with Layout Preview in Android Studio to play-around.
+
+---
 
 ## [Adapt](./adapt/README.md)
+
+__Adapt__ is a UI library to create decoupled widget components. They can be
+used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably,
+no code involved. One `Item` to rule them all. Layout preview enabled.
 
 ![gif](./art/preview.gif)
 ![XML layout-preview](./art/layout_preview.png)
 
-🚧 Documentation might still be a bit lacking, but most of the features in `adapt` module
-  come with a [dedicated sample](./sample/src/main/java/io/noties/adapt/sample/samples) class file.
-  What better can explain the functionality than the code, right? ;)
+[Continue reading](./adapt/README.md)
 
 ## License
 
