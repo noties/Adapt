@@ -15,17 +15,13 @@ implementation "io.noties:adapt-ui-flex:${adaptVersion}"
 
 ## [AdaptUI](./adapt-ui/README.md)
 
-__AdaptUI__ is en enhanced Android view DSL builder that brings together dynamism
-and flexibility of __Adapt__ to native Android views. It aims to provide convenience
-and peace of mind for developers, meanwhile fixing pain points
-of Android XML - missing composability, reuse and customization. They are all included out of box.
-It is a _disappearing_
-view and layout builder that gives total control of created views, without imposing any
-limitations or forcing the use of certain tools or compilers. A view is a view. As it should have been.
+Android View DSL in fluent Kotlin. With flexibility in mind and total control over the process. 
+Can be used as an enhancement with existing native Android widgets and layouts. 
+Creates advanced Android views and layouts in openly-explorable and readable way. 
+Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 
 <img src="./art/ui_showcase_text2.jpg" height="480px">
-<br />
-<a href="./PREVIEW_SHOWCASE.md">More previews like this</a>
+<a href="./PREVIEW_SHOWCASE.md">More previews like this</a><br />
 
 [Continue reading](./adapt-ui/README.md)
 
@@ -40,9 +36,8 @@ limitations or forcing the use of certain tools or compilers. A view is a view. 
 
 ## [Adapt](./adapt/README.md)
 
-__Adapt__ is a UI library to create decoupled widget components. They can be
-used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably,
-no code involved. One `Item` to rule them all. Layout preview enabled.
+Android **true** adapter. ViewGroup _agnostique_ adapter that interchangeably
+renders items across `RecyclerView`, `ListView`, `ViewPager`, `LinearLayout`, `FlexboxLayout`, or any other `ViewGroup`.
 
 ![gif](./art/preview.gif)
 ![XML layout-preview](./art/layout_preview.png)

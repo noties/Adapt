@@ -1,3 +1,7 @@
+- [ ].
+  > Adapt README Item is a chunk of view logic (along with actual view attached) that could be
+  >  rendered and passed around. 
+
 - [ ] shape-drawable stateful handling
 
 - [ ]
