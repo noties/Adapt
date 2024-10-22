@@ -23,7 +23,8 @@ Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 <img src="./art/ui_showcase_text2.jpg" height="480px">
 <a href="./PREVIEW_SHOWCASE.md">🖼️ More previews like this</a><br />
 
-<br />
+
+
 [➡️ Continue reading](./adapt-ui/README.md)
 
 ---
