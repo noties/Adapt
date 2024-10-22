@@ -21,11 +21,8 @@ Creates advanced Android views and layouts in openly-explorable and readable way
 Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 
 <img src="./art/ui_showcase_text2.jpg" height="480px">
-<a href="./PREVIEW_SHOWCASE.md">🖼️ More previews like this</a><br />
-
-
-
-[➡️ Continue reading](./adapt-ui/README.md)
+<a href="./PREVIEW_SHOWCASE.md">🖼️ More previews like this</a><br /><br />
+<a href="./adapt-ui/README.md">➡️ Continue reading</a>
 
 ---
 
