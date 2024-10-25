@@ -330,11 +330,12 @@ object ExploreGrid {
             children
                 .withIndex()
                 .forEach { (i, child) ->
+                    val isGridSpacer = child is GridSpacer
                     val lp = child.layoutParams as LayoutParams
 
                     val gravity = lp.gravity
 
-                    val spans = if (child is GridSpacer) {
+                    val spans = if (isGridSpacer) {
                         spacerSpans
                     } else {
                         lp.spanColumns
@@ -498,7 +499,7 @@ private class PreviewExploreGrid(context: Context, attrs: AttributeSet?) :
                         .padding(8)
                 }.indent()
                     .layoutFill()
-                    .gridCellColumns(5)
+                    .gridCellColumns(4)
                     .backgroundColor { yellow.withAlphaComponent(0.2F) }
             }.noClip()
 
@@ -552,7 +553,7 @@ private class PreviewExploreGrid(context: Context, attrs: AttributeSet?) :
             }.layout(fill, 48)
 
         }.indent()
-            .gridSpacing(vertical = 24, horizontal = 8)
+//            .gridSpacing(vertical = 24, horizontal = 8)
             .layoutFill()
             .padding(leading = 8, top = 16, trailing = 24, bottom = 32)
             .preview {
