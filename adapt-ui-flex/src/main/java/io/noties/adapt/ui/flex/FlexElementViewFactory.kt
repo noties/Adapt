@@ -1,6 +1,7 @@
 package io.noties.adapt.ui.flex
 
 import android.content.Context
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
 
 object FlexElementViewFactory {
@@ -11,6 +12,11 @@ object FlexElementViewFactory {
     }
 
     fun reset() {
-        Flex = { FlexboxLayout(it) }
+        Flex = {
+            FlexboxLayout(it).also { fl ->
+                // let it wrap by default
+                fl.flexWrap = FlexWrap.WRAP
+            }
+        }
     }
 }

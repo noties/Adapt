@@ -21,6 +21,12 @@ abstract class AdaptGetterBuilder<T : Item<*>> {
     fun <R : T> filterIsInstance(type: Class<R>): AdaptGetterBuilder<R> =
         FilterIsInstance(build(), type)
 
+    /**
+     * Does a direct cast of returned List, will fail at runtime
+     * if adapt.items contains any other type of elements,
+     * more performant as does not do the actual iteration of items,
+     * but provides no guarantees that this call will succeed
+     */
     fun <R : T> cast(type: Class<R>): AdaptGetterBuilder<R> =
         Cast(build(), type)
 }
@@ -32,7 +38,7 @@ fun <T : Item<*>> Adapt.getter(
     return builder(impl).build()
 }
 
-inline fun <reified T: Item<*>> Adapt.getter(): AdaptGetter<T> {
+inline fun <reified T : Item<*>> Adapt.getter(): AdaptGetter<T> {
     return getter { filterIsInstance<T>() }
 }
 

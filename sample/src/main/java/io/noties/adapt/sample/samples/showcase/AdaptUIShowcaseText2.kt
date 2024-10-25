@@ -28,7 +28,6 @@ import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.state.textColorWithState
-import io.noties.adapt.ui.util.ColorStateListBuilder
 
 @AdaptSample(
     id = "20230520123338",

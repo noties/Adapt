@@ -41,10 +41,6 @@ class AdaptGetterSample : AdaptUISampleView() {
                 .filter { it.text.startsWith("A") }
         }
 
-    // does a direct cast of returned List, will fail at runtime
-    //  if adapt.items contains any other type of elements,
-    //  more performant as does not do the actual iteration of items,
-    //  but provides no guarantees that this call will succeed
     private val textCast
         get() = adapt.getter {
             this.cast(TextItem::class.java)
