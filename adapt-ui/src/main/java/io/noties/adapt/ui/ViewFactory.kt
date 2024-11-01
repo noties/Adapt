@@ -7,6 +7,8 @@ import io.noties.adapt.ui.util.onAttachedOnce
 
 typealias LayoutParams = ViewGroup.LayoutParams
 
+typealias ViewBuilder<V, LP> = ViewFactory<LP>.() -> ViewElement<V, LP>
+
 class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null

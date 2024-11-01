@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.R
 
+// convert to sequence?
 internal inline val ViewGroup.children: List<View>
     get() = (0 until childCount)
         .map { getChildAt(it) }

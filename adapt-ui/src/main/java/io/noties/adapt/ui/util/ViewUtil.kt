@@ -58,6 +58,15 @@ fun <V : View> V.onDetachedOnce(block: (V) -> Unit) {
  */
 val <V: View> V.element: ViewElement<V, LayoutParams> get() = ViewElement.create(this)
 
+inline fun <V: View> V.renderElement(block: (ViewElement<V, out LayoutParams>) -> Unit) {
+    val element = this.element
+    try {
+        block(element)
+    } finally {
+        element.render()
+    }
+}
+
 /**
  * Searches for the holding Activity
  */

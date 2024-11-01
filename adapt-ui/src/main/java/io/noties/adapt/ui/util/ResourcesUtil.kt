@@ -16,6 +16,9 @@ import org.xmlpull.v1.XmlPullParser
  * - `8 pixels at 2F density` (4 * 2)
  * - `12 pixels at 3F density` (4 * 3)
  * - etc
+ *
+ * _Note_ that the name is intentionally different from `dp` extension in Android Compose, so
+ * two do not collide possibly creating confusion
  */
 val Int.dip: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
@@ -25,6 +28,8 @@ val Int.dip: Int
  * - `12.pxToDip` == `4` at 3F density (12 / 3)
  */
 val Int.pxToDip: Int get() = (this / Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+
+val Int.pxToDp get() = pxToDip
 
 
 fun Resources.createAttributeSet(
