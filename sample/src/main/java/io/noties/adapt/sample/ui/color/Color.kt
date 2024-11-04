@@ -10,6 +10,7 @@ val Colors.orange get() = res(R.color.orange)
 val Colors.primary get() = res(R.color.primary)
 val Colors.accent get() = res(R.color.accent)
 val Colors.yellow get() = res(R.color.yellow)
+val Colors.purple get() = res(R.color.purple)
 
 val Colors.text get() = black
 val Colors.textSecondary get() = text.withAlphaComponent(0.82F)

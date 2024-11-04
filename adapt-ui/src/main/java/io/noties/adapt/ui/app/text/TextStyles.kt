@@ -19,3 +19,4 @@ interface TextStyles {
     ) = ElementStyle.view<TextView> { block(this, it) }
 }
 
+typealias TextStylesBuilder = TextStyles.() -> ElementStyle<TextView, *>

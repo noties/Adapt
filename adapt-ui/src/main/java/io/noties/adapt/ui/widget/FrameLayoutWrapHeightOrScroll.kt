@@ -53,7 +53,7 @@ class FrameLayoutWrapHeightOrScroll(
 
         val child = content
 
-        // if child is wrapped, then measure pared scroll-view
+        // if child is wrapped, then measure parent scroll-view
         if (child.parent != this) {
             // measure scroll
             getChildAt(0).measure(

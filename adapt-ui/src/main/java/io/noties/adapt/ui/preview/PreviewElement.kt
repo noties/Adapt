@@ -2,13 +2,16 @@ package io.noties.adapt.ui.preview
 
 import android.graphics.Color
 import android.view.View
+import android.view.View.OnAttachStateChangeListener
 import android.view.ViewGroup
+import android.view.ViewGroup.OnHierarchyChangeListener
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.onViewPreDraw
+import io.noties.adapt.ui.util.addOnHierarchyChangeListener
 import io.noties.adapt.ui.util.children
-import io.noties.adapt.ui.util.element
 import io.noties.adapt.ui.util.isInPreview
+import io.noties.adapt.ui.util.onAttachedOnce
 import io.noties.adapt.ui.util.renderElement
 import kotlin.math.max
 
@@ -18,10 +21,17 @@ class PreviewViewElement<V : View, LP : LayoutParams>(
     previewView
 })
 
+/**
+ * Special configuration for Layout preview.
+ *
+ * @param allowRenderingOnRealDevice if true will draw preview on real device (otherwise
+ * only when in Android Studio Layout preview pane)
+ */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.preview(
+    allowRenderingOnRealDevice: Boolean = false,
     block: (PreviewViewElement<V, LP>) -> Unit
 ) = this.also {
-    if (isInPreview) {
+    if (allowRenderingOnRealDevice || isInPreview) {
         // hm, do we need to add it to the factory? it would be rendered otherwise
         //  would not receive a callback
         it.onView { view ->
@@ -48,21 +58,64 @@ private fun previewBounds(
     val array = floatArrayOf(colorHsvDegree % 360F, max(0.1F, 1F - (nestedLevel * 0.1F)), 1F)
     val color = Color.HSVToColor(array)
 
-    val drawable = ((view as? PreviewViewCustomization) ?: PreviewViewCustomization).preview(color, view)
+    @Suppress("MoveVariableDeclarationIntoWhen")
+    val result = ((view as? PreviewViewCustomization) ?: PreviewViewCustomization).preview(color, view)
 
-    view.overlay.add(drawable)
+    when (result) {
+        // NO PREVIEW
+        PreviewViewCustomization.NoPreview -> Unit
 
-    view.renderElement { el ->
-        el.onViewPreDraw {
-            drawable.setBounds(0, 0, it.width, it.height)
-        }
-    }
+        // PREVIEW
+        is PreviewViewCustomization.Preview -> {
+            val d = result.drawable
+            view.overlay.add(d)
 
-    if (applyToChildren && view is ViewGroup) {
-        var current = colorHsvDegree
-        view.children.forEach {
-            current += 60F
-            previewBounds(it, current, nestedLevel + 1, true)
+            // a view can be attached/detached multiple times, allow this and re-init on-attach
+            fun render() {
+                view.renderElement { el ->
+                    el.onViewPreDraw {
+                        d.setBounds(0, 0, it.width, it.height)
+                    }
+                }
+
+                if (result.continueDrawingChildren && applyToChildren && view is ViewGroup) {
+                    var current = colorHsvDegree
+
+                    fun render(child: View) {
+                        current += 60F
+                        previewBounds(child, current, nestedLevel + 1, true)
+                    }
+
+                    view.children.forEach {
+                        render(it)
+                    }
+
+                    view.addOnHierarchyChangeListener(object: OnHierarchyChangeListener {
+                        override fun onChildViewAdded(parent: View?, child: View) {
+                            render(child)
+                        }
+
+                        override fun onChildViewRemoved(parent: View?, child: View) {
+
+                        }
+                    })
+                }
+            }
+
+            view.addOnAttachStateChangeListener(object: OnAttachStateChangeListener {
+                // render it again when attached
+                override fun onViewAttachedToWindow(v: View) {
+                    render()
+                }
+
+                // no op on detach
+                override fun onViewDetachedFromWindow(v: View) = Unit
+            })
+
+            // render immediately if attached already
+            if (view.isAttachedToWindow) {
+                render()
+            }
         }
     }
 }

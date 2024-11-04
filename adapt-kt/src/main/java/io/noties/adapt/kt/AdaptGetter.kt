@@ -22,10 +22,11 @@ abstract class AdaptGetterBuilder<T : Item<*>> {
         FilterIsInstance(build(), type)
 
     /**
-     * Does a direct cast of returned List, will fail at runtime
-     * if adapt.items contains any other type of elements,
-     * more performant as does not do the actual iteration of items,
-     * but provides no guarantees that this call will succeed
+     * Does a direct cast of returned List. NB! the cast will succeed always
+     * but it will throw if on iteration there would be item of different type
+     * (crash at runtime). Performant, as it does not do additional iteration
+     * on items, but potentially fail at runtime if underlying items contain
+     * other type. Use only when underlying collection is known to be on certain type
      */
     fun <R : T> cast(type: Class<R>): AdaptGetterBuilder<R> =
         Cast(build(), type)

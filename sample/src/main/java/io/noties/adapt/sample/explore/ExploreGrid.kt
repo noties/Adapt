@@ -21,7 +21,6 @@ import io.noties.adapt.sample.explore.ExploreGrid.GridSpacer
 import io.noties.adapt.sample.explore.ExploreGrid.gridBackground
 import io.noties.adapt.sample.explore.ExploreGrid.gridColumns
 import io.noties.adapt.sample.explore.ExploreGrid.gridForeground
-import io.noties.adapt.sample.explore.ExploreGrid.gridOverlay
 import io.noties.adapt.sample.explore.ExploreGrid.gridSpacing
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.black
@@ -31,7 +30,6 @@ import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.children
-import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewBuilder
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -61,6 +59,9 @@ import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onElementView
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.preview.AdaptUIPreviewLayout
+import io.noties.adapt.ui.preview.PreviewBoundsDrawable
+import io.noties.adapt.ui.preview.PreviewDrawable
+import io.noties.adapt.ui.preview.PreviewPaddingDrawable
 import io.noties.adapt.ui.preview.PreviewViewCustomization
 import io.noties.adapt.ui.preview.preview
 import io.noties.adapt.ui.preview.previewBounds
@@ -80,6 +81,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 
+@Deprecated("Implemented")
 object ExploreGrid {
     // raw Grid and GridRow
 
@@ -384,7 +386,6 @@ object ExploreGrid {
         }
     }
 
-    // TODO: secondary constructor, do we need it? maybe for preview?
     class GridLayout : ViewGroup {
         constructor(context: Context) : super(context)
         constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -492,13 +493,8 @@ object ExploreGrid {
             }
         }
 
-        // TODO: recalculate on hierarchy change and cache?
-        // TODO: or obtain when measuring and cache? even better we know already there
-        val columnsCount: Int
-            // must not calculate overlays, only rows
-            get() = rows.maxOf {
-                (it as? GridRowLayout)?.contentColumns ?: 1
-            }
+        private var columnsCountMutable: Int = 1
+        val columnsCount: Int get() = columnsCountMutable
 
         val lastColumn get() = columnsCount - 1
         val lastRow get() = rowsCount - 1
@@ -534,11 +530,11 @@ object ExploreGrid {
             }
         }
 
-//        fun cellWidth(spans: Int, contentWidth: Int = width - paddingLeft - paddingRight): Int {
-//            val columns = columnsCount
-//            val cellWidth = contentWidth - ((columns - 1) * horizontalSpacingPx) / columns
-//            return cellWidth + ((spans - 1) * horizontalSpacingPx)
-//        }
+        fun calculateColumnsCount(): Int {
+            return rows.maxOf {
+                (it as? GridRowLayout)?.contentColumns ?: 1
+            }
+        }
 
         fun calculateCellWidthWithSpan(
             span: Int,
@@ -559,19 +555,6 @@ object ExploreGrid {
             val e = endSpan.coerceIn(heights.indices)
                 .takeIf { it >= s }
                 ?: return 0
-            println(
-                ":{cchws start:$startSpan end:$endSpan vertical:$verticalSpacingPx " +
-                        "list:${heights.drop(s).take(e - s + 1)} take:${e - s + 1}"
-            )
-            println(
-                ":{cchws heights:$heights s:$s e:$e sum:${
-                    heights.subList(
-                        s,
-                        e
-                    ).sum()
-                } minus:${e - s - 1}"
-            )
-            println(":{cchws sub:${heights.subList(s, e)}")
             return heights.drop(s).take(e - s + 1).sum() + ((e - s) * verticalSpacingPx)
         }
 
@@ -626,7 +609,8 @@ object ExploreGrid {
         }
 
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-            val columnsCount = this.columnsCount
+            val columnsCount = calculateColumnsCount()
+                .also { columnsCountMutable = it }
                 .takeIf { it > 0 }
                 ?: return super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
@@ -671,7 +655,7 @@ object ExploreGrid {
                     if (i != 0) {
                         measuredHeight += verticalSpacingPx
                     }
-                    val lp = v.layoutParams as LayoutParams
+                    val lp = v.gridLayoutParams
                     val childHeightSpec = if (lp.height > 0) {
                         MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.EXACTLY)
                     } else {
@@ -690,6 +674,7 @@ object ExploreGrid {
                 overlay.measure(
                     MeasureSpec.makeMeasureSpec(contentWidth, MeasureSpec.EXACTLY),
                     // measuredHeight contains padding-top, overlay should not contain padding
+                    //  (so, we extract the padding that was added before)
                     MeasureSpec.makeMeasureSpec(measuredHeight - paddingTop, MeasureSpec.EXACTLY)
                 )
             }
@@ -723,6 +708,8 @@ object ExploreGrid {
         override fun generateDefaultLayoutParams(): LayoutParams {
             return LayoutParams()
         }
+
+        private val View.gridLayoutParams: LayoutParams get() = layoutParams as LayoutParams
     }
 
     // TODO: make it take proper values (fill width and height)
@@ -731,13 +718,14 @@ object ExploreGrid {
         constructor(context: Context) : super(context)
         constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-        override fun preview(color: Int, view: View): Drawable {
-            // TODO: different locations fro drawables
-            return PreviewViewCustomization.Companion.PreviewDrawable(
-                listOf(
-                    PreviewViewCustomization.Companion.PreviewPaddingDrawable(color, view),
-                    PreviewViewCustomization.Companion.PreviewBoundsDrawable(color, true),
-                    PreviewGridSpacerDrawable(color, view)
+        override fun preview(color: Int, view: View): PreviewViewCustomization.Result {
+            return PreviewViewCustomization.Preview(
+                PreviewDrawable(
+                    listOf(
+                        PreviewPaddingDrawable(color, view),
+                        PreviewBoundsDrawable(color, true),
+                        PreviewGridSpacerDrawable(color, view)
+                    )
                 )
             )
         }

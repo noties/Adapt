@@ -1,5 +1,38 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayPlacementSample",
+    "id": "20241104022011",
+    "title": "Grid overlay layout placements",
+    "description": "Various samples of different span rules to layout overlay elements",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBasicSample",
+    "id": "20241103154220",
+    "title": "Grid sample",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlaySample",
+    "id": "20241102225551",
+    "title": "GridOverlay",
+    "description": "Usage of Grid overlays (background, foreground, etc) with TransitionManager to build dynamic and animatable grids",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewStateSample",
     "id": "20241017013604",
     "title": "AdaptUI ViewState",

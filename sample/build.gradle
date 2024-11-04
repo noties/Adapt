@@ -22,9 +22,6 @@ android {
         buildConfigField 'String', 'GIT_BUILD_BRANCH', "\"${gitBranch()}\""
     }
 
-    lintOptions {
-        fatal 'StopShip'
-    }
 
     sourceSets {
         main {
@@ -44,8 +41,17 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lint {
+        fatal 'StopShip'
     }
 }
 

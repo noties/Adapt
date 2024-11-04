@@ -48,7 +48,7 @@ class OnScrollChangedListenerDelegate private constructor(val view: View) {
             return delegate
         }
 
-        private val tagId = R.id.adaptui_internal_scroll_delegate
+        private val tagId get() = R.id.adaptui_internal_scroll_delegate
     }
 
     init {
