@@ -9,7 +9,7 @@ typealias LayoutParams = ViewGroup.LayoutParams
 
 typealias ViewBuilder<V, LP> = ViewFactory<LP>.() -> ViewElement<V, LP>
 
-class ViewFactory<out LP : LayoutParams>(
+open class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null
 ) : ViewFactoryConstants {
@@ -80,8 +80,20 @@ class ViewFactory<out LP : LayoutParams>(
             g: G,
             children: ViewFactory<LP>.() -> Unit
         ) {
+            addChildren(
+                ViewFactory(g),
+                g,
+                children
+            )
+        }
 
-            val factory = ViewFactory<LP>(g)
+        @JvmName("addChildrenViewFactory")
+        fun <VF: ViewFactory<LP>, G : ViewGroup, LP : LayoutParams> addChildren(
+            factory: VF,
+            g: G,
+            children: VF.() -> Unit
+        ) {
+
             val context = factory.context
 
             children(factory)

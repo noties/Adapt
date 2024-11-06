@@ -1,20 +1,15 @@
 package io.noties.adapt.ui.widget.grid
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.ui.element.grid.GridOverlayViewFactory
 import io.noties.adapt.ui.util.children
 
-typealias GridOverlayIntRangeBuilder = (column: Int, row: Int) -> IntRange
-
 class GridOverlayLayout(context: Context) : ViewGroup(context) {
-    class Axis(val builder: GridOverlayIntRangeBuilder)
-
-    // Key is only equals to self (same instance)
-    //  we allow different cells to occupy same position (and persist
-    //  in map)
-    class Key(val x: Axis, val y: Axis)
+    // TODO: adapt for overlay (and in general)
 
     init {
         clipChildren = false
@@ -27,31 +22,31 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
 
     private val gridLayout: GridLayout get() = parent as GridLayout
 
-    val entries: Map<Key, View> get() = entriesMutable
-    private val entriesMutable = linkedMapOf<Key, View>()
-
-    operator fun set(key: Key, value: View) {
-        val previous = entriesMutable.put(key, value)
-        if (previous != null) {
-            removeView(previous)
+    fun updateView(
+        view: View,
+        x: GridOverlaySpanBuilder? = null,
+        y: GridOverlaySpanBuilder? = null,
+    ) {
+        if (view.parent != view) {
+            error("Provided view is not child of this overlay:$view")
         }
-        addView(value)
+
+        // can the LP be missing if it already has us as parent?
+        val lp = (view.layoutParams as LayoutParams)
+
+        x?.also { lp.horizontalSpan = it }
+        y?.also { lp.verticalSpan = it }
+
+        // trigger update
+        view.layoutParams = lp
     }
 
-    fun remove(key: Key): View? {
-        val value = entriesMutable.remove(key)
-        if (value != null) {
-            removeView(value)
-        }
-        return value
+    fun addViews(block: GridOverlayViewFactory.() -> Unit) {
+        GridOverlayViewFactory.addChildren(
+            this,
+            block
+        )
     }
-
-    fun clear() {
-        entriesMutable.clear()
-        removeAllViews()
-    }
-
-    // how do we make it sync its state with the parent?
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val gridLayout = this.gridLayout
@@ -65,12 +60,19 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
             view.measure(SPEC_NOOP, SPEC_NOOP)
         }
 
-        entriesMutable.forEach { (key, view) ->
+        children.forEach { view ->
             val lp = view.overlayLayoutParams
 
-            val (startX, endX) = verifyAxisHorizontal(key.x)
+            // por favor.. draw-allocation
+            @SuppressLint("DrawAllocation")
+            val info = GridOverlayInfo(
+                columns = gridLayout.columnsCount,
+                rows = gridLayout.rowsCount
+            )
+
+            val (startX, endX) = verifyAxisHorizontal(info, lp.horizontalSpan)
                 .let { it ?: return@forEach skipMeasure(view) }
-            val (startY, endY) = verifyAxisVertical(key.y)
+            val (startY, endY) = verifyAxisVertical(info, lp.verticalSpan)
                 .let { it ?: return@forEach skipMeasure(view) }
 
             lp.x = if (startX == 0) {
@@ -125,9 +127,17 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
         // no op
     }
 
-    private fun verifyAxisHorizontal(axis: Axis): IntRange? {
-        val range = verifyAxisRange(axis.builder(gridLayout.columnsCount, gridLayout.rowsCount))
+    private fun verifyAxisHorizontal(
+        info: GridOverlayInfo,
+        axis: GridOverlaySpanBuilder?
+    ): IntRange? {
+        if (axis == null) {
+            return null
+        }
+
+        val range = verifyAxisRange(axis(GridOverlaySpanFactory, info))
             ?: return null
+
         val last = range.last.coerceAtMost(gridLayout.lastColumnIndex)
         return IntRange(
             // start cannot be less than 0
@@ -137,8 +147,15 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
         )
     }
 
-    private fun verifyAxisVertical(axis: Axis): IntRange? {
-        val range = verifyAxisRange(axis.builder(gridLayout.columnsCount, gridLayout.rowsCount))
+    private fun verifyAxisVertical(
+        info: GridOverlayInfo,
+        axis: GridOverlaySpanBuilder?
+    ): IntRange? {
+        if (axis == null) {
+            return null
+        }
+
+        val range = verifyAxisRange(axis(GridOverlaySpanFactory, info))
             ?: return null
 
         val last = range.last.coerceAtMost(gridLayout.lastRowIndex)
@@ -170,6 +187,9 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
         // lateinit is not available on primitives.. :'( AND it is a typo when used in a comment
         var x: Int = 0
         var y: Int = 0
+
+        var horizontalSpan: GridOverlaySpanBuilder? = null
+        var verticalSpan: GridOverlaySpanBuilder? = null
 
         constructor() : super(MATCH_PARENT, MATCH_PARENT)
         constructor(c: Context, attrs: AttributeSet?) : super(c, attrs)

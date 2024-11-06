@@ -7,6 +7,15 @@ import android.view.ViewGroup
 import io.noties.adapt.ui.R
 import io.noties.adapt.ui.util.addOnHierarchyChangeListener
 import io.noties.adapt.ui.util.children
+import java.util.concurrent.CopyOnWriteArrayList
+
+data class GridInfo(val columns: Int, val rows: Int)
+
+typealias OnGridLayoutChangeListener = (gridInfo: GridInfo) -> Unit
+
+fun interface OnGridLayoutChangeListenerRegistration {
+    fun remove()
+}
 
 class GridLayout : ViewGroup {
     constructor(context: Context) : super(context)
@@ -62,6 +71,10 @@ class GridLayout : ViewGroup {
     // predefined overlay for foreground
     val gridForeground: GridOverlayLayout get() = getOrCreateOverlay(OVERLAY_PRIORITY_FOREGROUND)
 
+    private val changeListeners = CopyOnWriteArrayList<OnGridLayoutChangeListener>()
+
+    private var lastState = GridInfo(0, 0)
+
     private val drawingOrder = mutableMapOf<Int, Int>()
 
     init {
@@ -81,11 +94,13 @@ class GridLayout : ViewGroup {
             child.addOnHierarchyChangeListener(object : OnHierarchyChangeListener {
                 override fun onChildViewAdded(parent: View?, child: View) {
                     invalidateColumnsCount()
+                    notifyStateChange()
                     requestLayout()
                 }
 
                 override fun onChildViewRemoved(parent: View?, child: View) {
                     invalidateColumnsCount()
+                    notifyStateChange()
                     requestLayout()
                 }
             })
@@ -95,6 +110,7 @@ class GridLayout : ViewGroup {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
+        // process currently added children too (could be added before whole view is added to window)
         children.forEach { onChildAdded(it) }
 
         // NB! rows must be invalidated before columns
@@ -102,34 +118,34 @@ class GridLayout : ViewGroup {
         invalidateColumnsCount()
         invalidateDrawingPositions()
 
+        notifyStateChange()
+
         addOnHierarchyChangeListener(object : OnHierarchyChangeListener {
 
             override fun onChildViewAdded(parent: View?, child: View) {
                 onChildAdded(child)
 
-                val col = columnsCount
-
                 // NB! rows must be invalidated before columns
                 invalidateRowsAndOverlays()
                 invalidateColumnsCount()
                 invalidateDrawingPositions()
-                requestLayout()
 
-                // STOPSHIP: TODO
-                println(":[ grid.onChildViewAdded columns old:$col new:$columnsCount")
+                notifyStateChange()
+
+                requestLayout()
             }
 
             override fun onChildViewRemoved(parent: View?, child: View) {
                 // addOnHierarchyChangeListener automatically manages when detached, so
                 //  no need to unregister additionally here
 
-                // STOPSHIP: TODO
-                println(":[ grid.onChildViewRemoved")
-
                 // NB! rows must be invalidated before columns
                 invalidateRowsAndOverlays()
                 invalidateColumnsCount()
                 invalidateDrawingPositions()
+
+                notifyStateChange()
+
                 requestLayout()
             }
         })
@@ -188,8 +204,9 @@ class GridLayout : ViewGroup {
         val heights = rowHeights
         val s = startSpan.coerceIn(heights.indices)
         val e = endSpan.coerceIn(heights.indices)
-            .takeIf { it >= s }
-            ?: return 0
+            // NB! the return
+            .takeIf { it >= s } ?: return 0
+
         return heights.drop(s).take(e - s + 1).sum() + ((e - s) * verticalSpacingPx)
     }
 
@@ -203,6 +220,15 @@ class GridLayout : ViewGroup {
         horizontalSpacingPx: Int = this.horizontalSpacingPx
     ): Int {
         return (contentWidth - ((columnsCount - 1) * horizontalSpacingPx)) / columnsCount
+    }
+
+    fun addOnGridStateChangeListener(listener: OnGridLayoutChangeListener): OnGridLayoutChangeListenerRegistration {
+        changeListeners.add(listener)
+        return OnGridLayoutChangeListenerRegistration { removeOnGridStateChangeListener(listener) }
+    }
+
+    fun removeOnGridStateChangeListener(listener: OnGridLayoutChangeListener) {
+        changeListeners.remove(listener)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -385,5 +411,18 @@ class GridLayout : ViewGroup {
             .also {
                 drawingOrder.putAll(it)
             }
+    }
+
+    private fun notifyStateChange() {
+        val listeners = changeListeners.takeIf { it.isNotEmpty() } ?: return
+        val gridInfo = GridInfo(columns = columnsCount, rows = rowsCount)
+            .takeIf { lastState != it }
+            ?: return
+
+        this.lastState = gridInfo
+
+        listeners.forEach {
+            it(gridInfo)
+        }
     }
 }

@@ -26,6 +26,7 @@ import io.noties.adapt.ui.element.grid.Square
 import io.noties.adapt.ui.element.grid.Squares
 import io.noties.adapt.ui.element.grid.gridBackground
 import io.noties.adapt.ui.element.grid.gridForeground
+import io.noties.adapt.ui.element.grid.gridSpan
 import io.noties.adapt.ui.element.imageScaleType
 import io.noties.adapt.ui.element.imageTint
 import io.noties.adapt.ui.element.textColor
@@ -61,57 +62,62 @@ class GridOverlaySample : AdaptUISampleView() {
                 }.indent()
                     // background, drawn under primary content
                     .gridBackground {
+
                         // first row, first column
-                        View(x = first(), y = first()) {
-                            Text("\uD83D\uDE0E")
-                                .textSize { 21 }
-                                .textColor { black }
-                                .textGravity { center }
-                        }
+                        Text("\uD83D\uDE0E")
+                            .textSize { 21 }
+                            .textColor { black }
+                            .textGravity { center }
+                            // first row, first column
+                            .gridSpan(
+                                x = first(),
+                                // or with builder
+                                y = { first() }
+                            )
 
                         // span multiple, take whole row
-                        View(x = fill(), y = just(1)) {
-                            View().backgroundColor { orange }
-                        }
+                        View()
+                            .backgroundColor { orange }
+                            .gridSpan(x = fill(), y = just(1))
 
                         // span multiple, take whole column
-                        View(x = just(1), y = fill()) {
-                            View().backgroundColor { primary }
-                        }
+                        View()
+                            .backgroundColor { primary }
+                            .gridSpan(x = just(1), y = fill())
 
                         // dynamically positioned cell, always last row/column
-                        View(
-                            x = { c, _ -> last(c) },
-                            y = { _, r -> last(r) }
-                        ) {
-                            View()
-                                .background { Circle { fill { accent } } }
-                        }
+                        View()
+                            .background { Circle { fill { accent } } }
+                            .gridSpan(
+                                x = { (c, _) -> last(c) },
+                                y = { (_, r) -> last(r) }
+                            )
                     }
                     .gridForeground {
                         // dynamic foreground cell, always center
-                        View(
-                            // provide own calculation logic
-                            x = { columns, _ -> center(columns) },
-                            y = { _, rows ->  center(rows) }
-                        ) {
-                            Image(R.drawable.ic_launcher_foreground)
-                                .imageScaleType { fitCenter }
-                                .padding(8)
-                                .imageTint { black }
-                        }
+                        Image(R.drawable.ic_launcher_foreground)
+                            .imageScaleType { fitCenter }
+                            .padding(8)
+                            .imageTint { black }
+                            .gridSpan(
+                                // provide own calculation logic
+                                x = { (columns, _) -> center(columns) },
+                                y = { (_, rows) -> center(rows) }
+                            )
 
                         // dynamic foreground cell, second to last row, second column
-                        Shape(
-                            x = first() + 1,
-                            y = { _, row -> last(row) - 1 }
-                        ) {
-                            Circle {
-                                fill { hex("#f00") }
-                                size(24, 24)
-                                gravity { center }
+                        View()
+                            .background {
+                                Circle {
+                                    fill { hex("#f00") }
+                                    size(24, 24)
+                                    gravity { center }
+                                }
                             }
-                        }
+                            .gridSpan(
+                                x = first() + 1,
+                                y = { (_, row) -> last(row) - 1 }
+                            )
                     }
                     .preview(true) {
                         it.previewBounds()
@@ -119,7 +125,6 @@ class GridOverlaySample : AdaptUISampleView() {
 
                 GridControls(grid)
                     .layoutMargin(vertical = 24)
-
             }
 
         }.indent()

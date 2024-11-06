@@ -1,5 +1,16 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayItemSample",
+    "id": "20241106025706",
+    "title": "GridOverlay with adapter Item",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayPlacementSample",
     "id": "20241104022011",
     "title": "Grid overlay layout placements",
