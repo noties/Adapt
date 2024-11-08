@@ -25,9 +25,13 @@ abstract class AdaptUIPreviewLayout(context: Context, attrs: AttributeSet?) : Fr
             addView(view)
             e.render()
         }
+
+        onCreated()
     }
 
     abstract fun ViewFactory<LayoutParams>.body()
 
     open fun initialize(layout: AdaptUIPreviewLayout) = Unit
+
+    open fun onCreated() = Unit
 }

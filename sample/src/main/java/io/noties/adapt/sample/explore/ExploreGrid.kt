@@ -1106,7 +1106,7 @@ private class PreviewExploreGrid(
 
     override fun ViewFactory<LayoutParams>.body() {
 
-        if (true) {
+        if (false) {
 
             @Suppress("FunctionName")
             fun <LP : io.noties.adapt.ui.LayoutParams> ViewFactory<LP>.Cell(title: String, isBold: Boolean) = VStack {
@@ -1160,7 +1160,7 @@ private class PreviewExploreGrid(
             return
         }
 
-        if (true) {
+        if (false) {
             Grid {
                 val columns = 5
                 val rows = 5
@@ -1216,7 +1216,7 @@ private class PreviewExploreGrid(
             return
         }
 
-        if (true) {
+        if (false) {
             Grid {
 
                 // maximum possible

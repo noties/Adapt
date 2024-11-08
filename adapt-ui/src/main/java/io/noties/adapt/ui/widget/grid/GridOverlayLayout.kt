@@ -9,8 +9,6 @@ import io.noties.adapt.ui.element.grid.GridOverlayViewFactory
 import io.noties.adapt.ui.util.children
 
 class GridOverlayLayout(context: Context) : ViewGroup(context) {
-    // TODO: adapt for overlay (and in general)
-
     init {
         clipChildren = false
         clipToPadding = false

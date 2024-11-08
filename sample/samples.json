@@ -1,5 +1,16 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample",
+    "id": "20241107234915",
+    "title": "Grid alphabet animated",
+    "description": "Draws letters with grid cells and animates transition between them",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayItemSample",
     "id": "20241106025706",
     "title": "GridOverlay with adapter Item",
