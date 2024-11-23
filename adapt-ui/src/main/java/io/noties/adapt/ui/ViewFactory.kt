@@ -88,7 +88,7 @@ open class ViewFactory<out LP : LayoutParams>(
         }
 
         @JvmName("addChildrenViewFactory")
-        fun <VF: ViewFactory<LP>, G : ViewGroup, LP : LayoutParams> addChildren(
+        fun <VF : ViewFactory<LP>, G : ViewGroup, LP : LayoutParams> addChildren(
             factory: VF,
             g: G,
             children: VF.() -> Unit

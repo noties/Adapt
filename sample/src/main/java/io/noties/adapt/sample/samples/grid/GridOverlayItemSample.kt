@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.emeraldGreen
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.backgroundColor
@@ -29,9 +31,9 @@ import io.noties.adapt.viewgroup.AdaptViewGroup
 @AdaptSample(
     id = "20241106025706",
     title = "GridOverlay with adapter Item",
-    tags = ["grid", "adapt-ui", "widget"]
+    tags = [Tags.grid, Tags.adaptUi, Tags.widget, Tags.interactive]
 )
-class GridOverlayItemSample : AdaptUISampleView() {
+class GridOverlayItemSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         // let's add a slightly different background for even rows
         ZStackWrapHeightOrScroll {
@@ -85,7 +87,7 @@ class GridOverlayItemSample : AdaptUISampleView() {
     private class BackgroundRowItem(val y: Int) : ElementItemNoRef(y.toLong()) {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
-                .backgroundColor { black.withAlphaComponent(0.42F) }
+                .backgroundColor { emeraldGreen.withAlphaComponent(0.1F) }
         }
 
         override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
@@ -106,7 +108,7 @@ class GridOverlayItemSample : AdaptUISampleView() {
 
 @Preview
 private class PreviewGridOverlayItemSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = GridOverlayItemSample()
 }

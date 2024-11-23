@@ -11,7 +11,7 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.ElementGroup
 import io.noties.adapt.ui.util.addOnHierarchyChangeListener
 
-@Suppress("FINAL_UPPER_BOUND")
+@Suppress("FINAL_UPPER_BOUND", "StopShip")
 object ExploreButton {
     // style would be a little hard, as we have no views (no TextView) specifically, which we can style
     // we could collect text-style here (somehow) and apply to teh first TextView child

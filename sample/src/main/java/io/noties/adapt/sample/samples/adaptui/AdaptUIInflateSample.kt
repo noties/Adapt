@@ -4,17 +4,17 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.yellow
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.castView
@@ -33,16 +33,15 @@ import io.noties.adapt.ui.preview.preview
 import io.noties.adapt.ui.preview.previewBounds
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.hex
 
 @AdaptSample(
     id = "20230615000044",
     title = "[Explore] AdaptUI <em>Inflate</em> element",
     description = "Inflate view from XML and use in AdaptUI",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIInflateSample : AdaptUISampleView() {
+class AdaptUIInflateSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             Inflated(R.layout.item_plain)
@@ -51,7 +50,7 @@ class AdaptUIInflateSample : AdaptUISampleView() {
                         .textColor(hex("#208F00FF"))
                         .text("42")
                         .background {
-                            Circle { fill(Colors.orange) }
+                            Circle { fill { orange } }
                         }
                 }
                 .inflatedView(R.id.title_view) {
@@ -75,7 +74,7 @@ class AdaptUIInflateSample : AdaptUISampleView() {
                     it.backgroundColor { accent }
                 }
                 .castView(LinearLayout::class)
-                .stackGravity(Gravity.center.vertical)
+                .stackGravity { center.vertical }
         }.layoutFill()
             .preview {
                 it.previewBounds()
@@ -89,6 +88,6 @@ private class Preview__AdaptUIInflateSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIInflateSample()
 }

@@ -22,6 +22,9 @@ import android.widget.LinearLayout
  * @see FrameLayoutWrapHeightOrScroll
  */
 class LinearLayoutContentMeasuredLast : LinearLayout {
+    // TODO: validate it works.. setMeasured (height - available)?
+    // TODO: horizontal version
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 

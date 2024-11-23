@@ -2,21 +2,19 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHey
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.heyHo
 import io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample.TextStyles.textStylePrimary
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -31,33 +29,27 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221016113609",
     title = "AdaptUI - extensions to style or customize elements",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIExtensionsSample : SampleView() {
+class AdaptUIExtensionsSample : SampleViewUI() {
 
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
+            VStack {
 
-    override fun render(view: View) {
-        ViewFactory.addChildren(view as ViewGroup) {
-            VScroll {
-                VStack {
+                Text()
+                    .layout(fill, wrap)
+                    .textStylePrimary()
+                    .heyHey() // as it does not return ViewElement is not possible to further customize
 
-                    Text()
-                        .layout(FILL, WRAP)
-                        .textStylePrimary()
-                        .heyHey() // as it does not return ViewElement is not possible to further customize
-
-                    Text("heyHo")
-                        .heyHo() // after this no longer ViewElement<TextView, LinearLayout.LayoutParams>
-                        // only generic functions are available to all views and all layout params
-                        .backgroundColor { orange }
-                }
+                Text("heyHo")
+                    .heyHo() // after this no longer ViewElement<TextView, LinearLayout.LayoutParams>
+                    // only generic functions are available to all views and all layout params
+                    .backgroundColor { orange }
             }
         }
     }
@@ -68,7 +60,7 @@ class AdaptUIExtensionsSample : SampleView() {
         fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStylePrimary() = this
             .textSize(16)
             .textColor { primary }
-            .textGravity(Gravity.top)
+            .textGravity { top }
             .textBold()
 
         // becomes available to only TextView elements (no subclasses would be allowed,
@@ -80,7 +72,7 @@ class AdaptUIExtensionsSample : SampleView() {
         // becomes available to only TextView inside a LinearLayout
         fun <LP : LinearLayout.LayoutParams> ViewElement<TextView, LP>.textStyleAdditional() = this
             .textColor { primary }
-            .textGravity(Gravity.center)
+            .textGravity { center }
             .layoutWeight(1F)
 
         // LP in most cases could be omitted if further customization is not required
@@ -111,6 +103,6 @@ private class Preview__AdaptUIExtensionsSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIExtensionsSample()
 }

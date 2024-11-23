@@ -24,6 +24,7 @@ interface CommonTextPaintData {
      * Apply properties to supplied [TextPaint]
      */
     fun applyTo(textPaint: TextPaint) {
+        // TODO: should text use scaled density pixels? should this be an exception?
         textSize?.dip?.toFloat()?.also { textPaint.textSize = it }
         textColor?.also { textPaint.color = it }
 

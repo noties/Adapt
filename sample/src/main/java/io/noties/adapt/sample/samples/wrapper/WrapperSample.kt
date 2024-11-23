@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
@@ -16,7 +16,7 @@ import io.noties.debug.Debug
     description = "With <em>similar</em> semantics to SwiftUI",
     tags = ["wrapper"]
 )
-class WrapperSample : SampleView() {
+class WrapperSample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_view_group

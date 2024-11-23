@@ -4,15 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.Web
@@ -26,16 +25,15 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.overlay
 import io.noties.adapt.ui.shape.Circle
-import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.withAlphaComponent
 
 @AdaptSample(
     id = "20230716140149",
     title = "[Showcase] AdaptUI Web element",
     description = "Usage of a <em>WebView</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseWeb : AdaptUISampleView() {
+class AdaptUIShowcaseWeb : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -51,7 +49,7 @@ class AdaptUIShowcaseWeb : AdaptUISampleView() {
                 // placeholder content is being displayed until web-view is being constructed
                 placeholderContent = {
                     Progress()
-                        .layoutGravity(Gravity.center)
+                        .layoutGravity { center }
                 }
             ).layout(fill, 0, 1F)
                 .webSettings {
@@ -62,7 +60,7 @@ class AdaptUIShowcaseWeb : AdaptUISampleView() {
                 .webOnElementReady {
                     // element with WebView is ready
                     it.overlay {
-                        Circle().fill(Colors.black.withAlphaComponent(0.2F))
+                        Circle().fill { black.withAlphaComponent(0.2F) }
                     }
                 }
                 .webLoad("https://example.org")
@@ -76,6 +74,6 @@ private class Preview__AdaptUIShowcaseWeb(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcaseWeb()
 }

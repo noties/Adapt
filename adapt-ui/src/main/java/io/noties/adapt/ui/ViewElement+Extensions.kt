@@ -15,10 +15,14 @@ import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.app.color.ColorsBuilder
 import io.noties.adapt.ui.app.dimen.Dimens
 import io.noties.adapt.ui.app.dimen.DimensBuilder
+import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.gradient.GradientBuilder
+import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import io.noties.adapt.ui.util.addOnScrollChangedListener
 import io.noties.adapt.ui.util.dip
@@ -150,6 +154,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
     block: ShapeFactoryBuilder
 ): ViewElement<V, LP> = background(block(ShapeFactory.NoOp))
+
+/**
+ * @see View.setBackground
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundGradient(
+    gradient: GradientBuilder
+): ViewElement<V, LP> = background {
+    Rectangle {
+        fill(gradient(Gradient))
+    }
+}
 
 /**
  * @see background(Int)

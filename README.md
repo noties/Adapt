@@ -16,7 +16,7 @@ implementation "io.noties:adapt-ui-flex:${adaptVersion}"
 ## [AdaptUI](./adapt-ui/README.md)
 
 Android View DSL in fluent Kotlin. With flexibility in mind and total control over the process. 
-Can be used as an enhancement with existing native Android widgets and layouts. 
+Can be used as an enhancement over existing native Android widgets and layouts. 
 Creates advanced Android views and layouts in openly-explorable and readable way. 
 Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 

@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -17,15 +17,14 @@ import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.reference
-import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230602002749",
     title = "[Showcase] AdaptUI, Reference views and elements",
     description = "Assign views and elements with <em>.reference</em> utility extension",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseReference2 : AdaptUISampleView() {
+class AdaptUIShowcaseReference2 : SampleViewUI() {
 
     private lateinit var textView: TextView
     private lateinit var textElement: ViewElement<TextView, *>
@@ -50,7 +49,7 @@ class AdaptUIShowcaseReference2 : AdaptUISampleView() {
 //                .onView { textView = it }
                 // would assign reference to this element
                 .reference(::textElement)
-                // the same as
+            // the same as
 //                .also { textElement = it }
 
             Image()
@@ -70,6 +69,6 @@ private class Preview__AdaptUIShowcaseReference2(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcaseReference2()
 }

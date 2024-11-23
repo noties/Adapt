@@ -1,5 +1,16 @@
 # Changelog
 
+# 5.1
+### Changed
+* `AdaptViewGroup`, if configured `Adapt` is empty then supporting `viewGroup` 
+   visibility will be set to `View.GONE` automatically. Configure `AdaptViewGroup.Configuration`
+   with `hideIfEmpty(false)` to disable 
+* `ViewGroup.addOnHierarchyChangeListener` utility to register multiple `OnHierarchyChangeListener`
+* `View.addOnFocusChangedListener` utility to register multiple `OnFocusChangedListener`
+* `ViewFlag` utility
+* `Grid` widget
+* `ViewState` to replace `DrawableState`, unified semantics for color, drawable, shape builder with state
+
 # 5.0.0
 ### Changed
 * `Text`: `.textFont` => `.textTypeface`

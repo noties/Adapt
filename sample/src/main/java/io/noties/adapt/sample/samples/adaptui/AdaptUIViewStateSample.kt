@@ -2,9 +2,12 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
@@ -12,8 +15,6 @@ import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.ui.color.textSecondary
 import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.ui.text.body
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -55,9 +56,10 @@ import io.noties.debug.Debug
     id = "20241017013604",
     title = "AdaptUI ViewState",
     description = "Usage of ViewState (also known as &quot;drawable state&quot; on native Android layer), " +
-            "<tt>pressed</tt>, <tt>focused</tt> and other android.R.attr attributes"
+            "<tt>pressed</tt>, <tt>focused</tt> and other android.R.attr attributes",
+    tags = [Tags.adaptUi, Tags.viewState]
 )
-class AdaptUIViewStateSample : AdaptUISampleView() {
+class AdaptUIViewStateSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VScroll {
             VStack {
@@ -248,6 +250,6 @@ private class Preview__AdaptUIViewStateSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIViewStateSample()
 }

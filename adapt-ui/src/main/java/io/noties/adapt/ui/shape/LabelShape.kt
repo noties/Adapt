@@ -98,6 +98,8 @@ class LabelShape(
 
         val textPaint = cache.textPaint(data)
 
+//        measureDrawRect(bounds)
+
         // normal alignment, we would locate the whole text based on gravity
         textPaint.textAlign = Paint.Align.LEFT
 
@@ -134,6 +136,20 @@ class LabelShape(
             rect.top.toFloat() + textTop,
             textPaint
         )
+    }
+
+    fun measureDrawRect() {
+        val text = data.text ?: return
+
+        val textPaint = cache.textPaint(data)
+
+        // normal alignment, we would locate the whole text based on gravity
+        textPaint.textAlign = Paint.Align.LEFT
+
+        // measure text
+        textPaint.getTextBounds(text, 0, text.length, rect)
+
+        drawRect().set(rect)
     }
 
     override fun drawChildren(canvas: Canvas, bounds: Rect) {

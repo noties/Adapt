@@ -4,19 +4,30 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.cyan
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.gray
+import io.noties.adapt.sample.ui.color.green
+import io.noties.adapt.sample.ui.color.red
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.steelBlue
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -42,9 +53,11 @@ import io.noties.adapt.ui.element.textHideIfEmpty
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
 import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.noClip
@@ -64,9 +77,10 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Shape
-import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
-import io.noties.adapt.ui.util.ColorStateListBuilder
+import io.noties.adapt.ui.state.ShapeStateListFactory
+import io.noties.adapt.ui.state.backgroundWithState
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.viewgroup.AdaptViewGroup
@@ -78,51 +92,29 @@ import java.util.Date
     id = "20220523200713",
     "Adapt-UI sample",
     "usage of <tt>adapt-ui</tt> module to build simple layouts in Kotlin",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUISample : SampleView() {
-
-    override val layoutResId: Int = R.layout.view_sample_frame
-
+class AdaptUISample : SampleViewUI() {
     // as always adapt-ui items are also available in all contexts:
     //  - recycler-view
     //  - view-group
     //  - list-view
     //  - view
-    override fun render(view: View) {
-        val viewGroup = view.findViewById<ViewGroup>(R.id.frame_layout)
-
-        // let's build main view with adapt-ui also
-
-        // RecyclerView via CustomView
-//        ViewFactory.addChildren(viewGroup) {
-//            CustomView(::RecyclerView) {
-//                layoutManager = LinearLayoutManager(context)
-//                setHasFixedSize(true)
-//            }
-//            .layout(FILL, FILL)
-//            .onView {
-//                bindAdapt(AdaptRecyclerView.init(this))
-//            }
-//        }
-
-        // ScrollView + LinearLayout (VScroll + VStack)
-        ViewFactory.addChildren(viewGroup) {
-            VScroll {
-                VStack { /*no op*/ }
-                    .layout(FILL, WRAP)
-                    .onView {
-                        bindAdapt(AdaptViewGroup.init(it))
-                    }
-//                    .myCustomStyle()
-            }.layout(FILL, FILL)
-                .onViewScrollChanged { scrollView, deltaX, deltaY ->
-                    Debug.i(
-                        "onViewScrollChanged deltaX:$deltaX deltaY:$deltaY " +
-                                "scrollX:${scrollView.scrollX} scrollY:${scrollView.scrollY}"
-                    )
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
+            VStack { /*no op*/ }
+                .layout(fill, wrap)
+                .onView {
+                    bindAdapt(AdaptViewGroup.init(it))
                 }
-        }
+//                    .myCustomStyle()
+        }.layoutFill()
+            .onViewScrollChanged { scrollView, deltaX, deltaY ->
+                Debug.i(
+                    "onViewScrollChanged deltaX:$deltaX deltaY:$deltaY " +
+                            "scrollX:${scrollView.scrollX} scrollY:${scrollView.scrollY}"
+                )
+            }
     }
 
 
@@ -190,13 +182,13 @@ class AdaptUISample : SampleView() {
         // as `text` is static we use it directly here
         override fun ViewFactory<LayoutParams>.body() {
             Text("This is static text\nthat never changes")
-                .textGravity(Gravity.center)
-                .textColor(Color.BLACK)
+                .textGravity { center }
+                .textColor { black }
                 // 24 is SP, not pixels
                 .textSize(24)
                 // 48 is Dp here
                 .padding(48)
-                .layout(FILL, 256)
+                .layout(fill, 256)
                 // Note that shape has distinct padding from the view
                 .background(CornersShape(leadingTop = 32) {
                     padding(16)
@@ -251,7 +243,7 @@ class AdaptUISample : SampleView() {
             VStack {
                 View()
                     // 128 is already dp
-                    .layout(FILL, 128)
+                    .layout(fill, 128)
                     .background(RectangleShape {
 
                         val base = RectangleShape {
@@ -317,7 +309,7 @@ class AdaptUISample : SampleView() {
                 test2()
 
                 paragraph()
-                    .layout(FILL, WRAP)
+                    .layout(fill, wrap)
                     .backgroundColor(Color.RED)
                     .layoutMargin(8)
 
@@ -340,10 +332,10 @@ class AdaptUISample : SampleView() {
                         square(Color.BLACK)
                         square(Color.YELLOW)
                         square(Color.MAGENTA)
-                    }.layout(WRAP, WRAP)
+                    }.layout(wrap, wrap)
 
-                }.scrollFillViewPort(true)
-                    .overScrollMode(View.OVER_SCROLL_ALWAYS)
+                }.scrollFillViewPort()
+                    .overScrollMode { always }
 
                 paragraph()
             }
@@ -405,23 +397,19 @@ class AdaptUISample : SampleView() {
                     .textBold()
                     .textSize(16)
                     .padding(horizontal = 16, vertical = 8)
-                    .background(background)
+                    .backgroundWithState {
+                        val base = CapsuleShape { fill { steelBlue } }
+                        pressed = base.copy {
+                            alpha(0.45F)
+                            stroke(color = { yellow }, width = 4)
+                        }
+                        default = base
+                    }
                     .layoutMargin(16)
                     .onClick {
                         Debug.i("Clicked!")
                     }
             }
-        }
-
-        private val background = StatefulShape.drawable {
-            val base = CapsuleShape {
-                fill(Color.BLUE)
-            }
-            setPressed(base.copy {
-                alpha(0.45F)
-                stroke(Color.YELLOW, 4)
-            })
-            setDefault(base)
         }
     }
 
@@ -429,35 +417,44 @@ class AdaptUISample : SampleView() {
         override fun ViewFactory<LayoutParams>.body() {
             View()
                 .background(shape)
-                .layout(FILL, 128)
+                .layout(fill, 128)
         }
 
         private val shape: Shape
             get() = OvalShape {
-
-                fill(Color.CYAN)
+                fill { cyan }
                 padding(8)
 
                 RoundedRectangle(8) {
-                    fill(Color.BLACK)
-                    stroke(Color.YELLOW, 8, 8, 2)
+                    fill { black }
+                    stroke(
+                        color = { yellow },
+                        width = 8,
+                        dashWidth = 8,
+                        dashGap = 2
+                    )
                     size(100, 48, Gravity.trailing.bottom)
                 }
 
                 Rectangle {
-                    fill(Color.WHITE)
-                    stroke(Color.GRAY, 1, 8, 2)
+                    fill { white }
+                    stroke(
+                        color = { gray },
+                        width = 1,
+                        dashWidth = 8,
+                        dashGap = 2
+                    )
                     size(64, 64, Gravity.leading.center)
 
                     Circle {
-                        fill(Color.RED)
+                        fill { salmonRed }
                         // would still be circle -> additionally moved to be centered (inside own bounds!)
                         // if gravity is specified with `size`, then gravity is applied inside parent bounds
                         size(32, 32, Gravity.bottom.trailing)
                         padding(2)
 
                         Circle {
-                            fill(Color.GREEN)
+                            fill { emeraldGreen }
                             size(16, 16, Gravity.trailing.top)
                             padding(4)
                         }
@@ -478,7 +475,25 @@ class AdaptUISample : SampleView() {
                         .textBold()
                     Text("Second line")
                         .textSize(16)
-                }.background(background)
+                }.indent()
+                    .backgroundWithState {
+                        val base = CapsuleShape {
+                            fill { white }
+                            stroke(0xFFeeeeee.toInt(), 1)
+                            size(128, 48)
+                            translate(48, 48)
+                        }
+                        pressed = base.copy {
+                            alpha(0.82F)
+                            stroke(
+                                color = { gray },
+                                width = 1,
+                                dashWidth = 8,
+                                dashGap = 2
+                            )
+                        }
+                        default = base
+                    }
                     .elevation(4)
                     .padding(16)
                     .onClick { }
@@ -487,22 +502,6 @@ class AdaptUISample : SampleView() {
                 .clipChildren(false)
                 .padding(16)
                 .backgroundColor(0x10000000)
-        }
-
-        private val background = StatefulShape.drawable {
-            val base = CapsuleShape {
-                fill(Color.WHITE)
-                stroke(0xFFeeeeee.toInt(), 1)
-                size(128, 48)
-                translate(48, 48)
-            }
-
-            setPressed(base.copy {
-                alpha(0.82F)
-                stroke(Color.LTGRAY, 1, 8, 2)
-            })
-
-            setDefault(base)
         }
     }
 
@@ -524,16 +523,16 @@ class AdaptUISample : SampleView() {
                             .textSize(16)
                             .textColor(Color.GRAY)
                             .layoutMargin(top = 8)
-                    }.layout(0, WRAP)
+                    }.layout(0, wrap)
                         .layoutWeight(1F)
                         .layoutMargin(leading = 8)
 
                     Text("Start")
                         .textAllCaps()
-                        .textColor(ColorStateListBuilder.create {
-                            setActivated(Color.BLUE)
-                            setDefault(Color.WHITE)
-                        })
+                        .textColorWithState {
+                            activated = steelBlue
+                            default = white
+                        }
                         .textBold()
                         .padding(horizontal = 24, vertical = 8)
                         .onView {
@@ -628,40 +627,37 @@ class AdaptUISample : SampleView() {
             }
         }
 
-        private val toggleDrawable
-            get() = StatefulShape.drawable {
+        private val toggleDrawable: Drawable
+            get() = ShapeStateListFactory.build {
 
-                val control = RectangleShape {
+                val control = Rectangle {
                     size(width = 12)
-                    fill(Color.GRAY)
-                    stroke(Color.BLACK, 1)
+                    fill { gray }
+                    stroke(color = { black }, width = 1)
                 }
 
-                setActivated(RectangleShape {
-
+                activated = Rectangle {
                     Rectangle {
                         padding(1)
                         padding(trailing = 12)
-                        fill(Color.GREEN)
+                        fill { green }
                     }
 
-                    add(control.copy {
-                        gravity(Gravity.trailing)
-                    })
-
-                    stroke(Color.BLACK, 2)
-                })
-
-                setDefault(RectangleShape {
+                    add(control.copy { gravity { trailing } })
+                    stroke(color = { black }, width = 2)
+                }
+                default = Rectangle {
                     Rectangle {
                         padding(1)
                         padding(leading = 12)
-                        fill(Color.RED)
+                        fill { red }
                     }
-                    add(control.copy())
-                    stroke(Color.BLACK, 2)
-                })
-            }
+
+                    add(control.copy { gravity { leading } })
+                    stroke(color = { black }, width = 2)
+                }
+
+            }.stateListDrawable
     }
 }
 
@@ -671,6 +667,6 @@ private class Preview__AdaptUISample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUISample()
 }

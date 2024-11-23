@@ -19,6 +19,8 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.string.Strings
+import io.noties.adapt.ui.app.string.StringsBuilder
 import io.noties.adapt.ui.app.text.TextSizes
 import io.noties.adapt.ui.app.text.TextSizesBuilder
 import io.noties.adapt.ui.app.text.TextStyles
@@ -275,6 +277,15 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
 }
 
 /**
+ * @see TextView.setText
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
+    strings: StringsBuilder
+): ViewElement<V, LP> = onView {
+    it.text = strings(Strings)
+}
+
+/**
  * Hint
  * @see TextView.setHint
  */
@@ -282,6 +293,16 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
     hint: CharSequence?
 ): ViewElement<V, LP> = onView {
     it.hint = hint
+}
+
+/**
+ * Hint
+ * @see TextView.setHint
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
+    hint: StringsBuilder
+): ViewElement<V, LP> = onView {
+    it.hint = hint(Strings)
 }
 
 /**
@@ -321,8 +342,6 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
  * Ellipsize
  * @see TextView.setEllipsize
  */
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use version with builder")
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
     truncateAt: TextUtils.TruncateAt
 ): ViewElement<V, LP> = onView {

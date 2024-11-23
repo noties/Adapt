@@ -5,9 +5,12 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
@@ -24,8 +27,10 @@ import io.noties.adapt.ui.element.textStrikeThrough
 import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.element.textUnderline
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.TypefaceStyle
+import io.noties.adapt.ui.util.withAlphaComponent
 
 @AdaptSample(
     id = "20230520122012",
@@ -33,7 +38,7 @@ import io.noties.adapt.ui.util.TypefaceStyle
     description = "<em>TextView</em> and siblings &mdash; <em>EditText</em>, <em>Button</em>, etc",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseText1 : AdaptUISampleView() {
+class AdaptUIShowcaseText1 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -42,9 +47,16 @@ class AdaptUIShowcaseText1 : AdaptUISampleView() {
                 // text size is scaled density pixels (sp), automatic conversion
                 .textSize(21)
                 // text color (both normal color and ColorStateList)
+                .textColor { black }
                 .textColor(Color.BLACK)
+                .textColorWithState {
+                    val base = text
+                    pressed = base.withAlphaComponent(0.5F)
+                    default = base
+                }
                 .textColor(ColorStateList.valueOf(Color.BLACK))
                 // text gravity
+                .textGravity { center }
                 .textGravity(Gravity.center)
                 // single line
                 .textSingleLine()
@@ -67,8 +79,9 @@ class AdaptUIShowcaseText1 : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseText1(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseText1()
 }

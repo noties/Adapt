@@ -3,14 +3,14 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -23,6 +23,7 @@ import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.onClick
+import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.state.imageTintWithState
 
@@ -30,9 +31,9 @@ import io.noties.adapt.ui.state.imageTintWithState
     id = "20230601144200",
     title = "[Showcase] AdaptUI, Image",
     description = "<em>Image</em>, <em>ImageView</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseImage : AdaptUISampleView() {
+class AdaptUIShowcaseImage : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -44,7 +45,9 @@ class AdaptUIShowcaseImage : AdaptUISampleView() {
             Image(R.drawable.ic_search_24)
                 .layout(64, 64)
                 .imageTint { black }
-                .background(RectangleShape().stroke(Colors.black))
+                .background {
+                    Rectangle { stroke(color = { black }) }
+                }
 
             Image(R.drawable.ic_close_24)
                 .layout(64, 64)
@@ -67,6 +70,6 @@ private class Preview__AdaptUIShowcaseImage(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcaseImage()
 }

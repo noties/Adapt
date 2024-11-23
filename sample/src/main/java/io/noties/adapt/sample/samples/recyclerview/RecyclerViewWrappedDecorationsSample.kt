@@ -8,12 +8,12 @@ import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
-import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
+import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -23,7 +23,7 @@ import io.noties.debug.Debug
             "<tt>Item</tt> type wrapped in different <tt>ItemWrapper</tt>s in <tt>RecyclerView</tt>",
     tags = ["recyclerview", "wrapper", "key"]
 )
-class RecyclerViewWrappedDecorationsSample : SampleView() {
+class RecyclerViewWrappedDecorationsSample : SampleViewLayout() {
 
     override val layoutResId = R.layout.view_sample_recycler_view
 

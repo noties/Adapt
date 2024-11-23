@@ -5,18 +5,18 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.StackView
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 
 @AdaptSample(
     id = "20210126233614",
     title = "StackView",
     tags = ["listview"]
 )
-class StackViewSample : SampleView() {
+class StackViewSample : SampleViewLayout() {
     override val layoutResId: Int
         get() = R.layout.view_sample_stack_view
 
@@ -34,6 +34,6 @@ private class Preview__StackViewSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = StackViewSample()
 }

@@ -10,7 +10,6 @@ android {
     namespace 'io.noties.adapt.sample'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         applicationId 'io.noties.adapt.sample'
@@ -53,6 +52,32 @@ android {
     lint {
         fatal 'StopShip'
     }
+
+    signingConfigs {
+        final def password = System.getenv('ADAPT_KEYSTORE_PASS') ?: ''
+        release {
+            storeFile project.file('sample.keystore')
+            storePassword password
+            keyAlias 'adapt'
+            keyPassword password
+        }
+    }
+
+    buildTypes {
+        // sign with the same key
+        debug {
+            signingConfig signingConfigs.release
+        }
+
+        release {
+            signingConfig signingConfigs.release
+
+            // enable minification in order to validate proguard
+            minifyEnabled true
+            
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.pro'
+        }
+    }
 }
 
 kapt {
@@ -76,7 +101,7 @@ dependencies {
 
     implementation deps['flexbox']
 
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 //    compileOnly 'androidx.appcompat:appcompat:1.6.1'
 
     kapt project(':sample-utils:processor')

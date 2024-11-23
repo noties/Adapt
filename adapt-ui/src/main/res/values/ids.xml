@@ -11,7 +11,10 @@
     <item name="adaptui_internal_element_item" type="id" />
 
     <item name="adaptui_internal_hierarchy_delegate" type="id" />
+    <item name="adaptui_internal_focus_delegate" type="id" />
 
     <item name="adaptui_grid_overlay_priority" type="id" />
+
+    <item name="adaptui_view_flag" type="id" />
 
 </resources>

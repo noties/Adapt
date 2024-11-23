@@ -1,35 +1,29 @@
+- [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples 
+   that could be affected by new view layout (so maybe they need to be set to match-parent)
+- [ ] unify preview class names, `Preview_Sample`, `PreviewSample`, `Preview__Sample`
+- [ ] verify all tags are specified in `Tags` object
+- [ ] move `PreviewUtils` (adapt + adapt-ui) to `preview` package instead of `util`
+- [ ] add consumer proguard to remove preview layouts (ui and regular)
 - [ ].
   > Adapt README Item is a chunk of view logic (along with actual view attached) that could be
-  >  rendered and passed around. 
-
-- [ ] shape-drawable stateful handling
-
-- [ ]
-   > refactor DrawableState to be fluent, right now a little confusing, let it be:
-     `pressed.enabled` => DrawableState(attrs: Array<@Attr Int>)
-     DrawableStateSet.pressed (to check if contains should be renamed, like isPressed or hasPressed?)
-  
-  In the end changed implementation to `ViewState`, which is a little better abstraction
-  `DrawableState` and all its usages are deprecated 
+  >  rendered and passed around.
+- [ ].
+  > Resource generator for colors, strings, drawables? (drawables? like icons)
+- [ ].
+  > Image loader (`AsyncImage`)
+- [ ] Shape.shadow Text/Label.textShadow ColorBuilder
 
 - [ ] VScroll and HScroll are actually expose ViewFactory<FrameLayout.LayoutParams>, so
   nested children might be able to add certain FrameLayout elements or layout customization,
   meanwhile they are in different context.
 
-* explicit tags in sample (enum?), define colors for each
-
 - [ ] `Text` autosize must be applied when text changes (maxLines?)
 - [ ] SHOW, a layout with rounded background, icon and text => just a text with padding and shape
   plus, clickable, foreground, cliptooutline
-- on view pred draw should have `once` as it delivers callback only once
 - [ ] shape, padding, for ex top, can result in rect.top be greater than bottom (we do not touch
   bottom)...
   NOPE, convert to dp
-- [ ] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which
-  would cause name collision
 
-- [ ] common interface for shape and stateful-shape
-- [ ] StatfulShape.create instead of `drawable`
 - [ ] stateful-shape:
   ```
   // TODO: maybe make more fluent, like
@@ -42,13 +36,34 @@
 - [ ] maybe make viewElement open? but what would we achieve? most extensions use `ViewElement`,
   so type information would not be preserved
 
-- [ ] add consumer proguard to remove preview layouts (ui and regular)
 - [ ] review all property references that we have and reduce the amount? generates additional code
 - [ ] investigate the size... inline onView? and most of the extsniosn?
 - [ ] window insets
-- [ ] element+extensions, accessibility properties
 - [ ] view, additional gestures
 
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+---- DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE - DONE -----
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
+- [X] StatfulShape.create instead of `drawable`
+- [-] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which
+  would cause name collision
+  ==: yes, `LP` does not bring any benefits only trouble with generics
+- [X] shape-drawable stateful handling
+  ==: In the end changed implementation to `ViewState`, which is a little better abstraction
+  `DrawableState` and all its usages are deprecated
+- [X]
+  > refactor DrawableState to be fluent, right now a little confusing, let it be:
+  `pressed.enabled` => DrawableState(attrs: Array<@Attr Int>)
+  DrawableStateSet.pressed (to check if contains should be renamed, like isPressed or hasPressed?)
+  == in the end done differently
+- [X]] on view pred draw should have `once` as it delivers callback only once
+- [X] element+extensions, accessibility properties
+- [-] common interface for shape and stateful-shape
+  // done by different state builder
+- [X] explicit tags in sample (enum?), define colors for each
 - [-] view group, diff, obtain same type and bind if id is different
   this would complicate current simple (adn transition-ready) diff, as we would need to lookup
   if item is present in the list further, so we can safely reuse it

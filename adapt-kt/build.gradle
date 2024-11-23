@@ -9,7 +9,6 @@ android {
     namespace 'io.noties.adapt.kt'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         minSdkVersion config['min-sdk']

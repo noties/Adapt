@@ -3,9 +3,13 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.blue
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -14,15 +18,14 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.Label
 import io.noties.adapt.ui.shape.Rectangle
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230601101434",
     title = "[Showcase] AdaptUI, Shape #4",
     description = "<em>LabelShape</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseShape4 : AdaptUISampleView() {
+class AdaptUIShowcaseShape4 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         View()
             .layoutFill()
@@ -36,8 +39,8 @@ class AdaptUIShowcaseShape4 : AdaptUISampleView() {
                         // text size in SP
                         textSize(22)
                         // gravity for text inside parent bounds
-                        textGravity(Gravity.center)
-                        textColor(Color.WHITE)
+                        textGravity { center }
+                        textColor { white }
                         // control letter spacing (negative make narrow)
                         textLetterSpacing(0.1F)
                         // apply italic style
@@ -50,7 +53,7 @@ class AdaptUIShowcaseShape4 : AdaptUISampleView() {
                         // text shapes have a difference - their children are drawn before actual text
                         //  this allows adding a background for actual text content
                         Capsule {
-                            fill(Color.BLUE)
+                            fill { blue }
                             // negative padding to grow around text
                             padding(-16, -8)
                             shadow(8, Color.RED)
@@ -61,8 +64,9 @@ class AdaptUIShowcaseShape4 : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShape4(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShape4()
 }

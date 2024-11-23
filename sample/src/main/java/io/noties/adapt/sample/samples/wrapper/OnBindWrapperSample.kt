@@ -3,7 +3,7 @@ package io.noties.adapt.sample.samples.wrapper
 import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.debug.Debug
@@ -14,7 +14,7 @@ import io.noties.debug.Debug
     description = "Add <tt>OnBindWrapper</tt> to each generated item",
     tags = ["wrapper"]
 )
-class OnBindWrapperSample : SampleView() {
+class OnBindWrapperSample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_view_group

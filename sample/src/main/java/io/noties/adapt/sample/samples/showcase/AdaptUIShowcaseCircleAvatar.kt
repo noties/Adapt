@@ -5,12 +5,13 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
-import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -33,10 +34,9 @@ import io.noties.adapt.ui.shape.CircleShape
 @AdaptSample(
     id = "20230531162848",
     title = "[Showcase] Circle Avatar",
-    description = "",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseCircleAvatar : AdaptUISampleView() {
+class AdaptUIShowcaseCircleAvatar : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -86,7 +86,7 @@ class AdaptUIShowcaseCircleAvatar : AdaptUISampleView() {
             .ifAvailable(Build.VERSION_CODES.M) {
                 it.foreground {
                     Circle {
-                        stroke(Colors.black, 2)
+                        stroke(color = { black }, width = 2)
                         // half the stroke width as padding
                         padding(1)
                     }
@@ -96,8 +96,9 @@ class AdaptUIShowcaseCircleAvatar : AdaptUISampleView() {
             .clipToOutline()
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseCircleAvatar(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseCircleAvatar()
 }

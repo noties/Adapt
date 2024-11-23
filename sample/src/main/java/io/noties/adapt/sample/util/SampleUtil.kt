@@ -4,13 +4,18 @@ import android.content.Context
 import io.noties.adapt.sample.BuildConfig
 import io.noties.adapt.sample.Sample
 import io.noties.adapt.sample.SampleView
+import io.noties.adapt.ui.app.App
 import io.noties.debug.Debug
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InputStreamReader
 
 object SampleUtil {
-    fun readSamples(context: Context): List<Sample> {
+    val samples: List<Sample> by lazy(LazyThreadSafetyMode.NONE) {
+        readSamples(App.context)
+    }
+
+    private fun readSamples(context: Context): List<Sample> {
         return context.assets.open("samples.json")
             .reader()
             .use(InputStreamReader::readText)

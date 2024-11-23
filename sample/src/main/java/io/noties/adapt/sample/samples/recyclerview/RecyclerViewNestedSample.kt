@@ -8,7 +8,7 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CollectionItem
@@ -20,7 +20,7 @@ import io.noties.adapt.sample.items.ControlItem
     description = "Item contains nested <tt><b>RecyclerView</b></tt>, shared <tt>RecyclerViewPool</tt>",
     tags = ["recyclerview"]
 )
-class RecyclerViewNestedSample() : SampleView() {
+class RecyclerViewNestedSample() : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 

@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.view.AdaptView
 
@@ -13,7 +13,7 @@ import io.noties.adapt.view.AdaptView
     title = "AdaptView configuration",
     tags = ["view"]
 )
-class AdaptViewConfigurationSample : SampleView() {
+class AdaptViewConfigurationSample : SampleViewLayout() {
     override val layoutResId: Int
         get() = R.layout.view_sample_view_group
 

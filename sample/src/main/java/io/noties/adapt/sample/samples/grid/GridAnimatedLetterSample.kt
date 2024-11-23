@@ -8,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.Adapt
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.naplesYellow
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.steelBlue
 import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.ui.text.body
@@ -54,17 +58,14 @@ import io.noties.adapt.viewgroup.TransitionChangeHandler
     id = "20241107234915",
     title = "Grid alphabet animated",
     description = "Draws letters with grid cells and animates transition between them",
-    tags = ["grid", "widget", "adapt-ui"]
+    tags = [Tags.grid, Tags.widget, Tags.adaptUi, Tags.interactive]
 )
-class GridAnimatedLetterSample : AdaptUISampleView() {
+class GridAnimatedLetterSample : SampleViewUI() {
 
-    // TODO: composite adapt?
     lateinit var shadowAdapt: Adapt
     lateinit var adapt: Adapt
 
     override fun ViewFactory<LayoutParams>.body() {
-        // TODO: drop shadow?
-        // TODO draw equal color divider (that is not divider, but just cell bounds)
         VStack {
 
             Grid {
@@ -74,7 +75,7 @@ class GridAnimatedLetterSample : AdaptUISampleView() {
                     }
                 }
             }.indent()
-                .backgroundColor { orange }
+                .backgroundColor { emeraldGreen }
                 .gridSpacing(4)
                 .onView {
                     adapt = AdaptViewGroup.init(
@@ -94,7 +95,7 @@ class GridAnimatedLetterSample : AdaptUISampleView() {
 
             Text("NEXT")
                 .padding(8)
-                .background { RoundedRectangle(8) { fill { primary } } }
+                .background { RoundedRectangle(8) { fill { steelBlue } } }
                 .textColor { white }
                 .textGravity { center }
                 .textSize { body }
@@ -147,7 +148,7 @@ class GridAnimatedLetterSample : AdaptUISampleView() {
 
     private fun startAutomaticNext(delay: Long = 1000L) {
         val handler = Handler(Looper.getMainLooper())
-        val runnable = object: Runnable {
+        val runnable = object : Runnable {
             override fun run() {
                 bind(charRoulette.next())
                 handler.postDelayed(this, delay)
@@ -180,7 +181,8 @@ class GridAnimatedLetterSample : AdaptUISampleView() {
             fun prepare(target: String, available: List<Char>): List<Char> {
                 return target
                     .map { c ->
-                        available.firstOrNull { it == c } ?: error("Target char:'$c' is not found in:$available")
+                        available.firstOrNull { it == c }
+                            ?: error("Target char:'$c' is not found in:$available")
                     }
             }
         }
@@ -261,6 +263,6 @@ class GridAnimatedLetterSample : AdaptUISampleView() {
 
 @Preview
 private class PreviewGridAnimatedLetterSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample get() = GridAnimatedLetterSample()
+    PreviewSampleView(context, attrs) {
+    override val sampleView get() = GridAnimatedLetterSample()
 }

@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
 
 class LinearGradient internal constructor(
     internal val type: Type,
@@ -13,7 +14,7 @@ class LinearGradient internal constructor(
 
     internal var tileMode: Shader.TileMode? = null
 
-    companion object {
+    companion object : Colors {
         /**
          * `LinearGradient.edges { top.leading to trailing }`
          */
@@ -47,6 +48,7 @@ class LinearGradient internal constructor(
                 val end = positionOfEdge(type.edges.second, bounds)
                 start to end
             }
+
             is Angle -> positionsOfAngle(type.angle, bounds)
         }
 

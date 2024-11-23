@@ -7,10 +7,12 @@ import io.noties.adapt.ui.R
 import java.util.concurrent.CopyOnWriteArrayList
 
 fun interface OnHierarchyChangeListenerRegistration {
-    fun remove()
+    fun unregisterOnHierarchyChangeListener()
 }
 
-fun ViewGroup.addOnHierarchyChangeListener(listener: OnHierarchyChangeListener): OnHierarchyChangeListenerRegistration {
+fun ViewGroup.addOnHierarchyChangeListener(
+    listener: OnHierarchyChangeListener
+): OnHierarchyChangeListenerRegistration {
     val delegate = OnHierarchyChangeListenerDelegate.getOrCreate(this)
     delegate.add(listener)
     return OnHierarchyChangeListenerRegistration {
@@ -19,15 +21,19 @@ fun ViewGroup.addOnHierarchyChangeListener(listener: OnHierarchyChangeListener):
 }
 
 fun ViewGroup.removeOnHierarchyChangeListener(listener: OnHierarchyChangeListener) {
-    val delegate = OnHierarchyChangeListenerDelegate.getOrCreate(this)
-    delegate.remove(listener)
+    val delegate = OnHierarchyChangeListenerDelegate.get(this)
+    delegate?.remove(listener)
 }
 
 private class OnHierarchyChangeListenerDelegate(val view: ViewGroup) {
 
     companion object {
+        fun get(view: ViewGroup): OnHierarchyChangeListenerDelegate? {
+            return view.getTag(tagId) as? OnHierarchyChangeListenerDelegate
+        }
+
         fun getOrCreate(view: ViewGroup): OnHierarchyChangeListenerDelegate {
-            val tag = view.getTag(tagId) as? OnHierarchyChangeListenerDelegate
+            val tag = get(view)
             return if (tag != null) {
                 tag
             } else {

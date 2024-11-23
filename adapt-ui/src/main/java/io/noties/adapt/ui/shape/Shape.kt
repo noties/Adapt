@@ -253,6 +253,22 @@ abstract class Shape : ShapeFactory {
     }
 
     fun stroke(
+        color: ColorsBuilder,
+        width: Int? = 1,
+        dashWidth: Int? = null,
+        dashGap: Int? = null
+    ): Shape = this.also {
+        stroke = (stroke ?: Stroke())
+            .apply {
+                this.color = color(Colors)
+                this.gradient = null
+                width?.also { this.width = it }
+                dashWidth?.also { this.dashWidth = it }
+                dashGap?.also { this.dashGap = it }
+            }
+    }
+
+    fun stroke(
         @ColorInt color: Int,
         width: Int? = 1,
         dashWidth: Int? = null,

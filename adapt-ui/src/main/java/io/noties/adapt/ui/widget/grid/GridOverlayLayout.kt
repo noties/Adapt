@@ -36,7 +36,7 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
         y?.also { lp.verticalSpan = it }
 
         // trigger update
-        view.layoutParams = lp
+        view.requestLayout()
     }
 
     fun addViews(block: GridOverlayViewFactory.() -> Unit) {

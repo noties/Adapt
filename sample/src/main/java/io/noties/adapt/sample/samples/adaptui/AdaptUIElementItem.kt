@@ -35,7 +35,7 @@ class AdaptUIElementItem(val text: String) :
                 // already SP
                 .textSize(16)
                 .textColor { black }
-                .textGravity(Gravity.center)
+                .textGravity { center }
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)
                 .reference(ref::textView)

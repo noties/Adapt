@@ -5,13 +5,14 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.white
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
@@ -32,9 +33,10 @@ import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230403235622",
-    title = "AdaptUI[Explore] sticky with reverse linear layout"
+    title = "Sticky view with reverse linear layout",
+    tags = [Tags.adaptUi, Tags.widget]
 )
-class AdaptUIStickySample : AdaptUISampleView() {
+class AdaptUIStickySample : SampleViewUI() {
 
     lateinit var element: View
 
@@ -105,6 +107,6 @@ private class Preview__AdaptUIStickySample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIStickySample()
 }

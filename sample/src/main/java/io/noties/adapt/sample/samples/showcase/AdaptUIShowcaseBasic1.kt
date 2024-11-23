@@ -3,11 +3,14 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.magenta
 import io.noties.adapt.sample.ui.text.body
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -27,16 +30,14 @@ import io.noties.adapt.ui.layoutWeight
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Capsule
-import io.noties.adapt.ui.shape.CapsuleShape
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230519160703",
     title = "[Showcase] AdaptUI basic",
     description = "Shows basic concepts and usage &mdash; <em>VStack</em>, <em>HStack</em>, <em>ZStack</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseBasic1 : AdaptUISampleView() {
+class AdaptUIShowcaseBasic1 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         // There are 3 basic containers:
         //  - VStack (Vertical LinearLayout)
@@ -53,7 +54,7 @@ class AdaptUIShowcaseBasic1 : AdaptUISampleView() {
                     .layoutWrap()
                     // ALL values in Adapt-UI is dip (density independent)
                     .padding(16)
-                    .imageTint { Color.MAGENTA }
+                    .imageTint { magenta }
                 // TextView
                 Text("My text")
                     .layout(0, wrap)
@@ -61,7 +62,7 @@ class AdaptUIShowcaseBasic1 : AdaptUISampleView() {
                     //  can be shortened to `.layout(0, WRAP, 1F)`
                     .layoutWeight(1F)
                     // layout gravity
-                    .layoutGravity(Gravity.leading.center)
+                    .layoutGravity { leading.center }
                     .textSize { body }
                     .textColor { black }
 
@@ -75,8 +76,9 @@ class AdaptUIShowcaseBasic1 : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseBasic1(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseBasic1()
 }

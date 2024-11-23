@@ -4,14 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -41,9 +42,9 @@ import io.noties.adapt.ui.util.withAlphaComponent
     id = "20230715153700",
     title = "Overlay with shape and view",
     description = "Add another <em>view</em>, <em>shape</em> or <em>drawable</em> as an <em>overlay</em>",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIOverlaySample : AdaptUISampleView() {
+class AdaptUIOverlaySample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -57,17 +58,19 @@ class AdaptUIOverlaySample : AdaptUISampleView() {
                     Image(R.drawable.ic_search_24)
                         .layout(24, 24)
                         .padding(4)
-                        .layoutGravity(Gravity.center)
-                        .imageTint(Colors.overlay)
+                        .layoutGravity { center }
+                        .imageTint { overlay }
                         .background {
-                            Circle().fill(Colors.overlay.withAlphaComponent(0.2F))
+                            Circle {
+                                fill { overlay.withAlphaComponent(0.2F) }
+                            }
                         }
 
                     // can add multiple views to overlay, this would be at bottom end
                     Text("At the bottom")
                         .layoutWrap()
-                        .layoutGravity(Gravity.trailing.bottom)
-                        .textColor(Colors.overlay)
+                        .layoutGravity { trailing.bottom }
+                        .textColor { overlay }
                 }
         }.layoutFill()
             // adds a shape or drawable overlay
@@ -84,9 +87,9 @@ class AdaptUIOverlaySample : AdaptUISampleView() {
         text: String,
         @ColorInt backgroundColor: Int
     ) = Text(text)
-        .layout(0, WRAP, 1F)
+        .layout(0, wrap, 1F)
         .padding(16)
-        .textGravity(Gravity.center)
+        .textGravity { center }
         .textSize(21)
         .textColor { black }
         .backgroundColor(backgroundColor.withAlphaComponent(0.2F))
@@ -101,6 +104,6 @@ private class Preview__AdaptUIOverlaySample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIOverlaySample()
 }

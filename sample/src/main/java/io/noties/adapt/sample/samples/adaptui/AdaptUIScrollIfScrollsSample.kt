@@ -4,14 +4,14 @@ import android.content.Context
 import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -38,16 +38,15 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.scrollBarsEnabled
 import io.noties.adapt.ui.shape.RoundedRectangle
-import io.noties.adapt.ui.transitionGroup
 import io.noties.adapt.ui.util.withAlphaComponent
 import kotlin.math.roundToInt
 
 @AdaptSample(
     id = "20240327011222",
     title = "AdaptUI. Scroll if content scrolls else wrap height",
-    tags = ["adapt-ui", "recipe"]
+    tags = [Tags.adaptUi, Tags.recipe, Tags.interactive]
 )
-class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
+class AdaptUIScrollIfScrollsSample : SampleViewUI() {
 
     private lateinit var text: TextView
 
@@ -60,7 +59,7 @@ class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
                     Image(R.drawable.ic_arrow_back_ios_24_white)
                         .layout(56, 56)
                         .imageScaleType { centerInside }
-                }.layout(FILL, 56)
+                }.layout(fill, 56)
                     .backgroundColor { accent }
 
                 ZStackWrapHeightOrScroll(
@@ -69,7 +68,7 @@ class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
                     }
                 ) {
                     Text("Content, click me to generate new")
-                        .layout(FILL, WRAP)
+                        .layout(fill, wrap)
                         // this one is going to be erased after wrap/unwrap
                         .layoutGravity { center.vertical }
                         .textSize { 17 }
@@ -80,7 +79,7 @@ class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
                 }.stackContentMeasureLast()
 
                 Text("Click me!")
-                    .layout(FILL, WRAP)
+                    .layout(fill, wrap)
                     .textSize(17)
                     .textGravity { center.horizontal }
                     .padding(12)
@@ -114,6 +113,6 @@ class AdaptUIScrollIfScrollsSample: AdaptUISampleView() {
 @Preview
 private class PreviewAdaptUIScrollIfScrollsSample(context: Context, attrs: AttributeSet?) :
     PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIScrollIfScrollsSample()
 }

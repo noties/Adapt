@@ -1,14 +1,18 @@
 package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.steelBlue
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.HScroll
 import io.noties.adapt.ui.element.HStack
@@ -25,9 +29,9 @@ import io.noties.adapt.ui.util.Gravity
     id = "20230520002917",
     title = "[Showcase] AdaptUI basic2",
     description = "Shows basic concepts and usage &mdash; <em>VScroll</em>, <em>HScroll</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
+class AdaptUIShowcaseBasic2 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         // There 2 scroll containers:
         //  - VScroll (ScrollView)
@@ -37,26 +41,26 @@ class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
             // The  rule applies - ScrollView must have a single child
             VStack {
 
-                // a row inside parent scroll-view
+                // a row inside parent VStack
                 HScroll {
 
                     // HStack and VStack accepts gravity for its children
                     HStack(Gravity.center) {
                         Text("1")
                             .padding(72, 48)
-                            .backgroundColor(Color.RED)
+                            .backgroundColor { salmonRed }
                         Text("2")
                             .padding(72, 32)
-                            .backgroundColor(Color.GREEN)
+                            .backgroundColor { emeraldGreen }
                         Text("3")
                             .padding(72, 24)
-                            .backgroundColor(Color.BLUE)
+                            .backgroundColor { steelBlue }
                     }
                 }
 
                 Text("This will fill")
                     .layout(fill, 0, 1F)
-                    .backgroundColor(Color.YELLOW)
+                    .backgroundColor { yellow }
             }
         }.layoutFill()
             // fillViewPort
@@ -64,8 +68,9 @@ class AdaptUIShowcaseBasic2 : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseBasic2(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseBasic2()
 }

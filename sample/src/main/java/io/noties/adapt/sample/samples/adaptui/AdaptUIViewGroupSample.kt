@@ -2,51 +2,43 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.white
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.app.color.Colors
-import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.enabled
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.shape.RectangleShape
-import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.copy
-import io.noties.adapt.ui.util.ColorStateListBuilder
+import io.noties.adapt.ui.state.backgroundWithState
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221009161232",
     title = "AdaptUI - ViewGroup",
-    tags = ["adapt-ui", "ui-viewgroup"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIViewGroupSample : SampleView() {
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+class AdaptUIViewGroupSample : SampleViewUI() {
+    override fun ViewFactory<LayoutParams>.body() {
+        VStack {
 
-    override fun render(view: View) {
-        ViewFactory.addChildren(view as ViewGroup) {
-            VStack {
-
-                // ViewGroup can additionally send enabled/activated states to its children
-                Enabled()
-            }
+            // ViewGroup can additionally send enabled/activated states to its children
+            Enabled()
         }
     }
 
@@ -57,43 +49,46 @@ class AdaptUIViewGroupSample : SampleView() {
             val group = ZStack {
                 Text("This is text")
                     .padding(16)
-                    .textColor(ColorStateListBuilder.create {
-                        setEnabled(Colors.orange)
-                        setDefault(Colors.black)
-                    })
-                    .background(StatefulShape.drawable {
-                        setEnabled(RectangleShape {
-                            stroke(Colors.orange)
+                    .textColorWithState {
+                        enabled = orange
+                        default = black
+                    }
+                    .backgroundWithState {
+                        enabled = Rectangle {
+                            stroke(color = { orange })
                             padding(1)
-                        })
-                        setDefault(RectangleShape {
-                            stroke(Colors.black)
+                        }
+                        default = Rectangle {
+                            stroke(color = { black })
                             padding(1)
-                        })
-                    }).layoutMargin(4)
-            }.background(StatefulShape.drawable {
-                setEnabled(RectangleShape {
-                    stroke(Colors.orange)
-                    padding(1)
-                })
-                setDefault(RectangleShape {
-                    stroke(Colors.black)
-                    padding(1)
-                })
-            }).enabled(false) // this call does not change state of children
+                        }
+                    }
+                    .layoutMargin(4)
+            }.indent()
+                .backgroundWithState {
+                    enabled = Rectangle {
+                        stroke(color = { orange })
+                        padding(1)
+                    }
+                    default = Rectangle {
+                        stroke(color = { black })
+                        padding(1)
+                    }
+                }
+                .enabled(false) // this call does not change state of children
 
             Text("CLICK ME")
                 .padding(horizontal = 16, vertical = 8)
                 .textColor { white }
-                .background(StatefulShape.drawable {
-                    val base = RectangleShape {
-                        fill(Colors.orange)
+                .backgroundWithState {
+                    // important to call real constructor, as `Rectangle` is a factory method
+                    //  that does return Shape instance, but also by default adds this shape to the
+                    val base = Rectangle {
+                        fill { orange }
                     }
-                    setPressed(base.copy {
-                        alpha(0.45F)
-                    })
-                    setDefault(base)
-                })
+                    pressed = base.copy { alpha(0.45F) }
+                    default = base
+                }
                 .textGravity(Gravity.center)
                 .layoutMargin(top = 8)
                 .also {
@@ -114,6 +109,6 @@ private class Preview__AdaptUIViewGroupSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIViewGroupSample()
 }

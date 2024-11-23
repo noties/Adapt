@@ -2,7 +2,10 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.TextInput
@@ -16,9 +19,9 @@ import io.noties.adapt.ui.util.InputType
 @AdaptSample(
     id = "20240326221901",
     title = "Text.textInputType",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi, Tags.text]
 )
-class AdaptUITextInputTypeSample : AdaptUISampleView() {
+class AdaptUITextInputTypeSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -42,7 +45,7 @@ class AdaptUITextInputTypeSample : AdaptUISampleView() {
 }
 
 private class PreviewAdaptUITextInputType(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUITextInputTypeSample()
 }

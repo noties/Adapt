@@ -8,7 +8,8 @@ interface TextSizes : ContextHolder {
     companion object : TextSizes
 
     /**
-     * Obtain scaled-pixel dimension resource
+     * Obtain scaled-pixel dimension resource *and* scale it up
+     * to points which adapt-ui uses, so 4 pixels on xxhdpi device would equal 1 point (4.px / 4.scaledDensity = 1)
      */
     fun res(@DimenRes resId: Int): Int = context
         .resources

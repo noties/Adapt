@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.ListView
 import io.noties.adapt.Adapt
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.debug.Debug
 
 @AdaptSample(
@@ -21,7 +21,7 @@ import io.noties.debug.Debug
     description = "Some Item are enabled (are considered to be separators)",
     tags = ["listview"]
 )
-class ListViewSomeEnabledSample : SampleView() {
+class ListViewSomeEnabledSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_list_view
 
@@ -51,6 +51,6 @@ private class Preview__ListViewSomeEnabledSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = ListViewSomeEnabledSample()
 }

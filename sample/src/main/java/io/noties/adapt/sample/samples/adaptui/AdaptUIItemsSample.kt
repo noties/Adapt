@@ -2,17 +2,17 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import io.noties.adapt.Item
-import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewGroup
 import io.noties.adapt.ui.app.color.Colors
@@ -30,7 +30,6 @@ import io.noties.adapt.ui.shape.CircleShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.copy
-import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.wrapper.OnBindWrapper
 
@@ -38,29 +37,20 @@ import io.noties.adapt.wrapper.OnBindWrapper
     id = "20220926192547",
     title = "AdaptUI, adapt items",
     description = "ElementItem and ElementItemNoRef usage, single-file component",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIItemsSample : SampleView() {
+class AdaptUIItemsSample : SampleViewUI() {
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
 
-    override val layoutResId: Int = R.layout.view_sample_frame
+            VStack {
+            }.adaptViewGroup(TransitionChangeHandler.create())
+                .setItems(items)
+            // or
+            // .onAdapt { setItems(items) }
 
-    override fun render(view: View) {
-        // just create a view
-        // pass additional argument which would be accessible in the building block
-        val child = ViewFactory.createView(view.context) {
-            VScroll {
-
-                VStack {
-                }.adaptViewGroup(TransitionChangeHandler.create())
-                    .setItems(items)
-                // or
-                // .onAdapt { setItems(items) }
-
-            }.layoutFill()
-                .scrollFillViewPort()
-        }
-
-        (view as ViewGroup).addView(child)
+        }.layoutFill()
+            .scrollFillViewPort()
     }
 
     private val items: List<Item<*>>
@@ -81,11 +71,11 @@ class AdaptUIItemsSample : SampleView() {
     private class AdaptUIElementItemNoRef(id: Long) : ElementItemNoRef(id) {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
-                .layout(FILL, 56)
+                .layout(fill, 56)
                 .background(RectangleShape {
 
                     val base = CircleShape {
-                        fill(Colors.orange)
+                        fill { orange }
                         size(8, 8)
                     }
 
@@ -96,14 +86,14 @@ class AdaptUIItemsSample : SampleView() {
 
                     add(base.copy {
                         // align to the right bottom corner
-                        gravity(Gravity.bottom.trailing)
+                        gravity { bottom.trailing }
                         // move 8 dp from that corner
                         translate(-8, -8)
                     })
 
                     Rectangle {
                         size(24, 12)
-                        fill(Colors.black)
+                        fill { black }
                         translate(16, 8)
                     }
 
@@ -127,6 +117,6 @@ private class Preview__AdaptUIItemsSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIItemsSample()
 }

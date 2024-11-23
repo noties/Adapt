@@ -1,12 +1,15 @@
 package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.blue
+import io.noties.adapt.sample.ui.color.naplesYellow
+import io.noties.adapt.sample.ui.color.red
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -25,7 +28,7 @@ import io.noties.adapt.ui.util.Gravity
     description = "<em>RectangleShape</em>, <em>ArcShape</em>, <em>OvalShape</em>, <em>Capsule</em>, <em>Line</em>",
     tags = ["adapt-ui", "showcase"]
 )
-class AdaptUIShowcaseShape2 : AdaptUISampleView() {
+class AdaptUIShowcaseShape2 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         View()
             .layoutFill()
@@ -37,12 +40,12 @@ class AdaptUIShowcaseShape2 : AdaptUISampleView() {
 
                     // Arc shape
                     Arc(0F, 320F)
-                        .fill(Color.RED)
+                        .fill { red }
                         .size(128, 128)
 
                     // Unlike circle, just takes all available space
                     Oval()
-                        .fill(Color.BLUE)
+                        .fill { blue }
                         .sizeRelative(0.45F, 0.45F, Gravity.trailing.top)
 
                     Capsule {
@@ -55,15 +58,16 @@ class AdaptUIShowcaseShape2 : AdaptUISampleView() {
                     Line {
                         fromRelative(0F, 0.5F)
                         toRelative(1F, 0.75F)
-                        stroke(Color.GREEN, 4)
+                        stroke(color = { naplesYellow }, width = 4)
                     }
                 }
             }
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShape2(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShape2()
 }

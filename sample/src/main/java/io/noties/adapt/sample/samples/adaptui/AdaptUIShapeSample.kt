@@ -7,20 +7,20 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.explore.ExploreShapePath
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -60,9 +60,9 @@ import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
-import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
+import io.noties.adapt.ui.state.backgroundWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.hex
 import io.noties.adapt.ui.util.withAlphaComponent
@@ -72,51 +72,40 @@ import kotlin.math.roundToInt
     id = "20220926220755",
     title = "AdaptUI, Shape usage",
     description = "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
-    tags = ["adapt-ui", "ui-shape"]
+    tags = [Tags.adaptUi, Tags.shape]
 )
-class AdaptUIShapeSample : SampleView() {
+class AdaptUIShapeSample : SampleViewUI() {
 
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
+            VStack {
 
-    override fun render(view: View) {
-        this.context = view.context
-        val child = createView(view.context)
-        (view as ViewGroup).addView(child)
-    }
+                // a list of basic shapes
+                basicShapes()
 
-    private fun createView(context: Context): View {
-        return ViewFactory.createView(context) {
-            VScroll {
-                VStack {
+                basicComposition()
 
-                    // a list of basic shapes
-                    basicShapes()
-
-                    basicComposition()
-
-                    relativeValues()
+                relativeValues()
 
 //                    path()
 
-                    arc()
+                arc()
 
-                    elevated()
+                elevated()
 
-                    gradients()
+                gradients()
 
-                    rotation()
+                rotation()
 
-                    stateful()
+                stateful()
 
-                    animated()
+                animated()
 
-                    references()
+                references()
 
-                }.noClip()
+            }.noClip()
 
-            }.layoutFill()
-        }
+        }.layoutFill()
     }
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.basicShapes() {
@@ -144,33 +133,33 @@ class AdaptUIShapeSample : SampleView() {
                 RectangleShape()
             ).forEach {
                 view(it)
-                    .layout(0, FILL)
+                    .layout(0, fill)
                     .layoutWeight(1F)
             }
-        }.layout(FILL, 64)
+        }.layout(fill, 64)
 
         HStack {
 
             // capsule automatically take smallest dimension
-            CapsuleShape().also { view(it).layout(24, FILL) }
+            CapsuleShape().also { view(it).layout(24, fill) }
             CapsuleShape().also { view(it).layout(56, 24) }
 
-            RoundedRectangleShape(8).also { view(it).layout(56, FILL) }
+            RoundedRectangleShape(8).also { view(it).layout(56, fill) }
 
             // special rounded rectangle with all corners customizable
             CornersShape(24, 8, 24, 4).also {
-                view(it).layout(0, FILL)
+                view(it).layout(0, fill)
                     .layoutWeight(1F)
             }
 
-        }.layout(FILL, 56)
+        }.layout(fill, 56)
             .layoutMargin(top = 8)
     }
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.basicComposition() {
         // each shape can contain other shapes
         View()
-            .layout(FILL, 64)
+            .layout(fill, 64)
             .background(RectangleShape {
 
                 stroke(Colors.black)
@@ -200,7 +189,7 @@ class AdaptUIShapeSample : SampleView() {
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.relativeValues() {
         View()
-            .layout(FILL, 128)
+            .layout(fill, 128)
             .background(RectangleShape {
                 stroke(Colors.orange)
                 padding(12)
@@ -263,7 +252,7 @@ class AdaptUIShapeSample : SampleView() {
                 })
 
             View()
-                .layout(FILL, 24)
+                .layout(fill, 24)
                 .layoutMargin(leading = 8, trailing = 8)
                 .elevation(8)
                 .background(CornersShape(bottomLeading = 8) {
@@ -399,11 +388,11 @@ class AdaptUIShapeSample : SampleView() {
                     HStack {
                         shapes.forEach {
                             View()
-                                .layout(0, FILL, 1F)
+                                .layout(0, fill, 1F)
                                 .layoutMargin(2)
                                 .background(it)
                         }
-                    }.layout(FILL, 100)
+                    }.layout(fill, 100)
                 }
         }
 
@@ -411,7 +400,7 @@ class AdaptUIShapeSample : SampleView() {
 
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.rotation() {
         View()
-            .layout(FILL, 128)
+            .layout(fill, 128)
             .background(RectangleShape {
                 val base = RectangleShape {
                     sizeRelative(0.5F, 0.5F)
@@ -438,30 +427,27 @@ class AdaptUIShapeSample : SampleView() {
     // allows creation of stateful shapes
     private fun <LP : LinearLayout.LayoutParams> ViewFactory<LP>.stateful() {
         View()
-            .layout(FILL, 56)
-            .background(StatefulShape.drawable {
-
+            .layout(fill, 56)
+            .backgroundWithState {
                 val base = RoundedRectangleShape(8) {
-                    fill(Colors.orange)
-                    stroke(Colors.black, 4)
+                    fill { orange }
+                    stroke(color = { black }, width = 4)
                 }
-
-                setDefault(RectangleShape {
+                pressed = base.copy {
+                    padding(top = 8, bottom = 2)
+                }
+                default = Rectangle {
                     add(base.copy {
                         stroke = null
-                        fill(Colors.black.withAlphaComponent(0.4F))
-                        gravity(Gravity.bottom)
+                        fill { black.withAlphaComponent(0.4F) }
+                        gravity { bottom }
                         padding(horizontal = -2)
                     })
                     add(base.copy {
                         padding(top = 2, bottom = 8)
                     })
-                })
-
-                setPressed(base.copy {
-                    padding(top = 8, bottom = 2)
-                })
-            })
+                }
+            }
             .onClick { }
             .layoutMargin(top = 8)
             .layoutMargin(horizontal = 16)
@@ -477,7 +463,7 @@ class AdaptUIShapeSample : SampleView() {
         animator.setEvaluator(FloatEvaluator())
 
         View()
-            .layout(FILL, 128)
+            .layout(fill, 128)
             .background(RoundedRectangleShape(12) {
                 stroke(
                     LinearGradient.edges { leading to trailing }
@@ -542,7 +528,7 @@ class AdaptUIShapeSample : SampleView() {
         lateinit var drawable: ShapeDrawable<Ref>
 
         View()
-            .layout(FILL, 128)
+            .layout(fill, 128)
             .background(ShapeDrawable(Ref()) { ref ->
                 Rectangle {
                     add(Circle {
@@ -620,7 +606,7 @@ class AdaptUIShapeSample : SampleView() {
 
     private fun ViewFactory<LayoutParams>.arc() {
         View()
-            .layout(FILL, 150)
+            .layout(fill, 150)
             .background(RectangleShape {
                 Rectangle {
                     size(128, 128, Gravity.leading.center)
@@ -674,7 +660,7 @@ class AdaptUIShapeSample : SampleView() {
 
     private fun ViewFactory<LayoutParams>.path() {
         View()
-            .layout(FILL, 128)
+            .layout(fill, 128)
             .background(ExploreShapePath.Path {
                 stroke(Colors.black, 2)
 
@@ -697,6 +683,6 @@ private class Preview__AdaptUIShapeSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShapeSample()
 }

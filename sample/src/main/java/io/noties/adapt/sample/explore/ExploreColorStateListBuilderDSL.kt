@@ -8,6 +8,7 @@ import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 
+@Suppress("StopShip")
 object ExploreColorStateListBuilderDSL {
 
 

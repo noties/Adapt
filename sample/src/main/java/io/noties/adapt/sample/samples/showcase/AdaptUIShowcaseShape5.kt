@@ -6,9 +6,16 @@ import android.os.Build
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.blue
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.magenta
+import io.noties.adapt.sample.ui.color.red
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.html
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -19,29 +26,28 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
-import io.noties.adapt.ui.gradient.LinearGradient
+import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.Text
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230601102605",
     title = "[Showcase] AdaptUI, Shape #5",
     description = "<em>TextShape</em>, only Android.O+",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseShape5 : AdaptUISampleView() {
+class AdaptUIShowcaseShape5 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             Text("TextShape is only available for Android.0+")
                 .textBold()
                 .layoutWrap()
-                .textGravity(Gravity.center)
+                .textGravity { center }
                 .textSize(22)
             return
         }
@@ -66,8 +72,12 @@ private fun textShape() = ShapeFactory.create {
             // limit maximum lines
             textMaxLines(9)
             // text gradient
-            textGradient(LinearGradient.edges { leading to trailing }
-                .setColors(Color.MAGENTA, Color.BLUE, Color.GREEN, Color.YELLOW, Color.RED))
+            textGradient(Gradient.create {
+                linear {
+                    edges { leading to trailing }
+                        .setColors(magenta, blue, emeraldGreen, yellow, red)
+                }
+            })
             // justification mode
             textJustificationMode(JustificationMode.interWord)
             // by default uses text color (or gradient if present)
@@ -99,8 +109,9 @@ private fun textContent() = SpannableStringBuilder().apply {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShape5(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShape5()
 }

@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.ui.LayoutParams
@@ -26,9 +28,9 @@ import io.noties.adapt.ui.util.Gravity
     id = "20230530152155",
     title = "[Showcase] AdaptUI, Shape #3",
     description = "<em>AssetShape</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseShape3 : AdaptUISampleView() {
+class AdaptUIShowcaseShape3 : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             View()
@@ -57,8 +59,9 @@ class AdaptUIShowcaseShape3 : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShape3(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShape3()
 }

@@ -24,6 +24,15 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     public interface Configuration {
 
+        /**
+         * if {@param hideIfEmpty} is {@code true}, then container ViewGroup
+         * will have visibility=GONE if adapt is empty, otherwise container\'s visibility won\'t be modified.
+         *
+         * By default - {@code true}
+         */
+        @NonNull
+        Configuration hideIfEmpty(boolean hideIfEmpty);
+
         @NonNull
         Configuration layoutInflater(@NonNull LayoutInflater inflater);
 
@@ -98,12 +107,14 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     private static final int ID_ITEM = R.id.adapt_internal_item;
     private static final int ID_HOLDER = R.id.adapt_internal_holder;
 
+    private final boolean hideIfEmpty;
     private final ViewGroup viewGroup;
     private final ConfigurationImpl configuration;
 
     private List<Item<? extends Item.Holder>> items;
 
     AdaptViewGroup(@NonNull ViewGroup viewGroup, @NonNull ConfigurationImpl configuration) {
+        this.hideIfEmpty = configuration.hideIfEmpty;
         this.viewGroup = viewGroup;
         this.configuration = configuration;
 
@@ -143,9 +154,23 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
             if (items == null
                     || items.isEmpty()) {
+
                 // no need to validate what we have at this point -> nothing should be displayed
                 changeHandler.removeAll(viewGroup);
+
+                // check if empty
+                if (hideIfEmpty) {
+                    viewGroup.setVisibility(View.GONE);
+                }
+
                 return;
+            }
+
+            // check if setting is ON (otherwise do not check visibility
+            if (hideIfEmpty) {
+                if (viewGroup.getVisibility() != View.VISIBLE) {
+                    viewGroup.setVisibility(View.VISIBLE);
+                }
             }
 
             configuration.adaptViewGroupDiff.diff(
@@ -234,9 +259,17 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     private static class ConfigurationImpl implements Configuration {
 
+        private boolean hideIfEmpty = true;
         private LayoutInflater inflater;
         private AdaptViewGroupDiff adaptViewGroupDiff = AdaptViewGroupDiff.create();
         private ChangeHandler changeHandler = new ViewGroupChangeHandler();
+
+        @NonNull
+        @Override
+        public Configuration hideIfEmpty(boolean hideIfEmpty) {
+            this.hideIfEmpty = hideIfEmpty;
+            return this;
+        }
 
         @NonNull
         @Override

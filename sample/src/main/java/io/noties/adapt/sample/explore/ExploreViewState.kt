@@ -26,6 +26,7 @@ import io.noties.debug.Debug
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+@Suppress("StopShip")
 class ExploreViewState {
 
     interface VSBuilder {

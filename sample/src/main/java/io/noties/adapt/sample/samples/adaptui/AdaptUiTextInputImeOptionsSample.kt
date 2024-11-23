@@ -2,7 +2,10 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
@@ -21,9 +24,9 @@ import io.noties.debug.Debug
 @AdaptSample(
     id = "20240331120232",
     title = "Text.textImeOptions",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi, Tags.text]
 )
-class AdaptUiTextInputImeOptionsSample: AdaptUISampleView() {
+class AdaptUiTextInputImeOptionsSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VScroll {
             VStack {
@@ -61,7 +64,7 @@ class AdaptUiTextInputImeOptionsSample: AdaptUISampleView() {
     }
 
     @Suppress("FunctionName")
-    private fun <LP: LayoutParams> ViewFactory<LP>.Ime(builder: ImeOptionsBuilder) = VStack {
+    private fun <LP : LayoutParams> ViewFactory<LP>.Ime(builder: ImeOptionsBuilder) = VStack {
         val ime = builder(ImeOptions)
         Text(ime.toString())
             .textSize { 15 }
@@ -73,7 +76,7 @@ class AdaptUiTextInputImeOptionsSample: AdaptUISampleView() {
 }
 
 private class PreviewAdaptUiTextInputImeOptionsSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUiTextInputImeOptionsSample()
 }

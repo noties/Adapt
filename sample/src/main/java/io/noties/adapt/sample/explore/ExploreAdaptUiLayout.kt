@@ -9,6 +9,7 @@ import io.noties.adapt.ui.ViewFactoryConstants
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.layout
 
+@Suppress("StopShip")
 object ExploreAdaptUiLayout {
     fun hey(context: Context) {
         ViewFactory.createView(context) {

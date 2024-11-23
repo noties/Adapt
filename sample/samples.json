@@ -1,5 +1,17 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBordersSample",
+    "id": "20241110154706",
+    "title": "Grid borders",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample",
     "id": "20241107234915",
     "title": "Grid alphabet animated",
@@ -7,6 +19,7 @@
     "tags": [
       "adapt-ui",
       "grid",
+      "interactive",
       "widget"
     ]
   },
@@ -18,6 +31,7 @@
     "tags": [
       "adapt-ui",
       "grid",
+      "interactive",
       "widget"
     ]
   },
@@ -29,6 +43,7 @@
     "tags": [
       "adapt-ui",
       "grid",
+      "interactive",
       "widget"
     ]
   },
@@ -51,6 +66,7 @@
     "tags": [
       "adapt-ui",
       "grid",
+      "interactive",
       "widget"
     ]
   },
@@ -59,7 +75,10 @@
     "id": "20241017013604",
     "title": "AdaptUI ViewState",
     "description": "Usage of ViewState (also known as \u0026quot;drawable state\u0026quot; on native Android layer), \u003ctt\u003epressed\u003c/tt\u003e, \u003ctt\u003efocused\u003c/tt\u003e and other android.R.attr attributes",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "view-state"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.getter.AdaptGetterSample",
@@ -67,7 +86,7 @@
     "title": "AdaptGetter usage",
     "description": "",
     "tags": [
-      "adapt"
+      "getter"
     ]
   },
   {
@@ -76,7 +95,8 @@
     "title": "Text.textImeOptions",
     "description": "",
     "tags": [
-      "adapt-ui"
+      "adapt-ui",
+      "text"
     ]
   },
   {
@@ -86,6 +106,7 @@
     "description": "",
     "tags": [
       "adapt-ui",
+      "interactive",
       "recipe"
     ]
   },
@@ -95,7 +116,8 @@
     "title": "Text.textInputType",
     "description": "",
     "tags": [
-      "adapt-ui"
+      "adapt-ui",
+      "text"
     ]
   },
   {
@@ -124,7 +146,8 @@
     "title": "Pivot",
     "description": "Handling of pivot point (x,y) for scale and rotate",
     "tags": [
-      "adapt-ui"
+      "adapt-ui",
+      "interactive"
     ]
   },
   {
@@ -386,7 +409,6 @@
     "tags": [
       "adapt-ui",
       "gradient",
-      "graphics",
       "shape"
     ]
   },
@@ -403,9 +425,11 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample",
     "id": "20230513001821",
-    "title": "DrawableState",
-    "description": "Receive drawable state updates",
-    "tags": []
+    "title": "ViewState",
+    "description": "Receive view state updates (previously known-as: \u003ctt\u003eDrawableState\u003c/tt\u003e)",
+    "tags": [
+      "adapt-ui"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample",
@@ -424,23 +448,29 @@
     "title": "WebView element",
     "description": "",
     "tags": [
-      "web",
-      "webview"
+      "adapt-ui",
+      "web-view",
+      "widget"
     ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample",
     "id": "20230403235622",
-    "title": "AdaptUI[Explore] sticky with reverse linear layout",
+    "title": "Sticky view with reverse linear layout",
     "description": "",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "widget"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample",
     "id": "20230402020404",
     "title": "[Explore] UI, RelativeLayout concept",
     "description": "",
-    "tags": []
+    "tags": [
+      "explore"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample",
@@ -485,7 +515,12 @@
     "id": "20221126000447",
     "title": "AdaptUI - Flex interactive guide",
     "description": "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "flex",
+      "interactive",
+      "widget"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample",
@@ -508,11 +543,11 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample",
     "id": "20221009162741",
-    "title": "AdaptUI - Accessibility",
+    "title": "AdaptUI - Accessibility (a11y)",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-accessibility"
+      "accessibility",
+      "adapt-ui"
     ]
   },
   {
@@ -521,8 +556,7 @@
     "title": "AdaptUI - ViewGroup",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-viewgroup"
+      "adapt-ui"
     ]
   },
   {
@@ -532,8 +566,7 @@
     "description": "",
     "tags": [
       "adapt-ui",
-      "ui-text",
-      "ui-text-input"
+      "text"
     ]
   },
   {
@@ -542,8 +575,7 @@
     "title": "AdaptUI layout attributes",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-layout"
+      "adapt-ui"
     ]
   },
   {
@@ -553,7 +585,7 @@
     "description": "Usage of \u003cdef\u003ePager\u003c/def\u003e element (ViewPager)",
     "tags": [
       "adapt-ui",
-      "ui-pager"
+      "pager"
     ]
   },
   {
@@ -563,7 +595,7 @@
     "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
     "tags": [
       "adapt-ui",
-      "ui-shape"
+      "shape"
     ]
   },
   {
@@ -582,7 +614,8 @@
     "description": "",
     "tags": [
       "adapt-ui",
-      "flexbox"
+      "flex",
+      "widget"
     ]
   },
   {

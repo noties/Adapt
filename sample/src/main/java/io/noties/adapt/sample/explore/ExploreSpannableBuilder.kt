@@ -3,6 +3,7 @@ package io.noties.adapt.sample.explore
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 
+@Suppress("StopShip")
 object ExploreSpannableBuilder {
 
     class SpannableBuilder(val builder: SpannableStringBuilder) {

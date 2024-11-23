@@ -3,14 +3,21 @@ package io.noties.adapt.sample.samples.grid
 import android.content.Context
 import android.util.AttributeSet
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.naplesYellow
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.purpureus
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.steelBlue
 import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.ui.text.body
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -42,9 +49,9 @@ import io.noties.adapt.ui.util.withAlphaComponent
 @AdaptSample(
     id = "20241103154220",
     title = "Grid sample",
-    tags = ["grid", "adapt-ui", "widget"]
+    tags = [Tags.grid, Tags.adaptUi, Tags.widget]
 )
-class GridBasicSample : AdaptUISampleView() {
+class GridBasicSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         Grid {
 
@@ -60,23 +67,23 @@ class GridBasicSample : AdaptUISampleView() {
                     .textStyle { body }
 
                 // multiple squares with customization
-                Squares(2) { it.backgroundColor { accent } }
+                Squares(2) { it.backgroundColor { steelBlue } }
             }
 
             // if view is added to Grid directly it takes all available width
             //  and do not contribute to column count
             View()
                 .layout(fill, 12)
-                .backgroundColor { orange }
+                .backgroundColor { salmonRed }
 
             GridRow {
-                Square().backgroundColor { black }
+                Square().backgroundColor { naplesYellow }
 
                 // special cell that _fills_ all available column spans
                 //  (short version of GridSpacer element)
                 Spacer()
 
-                Square().backgroundColor { black.withAlphaComponent(0.5F) }
+                Square().backgroundColor { emeraldGreen.withAlphaComponent(0.5F) }
             }
 
             GridRow {
@@ -87,7 +94,7 @@ class GridBasicSample : AdaptUISampleView() {
                         .layoutWrap()
                         .textSize { 21 }
                         .textColor { white }
-                        .background { RoundedRectangle(8) { fill { primary } } }
+                        .background { RoundedRectangle(8) { fill { purpureus } } }
                         .layoutGravity { center }
                         .padding(8)
                 }
@@ -107,7 +114,7 @@ class GridBasicSample : AdaptUISampleView() {
 
 @Preview
 private class PreviewGridSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = GridBasicSample()
 }

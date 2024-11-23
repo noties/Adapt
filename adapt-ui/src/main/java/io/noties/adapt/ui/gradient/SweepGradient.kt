@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
 
 class SweepGradient internal constructor(
     internal val type: Type,
@@ -12,8 +13,8 @@ class SweepGradient internal constructor(
     internal val positions: FloatArray?
 ) : Gradient() {
 
-    companion object {
-        
+    companion object : Colors {
+
         @CheckResult
         fun center() = Builder(Edge(null))
 
@@ -32,6 +33,7 @@ class SweepGradient internal constructor(
             } else {
                 positionOfEdge(type.edge, bounds)
             }
+
             is Angle -> {
                 val (point, _) = positionsOfAngle(type.angle, bounds)
                 point

@@ -7,12 +7,11 @@ import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.kt.getter
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.items.CollectionItem
 import io.noties.adapt.sample.items.PlainItem
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.text.body
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -21,8 +20,6 @@ import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
-import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.element.textStyle
 import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.item.ElementItem
@@ -33,9 +30,9 @@ import io.noties.debug.Debug
 @AdaptSample(
     id = "20240924213029",
     title = "AdaptGetter usage",
-    tags = ["adapt"]
+    tags = [Tags.getter]
 )
-class AdaptGetterSample : AdaptUISampleView() {
+class AdaptGetterSample : SampleViewUI() {
 
     private lateinit var adapt: Adapt
 
@@ -64,17 +61,25 @@ class AdaptGetterSample : AdaptUISampleView() {
                     Debug.i("$label " +
                             "textOnlyStartingWithA:${textOnlyStartingWithA.items()} " +
                             "textOnly:${textOnly.items()} " +
-                            "cast:${try { textCast.items().map { it.text } } catch (t: Throwable) { t }}")
+                            "cast:${
+                                try {
+                                    textCast.items().map { it.text }
+                                } catch (t: Throwable) {
+                                    t
+                                }
+                            }")
                 }
 
                 print("#1")
 
-                adapt.setItems(listOf(
-                    TextItem("ABC"),
-                    TextItem("ZZZ"),
-                    TextItem("AOU"),
-                    TextItem("APM")
-                ))
+                adapt.setItems(
+                    listOf(
+                        TextItem("ABC"),
+                        TextItem("ZZZ"),
+                        TextItem("AOU"),
+                        TextItem("APM")
+                    )
+                )
 
                 print("#2")
 
@@ -111,7 +116,7 @@ class AdaptGetterSample : AdaptUISampleView() {
 
 @Preview
 private class PreviewAdaptGetterSample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptGetterSample()
 }

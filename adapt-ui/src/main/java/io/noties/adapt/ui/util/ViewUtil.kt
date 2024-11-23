@@ -56,9 +56,9 @@ fun <V : View> V.onDetachedOnce(block: (V) -> Unit) {
  *   .textSize { body }
  * ```
  */
-val <V: View> V.element: ViewElement<V, LayoutParams> get() = ViewElement.create(this)
+val <V : View> V.element: ViewElement<V, LayoutParams> get() = ViewElement.create(this)
 
-inline fun <V: View> V.renderElement(block: (ViewElement<V, out LayoutParams>) -> Unit) {
+inline fun <V : View> V.renderElement(block: (ViewElement<V, out LayoutParams>) -> Unit) {
     val element = this.element
     try {
         block(element)
@@ -70,18 +70,31 @@ inline fun <V: View> V.renderElement(block: (ViewElement<V, out LayoutParams>) -
 /**
  * Searches for the holding Activity
  */
-val View.activity: Activity? get() {
-    var context: Context? = this.context
-    while (context != null) {
-        if (context is Activity) {
-            return context
+val View.activity: Activity?
+    get() {
+        var context: Context? = this.context
+        while (context != null) {
+            if (context is Activity) {
+                return context
+            }
+            context = (context as? ContextWrapper)?.baseContext
         }
-        context = (context as? ContextWrapper)?.baseContext
+        return null
     }
-    return null
-}
 
 /**
  * Searches for focused view in dedicated to this view Activity
  */
 val View.currentFocus: View? get() = activity?.currentFocus
+
+
+fun <V : View> V.addOnLayoutChangeListenerSimple(
+    callback: (V) -> Unit
+): View.OnLayoutChangeListener {
+    @Suppress("UNCHECKED_CAST")
+    val listener = View.OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+        callback(v as V)
+    }
+    this.addOnLayoutChangeListener(listener)
+    return listener
+}

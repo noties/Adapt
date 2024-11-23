@@ -10,6 +10,7 @@ import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.text
 
+@Suppress("StopShip")
 object ExploreItem2 {
     // restrict an item to certain LP
 

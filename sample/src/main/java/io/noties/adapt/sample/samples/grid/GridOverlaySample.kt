@@ -3,14 +3,17 @@ package io.noties.adapt.sample.samples.grid
 import android.content.Context
 import android.util.AttributeSet
 import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
-import io.noties.adapt.sample.ui.color.orange
-import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.naplesYellow
+import io.noties.adapt.sample.ui.color.purpureus
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.steelBlue
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -44,9 +47,9 @@ import io.noties.adapt.ui.shape.Circle
     id = "20241102225551",
     title = "GridOverlay",
     description = "Usage of Grid overlays (background, foreground, etc) with TransitionManager to build dynamic and animatable grids",
-    tags = ["grid", "adapt-ui", "widget"]
+    tags = [Tags.grid, Tags.adaptUi, Tags.widget, Tags.interactive]
 )
-class GridOverlaySample : AdaptUISampleView() {
+class GridOverlaySample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         ZStackWrapHeightOrScroll {
 
@@ -77,17 +80,17 @@ class GridOverlaySample : AdaptUISampleView() {
 
                         // span multiple, take whole row
                         View()
-                            .backgroundColor { orange }
+                            .backgroundColor { emeraldGreen }
                             .gridSpan(x = fill(), y = just(1))
 
                         // span multiple, take whole column
                         View()
-                            .backgroundColor { primary }
+                            .backgroundColor { steelBlue }
                             .gridSpan(x = just(1), y = fill())
 
                         // dynamically positioned cell, always last row/column
                         View()
-                            .background { Circle { fill { accent } } }
+                            .background { Circle { fill { salmonRed } } }
                             .gridSpan(
                                 x = { (c, _) -> last(c) },
                                 y = { (_, r) -> last(r) }
@@ -98,7 +101,7 @@ class GridOverlaySample : AdaptUISampleView() {
                         Image(R.drawable.ic_launcher_foreground)
                             .imageScaleType { fitCenter }
                             .padding(8)
-                            .imageTint { black }
+                            .imageTint { purpureus }
                             .gridSpan(
                                 // provide own calculation logic
                                 x = { (columns, _) -> center(columns) },
@@ -109,7 +112,7 @@ class GridOverlaySample : AdaptUISampleView() {
                         View()
                             .background {
                                 Circle {
-                                    fill { hex("#f00") }
+                                    fill { naplesYellow }
                                     size(24, 24)
                                     gravity { center }
                                 }
@@ -148,7 +151,7 @@ class GridOverlaySample : AdaptUISampleView() {
 
 @Preview
 private class PreviewGridOverlaySample(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = GridOverlaySample()
 }

@@ -5,24 +5,23 @@ import android.graphics.Typeface
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.explore.ExploreAutofill
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillEnabled
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillHint
 import io.noties.adapt.sample.explore.ExploreAutofill.autofillRequestOnFocusWhenEmpty
-import io.noties.adapt.sample.explore.ExploreOverlayDrawBounds.overlayDrawBounds
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
-import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.BreakStrategy
 import io.noties.adapt.ui.element.HyphenationFrequency
 import io.noties.adapt.ui.element.Text
@@ -35,7 +34,6 @@ import io.noties.adapt.ui.element.textAutoSize
 import io.noties.adapt.ui.element.textBreakStrategy
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textEllipsize
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGradient
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textHideIfEmpty
@@ -54,36 +52,31 @@ import io.noties.adapt.ui.ifAvailable
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.preview.preview
+import io.noties.adapt.ui.preview.previewBounds
 import io.noties.adapt.ui.shape.RoundedRectangleShape
-import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
+import io.noties.adapt.ui.state.backgroundWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.InputType
-import io.noties.adapt.ui.util.hex
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20221008115412",
     title = "AdaptUI - Text & TextInput",
-    tags = ["adapt-ui", "ui-text", "ui-text-input"]
+    tags = [Tags.adaptUi, Tags.text]
 )
-class AdaptUITextSample : SampleView() {
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+class AdaptUITextSample : SampleViewUI() {
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
+            VStack {
 
-    override fun render(view: View) {
-        val child = ViewFactory.createView(view.context) {
-            VScroll {
-                VStack {
+                MyTextInput()
 
-                    MyTextInput()
-
-                    MyText()
-                }
-            }.layoutFill()
-                .overlayDrawBounds()
-        }
-        (view as ViewGroup).addView(child)
+                MyText()
+            }
+        }.layoutFill()
+            .preview { it.previewBounds() }
     }
 
     @Suppress("FunctionName")
@@ -102,19 +95,17 @@ class AdaptUITextSample : SampleView() {
             }
             .padding(horizontal = 16, vertical = 12)
             .layoutMargin(horizontal = 16, vertical = 8)
-            .background(StatefulShape.drawable {
-                val base = RoundedRectangleShape(9)
-                setFocused(base.copy {
-                    stroke(Colors.orange)
-                    fill(hex("#0000"))
-                    padding(1)
-                })
-                setDefault(base.copy {
-                    fill(hex("#20000000"))
-                    stroke(hex("#40000000"))
-                    padding(1)
-                })
-            })
+            .backgroundWithState {
+                val base = RoundedRectangleShape(9) { padding(1) }
+                focused = base.copy {
+                    fill { hex("#0000") }
+                    stroke(color = { orange })
+                }
+                default = base.copy {
+                    fill { hex("#20000000") }
+                    stroke(color = { hex("#40000000") })
+                }
+            }
             .ifAvailable(Build.VERSION_CODES.O) {
                 it
                     .autofillEnabled(true)
@@ -179,6 +170,6 @@ private class Preview__AdaptUITextSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUITextSample()
 }

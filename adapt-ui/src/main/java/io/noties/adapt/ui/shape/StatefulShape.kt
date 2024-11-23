@@ -4,6 +4,7 @@ import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
 import io.noties.adapt.ui.util.DrawableState
 
+@Deprecated("Use `ViewState` dedicated factories")
 class StatefulShape {
 
     companion object {

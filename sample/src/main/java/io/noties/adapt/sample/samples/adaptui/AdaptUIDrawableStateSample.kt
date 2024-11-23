@@ -6,15 +6,16 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.ui.color.white
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -47,19 +48,20 @@ import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.Text
+import io.noties.adapt.ui.state.onViewStateChange
 import io.noties.adapt.ui.util.DrawableState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
-import io.noties.adapt.ui.util.onDrawableStateChange
 import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230513001821",
-    title = "DrawableState",
-    description = "Receive drawable state updates"
+    title = "ViewState",
+    description = "Receive view state updates (previously known-as: <tt>DrawableState</tt>)",
+    tags = [Tags.adaptUi]
 )
-class AdaptUIDrawableStateSample : AdaptUISampleView() {
+class AdaptUIDrawableStateSample : SampleViewUI() {
 
     /**
      * In order to receive all drawable states reliably a stateful drawable must be used
@@ -77,12 +79,12 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 .background(CapsuleShape {
                     fill(Colors.primary)
                 }.newDrawable().stateful(setOf(DrawableState.pressed)))
-                .onDrawableStateChange { textView, drawableState ->
-                    Debug.e("state:$drawableState")
-                    textView.clearAnimation()
+                .onViewStateChange { view, viewState ->
+                    Debug.e("state:$viewState")
+                    view.clearAnimation()
 
-                    val target = if (drawableState.pressed) 0.82F else 1F
-                    textView.animate()
+                    val target = if (viewState.isPressed) 0.82F else 1F
+                    view.animate()
                         .alpha(target)
                         .setDuration(250L)
                         .start()
@@ -192,9 +194,9 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 shape.shadow(2)
             }
         })
-        .onDrawableStateChange { textView, drawableStateSet ->
-            val y = if (drawableStateSet.pressed) -2 else 0
-            textView.translationY = y.dip.toFloat()
+        .onViewStateChange { view, viewState ->
+            val y = if (viewState.isPressed) -2 else 0
+            view.translationY = y.dip.toFloat()
         }
         .onClick {
 
@@ -255,6 +257,6 @@ private class Preview__AdaptUIDrawableStateSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIDrawableStateSample()
 }

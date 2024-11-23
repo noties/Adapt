@@ -3,15 +3,15 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.accent
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.ui.color.white
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
@@ -38,9 +38,9 @@ import io.noties.debug.Debug
     id = "20230601135039",
     title = "[Showcase] AdaptUI, Pager element",
     description = "<em>Pager</em>, <em>ViewPager</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcasePager : AdaptUISampleView() {
+class AdaptUIShowcasePager : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             Pager {
@@ -104,6 +104,6 @@ private class Preview__AdaptUIShowcasePager(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcasePager()
 }

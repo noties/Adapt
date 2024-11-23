@@ -2,9 +2,11 @@ package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.ui.LayoutParams
@@ -25,9 +27,9 @@ import kotlin.math.roundToInt
     id = "20230530151621",
     title = "[Showcase] ShapeDrawable usage",
     description = "stateful hotspot",
-    tags = ["showcase", "adapt-ui"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseShapeDrawable : AdaptUISampleView() {
+class AdaptUIShowcaseShapeDrawable : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             View()
@@ -65,9 +67,10 @@ class AdaptUIShowcaseShapeDrawable : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShape(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShapeDrawable()
 
 }

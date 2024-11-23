@@ -1,7 +1,5 @@
 package io.noties.adapt.sample.util
 
-import io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample
-
 // 5x7 grid
 object GridAlphabet {
     data class Pos(val x: Int, val y: Int) {

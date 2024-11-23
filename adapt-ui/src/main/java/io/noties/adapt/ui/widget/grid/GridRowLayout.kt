@@ -112,9 +112,6 @@ class GridRowLayout : ViewGroup {
                     rect
                 )
 
-                // STOPSHIP: TODO
-                println(":[ row.layout rect:${rect.toShortString()}")
-
                 if (i != 0) {
                     x += horizontalSpacing
                 }

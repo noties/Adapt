@@ -4,15 +4,15 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import io.noties.adapt.preview.Preview
 import io.noties.adapt.sample.ItemGenerator
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.padding
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.adapt.wrapper.ItemWrapper
@@ -23,7 +23,7 @@ import io.noties.adapt.wrapper.ItemWrapper
     description = "Display wrapped items in a <tt>ViewGroup</tt>",
     tags = ["viewgroup", "wrapper"]
 )
-class ViewGroupWrappedSample : SampleView() {
+class ViewGroupWrappedSample : SampleViewLayout() {
     override val layoutResId: Int
         get() = R.layout.view_sample_view_group
 
@@ -74,6 +74,6 @@ private class Preview__ViewGroupWrappedSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = ViewGroupWrappedSample()
 }

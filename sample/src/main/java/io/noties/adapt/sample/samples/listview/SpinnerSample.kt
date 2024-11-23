@@ -6,12 +6,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Spinner
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 
 @AdaptSample(
     "20210123235615",
@@ -19,7 +19,7 @@ import io.noties.adapt.sample.util.PreviewSampleView
     "Usage with <tt>Spinner</tt>, (single view type only, Spinner requirement)",
     tags = ["listview"]
 )
-class SpinnerSample : SampleView() {
+class SpinnerSample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_spinner
@@ -55,6 +55,6 @@ private class Preview__SpinnerSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = SpinnerSample()
 }

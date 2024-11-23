@@ -7,7 +7,6 @@ android {
     namespace 'io.noties.adapt.ui.flex'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         minSdkVersion config['min-sdk']

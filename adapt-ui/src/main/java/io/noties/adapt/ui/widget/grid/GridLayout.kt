@@ -259,9 +259,6 @@ class GridLayout : ViewGroup {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        // STOPSHIP:
-        println(":[ grid.onMeasure columns:$columnsCount")
-
         val columnsCount = this.columnsCount
             .takeIf { it > 0 }
             ?: return super.onMeasure(widthMeasureSpec, heightMeasureSpec)

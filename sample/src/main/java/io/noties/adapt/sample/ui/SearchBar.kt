@@ -15,6 +15,12 @@ import io.noties.adapt.sample.R
 
 class SearchBar(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
+    var text: CharSequence
+        get() = input.text
+        set(value) {
+            input.setText(value)
+        }
+
     var onTextChangedListener: (String?) -> Unit = {}
 
     private var focus: View
@@ -86,7 +92,7 @@ class SearchBar(context: Context, attrs: AttributeSet) : LinearLayout(context, a
         }
     }
 
-    fun onTextChanged(text: String) {
+    private fun onTextChanged(text: String) {
         val isEmpty = text.isEmpty()
 
         clear.isVisible = !isEmpty

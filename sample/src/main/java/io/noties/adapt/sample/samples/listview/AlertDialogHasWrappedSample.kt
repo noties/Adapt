@@ -7,8 +7,10 @@ import android.util.AttributeSet
 import android.view.View
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardBigItem
 import io.noties.adapt.sample.items.CardItem
@@ -16,8 +18,6 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.backgroundColor
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.debug.Debug
 import java.util.Date
 
@@ -28,7 +28,7 @@ import java.util.Date
             "when displayed in a <tt>AlertDialog</tt>",
     tags = ["alertdialog", "listview", "wrapper", "key"]
 )
-class AlertDialogHasWrappedSample : SampleView() {
+class AlertDialogHasWrappedSample : SampleViewLayout() {
 
     // not used in this sample, but required to function
     override val layoutResId: Int
@@ -76,6 +76,6 @@ private class Preview__AlertDialogHasWrappedSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AlertDialogHasWrappedSample()
 }

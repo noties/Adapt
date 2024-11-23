@@ -5,4 +5,8 @@
     <string name="search_clear_label">Clear</string>
     <string name="search_cancel_label">Cancel</string>
     <string name="search_nothing_found">Nothing found</string>
+
+    <string name="sample_grid_borders_grid_borders_configuration_section_title">Grid Borders</string>
+    <string name="sample_grid_borders_grid_layout_configuration_section_title">Grid Layout</string>
+
 </resources>

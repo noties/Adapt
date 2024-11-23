@@ -3,7 +3,8 @@ package io.noties.adapt.sample.samples.grid
 import android.transition.TransitionManager
 import android.view.ViewGroup
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.emeraldGreen
+import io.noties.adapt.sample.ui.color.salmonRed
 import io.noties.adapt.sample.ui.text.body
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
@@ -100,7 +101,7 @@ private fun <LP : LayoutParams> ViewFactory<LP>.PlusMinus(
     onMinus: () -> Unit
 ) = HStack {
     Image(R.drawable.ic_remove_24)
-        .background { RoundedRectangle(6).fill { black } }
+        .background { RoundedRectangle(6).fill { salmonRed } }
         .foregroundDefaultSelectable()
         .clipToOutline()
         .onClick(onMinus)
@@ -108,7 +109,7 @@ private fun <LP : LayoutParams> ViewFactory<LP>.PlusMinus(
         .padding(horizontal = 12)
         .textStyle { body }
     Image(R.drawable.ic_add_24)
-        .background { RoundedRectangle(6).fill { black } }
+        .background { RoundedRectangle(6).fill { emeraldGreen } }
         .foregroundDefaultSelectable()
         .clipToOutline()
         .onClick(onPlus)
