@@ -10,7 +10,10 @@ import kotlin.random.Random
 data class Sample(
     val id: String,
     val name: String,
-    val description: CharSequence?,
+    // initially it was CharSequence with Html.fromHtml parsing, but it is failing in tests
+    //  java.lang.UnsatisfiedLinkError: 'int android.os.SystemProperties.native_get_int(java.lang.String, int)'
+    //  it turns out Html.fromHtml would try to obtain Resources in order to render some tags (b, strong) :'(
+    val description: String?,
     val tags: List<String>,
     val javaClassName: String
 ) {

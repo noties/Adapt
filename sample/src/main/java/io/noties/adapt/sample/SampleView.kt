@@ -11,10 +11,11 @@ import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.preview.Preview
 import io.noties.adapt.sample.items.ControlItem
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.ui.dimen.appBarHeight
-import io.noties.adapt.sample.ui.text.body
+import io.noties.adapt.sample.ui.test
 import io.noties.adapt.sample.ui.text.title3
 import io.noties.adapt.sample.util.SampleUtil
 import io.noties.adapt.ui.LayoutParams
@@ -58,16 +59,18 @@ abstract class SampleView constructor() {
 
     open val sample: Sample by lazy(LazyThreadSafetyMode.NONE) {
         SampleUtil.samples.firstOrNull { it.javaClassName == this::class.java.name }
-            ?: error("Sample is not found for this class instance. " +
-                    "Make sure there is `@AdaptSample` annotation present " +
-                    "and annotation processing is being run. class:'${this::class.java.name}' $this")
+            ?: error(
+                "Sample is not found for this class instance. " +
+                        "Make sure there is `@AdaptSample` annotation present " +
+                        "and annotation processing is being run. class:'${this::class.java.name}' $this"
+            )
     }
 
-    fun createView(parent: ViewGroup): View {
+    fun createView(context: Context): View {
         ItemGenerator.reset()
 
         val sample = this.sample
-        val view = ViewFactory.createView(parent.context) {
+        val view = ViewFactory.createView(context) {
             VStack {
                 // app bar
                 ZStack {
@@ -82,7 +85,7 @@ abstract class SampleView constructor() {
                         .onClick { onBack() }
 
                     Text(sample.name)
-                        .textSize { title3 }
+                        .textSize { 18 }
                         .textColor { text }
                         .textGravity { center }
                         .textMaxLines(2)
@@ -91,9 +94,16 @@ abstract class SampleView constructor() {
                         .layoutFill()
                         .layoutMargin(horizontal = Dimens.appBarHeight)
                         .onClick { onAppBarTitleClick() }
+                        // NB! the screenshot testing is using LayoutLib and thus would report as in preview
                         .preview {
-                            it.text("Pretty long description name that is going " +
-                                    "to take some space around")
+                            it.text(
+                                "Pretty long description name that is going " +
+                                        "to take some space around"
+                            )
+                        }
+                        .test {
+                            // return proper value for tests
+                            it.text(sample.name)
                         }
 
                 }.indent()
@@ -167,7 +177,7 @@ abstract class SampleView constructor() {
     }
 }
 
-abstract class SampleViewLayout: SampleView() {
+abstract class SampleViewLayout : SampleView() {
     abstract val layoutResId: Int
 
     abstract fun render(view: View)
@@ -180,7 +190,7 @@ abstract class SampleViewLayout: SampleView() {
     }
 }
 
-abstract class SampleViewUI: SampleView() {
+abstract class SampleViewUI : SampleView() {
     abstract fun ViewFactory<LayoutParams>.body()
 
     override fun createContentView(parent: ViewGroup): View {
@@ -201,7 +211,7 @@ abstract class PreviewSampleView(
     }
 
     override fun createView(context: Context, parent: PreviewLayout): View {
-        val view = sampleView.createView(this)
+        val view = sampleView.createView(context)
         return ViewFactory.createView(context, parent) {
             VStack {
 
@@ -229,9 +239,10 @@ abstract class PreviewSampleView(
 private class PreviewSampleViewRoot(context: Context, attrs: AttributeSet?) :
     PreviewLayout(context, attrs) {
     override fun createView(context: Context, parent: PreviewLayout): View {
-        return object: SampleView() {
+        return object : SampleView() {
             override val sample: Sample
                 get() = Sample.empty().copy(name = "Just a name")
+
             override fun createContentView(parent: ViewGroup): View {
                 return ViewFactory.createView(parent.context) {
                     View()
@@ -239,6 +250,6 @@ private class PreviewSampleViewRoot(context: Context, attrs: AttributeSet?) :
                         .backgroundColor { yellow }
                 }
             }
-        }.createView(parent)
+        }.createView(context)
     }
 }

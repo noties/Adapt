@@ -73,8 +73,6 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.image(
  * Scale Type
  * @see ImageView.setScaleType
  */
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder version with ImageScaleType")
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     scaleType: ScaleType
 ): ViewElement<V, LP> = onView {

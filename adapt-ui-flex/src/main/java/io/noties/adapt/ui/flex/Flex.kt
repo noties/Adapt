@@ -43,8 +43,6 @@ value class FlexDirection(@_FlexDirection val rawValue: Int) {
     }.let { FlexDirection(it) }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexDirection(
     flexDirection: FlexDirection
 ): ViewElement<V, LP> = onView {
@@ -68,8 +66,6 @@ value class FlexWrap(@_FlexWrap val rawValue: Int) {
     }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexWrap(
     flexWrap: FlexWrap
 ): ViewElement<V, LP> = onView {
@@ -96,8 +92,6 @@ value class JustifyContent(@_JustifyContent val rawValue: Int) {
     }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexJustifyContent(
     justifyContent: JustifyContent
 ): ViewElement<V, LP> = onView {
@@ -123,8 +117,6 @@ value class AlignItems(@_AlignItems val rawValue: Int) {
     }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignItems(
     alignItems: AlignItems
 ): ViewElement<V, LP> = onView {
@@ -151,8 +143,6 @@ value class AlignContent(@_AlignContent val rawValue: Int) {
     }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.flexAlignContent(
     alignContent: AlignContent
 ): ViewElement<V, LP> = onView {
@@ -238,8 +228,6 @@ value class AlignSelf(@_AlignSelf val rawValue: Int) {
     }
 }
 
-@Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use builder variant")
 fun <V : View, LP : FlexboxLayout.LayoutParams> ViewElement<V, LP>.layoutFlexAlignSelf(
     alignSelf: AlignSelf
 ): ViewElement<V, LP> = onLayoutParams {

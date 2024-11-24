@@ -18,7 +18,6 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.android.flexbox.FlexboxLayout
 import io.noties.adapt.preview.Preview
-import io.noties.adapt.sample.App
 import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleViewLayout
@@ -39,6 +38,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.activated
+import io.noties.adapt.ui.app.App
 import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundDefaultSelectable

@@ -30,6 +30,9 @@ abstract class AdaptGetterBuilder<T : Item<*>> {
      */
     fun <R : T> cast(type: Class<R>): AdaptGetterBuilder<R> =
         Cast(build(), type)
+
+    inline fun <reified R : T> cast(): AdaptGetterBuilder<R> =
+        Cast(build(), R::class.java)
 }
 
 fun <T : Item<*>> Adapt.getter(
@@ -81,9 +84,16 @@ private class FilterIsInstance<IN : Item<*>, OUT : IN>(
     }
 }
 
+@Suppress("FunctionName")
+fun <IN : Item<*>, OUT : IN> Cast(
+    getter: AdaptGetter<IN>,
+    type: Class<OUT>
+): AdaptGetterBuilder<OUT> = Cast(Byte.MIN_VALUE, getter, type)
+
 private class Cast<IN : Item<*>, OUT : IN>(
+    @Suppress("UNUSED_PARAMETER") dummy: Byte,
     val getter: AdaptGetter<IN>,
-    @Suppress("unused") val type: Class<OUT>
+    @Suppress("unused") val type: Class<OUT>,
 ) : AdaptGetterBuilder<OUT>() {
     override fun build(): AdaptGetter<OUT> {
         return AdaptGetter {

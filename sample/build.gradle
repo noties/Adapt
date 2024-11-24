@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'app.cash.paparazzi'
 
 final def gitBranch = {
     "git rev-parse --abbrev-ref HEAD".execute().text.trim()
@@ -105,4 +106,6 @@ dependencies {
 //    compileOnly 'androidx.appcompat:appcompat:1.6.1'
 
     kapt project(':sample-utils:processor')
+
+    testImplementation deps['junit4']
 }

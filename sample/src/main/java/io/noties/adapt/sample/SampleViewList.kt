@@ -356,7 +356,7 @@ class SampleViewList(
         data class SampleInfo(val sample: Sample) {
             val name: String by lazy(LazyThreadSafetyMode.NONE) { sample.name.normalized() }
             val description: String by lazy(LazyThreadSafetyMode.NONE) {
-                sample.description?.toString()?.normalized() ?: ""
+                sample.description?.normalized() ?: ""
             }
             val tags: List<String> by lazy(LazyThreadSafetyMode.NONE) {
                 sample.tags
@@ -504,6 +504,12 @@ class SampleViewList(
             lateinit var descriptionView: TextView
         }
 
+        private val description: CharSequence? by lazy(LazyThreadSafetyMode.NONE) {
+            sample.description
+                ?.takeIf { it.isNotEmpty() }
+                ?.let { HtmlUtil.fromHtml(it) }
+        }
+
         override fun bind(holder: Holder<Ref>) {
             with(holder.ref) {
                 titleView.text = sample.name
@@ -514,7 +520,7 @@ class SampleViewList(
                     }
                 tagsAdapt.setItems(tags)
 
-                descriptionView.text = sample.description
+                descriptionView.text = description
             }
 
             holder.itemView().element
@@ -616,7 +622,7 @@ private class PreviewSampleViewList(context: Context, attrs: AttributeSet?) :
                 Sample.empty()
                     .copy(
                         name = "Hello my dear sample",
-                        description = HtmlUtil.fromHtml("This is the description that goes here, <em>someone</em> says that it supports some <b>HTML</b>&mldr;"),
+                        description = "This is the description that goes here, <em>someone</em> says that it supports some <b>HTML</b>&mldr;",
                         tags = listOf("widget", "no", "maybe", "50%")
                     )
             ),

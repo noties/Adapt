@@ -40,7 +40,7 @@ class AlertDialogSample : SampleViewLayout() {
 
         val adapt = object : Adapt {
             override fun items(): List<Item<out Item.Holder>> = adapt1.items()
-            override fun setItems(items: List<Item<out Item.Holder>>?) {
+            override fun setItems(items: MutableList<Item<*>>?) {
                 adapt1.setItems(items)
                 adapt2.setItems(items)
             }
@@ -50,7 +50,7 @@ class AlertDialogSample : SampleViewLayout() {
                 adapt2.notifyAllItemsChanged()
             }
 
-            override fun notifyItemChanged(item: Item<out Item.Holder>) {
+            override fun notifyItemChanged(item: Item<*>) {
                 adapt1.notifyItemChanged(item)
                 adapt2.notifyItemChanged(item)
             }

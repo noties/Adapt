@@ -38,7 +38,9 @@ class SquareFrameLayout(context: Context) : FrameLayout(context) {
         if (size == 0) {
             error(
                 "SquareFrameLayout{axis:$axis} requires dimension specified, " +
-                        "use match_parent or exact value - 24, 48, etc"
+                        "use match_parent or exact value - 24, 48, etc; " +
+                        "widthSpec:${MeasureSpec.getSize(widthMeasureSpec)} " +
+                        "heightSpec:${MeasureSpec.getSize(heightMeasureSpec)}"
             )
         }
         val spec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY)

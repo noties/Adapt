@@ -1,6 +1,114 @@
 # Changelog
 
 # 5.1
+### Added
+* new \[`adapt-kt`] kotlin module (includes `AdaptGetter`, sample:`AdaptGetterSample`)
+* \[`adapt-ui`] `App`, `Colors`, `Dimens`, `Strings`, `ViewStyles`, `TextSizes`, `TextStyles`
+* \[`adapt-ui`] `ViewElement.backgroundColor`, `ViewElement.backgroundGradient`, `ViewElement.foregroundColor` builders:
+   ```kotlin
+   Text()
+     .backgroundColor { primary }
+     .backgroundGradient { 
+        linear {
+           edges { top to bottom }
+             .setColors(orange, primary, accent) 
+        } 
+     }
+     .foregroundColor { accent }
+   ```
+* \[`adapt-ui`] `ViewElement.elevation`:
+   ```kotlin
+   Text().elevation { barElevation }
+   ```
+* \[`adapt-ui`] `ViewElement.overScrollMode`:
+  ```kotlin
+  Text()
+    .overScrollMode { ifContentScrolls }
+  ```
+* \[`adapt-ui`] `ViewElement.scrollBarStyle`:
+  ```kotlin
+  Text().scrollBarStyle { outsideOverlay }
+  ```
+* \[`adapt-ui`] `ViewElement.scrollBarsEnabled`
+* \[`adapt-ui`] `ViewElement.requestFocus`
+* \[`adapt-ui`] accessibility:
+  ```kotlin
+  Text()
+    .accessibilityImportant { yes }
+    .accessibilityLiveRegion { polite }
+  ```
+* \[`adapt-ui`] `Image.imageScaleType`, `Image.imageTint`:
+  ```kotlin
+  Image()
+    .imageScaleType { fitCenter }
+    .imageTint { accent }
+  ```
+* \[`adapt-ui`] `stackGravity` for `HStack`, `VStack`:
+  ```kotlin
+  VStack {}.stackGravity { center.horizontal }
+  HStack {}.stackGravity { top.leading }
+  ```
+* \[`adapt-ui`] `Text`:
+  ```kotlin
+  Text()
+    .textEllipsize { end }
+    .textHyphenationFrequency { normal }
+    .textBreakStrategy { simple }
+    .textJustificationMode { interWord }
+    .textInputType { text.capWords }
+    .textImeOptions { noFullScreen.noExtractUi.actionUnspecified }
+  ```
+* \[`adapt-ui`] `ViewElement.onViewStateChange`:
+  ```kotlin
+  Text()
+    .onViewStateChange { view, viewState ->
+       val y = if (viewState.isPressed) -2 else 0
+       view.translationY = y.dip.toFloat()
+    }
+  ```
+* \[`adapt-ui`] `VStackContentMeasuredLast` element and `LinearLayoutContentMeasuredLast` widget
+* \[`adapt-ui`] `VStackReverseDrawingOrder` element and `LinearLayoutReverseDrawingOrder` widget
+* \[`adapt-ui`] `ZStackSquare` element and `SquareFrameLayout` widget
+* \[`adapt-ui`] `ZStackWrapHeightOrScroll` element and `FrameLayoutWrapHeightOrScroll` widget
+* \[`adapt-ui`] `Grid` element and `GridLayout` widget
+* \[`adapt-ui`] `Web` element to build `WebView`
+* \[`adapt-ui`] `ElementItem.onRefReady`
+* \[`adapt-ui`] `PreviewViewCustomization` to customize how view is drawn in layout-preview pane
+* \[`adapt-ui`] `ColorStateListFactory`, `DrawableStateListFactory`, `ShapeStateListFactory` along with state builders:
+  ```kotlin
+  Text()
+    .backgroundWithState {
+      activated = Rectangle()
+      default = Circle()
+    }
+    .backgroundColorWithState {
+      activated.enabled = accent
+      default = black
+    }
+    // in similar way:
+    .foregroundWithState {}
+    .foregroundColorWithState {}
+    // Text
+    .textColorWithState {}
+  
+  Image()
+    .imageTintWithState {}
+  ```
+* \[`adapt-ui`] `ViewState` to replace `DrawableState`, unified semantics for color, drawable, shape builder with state
+* \[`adapt-ui`] `PorterDuffModeFactory` to create `PorterDuff.Mode`
+* \[`adapt-ui-flex`] - element configurations:
+   ```kotlin
+   Flex {
+     View()
+       .layoutFlexAlignSelf { stretch }
+   }.indent()
+     .flexDirection { row }
+     .flexWrap { wrap }
+     .flexJustifyContent { center }
+     .flexAlignItems { center }
+     .flexAlignContent { center }
+   ```
+
 ### Changed
 * `AdaptViewGroup`, if configured `Adapt` is empty then supporting `viewGroup` 
    visibility will be set to `View.GONE` automatically. Configure `AdaptViewGroup.Configuration`
@@ -8,8 +116,17 @@
 * `ViewGroup.addOnHierarchyChangeListener` utility to register multiple `OnHierarchyChangeListener`
 * `View.addOnFocusChangedListener` utility to register multiple `OnFocusChangedListener`
 * `ViewFlag` utility
-* `Grid` widget
-* `ViewState` to replace `DrawableState`, unified semantics for color, drawable, shape builder with state
+* \[`adapt-ui-flex`] `Flex`element is using `wrap` for flex-wrap by default
+
+### Deprecated
+* \[`adapt-ui`] `ViewFactoryConstants` `FILL` and `WRAP` to lowercase: `fill` and `wrap`:
+  ```kotlin
+  Text().layout(fill, wrap)
+  ```
+* `DrawableState` is deprecated in favor of `ViewState`
+* `io.noties.adapt.ui.util.ColorStateListBuilder` is deprecated in favor of `io.noties.adapt.ui.state.ColorStateListFactory`
+* \[`adapt-ui`] `ViewElement.background(color: Int)` in favor of `ViewElement.backgroundColor(color: Int)`
+
 
 # 5.0.0
 ### Changed

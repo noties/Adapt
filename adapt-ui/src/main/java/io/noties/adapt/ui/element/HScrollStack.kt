@@ -12,5 +12,5 @@ fun <LP: LayoutParams> ViewFactory<LP>.HScrollStack(
     children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
 ) = HScroll {
     HStack(gravity, children)
-        .layout(WRAP, FILL)
+        .layout(wrap, fill)
 }

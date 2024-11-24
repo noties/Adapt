@@ -59,12 +59,14 @@ class AdaptUIGradientSample : SampleViewUI() {
                     HStack {
                         for (item in it) {
                             ZStackSquare { View().adaptView(item) }
-                                .layout(0, 0, 1F)
+                                .layout(fill, 0, 1F)
                         }
 
-                        for (i in it.size until 3) {
-                            View().layout(0, 0, 1F)
+                        // fill with empty views, so rows are equals
+                        repeat(3 - it.size) {
+                            View().layout(fill, 0, 1F)
                         }
+
                     }
                 }
 

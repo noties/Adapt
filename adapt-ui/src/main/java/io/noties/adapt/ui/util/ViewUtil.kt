@@ -72,14 +72,7 @@ inline fun <V : View> V.renderElement(block: (ViewElement<V, out LayoutParams>) 
  */
 val View.activity: Activity?
     get() {
-        var context: Context? = this.context
-        while (context != null) {
-            if (context is Activity) {
-                return context
-            }
-            context = (context as? ContextWrapper)?.baseContext
-        }
-        return null
+        return context.activity
     }
 
 /**

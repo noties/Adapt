@@ -1,3 +1,4 @@
+- [ ] run all tests (sample.verifyPaDe)
 - [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples 
    that could be affected by new view layout (so maybe they need to be set to match-parent)
 - [ ] unify preview class names, `Preview_Sample`, `PreviewSample`, `Preview__Sample`

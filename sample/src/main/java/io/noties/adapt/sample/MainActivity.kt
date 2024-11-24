@@ -208,8 +208,8 @@ class MainActivity : Activity() {
             childContainer: ViewGroup
         ) {
 
-            val sampleView = SampleUtil.createView(sample)
-            val childView = sampleView.createView(childContainer)
+            val sampleView = SampleUtil.createSampleView(sample)
+            val childView = sampleView.createView(childContainer.context)
 
             cancel(
                 contentDivider = contentDivider,

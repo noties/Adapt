@@ -45,6 +45,7 @@ dependencies {
     api deps['x-annotations']
 
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testImplementation deps['junit4']
 }
 
 apply from: '../publish.gradle'

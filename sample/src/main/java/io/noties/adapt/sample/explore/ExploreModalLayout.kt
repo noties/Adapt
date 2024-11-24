@@ -314,7 +314,7 @@ private class PreviewExploreScrollIfScrolls(context: Context, attrs: AttributeSe
 
                 ZStackWrapHeightOrScroll(
                     scrollStyle = {
-                        it.scrollBarsEnabled(false)
+                        it.scrollBarsEnabled()
                     }
                 ) {
                     Text("Content, click me to generate new")
