@@ -1,11 +1,13 @@
 buildscript {
-    ext.kotlin_version = '1.9.20'
+    // https://stackoverflow.com/a/78506238
+    // https://youtrack.jetbrains.com/issue/KT-60507/Kapt-IllegalAccessError-superclass-access-check-failed-using-java-21-toolchain
+    ext.kotlin_version = '1.9.21'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
+        classpath 'com.android.tools.build:gradle:8.7.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
