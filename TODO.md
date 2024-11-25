@@ -1,4 +1,4 @@
-- [ ] run all tests (sample.verifyPaDe)
+- [ ] update logo, make gradient and new asset
 - [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples 
    that could be affected by new view layout (so maybe they need to be set to match-parent)
 - [ ] unify preview class names, `Preview_Sample`, `PreviewSample`, `Preview__Sample`
@@ -48,6 +48,7 @@
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 
+- [x] run all tests (sample.verifyPaDe) - added `test.sh`
 - [X] StatfulShape.create instead of `drawable`
 - [-] maybe LP typealias? does ot solve anything, as we still need to specify generic variant, which
   would cause name collision

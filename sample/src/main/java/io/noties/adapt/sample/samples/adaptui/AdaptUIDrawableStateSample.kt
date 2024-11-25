@@ -100,7 +100,7 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
                     .layoutGravity(Gravity.center)
             } else {
                 val view = View()
-                    .layout(FILL, 128)
+                    .layout(fill, 128)
                     .focusable(true)
                     .background(createStatefulShapeDrawable().stateful { state ->
                         Debug.i("state:$state")
@@ -135,10 +135,10 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
 
             HStack {
                 ElevatingButton("Normal")
-                    .layout(0, WRAP, 1F)
+                    .layout(0, wrap, 1F)
                     .layoutMargin(horizontal = 8)
                 ElevatingButton("Pressed")
-                    .layout(0, WRAP, 1F)
+                    .layout(0, wrap, 1F)
                     .layoutMargin(horizontal = 8)
                     .onView { it.isPressed = true }
             }.layoutMargin(top = 16)
@@ -160,7 +160,7 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
         .textAllCaps()
         .padding(12, 4)
         .layoutMargin(horizontal = 4)
-        .layout(0, WRAP, 1F)
+        .layout(0, wrap, 1F)
         .background(CapsuleShape().fill(Colors.primary))
         .ifAvailable(Build.VERSION_CODES.O) {
             it.foregroundDefaultSelectable()

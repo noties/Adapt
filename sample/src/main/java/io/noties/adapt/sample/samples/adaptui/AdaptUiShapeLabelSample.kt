@@ -32,7 +32,7 @@ class AdaptUiShapeLabelSample : SampleViewUI() {
         VStack {
 
             View()
-                .layout(FILL, 128)
+                .layout(fill, 128)
                 .background {
                     LabelShape {
                         text("Hello there! \uD83D\uDE18")

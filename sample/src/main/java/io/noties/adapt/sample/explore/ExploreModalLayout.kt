@@ -309,7 +309,7 @@ private class PreviewExploreScrollIfScrolls(context: Context, attrs: AttributeSe
                 HStack {
                     Image(R.drawable.ic_arrow_back_ios_24_white)
                         .layout(56, 56)
-                }.layout(FILL, 56)
+                }.layout(fill, 56)
                     .backgroundColor { accent }
 
                 ZStackWrapHeightOrScroll(
@@ -318,7 +318,7 @@ private class PreviewExploreScrollIfScrolls(context: Context, attrs: AttributeSe
                     }
                 ) {
                     Text("Content, click me to generate new")
-                        .layout(FILL, WRAP)
+                        .layout(fill, wrap)
                         // this one is going to be erased after wrap/unwrap
                         .layoutGravity { center.vertical }
                         .textSize { 17 }
@@ -329,7 +329,7 @@ private class PreviewExploreScrollIfScrolls(context: Context, attrs: AttributeSe
                 }.stackContentMeasureLast()
 
                 Text("Click me!")
-                    .layout(FILL, WRAP)
+                    .layout(fill, wrap)
                     .textSize(17)
                     .textGravity { center.horizontal }
                     .padding(12)

@@ -28,6 +28,7 @@ import io.noties.adapt.sample.ui.color.salmonRed
 import io.noties.adapt.sample.ui.color.steelBlue
 import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.ui.color.yellow
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -167,7 +168,13 @@ class AdaptUISample : SampleViewUI() {
         // add different item, not ui one
         val items = listOf<Item<*>>(
             StaticTextItem(),
-            TextItem("Created: ${Date()}"),
+            TextItem(
+                if (isRunningScreenshotTests) {
+                    "Created: When 1970 Screenshot 10:12"
+                } else {
+                    "Created: ${Date()}"
+                }
+            ),
             LineItem("title1", "value1"),
             ButtonItem(),
             ShapeItem(),

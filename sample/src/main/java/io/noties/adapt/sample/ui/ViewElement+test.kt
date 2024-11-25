@@ -6,7 +6,7 @@ import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.preview.PreviewViewElement
 import io.noties.adapt.ui.preview.preview
 
-private val isRunningScreenshotTests = try {
+internal val isRunningScreenshotTests = try {
     @Suppress("SENSELESS_COMPARISON")
     Class.forName("io.noties.adapt.sample.test.AdaptUiSampleIsInTests") != null
 } catch (t: Throwable) {

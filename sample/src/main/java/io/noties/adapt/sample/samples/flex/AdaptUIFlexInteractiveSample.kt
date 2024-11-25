@@ -239,7 +239,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                 .onViewCheckedChanged { _, checked ->
                     showPrimaryAxis(checked)
                 }
-                .layout(WRAP, WRAP)
+                .layout(wrap, wrap)
                 .layoutGravity(Gravity.center.trailing)
         }
 
@@ -423,7 +423,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
                         })
                     }
-                }.layout(FILL, WRAP)
+                }.layout(fill, wrap)
                     .padding(vertical = 12)
 
                 flex.onView {
@@ -432,7 +432,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                     }
                 }
 
-            }.layout(0, WRAP, 1F)
+            }.layout(0, wrap, 1F)
                 .padding(2)
         }
     }
@@ -444,7 +444,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
         HStack {
 
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             DropDown(
                 "flex-grow",
@@ -752,10 +752,10 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                     flex.flexWrap { selected.second }
                 }
             }
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             FlexContainerWidthOption(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
         }
     }
 
@@ -766,7 +766,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
 
         val flex = Flex {
             FlexItem("Hello")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
             FlexItem("the")
                 .layout(0, 96)
@@ -776,7 +776,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                 .layoutFlexWrapBefore()
                 .layoutFlexGrow(1F)
             FlexItem("!!!")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
 //            .flexWrap(FlexWrap.wrap)
@@ -797,7 +797,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
 
         val flex = Flex {
             FlexItem("Hello")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
             FlexItem("the")
                 .layout(0, 96)
@@ -807,16 +807,16 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                 .layoutFlexWrapBefore()
                 .layoutFlexGrow(1F)
             FlexItem("!!!")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
 //            .flexWrap(FlexWrap.wrap)
             .flexWrap()
-            .layout(FILL, 96 * 2 + 32)
+            .layout(fill, 96 * 2 + 32)
 
         HStack {
             AlignItemsDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
             DropDown(
                 "align-content",
                 listOf(
@@ -832,7 +832,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
 //                    flex.flexAlignContent(selected.second)
                     flex.flexAlignContent { selected.second }
                 }
-            }.layout(0, WRAP, 1F)
+            }.layout(0, wrap, 1F)
         }
     }
 
@@ -964,7 +964,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                     val window = PopupWindow(
                         view,
                         element.view.width,
-                        WRAP
+                        wrap
                     )
                     window.isFocusable = true
                     window.elevation = 10.dip.toFloat()
@@ -1007,7 +1007,7 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                                 }
                             }
                     }
-                }.layout(FILL, WRAP)
+                }.layout(fill, wrap)
             }
         }
     }

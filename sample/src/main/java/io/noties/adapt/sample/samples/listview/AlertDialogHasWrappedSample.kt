@@ -18,6 +18,7 @@ import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.backgroundColor
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.debug.Debug
 import java.util.Date
 
@@ -55,8 +56,14 @@ class AlertDialogHasWrappedSample : SampleViewLayout() {
                 items
                     .toMutableList()
                     .also {
-                        PlainItem("💪", Color.MAGENTA, "WRAPPED at ${Date()}")
-                            .backgroundColor(0x20FF00F)
+                        // using dynamic date breaks screenshot testing
+                        PlainItem(
+                            "💪", Color.MAGENTA, if (isRunningScreenshotTests) {
+                                "Wrapped At 1970 as if not run for UI tests 12.13"
+                            } else {
+                                "WRAPPED at ${Date()}"
+                            }
+                        ).backgroundColor(0x20FF00F)
                             .also(it::add)
                     }
             }

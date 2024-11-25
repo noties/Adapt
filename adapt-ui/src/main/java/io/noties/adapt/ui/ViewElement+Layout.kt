@@ -12,8 +12,8 @@ import io.noties.adapt.ui.util.dip
 
 /**
  * Specified layout dimensions for a view. Can be one of _normal_ layout attributes:
- * + [ViewGroup.LayoutParams.MATCH_PARENT] or [ViewFactory.FILL]
- * + [ViewGroup.LayoutParams.WRAP_CONTENT] or [ViewFactory.WRAP]
+ * + [ViewGroup.LayoutParams.MATCH_PARENT] or [ViewFactory.fill]
+ * + [ViewGroup.LayoutParams.WRAP_CONTENT] or [ViewFactory.wrap]
  * or an exact value specified in **density independent pixels** (dp), so when
  * specified `2` it would be converted to proper pixel value according to device density
  */

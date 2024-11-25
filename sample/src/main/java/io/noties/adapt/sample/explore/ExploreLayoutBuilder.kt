@@ -16,8 +16,8 @@ import kotlin.math.roundToInt
 typealias LayoutDimensionBuilder = LayoutDimension.() -> Int
 
 object LayoutDimension: ContextHolder {
-    val fill get() = ViewFactoryConstants.FILL
-    val wrap get() = ViewFactoryConstants.WRAP
+    val fill get() = ViewFactoryConstants.fill
+    val wrap get() = ViewFactoryConstants.wrap
 
     fun res(@DimenRes resId: Int): Int = context.resources.let {
         val density = it.displayMetrics.density
@@ -57,8 +57,8 @@ object ExploreLayoutBuilder {
 
             }.indent()
                 .layout { 1 to 4 }
-                .layout { FILL to WRAP }
-                .layout(FILL, WRAP)
+                .layout { fill to wrap }
+                .layout(fill, wrap)
                 .layout { 24 to 24 }
 
                 // does not work without `this`

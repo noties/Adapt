@@ -10,6 +10,7 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.salmonRed
 import io.noties.adapt.sample.ui.color.steelBlue
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
@@ -43,13 +44,20 @@ class AdaptUIShowcaseControlFlow : SampleViewUI() {
                     .textSize(16 + it)
             }
 
-            // if check for some condition
-            if (System.currentTimeMillis() % 2 == 0L) {
+            if (isRunningScreenshotTests) {
                 Text("if, current time is even")
                     .textColor { salmonRed }
-            } else {
                 Text("else, current time is odd")
                     .textColor { steelBlue }
+            } else {
+                // if check for some condition
+                if (System.currentTimeMillis() % 2 == 0L) {
+                    Text("if, current time is even")
+                        .textColor { salmonRed }
+                } else {
+                    Text("else, current time is odd")
+                        .textColor { steelBlue }
+                }
             }
 
             // version check

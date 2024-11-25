@@ -9,6 +9,7 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.ui.color.gray
 import io.noties.adapt.sample.ui.color.red
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.backgroundColor
@@ -39,11 +40,15 @@ class AdaptUIShowcaseReference : SampleViewUI() {
             element.textSize(22)
 
             // `ifElement` will hold a reference to created elements
-            val ifElement = if (System.currentTimeMillis() % 2 == 0L) {
-                Text("Even system time")
+            val ifElement = if (isRunningScreenshotTests) {
+                Text("Screenshot tests system time")
             } else {
-                View()
-                    .layout(fill, 48)
+                if (System.currentTimeMillis() % 2 == 0L) {
+                    Text("Even system time")
+                } else {
+                    View()
+                        .layout(fill, 48)
+                }
             }
 
             // NB! element is of View type, not TextView,

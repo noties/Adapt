@@ -25,6 +25,7 @@ import io.noties.adapt.ui.app.text.TextSizes
 import io.noties.adapt.ui.app.text.TextSizesBuilder
 import io.noties.adapt.ui.app.text.TextStyles
 import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.gradient.GradientBuilder
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.ImeOptions
@@ -104,6 +105,10 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
 ): ViewElement<V, LP> = onView {
     it.setTextColor(colorStateList)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
+    gradient: GradientBuilder
+): ViewElement<V, LP> = textGradient(gradient(Gradient))
 
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
     gradient: Gradient

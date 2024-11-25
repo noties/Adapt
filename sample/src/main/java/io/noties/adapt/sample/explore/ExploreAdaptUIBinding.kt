@@ -150,7 +150,7 @@ class ExploreAdaptUIBinding {
     fun hey(context: Context) {
         ViewFactory.createView(context) {
             Text()
-                .layout(FILL, WRAP)
+                .layout(fill, wrap)
 //                .textStylePrimary()
                 .bind(color) {
                     Debug.i("color:$it")

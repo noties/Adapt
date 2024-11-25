@@ -30,8 +30,8 @@ object ExploreAdaptUiLayout {
                 }
                 .layout3 {
                     width = 10
-                    width = FILL
-                    height = WRAP
+                    width = fill
+                    height = wrap
                 }
                 .layout4 {
                     width to fill

@@ -21,8 +21,8 @@ class ViewFactoryConstants_Test {
 
     private fun assert(constants: ViewFactoryConstants) {
         val inputs = listOf(
-            LayoutParams.MATCH_PARENT to constants.FILL,
-            LayoutParams.WRAP_CONTENT to constants.WRAP
+            LayoutParams.MATCH_PARENT to constants.fill,
+            LayoutParams.WRAP_CONTENT to constants.wrap
         )
         for ((expected, actual) in inputs) {
             Assert.assertEquals(constants.toString(), expected, actual)

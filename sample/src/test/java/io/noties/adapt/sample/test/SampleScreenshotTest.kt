@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
+import com.android.ide.common.rendering.api.SessionParams
 import io.noties.adapt.sample.Sample
 import io.noties.adapt.sample.ui.color.background
 import io.noties.adapt.sample.util.SampleUtil
@@ -60,7 +61,9 @@ class SampleScreenshotTest(private val sampleId: String) {
 
     @get:Rule
     val paparazzi = Paparazzi(
+        theme = "android:Theme.Material.Light.NoActionBar",
         deviceConfig = DeviceConfig.NEXUS_5,
+        renderingMode = SessionParams.RenderingMode.NORMAL,
         showSystemUi = false
     )
 

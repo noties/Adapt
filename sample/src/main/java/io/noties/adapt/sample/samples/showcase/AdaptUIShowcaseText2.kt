@@ -50,10 +50,12 @@ class AdaptUIShowcaseText2 : SampleViewUI() {
             .textColor { text }
             .textHintColor { textSecondary }
             // apply gradient to text
-            .textGradient(Gradient.linear {
-                edges { leading to trailing }
-                    .setColors(cyan, magenta, green, black)
-            })
+            .textGradient {
+                linear {
+                    edges { leading to trailing }
+                        .setColors(cyan, magenta, green, black)
+                }
+            }
             .textColorWithState {
                 pressed = red
                 default = black
