@@ -1,3 +1,6 @@
+// suppress usage of self (we already know that it is deprecated)
+@file:Suppress("DEPRECATION")
+
 package io.noties.adapt.ui.util
 
 import android.content.res.Resources
@@ -7,7 +10,6 @@ import android.view.ViewTreeObserver
 import androidx.annotation.AttrRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
-import java.util.Arrays
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -35,7 +37,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onDrawableStateChange(
             }
 
             val current = it.drawableState
-            if (!Arrays.equals(previous, current)) {
+            if (!previous.contentEquals(current)) {
                 previous = current
                 action(it, DrawableStateSet(current))
             }

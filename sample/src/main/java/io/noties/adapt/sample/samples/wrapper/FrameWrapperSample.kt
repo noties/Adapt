@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package io.noties.adapt.sample.samples.wrapper
 
 import android.content.Context

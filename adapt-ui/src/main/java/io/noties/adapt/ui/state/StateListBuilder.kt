@@ -1,11 +1,27 @@
 package io.noties.adapt.ui.state
 
+import android.content.res.ColorStateList
+import android.graphics.drawable.StateListDrawable
 import android.util.StateSet
 import androidx.annotation.AttrRes
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 abstract class StateListBuilder<T> {
+    companion object {
+        fun color(color: ColorStateListBuilder): ColorStateList {
+            return ColorStateListFactory.build(color).colorStateList
+        }
+
+        fun shape(shape: ShapeStateListBuilder): StateListDrawable {
+            return ShapeStateListFactory.build(shape).stateListDrawable
+        }
+
+        fun drawable(drawable: DrawableStateListBuilder): StateListDrawable {
+            return DrawableStateListFactory.build(drawable).stateListDrawable
+        }
+    }
+
     protected abstract val instance: T
 
     private val attrs = mutableSetOf<Int>()

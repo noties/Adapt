@@ -1,3 +1,6 @@
+// suppress usage of self (we already know that it is deprecated)
+@file:Suppress("DEPRECATION")
+
 package io.noties.adapt.ui.util
 
 import android.content.res.ColorStateList

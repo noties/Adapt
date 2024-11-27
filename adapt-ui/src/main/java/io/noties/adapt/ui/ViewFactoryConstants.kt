@@ -25,5 +25,5 @@ interface ViewFactoryConstants {
             return LayoutParams.WRAP_CONTENT
         }
 
-    companion object Impl : ViewFactoryConstants
+    companion object : ViewFactoryConstants
 }

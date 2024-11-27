@@ -9,7 +9,7 @@ import io.noties.adapt.ui.app.style.ViewStyles
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.style(
     style: ElementStyle<V, LP>
 ) = this.also {
-    style.block.invoke(ViewFactoryConstants.Impl, it)
+    style.block.invoke(ViewFactoryConstants, it)
 }
 
 fun <V: View, LP: LayoutParams> ViewElement<V, LP>.style(

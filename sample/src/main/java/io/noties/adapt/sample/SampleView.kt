@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.preview.Preview
@@ -113,9 +114,10 @@ abstract class SampleView constructor() {
                     .layoutFill()
                     .onView {
                         val view = createContentView(it)
+                        view.layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
                         it.addView(view)
                     }
-            }
+            }.layoutFill()
         }
         onViewCreated(view)
         return view

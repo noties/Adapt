@@ -9,6 +9,8 @@ typealias LayoutParams = ViewGroup.LayoutParams
 
 typealias ViewBuilder<V, LP> = ViewFactory<LP>.() -> ViewElement<V, LP>
 
+// TODO: change to interface (the same as colors, ect)
+//  provide helper to subclass and create final view
 open class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null

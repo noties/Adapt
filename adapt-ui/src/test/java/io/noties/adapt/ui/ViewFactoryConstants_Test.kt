@@ -14,7 +14,7 @@ class ViewFactoryConstants_Test {
 
     @Test
     fun assertConstants() {
-        assert(ViewFactoryConstants.Impl)
+        assert(ViewFactoryConstants)
         // assert factory
         assert(ViewFactory<LayoutParams>(RuntimeEnvironment.getApplication()))
     }

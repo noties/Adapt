@@ -4,11 +4,13 @@ import android.graphics.drawable.StateListDrawable
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.imageTint
+import io.noties.adapt.ui.element.progressTint
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textHintColor
 import io.noties.adapt.ui.foreground
@@ -46,6 +48,10 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTintWithState(
 ) = this.imageTint(
     colorStateList = ColorStateListFactory.build(colors).colorStateList
 )
+
+fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTintWithState(
+    color: ColorStateListBuilder
+): ViewElement<V, LP> = progressTint(StateListBuilder.color(color))
 
 /**
  * `pressed` is not reported without a stateful drawable for the `android.R.attr.state_pressed`, as

@@ -50,6 +50,9 @@ open class ViewElement<V : View, LP : LayoutParams>(
     var isRendering: Boolean = false
         private set
 
+    // layout-params that would be applied to view before being added to parent
+    var preAttachLayoutParams: LP? = null
+
     internal val layoutParamsBlocks: MutableList<(LP) -> Unit> = mutableListOf()
     internal val viewBlocks: MutableList<(V) -> Unit> = mutableListOf()
 
@@ -70,6 +73,13 @@ open class ViewElement<V : View, LP : LayoutParams>(
     ): ViewElement<V, LP> = this.also {
         it.layoutParamsBlocks.add(block)
         scheduleRendering()
+    }
+
+    fun renderPreAttach() {
+        preAttachLayoutParams?.also {
+            view.layoutParams = it
+            preAttachLayoutParams = null
+        }
     }
 
     fun render() {

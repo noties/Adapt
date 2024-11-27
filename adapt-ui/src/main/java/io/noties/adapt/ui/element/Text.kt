@@ -97,8 +97,10 @@ inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
 ) = textColor(builder(Colors))
 
 /**
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
  * @see TextView.setTextColor
+ * @see io.noties.adapt.ui.state.textColorWithState
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.StateListBuilder
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
     colorStateList: ColorStateList
@@ -335,7 +337,9 @@ inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
 /**
  * Hint text color
  * @see TextView.setHintTextColor
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.StateListBuilder
+ * @see io.noties.adapt.ui.state.textHintColorWithState
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
     colorStateList: ColorStateList

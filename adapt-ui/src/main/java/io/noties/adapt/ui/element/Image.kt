@@ -128,7 +128,8 @@ inline fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
  * cleared according to the documentation.
  * @see ImageView.setImageTintList
  * @see ImageView.setImageTintMode
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.imageTintWithState
  */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     colorStateList: ColorStateList?,

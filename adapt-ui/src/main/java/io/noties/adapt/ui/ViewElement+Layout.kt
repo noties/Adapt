@@ -157,3 +157,17 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     trailing?.dip?.also { mlp.rightMargin = it }
     bottom?.dip?.also { mlp.bottomMargin = it }
 }
+
+/**
+ * Assign supplied LayoutParams and return updated element
+ */
+fun <V : View, LP : LayoutParams, OUT_LP : LayoutParams> ViewElement<V, LP>.layoutParams(
+    params: OUT_LP
+): ViewElement<V, OUT_LP> = this
+    .let {
+        @Suppress("UNCHECKED_CAST")
+        it as ViewElement<V, OUT_LP>
+    }
+    .also { el ->
+        el.preAttachLayoutParams = params
+    }

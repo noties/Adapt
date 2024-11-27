@@ -36,7 +36,7 @@ class ElementStyleTest {
             .style(ElementStyle(block))
             .also { element ->
                 element.render()
-                verify(block).invoke(eq(ViewFactoryConstants.Impl), eq(element))
+                verify(block).invoke(eq(ViewFactoryConstants), eq(element))
             }
     }
 
@@ -47,7 +47,7 @@ class ElementStyleTest {
             .style(ElementStyle.generic(block))
             .also { element ->
                 element.render()
-                verify(block).invoke(eq(ViewFactoryConstants.Impl), eq(element))
+                verify(block).invoke(eq(ViewFactoryConstants), eq(element))
             }
     }
 
@@ -58,7 +58,7 @@ class ElementStyleTest {
             .style(ElementStyle.view(block))
             .also { element ->
                 element.render()
-                verify(block).invoke(eq(ViewFactoryConstants.Impl), eq(element))
+                verify(block).invoke(eq(ViewFactoryConstants), eq(element))
             }
     }
 
@@ -70,7 +70,7 @@ class ElementStyleTest {
             .style(ElementStyle.layout(block))
             .also { element ->
                 element.render()
-                verify(block).invoke(eq(ViewFactoryConstants.Impl), eq(element))
+                verify(block).invoke(eq(ViewFactoryConstants), eq(element))
             }
     }
 
@@ -82,7 +82,7 @@ class ElementStyleTest {
             .style(ElementStyle.viewLayout(block))
             .also { element ->
                 element.render()
-                verify(block).invoke(eq(ViewFactoryConstants.Impl), eq(element))
+                verify(block).invoke(eq(ViewFactoryConstants), eq(element))
             }
     }
 

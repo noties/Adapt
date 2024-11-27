@@ -97,8 +97,9 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
+import io.noties.adapt.ui.state.StateListBuilder
 import io.noties.adapt.ui.state.backgroundWithState
-import io.noties.adapt.ui.util.ColorStateListBuilder
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.hex
@@ -228,12 +229,10 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
             }.text("Show Primary Axis")
                 .padding(bottom = 8)
                 .textColor(Colors.black)
-                .ifAvailable(Build.VERSION_CODES.M) {
-                    it.onView {
-                        it.thumbTintList = ColorStateListBuilder.create {
-                            setChecked(Colors.white)
-                            setDefault(hex("#505a64"))
-                        }
+                .onView {
+                    it.thumbTintList = StateListBuilder.color {
+                        checked = white
+                        default = hex("#505a64")
                     }
                 }
                 .onViewCheckedChanged { _, checked ->
@@ -994,10 +993,10 @@ class AdaptUIFlexInteractiveSample : SampleViewLayout() {
                         Text(value.first)
                             .padding(16)
                             .textSize(16)
-                            .textColor(ColorStateListBuilder.create {
-                                setActivated(Colors.orange)
-                                setDefault(Colors.black)
-                            })
+                            .textColorWithState {
+                                activated = orange
+                                default = black
+                            }
                             .activated(selected == value.first)
                             .backgroundDefaultSelectable()
                             .also { element ->
