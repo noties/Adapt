@@ -118,6 +118,7 @@ object ExploreViewFactory {
                 return factory.create() as V
             }
 
+            @JvmName("addChildrenLayoutParams")
             fun addChildren(
                 viewGroup: ViewGroup,
                 block: ViewFactory<LayoutParams>.() -> Unit

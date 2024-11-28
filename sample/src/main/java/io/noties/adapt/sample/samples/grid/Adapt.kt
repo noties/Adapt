@@ -20,6 +20,7 @@ import io.noties.adapt.ui.element.grid.Square
 import io.noties.adapt.ui.element.textStyle
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.indent
+import io.noties.adapt.ui.layoutParams
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
@@ -49,11 +50,10 @@ fun <LP : LayoutParams> ViewFactory<LP>.GridControls(
             label = "Row / Y",
             onPlus = {
                 beginTransition()
-                val row = ViewFactory.newView(context)
-                    .layoutParams(GridLayout.LayoutParams())
-                    .create {
-                        GridRow { Square() }
-                    }
+                val row = ViewFactory.newView(context).create<GridLayout.LayoutParams> {
+                    GridRow { Square() }
+                        .layoutParams(GridLayout.LayoutParams())
+                }
                 gridLayout.addView(row)
             },
             onMinus = {
@@ -70,11 +70,10 @@ fun <LP : LayoutParams> ViewFactory<LP>.GridControls(
             label = "Column / X",
             onPlus = {
                 val row = gridLayout.getChildAt(0) as GridRowLayout
-                ViewFactory.newView(row)
-                    .layoutParams(GridRowLayout.LayoutParams())
-                    .create {
-                        Square()
-                    }
+                ViewFactory.newView(row).create<GridRowLayout.LayoutParams> {
+                    Square()
+                        .layoutParams(GridRowLayout.LayoutParams())
+                }
                     .also {
                         beginTransition()
                         row.addView(it)

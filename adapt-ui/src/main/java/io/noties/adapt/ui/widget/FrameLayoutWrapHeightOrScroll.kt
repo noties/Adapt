@@ -12,6 +12,7 @@ import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.VScroll
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.indent
+import io.noties.adapt.ui.layoutParams
 
 /**
  * @see io.noties.adapt.ui.element.ZStackWrapHeightOrScroll
@@ -118,16 +119,15 @@ class FrameLayoutWrapHeightOrScroll(
             // remove from this layout
             removeAllViews()
 
-            val view = ViewFactory.newView(this)
-                .layoutParams(LayoutParams(LayoutParams.MATCH_PARENT, height))
-                .create {
-                    VScroll {
-                        VStack {
-                            Element { content }
-                        }
-                    }.indent()
-                        .also(scrollStyle)
-                }
+            val view = ViewFactory.createView(this) {
+                VScroll {
+                    VStack {
+                        Element { content }
+                    }
+                }.indent()
+                    .layoutParams(LayoutParams(LayoutParams.MATCH_PARENT, height))
+                    .also(scrollStyle)
+            }
 
             addView(view)
         }

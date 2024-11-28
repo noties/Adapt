@@ -74,7 +74,7 @@ class Inflated_Test {
         }
 
         @Suppress("UNUSED_VARIABLE")
-        val view = ViewFactory.newView(viewGroup).create {
+        val view = ViewFactory.createView(viewGroup) {
             Inflated(id)
         }
         verify(context).getSystemService(eq(Context.LAYOUT_INFLATER_SERVICE))

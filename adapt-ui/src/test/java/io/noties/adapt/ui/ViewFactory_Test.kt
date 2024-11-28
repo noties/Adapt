@@ -1,7 +1,6 @@
 package io.noties.adapt.ui
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -13,7 +12,6 @@ import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
-import io.noties.adapt.ui.testutil.assertDensity
 import io.noties.adapt.ui.testutil.mockt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -24,13 +22,8 @@ import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -168,75 +161,19 @@ class ViewFactory_Test {
         }
         val creator = ViewFactory.newView(viewGroup)
 
-        val lp = ViewFactory.ViewCreator.defaultLayoutParams
+        val lp = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
+        )
 
         assertLayoutParams(
             lp,
             creator.layoutParams
         )
 
-        val view = creator.create { View() }
+        val view = creator.create<LayoutParams> { View() }
+
         assertLayoutParams(lp, view.layoutParams)
-    }
-
-    @Test
-    fun `viewCreator - layoutParams`() {
-        val viewGroup: ViewGroup = mockt {
-            on { context } doReturn RuntimeEnvironment.getApplication()
-        }
-
-        fun lp(): LayoutParams = FrameLayout.LayoutParams(123, LayoutParams.MATCH_PARENT)
-
-        val view = ViewFactory.newView(viewGroup)
-            .layoutParams(lp())
-            .create { View() }
-
-        assertLayoutParams(lp(), view.layoutParams)
-    }
-
-    @Test
-    fun `viewCreator - renderOnAttach`() {
-        assertDensity(1F)
-
-        val viewGroup: ViewGroup = mockt {
-            on { context } doReturn RuntimeEnvironment.getApplication()
-        }
-
-        val background = Color.RED
-        val padding = 101
-
-        val element = newElement()
-            .backgroundColor(background)
-            .padding(padding)
-
-        val lp = FrameLayout.LayoutParams(123, LayoutParams.MATCH_PARENT)
-
-        val view = ViewFactory.newView(viewGroup)
-            .layoutParams(lp)
-            .renderOnAttach()
-            .create { element.also { add(it) } }
-
-        // layout params are still set
-        verify(view).layoutParams = eq(lp)
-
-        // not not configuration happens now
-        verify(view, never()).setBackgroundColor(any())
-        verify(view, never()).setPadding(any(), any(), any(), any())
-
-        // now, an attach listener will be registered
-        val listener = kotlin.run {
-            val captor = ArgumentCaptor.forClass(View.OnAttachStateChangeListener::class.java)
-            verify(view).addOnAttachStateChangeListener(captor.capture())
-            captor.value
-        }
-
-        assertNotNull(listener)
-
-        listener.onViewAttachedToWindow(element.view)
-
-        // now render should be triggered
-        verify(view).setBackgroundColor(eq(background))
-        verify(view).setPaddingRelative(eq(padding), eq(padding), eq(padding), eq(padding))
     }
 
     @Test

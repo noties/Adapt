@@ -14,6 +14,7 @@ import io.noties.adapt.ui.element.text
 object ExploreItem2 {
     // restrict an item to certain LP
 
+    @Deprecated("should not be used or renamed to defaultLayoutParams")
     interface CreateLayoutParams {
         fun createLayoutParams(parent: ViewGroup): LayoutParams =
             LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -77,12 +78,13 @@ object ExploreItem2 {
         override fun createHolder(parent: ViewGroup): Holder<R> {
             // ViewFactory can be different (provide own)
             val ref = createRef()
-            val view = ViewFactory.newView(parent)
-                // LP obviously can be provided already
-                .layoutParams(createLayoutParams(parent))
-                .create {
-                    body(ref)
+            val view = ViewFactory.createView(parent) {
+                body(ref)
+            }.also {
+                if (it.layoutParams == null) {
+                    it.layoutParams = createLayoutParams(parent)
                 }
+            }
             return Holder(view, ref)
         }
     }

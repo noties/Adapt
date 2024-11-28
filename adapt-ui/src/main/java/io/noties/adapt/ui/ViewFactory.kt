@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import io.noties.adapt.ui.util.onAttachedOnce
 
-typealias LayoutParams = ViewGroup.LayoutParams
-
 typealias ViewBuilder<V, LP> = ViewFactory<LP>.() -> ViewElement<V, LP>
 
 // TODO: change to interface (the same as colors, ect)
@@ -58,6 +56,11 @@ open class ViewFactory<out LP : LayoutParams>(
             children: ViewFactory<LayoutParams>.() -> Unit
         ): View = newView(context).create(children)
 
+        fun createView(
+            viewGroup: ViewGroup,
+            children: ViewFactory<LayoutParams>.() -> Unit
+        ): View = newView(viewGroup.context, viewGroup).create(children)
+
         fun <R : Any> createView(
             context: Context,
             ref: R,
@@ -107,6 +110,7 @@ open class ViewFactory<out LP : LayoutParams>(
                     el as ViewElement<View, LP>
 
                     val view = el.init(context)
+                    el.renderPreAttach()
 
                     // now layoutParams are generated
                     g.addView(view)
@@ -116,43 +120,27 @@ open class ViewFactory<out LP : LayoutParams>(
         }
     }
 
-    class ViewCreator<LP : LayoutParams> internal constructor(
+    class ViewCreator(
         val context: Context,
         val viewGroup: ViewGroup?,
-        val layoutParams: LP,
-        // can request to render on first attach
-        val renderOnAttach: Boolean = false
+        val layoutParams: LayoutParams? = defaultLayoutParams,
     ) {
 
         companion object {
-            val defaultLayoutParams: LayoutParams
+            private val defaultLayoutParams: LayoutParams
                 get() = LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT
                 )
-
-            operator fun invoke(context: Context, viewGroup: ViewGroup?) = ViewCreator(
-                context,
-                viewGroup,
-                defaultLayoutParams
-            )
         }
 
-        fun <T : LayoutParams> layoutParams(layoutParams: T): ViewCreator<T> = ViewCreator(
-            context, viewGroup, layoutParams
-        )
-
-        fun renderOnAttach(): ViewCreator<LP> = ViewCreator(
-            context, viewGroup, layoutParams, true
-        )
-
-        fun create(
+        fun <LP: LayoutParams> create(
             children: ViewFactory<LP>.() -> Unit
         ): View = create(Unit) {
             children()
         }
 
-        fun <R : Any> create(
+        fun <LP: LayoutParams, R : Any> create(
             ref: R,
             children: ViewFactory<LP>.(R) -> Unit
         ): View {
@@ -171,6 +159,7 @@ open class ViewFactory<out LP : LayoutParams>(
             val root = elements[0] as ViewElement<View, LP>
 
             val view = root.init(context)
+            root.renderPreAttach()
 
             // NB! apply layout params only if original view does not contain them
             //  if it does, use them
@@ -178,13 +167,8 @@ open class ViewFactory<out LP : LayoutParams>(
                 view.layoutParams = layoutParams
             }
 
-            if (renderOnAttach) {
-                // we assume that layout params would be already processed by parent
-                view.onAttachedOnce { root.render() }
-            } else {
-                // trigger render now
-                root.render()
-            }
+            // trigger render now
+            root.render()
 
             return view
         }

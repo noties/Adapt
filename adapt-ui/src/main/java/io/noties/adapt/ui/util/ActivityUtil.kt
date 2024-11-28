@@ -22,14 +22,13 @@ import io.noties.adapt.ui.ViewFactory
 fun Activity.setContentUI(
     block: ViewFactory<LayoutParams>.() -> Unit
 ): View {
-    // just in case supplied activity would be used as a reference
-    val activity = this
-    return ViewFactory.newView(this)
-        // MATCH|MATCH is used by default (if supplied view has it -> they would not be overriding
-        //  supplied values)
-        .layoutParams(LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        .create(block)
-        .also {
-            setContentView(it)
+    return ViewFactory.createView(this) {
+        block()
+    }.also {
+        // if view does not set LayoutParams MATCH|MATCH are used as defaults
+        if (it.layoutParams == null) {
+            it.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         }
+        setContentView(it)
+    }
 }

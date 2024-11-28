@@ -21,18 +21,22 @@ abstract class ElementItem<R : Any>(
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup): Holder<R> {
         val ref: R = refFactory()
-        val view = ViewFactory.newView(parent)
-            .layoutParams(createLayoutParams(parent))
-            // NB! we might create layout-params, but they might not be the ones that
-            //  parent uses, but we could have some customization rely on certain layouts,
-            //  this is why it is better to postpone rendering until view is properly attached
-            // UPD, we actually cannot do it like this. Items assumed to be ready after this
-            //  function exits, so caller might immediately call `bind`. For example,
-            //  when there is a reference with lateinit properties, they would not be initialized
-            //  and this would cause a crash (as reference assigns view in onView callback
-            //  which would not be triggered until view is attached)
-//            .renderOnAttach()
-            .create(ref) { body(it) }
+
+        val view = ViewFactory.createView(parent) {
+            body(ref)
+        }
+
+        // okay, now, if layout-params are empty we fallback to default ones
+        //  this should be very rarely used if at all, provide layout-params during view initialization
+        // This must not happen ever, as factory would assign default LP if none was
+        //  defined by view itself. Right now UI allows specifying LP which would be applied
+        //  before all other layout blocks and assign specified LP to view before attachment
+        //@Deprecated("Once createLayoutParams are removed, remove this one also")
+        // block cannot be deprecated in kotlin :'(
+        if (view.layoutParams == null) {
+            view.layoutParams = createLayoutParams(parent)
+        }
+
         return Holder(view, ref)
             .also { onRefReady(ref) }
     }
@@ -48,6 +52,10 @@ abstract class ElementItem<R : Any>(
      * but allows creating specific to parent LayoutParams, which would be available
      * for customization right away
      */
+    @Deprecated(
+        "ViewFactory by default assigns MATCH|WRAP on view creation, " +
+                "LP should be provided during viw creation"
+    )
     protected open fun createLayoutParams(parent: ViewGroup): LayoutParams {
         return LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
