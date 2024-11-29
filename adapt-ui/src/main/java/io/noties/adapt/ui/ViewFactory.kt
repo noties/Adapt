@@ -3,9 +3,6 @@ package io.noties.adapt.ui
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import io.noties.adapt.ui.util.onAttachedOnce
-
-typealias ViewBuilder<V, LP> = ViewFactory<LP>.() -> ViewElement<V, LP>
 
 // TODO: change to interface (the same as colors, ect)
 //  provide helper to subclass and create final view
