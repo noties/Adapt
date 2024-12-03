@@ -5,10 +5,12 @@ import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.WindowCompat
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.windowinset.onWindowInsetsChanged
 
 class PreviewInActivity: Activity() {
 
@@ -20,6 +22,8 @@ class PreviewInActivity: Activity() {
         super.onCreate(savedInstanceState)
 
         println("PreviewInActivity onCreate")
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val type = try {
             intent.getStringExtra(ARG_PREVIEW_CLASS)
@@ -42,6 +46,9 @@ class PreviewInActivity: Activity() {
                 ZStack {
                     Element { type }
                 }.layoutFill()
+                    .onWindowInsetsChanged {
+                        it.applyWindowInsetsPadding()
+                    }
             })
         }
     }

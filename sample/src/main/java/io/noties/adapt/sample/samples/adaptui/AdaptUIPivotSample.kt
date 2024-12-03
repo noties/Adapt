@@ -18,6 +18,7 @@ import io.noties.adapt.sample.ui.color.salmonRed
 import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.sample.ui.color.textSecondary
 import io.noties.adapt.sample.ui.color.yellow
+import io.noties.adapt.sample.ui.element.SampleHint
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.app.color.Colors
@@ -57,24 +58,7 @@ class AdaptUIPivotSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack(Gravity.center.horizontal) {
 
-            Text("Click to rotate around pivot point.\nLong click to scale up or down")
-                .layoutWrap()
-                .layoutGravity { center.horizontal }
-                .textSize(16)
-                .textColor { text }
-                .padding(16)
-                .background {
-                    Rectangle {
-                        Label("[")
-                            .textColor { textSecondary.withAlphaComponent(0.2F) }
-                            .textSize { 48 }
-                            .textGravity { center.leading }
-                        Label("]")
-                            .textColor { textSecondary.withAlphaComponent(0.2F) }
-                            .textSize { 48 }
-                            .textGravity { center.trailing }
-                    }
-                }
+            SampleHint("Click to rotate around pivot point.\nLong click to scale up or down")
 
             // Default pivot values (should be at view center)
             PivotElement()

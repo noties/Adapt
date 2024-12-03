@@ -149,7 +149,8 @@ open class ViewFactory<out LP : LayoutParams>(
 
             // ensure single element
             if (elements.size != 1) {
-                throw IllegalStateException("Unexpected state, view must contain exactly one root element")
+                throw IllegalStateException("Unexpected state, view must contain exactly " +
+                        "one root element, elements:$elements")
             }
 
             @Suppress("UNCHECKED_CAST")

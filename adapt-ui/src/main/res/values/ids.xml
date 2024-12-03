@@ -16,5 +16,6 @@
     <item name="adaptui_grid_overlay_priority" type="id" />
 
     <item name="adaptui_view_flag" type="id" />
+    <item name="adaptui_on_window_insets_changed_listener_delegate" type="id" />
 
 </resources>

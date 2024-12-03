@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  * Please note that if element is not yet initialized, casting would happen
  * @see ifCastView
  */
-fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
+fun <V : View, LP : LayoutParams, RV : View> ViewElement<V, LP>.castView(
     klass: KClass<RV>,
 ): ViewElement<RV, LP> {
 
@@ -42,7 +42,7 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
     return this as ViewElement<RV, LP>
 }
 
-fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
+fun <V : View, LP : LayoutParams, RV : View> ViewElement<V, LP>.ifCastView(
     klass: KClass<RV>,
     block: (ViewElement<RV, LP>) -> Unit
 ): ViewElement<V, LP> {
@@ -72,7 +72,7 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
 //inline fun <reified RLP, V : View, LP : LayoutParams> ViewElement<V, LP>.castLayout(
 //): ViewElement<V, out RLP> where RLP : LP = castLayout<_, _, _>(RLP::class)
 
-fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.castLayout(
+fun <V : View, LP : LayoutParams, RLP : LayoutParams> ViewElement<V, LP>.castLayout(
     klass: KClass<RLP>
 ): ViewElement<V, RLP> {
     fun matches(): Boolean = klass.java.isAssignableFrom(view.layoutParams::class.java)
@@ -102,7 +102,7 @@ fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.castLayout(
     return this as ViewElement<V, RLP>
 }
 
-fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
+fun <V : View, LP : LayoutParams, RLP : LayoutParams> ViewElement<V, LP>.ifCastLayout(
     klass: KClass<RLP>,
     block: (ViewElement<V, RLP>) -> Unit
 ): ViewElement<V, LP> {
@@ -142,7 +142,7 @@ fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
 @Deprecated(
     "Use kotlin class instead, for example - `TextView::class`"
 )
-fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
+fun <V : View, LP : LayoutParams, RV : View> ViewElement<V, LP>.castView(
     view: Class<RV>,
 ): ViewElement<RV, LP> = castView(view.kotlin)
 
@@ -150,7 +150,7 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.castView(
 @Deprecated(
     "Use kotlin class instead, for example - `TextView::class`"
 )
-fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
+fun <V : View, LP : LayoutParams, RV : View> ViewElement<V, LP>.ifCastView(
     view: Class<RV>,
     block: (ViewElement<RV, LP>) -> Unit
 ): ViewElement<V, LP> = ifCastView(view.kotlin, block)
@@ -159,13 +159,13 @@ fun <V : View, LP : LayoutParams, RV : V> ViewElement<V, LP>.ifCastView(
 @Deprecated(
     "Use kotlin class instead, for example - `MarginLayoutParams::class`"
 )
-fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.castLayout(
+fun <V : View, LP : LayoutParams, RLP : LayoutParams> ViewElement<V, LP>.castLayout(
     layoutParams: Class<RLP>,
 ): ViewElement<V, RLP> = castLayout(layoutParams.kotlin)
 
 @Suppress("DeprecatedCallableAddReplaceWith")
 @Deprecated("Use kotlin class instead, for example - `MarginLayoutParams::class`")
-fun <V : View, LP : LayoutParams, RLP : LP> ViewElement<V, LP>.ifCastLayout(
+fun <V : View, LP : LayoutParams, RLP : LayoutParams> ViewElement<V, LP>.ifCastLayout(
     layoutParams: Class<RLP>,
     block: (ViewElement<V, RLP>) -> Unit
 ): ViewElement<V, LP> = ifCastLayout(layoutParams.kotlin, block)

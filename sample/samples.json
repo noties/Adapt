@@ -1,5 +1,23 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.windowsinsets.WindowInsetsSample",
+    "id": "20241203023735",
+    "title": "WindowInsets usage",
+    "description": "Usage of \u003ctt\u003eWindowInsets\u003c/tt\u003e (with limited pre-30 support)",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.item.ItemTypeFactorySample",
+    "id": "20241130014533",
+    "title": "ItemTypeFactory usage",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.grid.GridBordersSample",
     "id": "20241110154706",
     "title": "Grid borders",

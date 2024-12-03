@@ -60,6 +60,7 @@ object ElementViewFactory {
         reset()
     }
 
+    // TODO: think of adding default layout-params to each of them
     fun reset() {
         HScroll = { HorizontalScrollView(it) }
         HStack = { LinearLayout(it) }
@@ -80,7 +81,12 @@ object ElementViewFactory {
         Recycler = { androidx.recyclerview.widget.RecyclerView(it) }
         Spacer = { android.view.View(it) }
         Text = { TextView(it) }
-        TextInput = { EditText(it) }
+        TextInput = {
+            EditText(it).also { editText ->
+                editText.layoutParams =
+                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            }
+        }
         View = { android.view.View(it) }
         VScroll = { ScrollView(it) }
         VStack = { LinearLayout(it) }
