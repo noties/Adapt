@@ -46,6 +46,7 @@ dependencies {
 
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testImplementation deps['junit4']
+    testImplementation deps['robolectric']
 }
 
 apply from: '../publish.gradle'

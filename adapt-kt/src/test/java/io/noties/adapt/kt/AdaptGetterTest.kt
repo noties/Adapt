@@ -8,7 +8,10 @@ import io.noties.adapt.Item
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class AdaptGetterTest {
 
     @Test
@@ -280,5 +283,8 @@ class AdaptGetterTest {
 
         override fun notifyAllItemsChanged() = Unit
         override fun notifyItemChanged(item: Item<*>) = Unit
+
+        override fun registerOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) = Unit
+        override fun unregisterOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) = Unit
     }
 }

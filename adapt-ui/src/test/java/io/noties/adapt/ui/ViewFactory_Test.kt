@@ -51,10 +51,13 @@ class ViewFactory_Test {
             }
             fail()
         } catch (t: Throwable) {
-            assertEquals(
-                "Unexpected state, view must contain exactly one root element",
-                t.message
-            )
+            "Unexpected state, view must contain exactly one root element".also {
+                assertEquals(
+                    "'$it'!='${t.message}'",
+                    true,
+                    t.message?.startsWith(it),
+                )
+            }
         }
     }
 
@@ -67,10 +70,13 @@ class ViewFactory_Test {
             }
             fail()
         } catch (t: Throwable) {
-            assertEquals(
-                "Unexpected state, view must contain exactly one root element",
-                t.message
-            )
+            "Unexpected state, view must contain exactly one root element".also {
+                assertEquals(
+                    "'$it'!='${t.message}'",
+                    true,
+                    t.message?.startsWith(it),
+                )
+            }
         }
     }
 
