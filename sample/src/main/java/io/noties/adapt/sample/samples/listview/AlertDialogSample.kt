@@ -54,6 +54,16 @@ class AlertDialogSample : SampleViewLayout() {
                 adapt1.notifyItemChanged(item)
                 adapt2.notifyItemChanged(item)
             }
+
+            override fun registerOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) {
+                adapt1.registerOnItemsChangedListener(listener)
+                adapt2.registerOnItemsChangedListener(listener)
+            }
+
+            override fun unregisterOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) {
+                adapt1.unregisterOnItemsChangedListener(listener)
+                adapt2.unregisterOnItemsChangedListener(listener)
+            }
         }
 
         initSampleItems(adapt)

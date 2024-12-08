@@ -11,6 +11,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -128,6 +129,8 @@ public class AdaptRecyclerView implements Adapt {
         }
     };
 
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
+
     private List<Item<? extends Item.Holder>> items;
 
     AdaptRecyclerView(@Nullable final RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
@@ -165,6 +168,8 @@ public class AdaptRecyclerView implements Adapt {
                 ListUtils.freeze(items),
                 changeResultCallback
         );
+
+        triggerOnItemsChanged(items);
     }
 
     @Override
@@ -178,6 +183,22 @@ public class AdaptRecyclerView implements Adapt {
         final int index = ListUtils.freeze(items).indexOf(item);
         if (index >= 0) {
             adapter.notifyItemChanged(index);
+        }
+    }
+
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
         }
     }
 

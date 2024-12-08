@@ -124,6 +124,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onWindowInsetsChanged(
                             windowInsets.systemWindowInsetBottom
                         )
                         if (lastInsets != rect) {
+                            lastInsets.set(rect)
                             val block =
                                 WindowInsetsFactoryBlockPre30(rect) { delegate.remove(this) }
                             element(block, el)
@@ -134,3 +135,24 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onWindowInsetsChanged(
             }
         }
     }
+
+/**
+ * Apply padding to the view when window-insets change. Reacts to window-insets
+ * changes via [onWindowInsetsChanged] function and applies padding to the view.
+ *
+ * @see WindowInsetsType.systemBars
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.windowInsetsPadding(
+    insets: WindowInsetsFactory.() -> WindowInsetsType = { systemBars }
+) = onWindowInsetsChanged(insets = insets) {
+    it.applyWindowInsetsPadding()
+}
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.windowInsetsPaddingCompat(
+) = windowInsetsPadding {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        systemBars.ime
+    } else {
+        systemBars
+    }
+}

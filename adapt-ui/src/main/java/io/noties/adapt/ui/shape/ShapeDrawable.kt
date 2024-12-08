@@ -113,6 +113,7 @@ open class ShapeDrawable<R : Any> protected constructor(
         it.invalidateSelf()
     }
 
+    // TODO: migrate to view-state
     fun stateful(
         states: Set<DrawableState> = emptySet(),
         onStateChange: ShapeDrawable<R>.(DrawableStateSet) -> Unit = {}

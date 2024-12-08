@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface Adapt {
 
+    interface OnItemsChangedListener {
+        void onItemsChanged(@Nullable List<Item<?>> items);
+    }
+
     @NonNull
     @CheckResult
     List<Item<?>> items();
@@ -17,4 +21,8 @@ public interface Adapt {
     void notifyAllItemsChanged();
 
     void notifyItemChanged(@NonNull Item<?> item);
+
+    void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener);
+
+    void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener);
 }

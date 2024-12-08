@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.Item;
@@ -69,6 +70,8 @@ public class AdaptViewPager implements Adapt {
     private final ConfigurationImpl configuration;
     private final Adapter adapter;
 
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
+
     private List<Item<?>> items = Collections.emptyList();
 
     AdaptViewPager(@NonNull ViewPager viewPager, @NonNull ConfigurationImpl configuration) {
@@ -97,6 +100,8 @@ public class AdaptViewPager implements Adapt {
     public void setItems(@Nullable List<Item<?>> items) {
         this.items = ListUtils.freeze(items);
         adapter.notifyDataSetChanged();
+
+        triggerOnItemsChanged(items);
     }
 
     @Override
@@ -117,6 +122,22 @@ public class AdaptViewPager implements Adapt {
                     ((Item) item).bind(holder);
                 }
             }
+        }
+    }
+
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
         }
     }
 

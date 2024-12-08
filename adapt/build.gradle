@@ -40,6 +40,9 @@ dependencies {
     testImplementation deps['junit4']
     testImplementation deps['mockito']
     testImplementation deps['robolectric']
+
+    testImplementation deps['x-recyclerview']
+    testImplementation deps['x-viewpager']
 }
 
 apply from: '../publish.gradle'

@@ -3,86 +3,38 @@ package io.noties.adapt.ui.item
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.element.Text
-import io.noties.adapt.ui.element.View
-import io.noties.adapt.ui.element.ZStack
-import io.noties.adapt.ui.element.text
-import io.noties.adapt.ui.reference
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KClass
 
-//private typealias ItemId = Long
-//private typealias ItemRef<T> = () -> T
-//private typealias ItemInput<T> = KClass<T>
-//private typealias ItemView = () -> View
-
-//sealed class ItemId {
-//    data object None : ItemId()
-//    class Present(val provider: (Any?) -> Long) : ItemId()
-//}
-//
-//sealed class ItemInput<T> {
-//    data object None : ItemInput<None>()
-//    class Present<T: Any>(val type: KClass<T>): ItemInput<T>()
-//}
-//
-//sealed class ItemRef<T> {
-//    data object None : ItemRef<Nothing>()
-//    class Present<T : Any>(val provider: () -> T) : ItemRef<T>()
-//}
-//
-//sealed class ItemView {
-//    data object None : ItemView()
-//    class Present() : ItemView()
-//}
-
-private fun hey() {
-    val MyItem = ItemTypeFactory.builder()
-        .input(String::class)
-        .ref {
-            class Ref {
-                lateinit var textView: TextView
-            }
-            Ref()
-        }
-        .onRefReady {
-            // do something when view-block exited, thus ref should have all properties referenced
-            textView.text
-        }
-        .view {
-            ZStack {
-                Text()
-                    .reference(it::textView)
-                    .text(context.getString(0))
-            }
-        }
-        .bind {
-            ref.textView.text = it
-        }
-        .build(0L)
-
-    // hm, what about string?
-    val item = MyItem("")
-
-    val Item2 = ItemTypeFactory.builder()
-        .view { View() }
-        .build(0L)
-
-    val item2i = Item2()
-
-}
-
+/**
+ * To check if an item is instance of created factory use specific functions:
+ * ```kotlin
+ * val MyItem = ItemTypeFactory.builder().build()
+ * val item = MyItem()
+ * item.isInstanceOf(MyItem)
+ * ```
+ * ```kotlin
+ * // for input, input must be provided explicitly with each check
+ * val MyItemWithInput = ItemTypeFactory.builder()
+ *   .input(String::class)
+ *   .build()
+ *
+ * val item = MyInputWithInput("hello")
+ *
+ * // will return true, checks only the type, not contents
+ * val result = item.isInstanceOf("world", MyItemWithInput)
+ * ```
+ */
 interface ItemTypeFactory<ID, INPUT, REF, VIEW> {
     companion object {
         fun builder(): ItemTypeFactory<Unit, Unit, Unit, Unit> =
             ItemTypeFactoryDefault(Unit, Unit, Unit, Unit)
     }
 
-    // TODO: receiver ViewFactory has proper `parent` as the `viewGroup` prop in factory set, so it could be inspected
     fun view(
         view: ViewFactory<LayoutParams>.(ref: REF) -> ViewElement<out View, out LayoutParams>
     ): ItemTypeFactory<ID, INPUT, REF, View>
@@ -141,23 +93,30 @@ fun <INPUT, REF> ItemTypeFactory<
         INPUT,
         REF,
         View
-        >.build(): (INPUT) -> ItemFactoryItem<REF> where INPUT : Any {
+        >.build(): (INPUT) -> ItemFactoryItem<INPUT, REF> where INPUT : Any {
     (this as? ItemTypeFactoryDefault) ?: error("Only `ItemTypeFactoryDefault` is supported")
+    // generate new id and use it as type-checker (as viewType in adapter)
+    val viewType = viewTypesGenerator.incrementAndGet()
     return { input ->
         createItem(
             id = id!!(input),
-            input = input
+            input = input,
+            viewType = viewType
         )
     }
 }
+
+private val viewTypesGenerator = AtomicInteger()
 
 fun <INPUT, REF> ItemTypeFactory<
         Long,
         INPUT,
         REF,
         View
-        >.build(): () -> ItemFactoryItem<REF> where INPUT : Unit {
+        >.build(): () -> ItemFactoryItem<INPUT, REF> where INPUT : Unit {
     (this as? ItemTypeFactoryDefault) ?: error("Only `ItemTypeFactoryDefault` is supported")
+    // generate new id and use it as type-checker (as viewType in adapter)
+    val viewType = viewTypesGenerator.incrementAndGet()
     return {
         createItem(
             // this is weird, if null is passed , there is a crash with parameter
@@ -165,7 +124,8 @@ fun <INPUT, REF> ItemTypeFactory<
             //  there is something weird from compiler, as it does not detect that
             id = id!!.invoke(Unit),
             // no input, Unit, is null
-            input = Unit as INPUT
+            input = Unit as INPUT,
+            viewType = viewType
         )
     }
 }
@@ -175,10 +135,11 @@ private fun <INPUT, REF> ItemTypeFactoryDefault<
         INPUT,
         REF,
         View
-        >.createItem(id: Long, input: Any?): ItemFactoryItem<REF> {
-    System.out.println("#2 id:$id input:$input")
+        >.createItem(id: Long, input: Any?, viewType: Int): ItemFactoryItem<INPUT, REF> {
     return ItemFactoryItem(
         id = id,
+        input = input as INPUT,
+        viewType = viewType,
         onCreateHolder = { inflater, parent ->
             val ref = ref?.invoke() as REF
             ItemFactoryItem.Holder(
@@ -206,7 +167,7 @@ fun <INPUT, REF> ItemTypeFactory<
         View
         >.build(
     staticId: Long
-): (INPUT) -> ItemFactoryItem<REF> where INPUT : Any = this
+): (INPUT) -> ItemFactoryItem<INPUT, REF> where INPUT : Any = this
     .id { staticId }
     .build()
 
@@ -217,14 +178,17 @@ fun <INPUT, REF> ItemTypeFactory<
         View
         >.build(
     staticId: Long
-): () -> ItemFactoryItem<REF> where INPUT : Unit = this
+): () -> ItemFactoryItem<INPUT, REF> where INPUT : Unit = this
     .id { staticId }
     .build()
 
 // REF is not Any, because it can be Unit, but generally speaking if REF is not Unit,
 //  it should be Any (not-null)
-class ItemFactoryItem<REF>(
+class ItemFactoryItem<INPUT, REF>(
     id: Long,
+    // auto generated viewType for each created builder
+    val viewType: Int,
+    val input: INPUT,
     val onCreateHolder: (inflater: LayoutInflater, parent: ViewGroup) -> Holder<REF>,
     val onBind: (holder: Holder<REF>) -> Unit,
     val onRefReady: REF.() -> Unit
@@ -244,6 +208,17 @@ class ItemFactoryItem<REF>(
 
     override fun bind(holder: Holder<REF>) {
         onBind(holder)
+    }
+
+    fun isInstanceOf(item: () -> ItemFactoryItem<INPUT, REF>): Boolean {
+        val other = item()
+        return viewType == other.viewType
+    }
+
+    // so we can check against other items without casting to the REF
+    fun <INPUT> isInstanceOf(input: INPUT, item: (INPUT) -> ItemFactoryItem<*, *>): Boolean {
+        val other = item(input)
+        return viewType == other.viewType
     }
 }
 

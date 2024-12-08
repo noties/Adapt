@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -20,6 +21,9 @@ import io.noties.adapt.Item;
 import io.noties.adapt.R;
 import io.noties.adapt.util.ListUtils;
 
+// TODO: it should not have the same interface Adapt, as only allowing one item when accepting List
+//  is inconsistent with other Adapt subtypes. Maybe even keep the name, but do not accept List, and
+//  do not share the interface with other view-groups
 public class AdaptView implements Adapt {
 
     /**
@@ -72,6 +76,8 @@ public class AdaptView implements Adapt {
 
     @NonNull
     private final LayoutInflater layoutInflater;
+
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
 
     private View view;
 
@@ -169,7 +175,40 @@ public class AdaptView implements Adapt {
         return (Item<?>) view.getTag(ID_ITEM);
     }
 
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
+        }
+    }
+
     public void setItem(@Nullable Item<?> item) {
+        setItem(item, true);
+    }
+
+    public void notifyChanged() {
+        setItem(item());
+    }
+
+    @NonNull
+    private View newEmptyView() {
+        final View view = new View(viewGroup.getContext());
+        // provide explicit layout size to be 0, otherwise can be treated
+        //  by some layouts as MATCH/MATCH
+        view.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+        return view;
+    }
+
+    private void setItem(@Nullable Item<?> item, boolean notify) {
         final ChangeHandler changeHandler = this.changeHandler;
         if (changeHandler != null) {
             changeHandler.begin(viewGroup, view);
@@ -203,19 +242,11 @@ public class AdaptView implements Adapt {
         if (changeHandler != null) {
             changeHandler.end(viewGroup, view);
         }
-    }
 
-    public void notifyChanged() {
-        setItem(item());
-    }
-
-    @NonNull
-    private View newEmptyView() {
-        final View view = new View(viewGroup.getContext());
-        // provide explicit layout size to be 0, otherwise can be treated
-        //  by some layouts as MATCH/MATCH
-        view.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
-        return view;
+        if (notify) {
+            final List<Item<?>> items = item() == null ? null : Collections.singletonList(item);
+            triggerOnItemsChanged(items);
+        }
     }
 
     private void createHolder(@NonNull Item<?> item) {
@@ -253,23 +284,33 @@ public class AdaptView implements Adapt {
     @Override
     @CheckResult
     public List<Item<?>> items() {
-        return Collections.singletonList(item());
+        final Item<?> item = this.item();
+        if (item == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.singletonList(item);
+        }
     }
 
     @Override
     public void setItems(@Nullable List<Item<?>> items) {
 
         final int size = ListUtils.size(items);
-        if (size > 1) {
-            throw AdaptException.create("AdaptView can hold at most one item, items: " + items);
+        try {
+            if (size > 1) {
+                throw AdaptException.create("AdaptView can hold at most one item, items: " + items);
+            }
+
+            //noinspection ConstantConditions,
+            final Item<?> item = size == 0
+                    ? null
+                    : items.get(0);
+
+            setItem(item, false);
+        } finally {
+            // for the tests, fail, but still notify in case of failure
+            triggerOnItemsChanged(items);
         }
-
-        //noinspection ConstantConditions,
-        final Item<?> item = size == 0
-                ? null
-                : items.get(0);
-
-        setItem(item);
     }
 
     @Override

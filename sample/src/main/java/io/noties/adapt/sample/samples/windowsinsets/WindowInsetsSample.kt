@@ -34,6 +34,8 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.adapt.ui.windowinset.WindowInsetsType
 import io.noties.adapt.ui.windowinset.onWindowInsetsChanged
+import io.noties.adapt.ui.windowinset.windowInsetsPadding
+import io.noties.adapt.ui.windowinset.windowInsetsPaddingCompat
 
 @AdaptSample(
     id = "20241203023735",
@@ -83,6 +85,15 @@ class WindowInsetsSample : SampleViewUI() {
         }.indent()
             .layoutFill()
             .backgroundColor { salmonRed }
+            .windowInsetsPadding {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    systemBars.ime
+                } else {
+                    systemBars
+                }
+            }
+            // which does the same as above
+            .windowInsetsPaddingCompat()
             .also {
 
                 // pre-30: systemBars + ime, after 30: systemBars only (ime requested explicitly)

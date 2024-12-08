@@ -29,6 +29,14 @@ class ExploreCompositeAdapt {
             override fun notifyItemChanged(item: Item<*>) {
                 TODO("Not yet implemented")
             }
+
+            override fun registerOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) {
+                TODO("Not yet implemented")
+            }
+
+            override fun unregisterOnItemsChangedListener(listener: Adapt.OnItemsChangedListener) {
+                TODO("Not yet implemented")
+            }
         }
     }
 }
