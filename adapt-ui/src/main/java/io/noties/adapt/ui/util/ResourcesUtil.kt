@@ -53,6 +53,10 @@ fun Resources.createAttributeSet(
         null
     }
 } catch (t: Throwable) {
+    // omg, they are the same
+    // Error: Mismatched tags: the e() and isLoggable() calls typically should pass the same tag: "adapt-ui" versus "adapt-ui" [LogTagMismatch]
+    //        Log.e("adapt-ui", null, t)
+    @Suppress("LogTagMismatch")
     if (Log.isLoggable("adapt-ui", Log.ERROR)) {
         Log.e("adapt-ui", null, t)
     }
@@ -64,6 +68,10 @@ fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
     try {
         return array.getDrawable(0)
     } catch (t: Throwable) {
+        // omg, they are the same
+        // Error: Mismatched tags: the e() and isLoggable() calls typically should pass the same tag: "adapt-ui" versus "adapt-ui" [LogTagMismatch]
+        //        Log.e("adapt-ui", null, t)
+        @Suppress("LogTagMismatch")
         if (Log.isLoggable("adapt-ui", Log.ERROR)) {
             Log.e("adapt-ui", null, t)
         }

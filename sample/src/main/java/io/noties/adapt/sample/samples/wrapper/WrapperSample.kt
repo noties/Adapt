@@ -42,7 +42,7 @@ class WrapperSample : SampleViewLayout() {
         }
 
         // make last item clickable
-        items.removeLast()
+        items.removeAt(items.lastIndex)
             .onClick {
                 Debug.i("Click on last item, shuffling")
                 adapt.setItems(adapt.items().shuffled())

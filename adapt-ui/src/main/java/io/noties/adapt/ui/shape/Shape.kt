@@ -79,9 +79,15 @@ abstract class Shape : ShapeFactory {
         return this
     }
 
+    /**
+     * Supply size based on contains dimensions.
+     * - 1F = all available parent dimension
+     * - 0.5F - half of parent available dimension
+     * - 3F - 3 times parent available dimension
+     */
     fun sizeRelative(
-        @FloatRange(from = 0.0, to = 1.0) width: Float? = null,
-        @FloatRange(from = 0.0, to = 1.0) height: Float? = null,
+        width: Float? = null,
+        height: Float? = null,
         gravity: Gravity? = null
     ): Shape = this.apply {
         width?.also { this.width = Dimension.Relative(it) }
