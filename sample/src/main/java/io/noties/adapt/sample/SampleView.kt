@@ -114,7 +114,10 @@ abstract class SampleView constructor() {
                     .layoutFill()
                     .onView {
                         val view = createContentView(it)
-                        view.layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                        val current = view.layoutParams
+                        if (current == null) {
+                            view.layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                        }
                         it.addView(view)
                     }
             }.layoutFill()

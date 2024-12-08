@@ -22,6 +22,7 @@ import io.noties.adapt.ui.element.grid.Squares
 import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.layoutParams
 import io.noties.adapt.ui.preview.preview
 import io.noties.adapt.ui.preview.previewBounds
 import io.noties.adapt.ui.util.withAlphaComponent
@@ -67,12 +68,9 @@ class GridOverlayItemSample : SampleViewUI() {
     private class ClearRowItem(val y: Int) : ElementItemNoRef(y.toLong()) {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
-        }
-
-        override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
-            return GridOverlayLayout.LayoutParams().also {
-                it.horizontalSpan = { fill() }
-            }
+                .layoutParams(GridOverlayLayout.LayoutParams().also {
+                    it.horizontalSpan = { fill() }
+                })
         }
 
         override fun bind(holder: Holder<Unit>) {
@@ -87,13 +85,10 @@ class GridOverlayItemSample : SampleViewUI() {
     private class BackgroundRowItem(val y: Int) : ElementItemNoRef(y.toLong()) {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
+                .layoutParams(GridOverlayLayout.LayoutParams().also {
+                    it.horizontalSpan = { fill() }
+                })
                 .backgroundColor { emeraldGreen.withAlphaComponent(0.1F) }
-        }
-
-        override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
-            return GridOverlayLayout.LayoutParams().also {
-                it.horizontalSpan = { fill() }
-            }
         }
 
         override fun bind(holder: Holder<Unit>) {
