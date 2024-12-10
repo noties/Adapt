@@ -1,3 +1,5 @@
+- [ ] processor to generate strings, colors, dimensions
+- [ ] dialog (with window-insets handling)
 - [ ] update logo, make gradient and new asset
 - [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples 
    that could be affected by new view layout (so maybe they need to be set to match-parent)

@@ -58,6 +58,8 @@ open class ViewFactory<out LP : LayoutParams>(
             children: ViewFactory<LayoutParams>.() -> Unit
         ): View = newView(viewGroup.context, viewGroup).create(children)
 
+        // TODO: consider removing the ref, it is a little weird, ref can be provided
+        //  with normal ways, so we do not complicate the api of the feature
         fun <R : Any> createView(
             context: Context,
             ref: R,

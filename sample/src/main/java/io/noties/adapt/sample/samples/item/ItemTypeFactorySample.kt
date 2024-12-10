@@ -149,10 +149,7 @@ class ItemTypeFactorySample : SampleViewUI() {
         .bind {
             ref.removeView.element
                 .onClick {
-                    val items = adapt.items()
-                    if (items.size > 1) {
-                        adapt.setItems(null)
-                    }
+                    adapt.setItems(null)
                 }
                 .render()
             ref.addView.element
