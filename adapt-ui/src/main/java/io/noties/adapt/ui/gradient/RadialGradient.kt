@@ -114,6 +114,15 @@ class RadialGradient internal constructor(
         )
 
         @CheckResult
+        fun setColors(
+            @ColorInt colors: Collection</*@ColorInt*/Int>
+        ) = RadialGradient(
+            type,
+            colors.toIntArray(),
+            null
+        )
+
+        @CheckResult
         fun setColors(@ColorInt vararg colors: Int): RadialGradient {
             return RadialGradient(
                 type,

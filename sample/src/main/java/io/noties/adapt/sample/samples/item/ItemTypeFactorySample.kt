@@ -166,7 +166,7 @@ class ItemTypeFactorySample : SampleViewUI() {
                                 }
                             }
                             .also {
-                                it.add(EntryItem(Entry(Date().toString())))
+                                it.add(EntryItem(Entry("Entry hey")))
                             }
                     adapt.setItems(items)
                     scrollView.postDelayed({
@@ -209,6 +209,22 @@ class ItemTypeFactorySample : SampleViewUI() {
     @Suppress("PrivatePropertyName")
     private val EntryItem = ItemTypeFactory.builder()
         .input(Entry::class)
+        // unfortunately this would create local class that external callers
+        //  cannot instantiate (it is private)
+//        .input {
+//            class EntryInput(
+//                val name: String,
+//                @ColorInt val color: Int = with(Colors) {
+//                    listOf(naplesYellow, emeraldGreen, purpureus, orange, cyan, primary).random()
+//                }
+//            ) {
+//                @OptIn(ExperimentalStdlibApi::class)
+//                override fun toString(): String {
+//                    return "Entry(name='$name', color=${color.toHexString()})"
+//                }
+//            }
+//            EntryInput::class
+//        }
         .id { System.nanoTime() }
         .ref {
             class Ref {

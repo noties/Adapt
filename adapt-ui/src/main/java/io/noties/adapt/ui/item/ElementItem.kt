@@ -34,7 +34,7 @@ abstract class ElementItem<R : Any>(
         //@Deprecated("Once createLayoutParams are removed, remove this one also")
         // block cannot be deprecated in kotlin :'(
         if (view.layoutParams == null) {
-            view.layoutParams = createLayoutParams(parent)
+            view.layoutParams = createDefaultLayoutParams(parent)
         }
 
         return Holder(view, ref)
@@ -52,11 +52,23 @@ abstract class ElementItem<R : Any>(
      * but allows creating specific to parent LayoutParams, which would be available
      * for customization right away
      */
-    @Deprecated(
-        "ViewFactory by default assigns MATCH|WRAP on view creation, " +
-                "LP should be provided during viw creation"
-    )
-    protected open fun createLayoutParams(parent: ViewGroup): LayoutParams {
+    // unfortunately cannot rely on ERROR level, as it might not cause compilation error at all
+    //  this is why the code is commented to break the ompilation
+//    @Deprecated(
+//        message = "ViewFactory by default assigns MATCH|WRAP on view creation, " +
+//                "LP should be provided during view creation",
+//        replaceWith = ReplaceWith("createDefaultLayoutParams")
+//    )
+//    protected open fun createLayoutParams(parent: ViewGroup): LayoutParams {
+//        return createDefaultLayoutParams(parent) ?: LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+//    }
+
+    /**
+     * Used as a fallback if default created view does not have LayoutParams defined.
+     * Normally should not be used, instead LayoutParams should be supplied during view creation
+     * and they would be used.
+     */
+    protected open fun createDefaultLayoutParams(parent: ViewGroup): LayoutParams? {
         return LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 

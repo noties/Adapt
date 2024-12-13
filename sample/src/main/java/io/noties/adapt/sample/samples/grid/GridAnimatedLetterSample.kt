@@ -41,6 +41,7 @@ import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.item.ElementItemNoRef
 import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.layoutParams
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.overlay
 import io.noties.adapt.ui.padding
@@ -226,6 +227,7 @@ class GridAnimatedLetterSample : SampleViewUI() {
 
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             View()
+                .layoutParams(GridOverlayLayout.LayoutParams())
         }
 
         override fun bind(holder: Holder<Unit>) {
@@ -251,10 +253,6 @@ class GridAnimatedLetterSample : SampleViewUI() {
             }
 
             view.requestLayout()
-        }
-
-        override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
-            return GridOverlayLayout.LayoutParams()
         }
 
         private val View.gridOverlayLayoutParams get() = layoutParams as GridOverlayLayout.LayoutParams

@@ -87,6 +87,11 @@ class LinearGradient internal constructor(
 
         @CheckResult
         fun setColors(
+            @ColorInt colors: Collection</*@ColorInt*/Int>
+        ) = LinearGradient(type, colors.toIntArray(), null)
+
+        @CheckResult
+        fun setColors(
             @ColorInt vararg colors: Int
         ): LinearGradient {
             return LinearGradient(

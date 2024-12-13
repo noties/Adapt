@@ -1,5 +1,15 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyCardHeaderSample",
+    "id": "20241211001529",
+    "title": "Sticky header card",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "sticky"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.windowsinsets.WindowInsetsSample",
     "id": "20241203023735",
     "title": "WindowInsets usage",

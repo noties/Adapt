@@ -23,4 +23,5 @@ object Tags {
     const val webView = "web-view"
     const val getter = "getter"
     const val showcase = "showcase"
+    const val sticky = "sticky"
 }

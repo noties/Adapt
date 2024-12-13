@@ -74,6 +74,15 @@ class SweepGradient internal constructor(
         )
 
         @CheckResult
+        fun setColors(
+            @ColorInt colors: Collection</*@ColorInt*/Int>
+        ) = SweepGradient(
+            type,
+            colors.toIntArray(),
+            null
+        )
+
+        @CheckResult
         fun setColors(@ColorInt vararg colors: Int): SweepGradient {
             return SweepGradient(
                 type,
