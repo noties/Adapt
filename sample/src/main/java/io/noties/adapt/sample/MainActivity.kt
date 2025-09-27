@@ -28,6 +28,7 @@ import io.noties.adapt.ui.requestFocus
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.ShapeDrawable
+import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.onFocusChanged
 import io.noties.adapt.ui.util.onPreDrawOnce
 import io.noties.adapt.ui.util.setContentUI
@@ -50,6 +51,16 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        listOf(
+            Gravity.top.center,
+            Gravity.center.horizontal,
+            Gravity.leading.bottom,
+            Gravity.trailing.center,
+            Gravity.center
+        ).joinToString("\n") {
+            "Gravity(rawValue:${it.rawValue} $it)"
+        }.also(Debug::e)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 

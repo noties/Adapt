@@ -15,7 +15,7 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
     }
 
     // Changes to overlay should be reflected here, but parent should not invalidated (layout)
-    //  we could set a flag GridLayout (skipNextRequestlayout), but then this view is not
+    //  we could set a flag GridLayout (skipNextRequestLayout), but then this view is not
     //  being rendered properly (no changes are visible)
 
     private val gridLayout: GridLayout get() = parent as GridLayout
@@ -25,7 +25,7 @@ class GridOverlayLayout(context: Context) : ViewGroup(context) {
         x: GridOverlaySpanBuilder? = null,
         y: GridOverlaySpanBuilder? = null,
     ) {
-        if (view.parent != view) {
+        if (view.parent != this) {
             error("Provided view is not child of this overlay:$view")
         }
 

@@ -14,6 +14,8 @@ android {
         // latest set of updates to build system (gradle, android-gradle plugin)
         //  stopped placing this value in `BuildConfig`, add manually
         buildConfigField 'String', 'VERSION_NAME', "\"$version\""
+
+        consumerProguardFiles 'proguard-consumer-rules.pro'
     }
 
     testOptions.unitTests.includeAndroidResources = true

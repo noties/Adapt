@@ -27,6 +27,13 @@ abstract class StateListBuilder<T> {
     private val attrs = mutableSetOf<Int>()
     val entries = mutableMapOf</*@AttrRes*/Set<Int>, T>()
 
+    // no boolean && we can override :'(
+//    operator fun T.and(other: T): T =
+    
+    // possible to catch the mutation? it is fine, but kotlin does not like,
+    //  taken in parenthesis they are not variable to assign
+//    operator fun T.plus(other: T): T = instance
+
     var pressed: T by MutableProp(this, android.R.attr.state_pressed)
     var T.pressed: T by MutableProp(this, android.R.attr.state_pressed)
 

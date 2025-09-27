@@ -58,10 +58,24 @@ open class Gravity(@GravityInt val rawValue: Int) {
             val leading = Gravity(START or CENTER_VERTICAL)
             val trailing = Gravity(END or CENTER_VERTICAL)
         }
+
+        fun toString(@GravityInt rawValue: Int): String {
+            val gravity = Gravity(rawValue)
+            return listOf(
+                "leading" to gravity.hasLeading(),
+                "top" to gravity.hasTop(),
+                "trailing" to gravity.hasTrailing(),
+                "bottom" to gravity.hasBottom(),
+                "center.vertical" to gravity.hasCenterVertical(),
+                "center.horizontal" to gravity.hasCenterHorizontal()
+            ).also {  }
+                .filter { it.second }
+                .joinToString(", ") { it.first }
+        }
     }
 
     override fun toString(): String {
-        return "Gravity($rawValue)"
+        return "Gravity(rawValue:$rawValue, [${Companion.toString(rawValue)}])"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -86,6 +100,8 @@ open class Gravity(@GravityInt val rawValue: Int) {
     fun hasTrailing() = checkHorizontal(RIGHT)
     fun hasBottom() = checkVertical(BOTTOM)
     fun hasCenter() = checkHorizontal(CENTER_HORIZONTAL) || checkVertical(CENTER_VERTICAL)
+    fun hasCenterHorizontal() = checkHorizontal(CENTER_HORIZONTAL)
+    fun hasCenterVertical() = checkVertical(CENTER_VERTICAL)
 
     private fun checkHorizontal(expected: Int): Boolean {
         return expected == (rawValue and HORIZONTAL_GRAVITY_MASK)

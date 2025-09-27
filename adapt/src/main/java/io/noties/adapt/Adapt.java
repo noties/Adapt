@@ -16,6 +16,8 @@ public interface Adapt {
     @CheckResult
     List<Item<?>> items();
 
+    // TODO: we should have signature that would not accept null-items in supplied list,
+    //  like `List<@NotNull Any>`
     void setItems(@Nullable List<Item<?>> items);
 
     void notifyAllItemsChanged();

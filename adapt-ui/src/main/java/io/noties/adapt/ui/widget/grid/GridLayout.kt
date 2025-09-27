@@ -120,6 +120,7 @@ class GridLayout : ViewGroup {
 
         notifyStateChange()
 
+        // by default this listener is going to be unregistered onDetach
         addOnHierarchyChangeListener(object : OnHierarchyChangeListener {
 
             override fun onChildViewAdded(parent: View?, child: View) {

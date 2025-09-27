@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.app.color.ColorsBuilder
@@ -22,7 +23,6 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.OnScrollChangedListenerRegistration
 import io.noties.adapt.ui.util.addOnScrollChangedListener
 import io.noties.adapt.ui.util.dip
@@ -176,6 +176,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
     }
 
 /**
+ * @see backgroundResource(Int)
+ * @see background(Drawable?)
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundResource(
+    @DrawableRes id: Int
+): ViewElement<V, LP> = onView {
+    it.setBackgroundResource(id)
+}
+
+
+/**
  * Foreground color
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
@@ -303,7 +314,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.selected(
  * @see View.setVisibility
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
-    visible: Boolean
+    visible: Boolean = true
 ): ViewElement<V, LP> = onView {
     it.visibility = if (visible) VISIBLE else GONE
 }

@@ -10,6 +10,15 @@ import io.noties.adapt.ui.ViewFactory
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KClass
 
+// TODO: a _problem_ is to define public builder factory with local Ref
+//  somehow Ref is in generics, so it is kinda required, but if factory is exposed
+//  to public, then it would not work (cannot expose local class). So, this function
+//  works for local private factories.
+
+// TODO: do we need Ref in the generics? can we ensure proper type inside the item,
+//  but do not expose it? I do not think we have ever used ref or holder from outside item
+//  itself, can we remove it from generics?
+
 /**
  * To check if an item is instance of created factory use specific functions:
  * ```kotlin

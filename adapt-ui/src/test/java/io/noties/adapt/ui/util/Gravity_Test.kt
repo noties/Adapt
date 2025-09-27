@@ -200,10 +200,13 @@ class Gravity_Test {
             Gravity.center.top,
             Gravity.center.bottom,
             Gravity(CENTER),
+            Gravity(CENTER_HORIZONTAL),
+            Gravity(CENTER_VERTICAL),
             Gravity(CENTER_VERTICAL or CENTER_HORIZONTAL),
-            Gravity(CENTER or TOP),
+            Gravity(CENTER or START),
             Gravity(CENTER or END),
-            Gravity(CENTER or LEFT),
+            Gravity(CENTER or TOP),
+            Gravity(CENTER or BOTTOM),
         )
 
         for (input in inputs) {

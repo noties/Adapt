@@ -15,6 +15,9 @@ if (isRelease || isSnapshot) {
     apply plugin: 'signing'
 
     afterEvaluate {
+        // ossrh migration
+        // https://www.endoflineblog.com/migrate-maven-central-publishing-to-central-portal-for-a-gradle-project
+        // TODO: investigate the https://github.com/vanniktech/gradle-maven-publish-plugin/
         publishing {
 
             publications {
@@ -64,8 +67,8 @@ if (isRelease || isSnapshot) {
                 // sonatype
                 maven {
                     url isRelease
-                            ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                            : 'https://oss.sonatype.org/content/repositories/snapshots/'
+                            ? 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
+                            : 'https://central.sonatype.com/repository/maven-snapshots/'
 
                     credentials(PasswordCredentials) {
                         username NEXUS_USERNAME

@@ -68,6 +68,7 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.util.element
 import io.noties.adapt.ui.util.pxToDip
 import io.noties.adapt.ui.util.withAlphaComponent
+import io.noties.adapt.ui.visible
 import io.noties.adapt.ui.windowinset.onWindowInsetsChanged
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.debug.Debug
@@ -192,7 +193,7 @@ class ItemTypeFactorySample : SampleViewUI() {
         .foregroundDefaultSelectable()
         .clipToOutline()
 
-    class Entry(
+    data class Entry(
         val name: String,
         @ColorInt val color: Int = with(Colors) {
             listOf(naplesYellow, emeraldGreen, purpureus, orange, cyan, primary).random()
@@ -225,6 +226,7 @@ class ItemTypeFactorySample : SampleViewUI() {
 //            }
 //            EntryInput::class
 //        }
+        // attempt to achieve uniqueness with hope to not generate duplicates
         .id { System.nanoTime() }
         .ref {
             class Ref {
@@ -240,9 +242,10 @@ class ItemTypeFactorySample : SampleViewUI() {
                 .textGravity { center }
                 .padding(16)
         }
-        .bind {
-            ref.textView.text = it.name
-            ref.textView.setBackgroundColor(it.color)
+        // destruct input properties
+        .bind { (name, color) ->
+            ref.textView.text = name
+            ref.textView.setBackgroundColor(color)
         }
         .onRefReady {
             System.out.println("ref ready:$this")
