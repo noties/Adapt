@@ -59,22 +59,22 @@ if (isRelease || isSnapshot) {
             }
 
             repositories {
-                // local repository - in a directory
-                maven {
-                    url MAVEN_LOCAL_DIR
-                }
-
-//                // sonatype
+//                // local repository - in a directory
 //                maven {
-//                    url isRelease
-//                            ? 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
-//                            : 'https://central.sonatype.com/repository/maven-snapshots/'
-//
-//                    credentials(PasswordCredentials) {
-//                        username NEXUS_USERNAME
-//                        password NEXUS_PASSWORD
-//                    }
+//                    url MAVEN_LOCAL_DIR
 //                }
+
+                // sonatype
+                maven {
+                    url isRelease
+                            ? 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
+                            : 'https://central.sonatype.com/repository/maven-snapshots/'
+
+                    credentials(PasswordCredentials) {
+                        username NEXUS_USERNAME
+                        password NEXUS_PASSWORD
+                    }
+                }
             }
 
             signing {
