@@ -1,7 +1,12 @@
+- [ ] view-pager class not found in a new project in preview
+- [ ] debug keep screen on
+- [ ] convert to bitmap
+- [ ] preview layouts (now only items and UI, but no view)
+
 - [ ] processor to generate strings, colors, dimensions
 - [ ] dialog (with window-insets handling)
 - [ ] update logo, make gradient and new asset
-- [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples 
+- [ ] `AdaptUIScrollIfScrollsSample` transition for parent and layout fill (maybe missing), review all samples
    that could be affected by new view layout (so maybe they need to be set to match-parent)
 - [ ] unify preview class names, `Preview_Sample`, `PreviewSample`, `Preview__Sample`
 - [ ] verify all tags are specified in `Tags` object

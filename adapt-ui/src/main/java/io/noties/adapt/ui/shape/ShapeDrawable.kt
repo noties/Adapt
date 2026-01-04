@@ -6,8 +6,8 @@ import android.graphics.Outline
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import io.noties.adapt.ui.util.DrawableState
-import io.noties.adapt.ui.util.DrawableStateSet
+import io.noties.adapt.ui.state.ViewState
+import io.noties.adapt.ui.state.ViewStateBuilder
 import kotlin.math.roundToInt
 
 open class ShapeDrawable<R : Any> protected constructor(
@@ -15,6 +15,8 @@ open class ShapeDrawable<R : Any> protected constructor(
     val ref: R
 ) : Drawable() {
 
+    // TODO: rethink constructors, they seem a little weird (especially with additional import)
+    //  and `createActual`...
     companion object {
 
         operator fun invoke(
@@ -42,8 +44,8 @@ open class ShapeDrawable<R : Any> protected constructor(
         fun <R : Any> createActual(shape: Shape, ref: R) = ShapeDrawable(shape, ref)
     }
 
-    private var stateful: Stateful<R>? = null
-    private var hotspot: Hotspot<R>? = null
+    private var stateful: Stateful? = null
+    private var hotspot: Hotspot? = null
 
     override fun onBoundsChange(bounds: Rect) {
         super.onBoundsChange(bounds)
@@ -96,7 +98,7 @@ open class ShapeDrawable<R : Any> protected constructor(
     override fun setHotspot(x: Float, y: Float) {
         super.setHotspot(x, y)
 
-        hotspot?.onHotspotChanged?.invoke(this, x, y)
+        hotspot?.setHotspot(x = x, y = y)
     }
 
     /**
@@ -104,7 +106,9 @@ open class ShapeDrawable<R : Any> protected constructor(
      * states, otherwise this hotspot event won\'t be delivered
      */
     fun hotspot(onHotspotChanged: ShapeDrawable<R>.(x: Float, y: Float) -> Unit) = this.also {
-        it.hotspot = Hotspot(onHotspotChanged)
+        it.hotspot = Hotspot { x, y ->
+            onHotspotChanged(this, x, y)
+        }
         it.invalidateSelf()
     }
 
@@ -113,12 +117,29 @@ open class ShapeDrawable<R : Any> protected constructor(
         it.invalidateSelf()
     }
 
-    // TODO: migrate to view-state
+    /**
+     * ```kotlin
+     * ShapeDrawable()
+     *   .stateful(
+     *     filter = { pressed.activated },
+     *     onStateChanged = {
+     *       this.shape.alpha = if (it.isPressed) 0.42F else 1F
+     *     }
+     *   )
+     * ```
+     */
     fun stateful(
-        states: Set<DrawableState> = emptySet(),
-        onStateChange: ShapeDrawable<R>.(DrawableStateSet) -> Unit = {}
+        // will listen to all events by default
+        filter: ViewStateBuilder? = null,
+        onStateChanged: ShapeDrawable<R>.(ViewState) -> Unit = {}
     ) = this.also {
-        it.stateful = Stateful(states, onStateChange)
+        val filter = filter?.invoke(ViewState)
+        this.stateful = Stateful(
+            filter = filter,
+            onStatefulStateChange = {
+                onStateChanged(this, it)
+            }
+        )
         invalidateSelf()
     }
 
@@ -132,39 +153,48 @@ open class ShapeDrawable<R : Any> protected constructor(
     }
 
     override fun onStateChange(state: IntArray): Boolean {
-        val stateful = this.stateful ?: return false
-        // if empty, then track all states
-        val result = stateful.states.isEmpty() || kotlin.run {
-            // important to check current state AND PREVIOUS, in case there was a change
-            //  so, for example, previous contained `pressed`, but current does not ->
-            //  this means the state of `pressed` has changed (going from pressed to not pressed)
-            DrawableStateSet.containsAny(state, stateful.states) || DrawableStateSet.containsAny(
-                stateful.previousState,
-                stateful.states
-            )
-        }
-        stateful.persistState(state)
-        if (result) {
-            stateful.onStateChange.invoke(this, DrawableStateSet(state))
-            invalidateSelf()
-        }
-        return result
+        return stateful?.onStateChanged(state) ?: false
     }
 
-    private class Stateful<R : Any>(
-        val states: Set<DrawableState>,
-        val onStateChange: ShapeDrawable<R>.(DrawableStateSet) -> Unit = {}
+    internal class Stateful(
+        val filter: ViewState?,
+        val onStatefulStateChange: (ViewState) -> Unit = {}
     ) {
-        var previousState: IntArray = intArrayOf()
-            private set
+        private var previousState = setOf<Int>()
 
-        fun persistState(state: IntArray) {
-            // if out states is empty, we do not need to persist previous state
-            if (states.isNotEmpty()) {
-                previousState = state.copyOf()
+        fun onStateChanged(state: IntArray): Boolean {
+            // if no filter -> all events, do still check against previous state
+            val filteredState = if (filter != null) {
+
+                if (filter.rawValues.isEmpty()) {
+                    // no states will match
+                    emptySet()
+                } else {
+                    // remove other states (keep only the ones present in the `filter`)
+                    state.toMutableSet().also {
+                        it.removeAll { state -> !filter.rawValues.contains(state) }
+                    }
+                }
+
+            } else {
+                // do not ignore, consume all events
+                state.toSet()
             }
+
+            val result = filteredState != previousState
+
+            if (result) {
+                this.previousState = filteredState
+                this.onStatefulStateChange(ViewState(rawValues = filteredState))
+            }
+
+            return result
         }
     }
 
-    private class Hotspot<R : Any>(val onHotspotChanged: ShapeDrawable<R>.(x: Float, y: Float) -> Unit)
+    private class Hotspot(private val onChanged: (x: Float, y: Float) -> Unit) {
+        fun setHotspot(x: Float, y: Float) {
+            onChanged(x, y)
+        }
+    }
 }

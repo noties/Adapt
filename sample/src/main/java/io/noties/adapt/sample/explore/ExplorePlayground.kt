@@ -157,13 +157,13 @@ private class PreviewExplorePlayground(
                 "some_optional" to description
             )
 
-        override fun ViewFactory<LinearLayout.LayoutParams>.createInfoViewUi(): ViewElement<out View, LinearLayout.LayoutParams> {
-            val vf = this
-            with(vf) {
-                this.createInfoViewUi()
-            }
-            return super.createInfoViewUi()
-        }
+//        override fun ViewFactory<LinearLayout.LayoutParams>.createInfoViewUi(): ViewElement<out View, LinearLayout.LayoutParams> {
+//            val vf = this
+//            with(vf) {
+//                vf.createInfoViewUi()
+//            }
+//            return super.createView()
+//        }
     }
 
     override fun createView(context: Context, parent: PreviewLayout): View {

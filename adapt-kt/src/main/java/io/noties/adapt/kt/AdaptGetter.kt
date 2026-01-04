@@ -28,11 +28,11 @@ abstract class AdaptGetterBuilder<T : Item<*>> {
      * on items, but potentially fail at runtime if underlying items contain
      * other type. Use only when underlying collection is known to be on certain type
      */
-    fun <R : T> cast(type: Class<R>): AdaptGetterBuilder<R> =
-        Cast(build(), type)
-
     inline fun <reified R : T> cast(): AdaptGetterBuilder<R> =
         Cast(build(), R::class.java)
+
+    fun <R : T> cast(type: Class<R>): AdaptGetterBuilder<R> =
+        Cast(build(), type)
 }
 
 fun <T : Item<*>> Adapt.getter(
