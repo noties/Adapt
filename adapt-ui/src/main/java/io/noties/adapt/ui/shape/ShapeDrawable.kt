@@ -121,6 +121,7 @@ open class ShapeDrawable<R : Any> protected constructor(
      * ```kotlin
      * ShapeDrawable()
      *   .stateful(
+     *     // (optional) limit processed states
      *     filter = { pressed.activated },
      *     onStateChanged = {
      *       this.shape.alpha = if (it.isPressed) 0.42F else 1F

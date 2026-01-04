@@ -5,16 +5,12 @@ import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import io.noties.adapt.ui.state.ViewStateBuilder
 import io.noties.adapt.ui.testutil.mockt
-import io.noties.adapt.ui.util.DrawableState
-import io.noties.adapt.ui.util.DrawableStateSet
-import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.robolectric.RobolectricTestRunner
@@ -129,7 +125,82 @@ class ShapeDrawable_Test {
         assertEquals(false, drawable.setState(intArrayOf(android.R.attr.state_enabled)))
     }
 
-    
+    private data class StatefulIntegrationInput(
+        val name: String,
+        val filterBuilder: ViewStateBuilder?,
+        val states: List<IntArray>,
+        val expectedResults: List<Boolean>,
+        val expectedCallbackStates: List<Set<Int>>
+    )
+
+    @Test
+    fun `stateful integration`() {
+        val pressed = android.R.attr.state_pressed
+        val enabled = android.R.attr.state_enabled
+
+        val inputs = listOf(
+            StatefulIntegrationInput(
+                name = "stateful without filter",
+                filterBuilder = null,
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(pressed, enabled),
+                    intArrayOf(pressed, enabled)
+                ),
+                expectedResults = listOf(true, true, false),
+                expectedCallbackStates = listOf(
+                    setOf(pressed),
+                    setOf(pressed, enabled)
+                )
+            ),
+            StatefulIntegrationInput(
+                name = "stateful filtered by pressed",
+                filterBuilder = { this.pressed },
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(enabled),
+                    intArrayOf(enabled)
+                ),
+                expectedResults = listOf(true, true, false),
+                expectedCallbackStates = listOf(
+                    setOf(pressed),
+                    emptySet()
+                )
+            ),
+            StatefulIntegrationInput(
+                name = "stateful with empty filter",
+                filterBuilder = { default },
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(enabled)
+                ),
+                expectedResults = listOf(false, false),
+                expectedCallbackStates = emptyList()
+            )
+        )
+
+        for (input in inputs) {
+            val callbacks = mutableListOf<Set<Int>>()
+            val drawable = ShapeDrawable(RectangleShape())
+
+            drawable.stateful(filter = input.filterBuilder) {
+                callbacks += it.rawValues
+            }
+
+            assertEquals(true, drawable.isStateful)
+
+            val results = input.states.map { state ->
+                drawable.setState(state)
+            }
+
+            assertEquals(input.name, input.expectedResults, results)
+            assertEquals(input.name, input.expectedCallbackStates, callbacks)
+
+            drawable.clearStateful()
+            assertEquals(false, drawable.isStateful)
+            assertEquals(false, drawable.setState(intArrayOf(pressed)))
+        }
+    }
 
     @Test
     fun `factory - calls shape`() {
