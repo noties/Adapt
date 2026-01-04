@@ -12,12 +12,10 @@ import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.preview.Preview
 import io.noties.adapt.sample.items.ControlItem
-import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.sample.ui.color.text
 import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.ui.dimen.appBarHeight
 import io.noties.adapt.sample.ui.test
-import io.noties.adapt.sample.ui.text.title3
 import io.noties.adapt.sample.util.SampleUtil
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
@@ -49,7 +47,6 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.preview.PreviewLayout
-import io.noties.adapt.ui.preview.preview
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.util.activity
