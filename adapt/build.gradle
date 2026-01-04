@@ -1,8 +1,9 @@
-apply plugin: 'com.android.library'
+plugins {
+    alias(libs.plugins.android.library)
+}
 
 android {
     // https://developer.android.com/studio/publish-library/prep-lib-release
-    // What this namespace represents? It doesn't seem to be used anywhere
     namespace 'io.noties.adapt'
 
     compileSdkVersion config['target-sdk']
@@ -21,8 +22,12 @@ android {
     testOptions.unitTests.includeAndroidResources = true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility config['java-target']
+        targetCompatibility config['java-target']
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     publishing {
@@ -34,17 +39,17 @@ android {
 
 dependencies {
 
-    api deps['x-annotations']
+    api libs.androidx.annotations
 
-    compileOnly deps['x-recyclerview']
-    compileOnly deps['x-viewpager']
+    compileOnly libs.androidx.recyclerview
+    compileOnly libs.androidx.viewpager
 
-    testImplementation deps['junit4']
-    testImplementation deps['mockito']
-    testImplementation deps['robolectric']
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
+    testImplementation libs.robolectric
 
-    testImplementation deps['x-recyclerview']
-    testImplementation deps['x-viewpager']
+    testImplementation libs.androidx.recyclerview
+    testImplementation libs.androidx.viewpager
 }
 
 apply from: '../publish.gradle'

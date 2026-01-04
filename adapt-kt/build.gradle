@@ -1,11 +1,10 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     // https://developer.android.com/studio/publish-library/prep-lib-release
-    // What this namespace represents? It doesn't seem to be used anywhere
     namespace 'io.noties.adapt.kt'
 
     compileSdkVersion config['target-sdk']
@@ -16,12 +15,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility config['java-target']
+        targetCompatibility config['java-target']
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = config['java-target']
     }
 
     publishing {
@@ -42,11 +41,11 @@ android {
 dependencies {
     api project(':adapt')
 
-    api deps['x-annotations']
+    api libs.androidx.annotations
 
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    testImplementation deps['junit4']
-    testImplementation deps['robolectric']
+    testImplementation libs.kotlin.reflect
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }
 
 apply from: '../publish.gradle'

@@ -1,7 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'app.cash.paparazzi'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.paparazzi)
+}
 
 final def gitBranch = {
     "git rev-parse --abbrev-ref HEAD".execute().text.trim()
@@ -42,12 +44,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = config['java-target']
+        targetCompatibility = config['java-target']
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = config['java-target']
     }
 
     lint {
@@ -94,18 +96,18 @@ dependencies {
     implementation project(':adapt-ui-flex')
     implementation project(':adapt-kt')
 
-    implementation deps['x-recyclerview']
-    implementation deps['x-viewpager']
-    implementation deps['x-viewpager2']
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.viewpager
+    implementation libs.androidx.viewpager2
 
-    implementation 'io.noties:debug:5.1.0'
+    implementation libs.noties.debug
 
-    implementation deps['flexbox']
+    implementation libs.google.flexbox
 
 //    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 //    compileOnly 'androidx.appcompat:appcompat:1.6.1'
 
     kapt project(':sample-utils:processor')
 
-    testImplementation deps['junit4']
+    testImplementation libs.junit
 }

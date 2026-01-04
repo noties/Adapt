@@ -1,5 +1,7 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    alias(libs.plugins.java)
+    alias(libs.plugins.kotlin.jvm)
+}
 
 //sourceCompatibility = JavaVersion.VERSION_21
 //targetCompatibility = JavaVersion.VERSION_21

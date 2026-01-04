@@ -49,7 +49,7 @@ class AdaptUIShowcaseShapeDrawable : SampleViewUI() {
                             add(hotspot)
                         }
                     }.stateful {
-                        hotspot.hidden(!it.pressed)
+                        hotspot.hidden(!it.isPressed)
                     }.hotspot { x, y ->
                         // invalidate drawable after a change occurs
                         invalidate {

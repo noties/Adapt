@@ -42,6 +42,7 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
@@ -49,7 +50,6 @@ import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.Text
 import io.noties.adapt.ui.state.onViewStateChange
-import io.noties.adapt.ui.util.DrawableState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.withAlphaComponent
@@ -76,9 +76,9 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
                 .textGravity(Gravity.center)
                 .padding(12)
                 .layoutMargin(16)
-                .background(CapsuleShape {
-                    fill(Colors.primary)
-                }.newDrawable().stateful(setOf(DrawableState.pressed)))
+                .background(ShapeDrawable {
+                    Capsule { fill { primary } }
+                }.stateful())
                 .onViewStateChange { view, viewState ->
                     Debug.e("state:$viewState")
                     view.clearAnimation()
@@ -104,10 +104,10 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
                     .focusable(true)
                     .background(createStatefulShapeDrawable().stateful { state ->
                         Debug.i("state:$state")
-                        ref.pressed.hidden(!state.pressed)
-                        ref.focused.hidden(!state.focused)
-                        ref.enabled.hidden(!state.enabled)
-                        ref.activated.hidden(!state.activated)
+                        ref.pressed.hidden(!state.isPressed)
+                        ref.focused.hidden(!state.isFocused)
+                        ref.enabled.hidden(!state.isEnabled)
+                        ref.activated.hidden(!state.isActivated)
                     })
                     .onClick {
                         Debug.i("clicked!")
@@ -188,7 +188,7 @@ class AdaptUIDrawableStateSample : SampleViewUI() {
                 }
             }
         }.stateful { state ->
-            if (state.pressed) {
+            if (state.isPressed) {
                 shape.shadow(12)
             } else {
                 shape.shadow(2)
