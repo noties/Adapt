@@ -80,8 +80,8 @@ open class LazyView internal constructor(
         return true
     }
 
-    override fun onDraw(canvas: Canvas?) = Unit
-    override fun dispatchDraw(canvas: Canvas?) = Unit
+    override fun onDraw(canvas: Canvas) = Unit
+    override fun dispatchDraw(canvas: Canvas) = Unit
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(0, 0)

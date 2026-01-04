@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import io.noties.adapt.Item;
 import io.noties.adapt.Item.Holder;
@@ -39,7 +40,7 @@ public class FrameWrapperTest {
         );
 
         final LayoutInflater inflater = mock(LayoutInflater.class);
-        when(inflater.getContext()).thenReturn(mock(Context.class, RETURNS_MOCKS));
+        when(inflater.getContext()).thenReturn(RuntimeEnvironment.getApplication());
 
         final Holder holder = wrapper.createHolder(
                 inflater,
@@ -62,10 +63,12 @@ public class FrameWrapperTest {
         final Holder itemHolder = mock(Holder.class);
         final View itemView = mock(View.class);
         final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(0, 0, 0);
+        final LayoutInflater layoutInflater = mock(LayoutInflater.class, RETURNS_MOCKS);
 
         when(itemView.getLayoutParams()).thenReturn(layoutParams);
         when(itemHolder.itemView()).thenReturn(itemView);
         when(item.createHolder(any(LayoutInflater.class), any(ViewGroup.class))).then($ -> itemHolder);
+        when(layoutInflater.getContext()).thenReturn(RuntimeEnvironment.getApplication());
 
         final FrameWrapper wrapper = new FrameWrapper(
                 item,
@@ -73,7 +76,7 @@ public class FrameWrapperTest {
         );
 
         final Holder holder = wrapper.createHolder(
-                mock(LayoutInflater.class, RETURNS_MOCKS),
+                layoutInflater,
                 mock(ViewGroup.class)
         );
 

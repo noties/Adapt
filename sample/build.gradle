@@ -43,6 +43,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = config['java-target']
         targetCompatibility = config['java-target']
