@@ -96,12 +96,12 @@ abstract class SampleView constructor() {
                         .layoutMargin(horizontal = Dimens.appBarHeight)
                         .onClick { onAppBarTitleClick() }
                         // NB! the screenshot testing is using LayoutLib and thus would report as in preview
-                        .preview {
-                            it.text(
-                                "Pretty long description name that is going " +
-                                        "to take some space around"
-                            )
-                        }
+//                        .preview {
+//                            it.text(
+//                                "Pretty long description name that is going " +
+//                                        "to take some space around"
+//                            )
+//                        }
                         .test {
                             // return proper value for tests
                             it.text(sample.name)
