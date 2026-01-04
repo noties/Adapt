@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.vanniktech.publish)
 }
 
 android {
-    // https://developer.android.com/studio/publish-library/prep-lib-release
     namespace 'io.noties.adapt'
 
     compileSdkVersion config['target-sdk']
@@ -29,12 +29,6 @@ android {
     buildFeatures {
         buildConfig = true
     }
-
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
-    }
 }
 
 dependencies {
@@ -52,4 +46,7 @@ dependencies {
     testImplementation libs.androidx.viewpager
 }
 
-apply from: '../publish.gradle'
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+}

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.vanniktech.publish) apply false
 }
 
 allprojects {

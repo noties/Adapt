@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.vanniktech.publish)
 }
 
 android {
@@ -22,12 +23,6 @@ android {
         jvmTarget = config['java-target']
     }
 
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
-    }
-
     // even if you do not use resources, robolectric still requires this,
     //  otherwise it would skip tests
     testOptions.unitTests.includeAndroidResources = true
@@ -47,4 +42,7 @@ dependencies {
     testImplementation project(':adapt-ui-test-shared')
 }
 
-apply from: '../publish.gradle'
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+}

@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.vanniktech.publish)
 }
 
 android {
-    // https://developer.android.com/studio/publish-library/prep-lib-release
     namespace 'io.noties.adapt.ui'
 
     compileSdkVersion config['target-sdk']
@@ -21,12 +21,6 @@ android {
 
     kotlinOptions {
         jvmTarget = config['java-target']
-    }
-
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
     }
 
     // even if you do not use resources, robolectric still requires this,
@@ -55,4 +49,7 @@ dependencies {
     testImplementation libs.kotlin.reflect
 }
 
-apply from: '../publish.gradle'
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+}
