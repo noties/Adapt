@@ -121,7 +121,7 @@ class AssetShape(
 
         if (drawable.isStateful) {
             shapeDrawable.stateful {
-                drawable.state = it.state
+                drawable.state = it.rawValues.toIntArray()
                 drawable.invalidateSelf()
             }
         }
