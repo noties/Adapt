@@ -14,3 +14,15 @@ include ':adapt-ui'
 include ':adapt-ui-flex'
 include ':adapt-ui-test-shared'
 include ':adapt-kt'
+
+
+def script = new File("${rootProject.projectDir}/sample", "generate-samples.sh")
+if (script.exists()) {
+    println "Running: ${script}"
+    exec {
+        workingDir "${rootProject.projectDir}/sample"
+        commandLine "sh", script.absolutePath
+    }
+} else {
+    println "Script not found: ${script}"
+}

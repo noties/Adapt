@@ -81,8 +81,34 @@ Outline:
 
 ---+++---+++---+++---+++---+++
 
+
 Outline:
 1. Add a command-line flag (e.g., `--output-file`) so callers can specify where to write the JSON result, defaulting to stdout if omitted.
 2. After collecting and sorting samples by descending `id`, serialize the array into JSON and write it to the provided path instead of spamming stdout.
 3. Ensure the written file contains the per-file metadata (id/title/description/tags/imports/timestamp/path/qualified name) so downstream tooling can consume it directly.
 4. Update the instructions so future runs include the new `--output-file` behavior and remind operators the data is sorted by `id` descending.
+
+
+---+++---+++---+++---+++---+++
+
+
+> we need to change the JSON output a little
+- `qualifiedName` should be named `javaClassName`
+- `filePath` should be named `file` and instead of full path contain only part of it - mathcing java package + java class file.
+
+outline only the required steps needed to achieve this. append output to the end of this file. do not change any code.
+
+
+---+++---+++---+++---+++---+++
+
+
+Outline:
+1. Adjust the metadata builder so the `qualifiedName` property is emitted as `javaClassName` instead.
+2. Replace the `filePath` field with a shorter `file` field that reflects the Java package path plus class file name (e.g., deriving `io/noties/.../SampleName.kt` from the package and class).
+3. Make sure the rest of the JSON structure still includes ids/titles/descriptions/tags/imports/timestamps so downstream consumers receive the updated names.
+4. Note the field renames in the prompt so future edits understand the new property names.
+
+
+---+++---+++---+++---+++---+++
+
+
