@@ -54,8 +54,16 @@ object SampleUtil {
                 }
                 list
             }
-            .map(::init)
+            .map {
+                try {
+                    init(it)
+                } catch (t: Throwable) {
+                    throw JsonException("Failed reading samples", it, t)
+                }
+            }
     }
+
+    private class JsonException(message: String, element: JSONObject, cause: Throwable): IllegalStateException("message:'$message' json:'${element}'", cause)
 
     private fun readSamples(context: Context): List<Sample> {
         return readSamples(context.assets.open("samples.json"))

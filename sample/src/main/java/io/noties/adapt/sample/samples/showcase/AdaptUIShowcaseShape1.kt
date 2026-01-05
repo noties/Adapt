@@ -16,8 +16,6 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.View
-import io.noties.adapt.ui.element.textGravity
-import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.shape.Circle
 import io.noties.adapt.ui.shape.Corners

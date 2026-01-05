@@ -14,9 +14,9 @@ import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
 
 @AdaptSample(
-    "20210123235615",
-    "Spinner",
-    "Usage with <tt>Spinner</tt>, (single view type only, Spinner requirement)",
+    id = "20210123235615",
+    title = "Spinner",
+    description = "Usage with <tt>Spinner</tt>, (single view type only, Spinner requirement)",
     tags = ["listview"]
 )
 class SpinnerSample : SampleViewLayout() {

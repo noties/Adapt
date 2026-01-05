@@ -112,3 +112,18 @@ Outline:
 ---+++---+++---+++---+++---+++
 
 
+> for the `file` do not use package name + extracted class, as file name can be different, extract the information from real file path. outline steps required to achieve it. append it to the end of this file. do not change any code.
+
+
+---+++---+++---+++---+++---+++
+
+
+Outline:
+1. Adjust the metadata builder so the `file` field is derived directly from each Kotlin file’s actual path rather than reconstructing it from package/class names.
+2. Convert that absolute (or repository-relative) path to the smaller form expected in the JSON (e.g., strip leading directories down to the package/class portion that matches the Kotlin source structure).
+3. Preserve all other metadata fields and describe the change in the instructions so future work keeps relying on the actual file path.
+
+
+---+++---+++---+++---+++---+++
+
+

@@ -42,7 +42,7 @@ import io.noties.adapt.ui.util.withAlphaComponent
 @AdaptSample(
     id = "20230515172204",
     title = "TextShape",
-    "Shape that draws text with <em>StaticLayout</em>",
+    description = "Shape that draws text with <em>StaticLayout</em>",
     tags = [Tags.adaptUi, Tags.shape]
 )
 class AdaptUIShapeTextSample : SampleViewUI() {

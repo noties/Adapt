@@ -9,6 +9,23 @@ WATCH_DIR_REL="sample/src/main/java/io/noties/adapt/sample/samples"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 WATCH_DIR="$REPO_ROOT/$WATCH_DIR_REL"
 
+IGNORE_CHECK=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --force)
+      IGNORE_CHECK=1
+      ;;
+    *)
+      printf 'Unknown argument: %s\n' "$arg"
+      exit 1
+      ;;
+  esac
+done
+
+# interesting, but we also would want to listen to the actual script directory
+#   if it would contain changes too - rebuild too
+
 # usage: git_changed_since <commit-sha> <path>
 git_changed_since () {
   local base="$1"
@@ -47,7 +64,7 @@ trap 'revert_last_commit' ERR
 
 # example
 if [ -n "$LAST_COMMIT" ]; then
-  if git_changed_since "$LAST_COMMIT" "$WATCH_DIR"; then
+  if [ "$IGNORE_CHECK" -eq 1 ] || git_changed_since "$LAST_COMMIT" "$WATCH_DIR"; then
     echo "[generate-samples] changed since $LAST_COMMIT in $WATCH_DIR_REL"
 
     (

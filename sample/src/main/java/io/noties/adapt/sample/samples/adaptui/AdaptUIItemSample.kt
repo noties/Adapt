@@ -31,7 +31,7 @@ import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230116140759",
-    "AdaptUI, Item inside ViewFactory",
+    title = "AdaptUI, Item inside ViewFactory",
     description = "Usage of an Item in ViewFactory when building UI view (AdaptView)",
     tags = [Tags.adaptUi, Tags.adaptView]
 )

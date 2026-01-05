@@ -17,9 +17,9 @@ import io.noties.adapt.ui.util.dip
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
 @AdaptSample(
-    "20220404124224",
-    "FrameWrapper",
-    "Usage of <tt>FrameWrapper</tt> with different values for <tt>width</tt>, <tt>height</tt> and <tt>contentGravity</tt>",
+    id = "20220404124224",
+    title = "FrameWrapper",
+    description = "Usage of <tt>FrameWrapper</tt> with different values for <tt>width</tt>, <tt>height</tt> and <tt>contentGravity</tt>",
     tags = ["wrapper"]
 )
 class FrameWrapperSample : SampleViewLayout() {

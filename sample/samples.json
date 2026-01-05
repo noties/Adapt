@@ -39,8 +39,8 @@
       "io.noties.adapt.ui.sticky.stickyView"
     ],
     "lastModified": "2024-12-10T23:59:26.569Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIStickyCardHeaderSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyCardHeaderSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIStickyCardHeaderSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyCardHeaderSample"
   },
   {
     "id": "20241203023735",
@@ -77,8 +77,8 @@
       "io.noties.adapt.ui.windowinset.windowInsetsPaddingCompat"
     ],
     "lastModified": "2024-12-05T15:56:51.321Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/windowsinsets/WindowInsetsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.windowsinsets.WindowInsetsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/windowsinsets/WindowInsetsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.windowsinsets.WindowInsetsSample"
   },
   {
     "id": "20241130014533",
@@ -132,8 +132,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2025-01-30T03:01:06.033Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/item/ItemTypeFactorySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.item.ItemTypeFactorySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/item/ItemTypeFactorySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.item.ItemTypeFactorySample"
   },
   {
     "id": "20241110154706",
@@ -183,8 +183,8 @@
       "io.noties.adapt.ui.widget.grid.GridLayout"
     ],
     "lastModified": "2024-11-17T21:38:32.281Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridBordersSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridBordersSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridBordersSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBordersSample"
   },
   {
     "id": "20241107234915",
@@ -233,8 +233,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-12-13T01:36:31.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridAnimatedLetterSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridAnimatedLetterSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample"
   },
   {
     "id": "20241106025706",
@@ -267,8 +267,8 @@
       "io.noties.adapt.viewgroup.AdaptViewGroup"
     ],
     "lastModified": "2024-12-08T02:01:08.759Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlayItemSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridOverlayItemSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlayItemSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayItemSample"
   },
   {
     "id": "20241104022011",
@@ -317,8 +317,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-20T00:23:23.639Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlayPlacementSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridOverlayPlacementSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlayPlacementSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayPlacementSample"
   },
   {
     "id": "20241103154220",
@@ -358,8 +358,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-20T00:27:29.534Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridBasicSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridBasicSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridBasicSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBasicSample"
   },
   {
     "id": "20241102225551",
@@ -403,8 +403,8 @@
       "io.noties.adapt.ui.shape.Circle"
     ],
     "lastModified": "2024-11-20T00:32:20.663Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlaySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.grid.GridOverlaySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/grid/GridOverlaySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlaySample"
   },
   {
     "id": "20241017013604",
@@ -453,8 +453,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-17T21:38:32.569Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIViewStateSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewStateSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIViewStateSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewStateSample"
   },
   {
     "id": "20240924213029",
@@ -480,8 +480,8 @@
       "io.noties.adapt.ui.reference"
     ],
     "lastModified": "2024-11-17T21:38:32.503Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/getter/AdaptGetterSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.getter.AdaptGetterSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/getter/AdaptGetterSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.getter.AdaptGetterSample"
   },
   {
     "id": "20240331120232",
@@ -506,8 +506,8 @@
       "io.noties.adapt.ui.util.ImeOptionsBuilder"
     ],
     "lastModified": "2024-11-17T21:38:32.667Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUiTextInputImeOptionsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUiTextInputImeOptionsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUiTextInputImeOptionsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiTextInputImeOptionsSample"
   },
   {
     "id": "20240327011222",
@@ -548,8 +548,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2026-01-04T01:54:41.536Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIScrollIfScrollsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIScrollIfScrollsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIScrollIfScrollsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIScrollIfScrollsSample"
   },
   {
     "id": "20240326221901",
@@ -570,8 +570,8 @@
       "io.noties.adapt.ui.util.InputType"
     ],
     "lastModified": "2024-11-17T21:38:32.346Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUITextInputTypeSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextInputTypeSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUITextInputTypeSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextInputTypeSample"
   },
   {
     "id": "20240326215919",
@@ -604,9 +604,9 @@
       "io.noties.adapt.ui.shape.Capsule",
       "io.noties.adapt.ui.util.setContentUI"
     ],
-    "lastModified": "2026-01-05T02:32:30.426Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/ActivitySetContentUISample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.ActivitySetContentUISample"
+    "lastModified": "2026-01-05T02:32:48.941Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/ActivitySetContentUISample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.ActivitySetContentUISample"
   },
   {
     "id": "20230716140149",
@@ -636,8 +636,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-17T22:40:44.742Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseWeb.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseWeb.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb"
   },
   {
     "id": "20230715160110",
@@ -679,8 +679,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-12-03T01:19:10.041Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIPivotSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPivotSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIPivotSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPivotSample"
   },
   {
     "id": "20230715153700",
@@ -717,8 +717,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-27T22:51:34.358Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIOverlaySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIOverlaySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIOverlaySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIOverlaySample"
   },
   {
     "id": "20230715105856",
@@ -762,8 +762,8 @@
       "io.noties.adapt.ui.shape.copy"
     ],
     "lastModified": "2024-11-27T22:51:34.356Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIDynamicItemSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDynamicItemSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIDynamicItemSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDynamicItemSample"
   },
   {
     "id": "20230708163019",
@@ -791,8 +791,8 @@
       "io.noties.adapt.ui.visible"
     ],
     "lastModified": "2024-11-17T22:40:44.817Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePreview.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePreview"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePreview.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePreview"
   },
   {
     "id": "20230615000044",
@@ -826,8 +826,8 @@
       "io.noties.adapt.ui.util.hex"
     ],
     "lastModified": "2024-11-27T22:51:34.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIInflateSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIInflateSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIInflateSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIInflateSample"
   },
   {
     "id": "20230602002749",
@@ -849,8 +849,8 @@
       "io.noties.adapt.ui.reference"
     ],
     "lastModified": "2024-11-17T22:40:44.800Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseReference2.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseReference2.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference2"
   },
   {
     "id": "20230602001541",
@@ -885,8 +885,8 @@
       "io.noties.adapt.ui.setItems"
     ],
     "lastModified": "2024-11-17T22:40:44.770Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseItem.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseItem"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseItem.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseItem"
   },
   {
     "id": "20230601144200",
@@ -915,8 +915,8 @@
       "io.noties.adapt.ui.state.imageTintWithState"
     ],
     "lastModified": "2024-11-17T22:40:44.751Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseImage.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseImage"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseImage.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseImage"
   },
   {
     "id": "20230601135039",
@@ -950,8 +950,8 @@
       "io.noties.adapt.ui.shape.RoundedRectangle"
     ],
     "lastModified": "2024-11-17T22:40:44.787Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePager.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePager"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcasePager.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcasePager"
   },
   {
     "id": "20230601102605",
@@ -981,8 +981,8 @@
       "io.noties.adapt.ui.shape.Text"
     ],
     "lastModified": "2024-11-20T00:16:04.321Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape5.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape5"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape5.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape5"
   },
   {
     "id": "20230601101434",
@@ -1004,8 +1004,8 @@
       "io.noties.adapt.ui.shape.Rectangle"
     ],
     "lastModified": "2024-11-17T22:40:44.828Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape4.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape4"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape4.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape4"
   },
   {
     "id": "20230601100213",
@@ -1029,8 +1029,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-17T22:40:44.781Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeComposition.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeComposition"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeComposition.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeComposition"
   },
   {
     "id": "20230531162848",
@@ -1061,8 +1061,8 @@
       "io.noties.adapt.ui.shape.CircleShape"
     ],
     "lastModified": "2024-11-17T22:40:44.775Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseCircleAvatar.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseCircleAvatar"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseCircleAvatar.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseCircleAvatar"
   },
   {
     "id": "20230530152155",
@@ -1088,8 +1088,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-17T22:40:44.785Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape3.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape3.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape3"
   },
   {
     "id": "20230530151621",
@@ -1115,8 +1115,8 @@
       "io.noties.adapt.ui.util.pxToDip"
     ],
     "lastModified": "2026-01-04T12:06:24.256Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeDrawable.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawable"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShapeDrawable.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShapeDrawable"
   },
   {
     "id": "20230526030501",
@@ -1141,8 +1141,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-17T22:40:44.753Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape2.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape2.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape2"
   },
   {
     "id": "20230526030500",
@@ -1158,8 +1158,6 @@
       "io.noties.adapt.ui.ViewFactory",
       "io.noties.adapt.ui.background",
       "io.noties.adapt.ui.element.View",
-      "io.noties.adapt.ui.element.textGravity",
-      "io.noties.adapt.ui.element.textSize",
       "io.noties.adapt.ui.layoutFill",
       "io.noties.adapt.ui.shape.Circle",
       "io.noties.adapt.ui.shape.Corners",
@@ -1168,9 +1166,9 @@
       "io.noties.adapt.ui.shape.Text",
       "io.noties.adapt.ui.util.Gravity"
     ],
-    "lastModified": "2024-11-18T00:40:13.438Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape1.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1"
+    "lastModified": "2026-01-05T03:07:46.130Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseShape1.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseShape1"
   },
   {
     "id": "20230526022755",
@@ -1195,8 +1193,8 @@
       "io.noties.adapt.ui.shape.Rectangle"
     ],
     "lastModified": "2024-11-25T01:29:14.266Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUiShapeLabelSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUiShapeLabelSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUiShapeLabelSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiShapeLabelSample"
   },
   {
     "id": "20230522113544",
@@ -1224,8 +1222,8 @@
       "io.noties.adapt.ui.padding"
     ],
     "lastModified": "2024-11-17T22:40:44.740Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseStyle.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyle"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseStyle.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseStyle"
   },
   {
     "id": "20230520123338",
@@ -1257,8 +1255,8 @@
       "io.noties.adapt.ui.state.textColorWithState"
     ],
     "lastModified": "2024-11-24T21:10:23.605Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseText2.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseText2.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText2"
   },
   {
     "id": "20230520122012",
@@ -1292,8 +1290,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-17T22:40:44.811Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseText1.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseText1.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseText1"
   },
   {
     "id": "20230520013122",
@@ -1316,8 +1314,8 @@
       "io.noties.adapt.ui.layout"
     ],
     "lastModified": "2024-11-25T01:08:23.455Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseReference.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseReference.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseReference"
   },
   {
     "id": "20230520005529",
@@ -1340,8 +1338,8 @@
       "io.noties.adapt.ui.layoutFill"
     ],
     "lastModified": "2024-11-25T00:44:35.570Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseControlFlow.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlow"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseControlFlow.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseControlFlow"
   },
   {
     "id": "20230520002917",
@@ -1368,8 +1366,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-20T00:17:49.700Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseBasic2.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseBasic2.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic2"
   },
   {
     "id": "20230519160703",
@@ -1401,8 +1399,8 @@
       "io.noties.adapt.ui.shape.Capsule"
     ],
     "lastModified": "2024-11-17T22:40:44.782Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseBasic1.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/showcase/AdaptUIShowcaseBasic1.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseBasic1"
   },
   {
     "id": "20230518004635",
@@ -1429,8 +1427,8 @@
       "io.noties.adapt.ui.util.dip"
     ],
     "lastModified": "2024-11-27T22:51:34.358Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUILinearGradientSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUILinearGradientSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUILinearGradientSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILinearGradientSample"
   },
   {
     "id": "20230517155636",
@@ -1475,12 +1473,13 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-27T22:51:34.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIGradientSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIGradientSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIGradientSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIGradientSample"
   },
   {
     "id": "20230515172204",
     "title": "TextShape",
+    "description": "Shape that draws text with <em>StaticLayout</em>",
     "tags": [
       "adapt-ui",
       "shape"
@@ -1509,9 +1508,9 @@
       "io.noties.adapt.ui.util.Gravity",
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
-    "lastModified": "2024-11-17T21:38:32.528Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeTextSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample"
+    "lastModified": "2026-01-05T03:07:46.137Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeTextSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeTextSample"
   },
   {
     "id": "20230513001821",
@@ -1561,8 +1560,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2026-01-04T12:06:24.273Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIDrawableStateSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIDrawableStateSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample"
   },
   {
     "id": "20230512142056",
@@ -1620,8 +1619,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-17T21:38:32.307Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeShadowSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeShadowSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample"
   },
   {
     "id": "20230510172026",
@@ -1654,8 +1653,8 @@
       "io.noties.adapt.ui.widget.WebViewPlaceholder"
     ],
     "lastModified": "2024-11-17T21:38:32.697Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIWebSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIWebSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIWebSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIWebSample"
   },
   {
     "id": "20230403235622",
@@ -1684,8 +1683,8 @@
       "io.noties.adapt.ui.sticky.stickyView"
     ],
     "lastModified": "2024-11-17T21:38:32.708Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIStickySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIStickySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample"
   },
   {
     "id": "20230402020404",
@@ -1706,8 +1705,8 @@
       "io.noties.adapt.ui.util.onAttachedOnce"
     ],
     "lastModified": "2024-11-17T21:38:32.284Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIRelativeSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIRelativeSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample"
   },
   {
     "id": "20230220160509",
@@ -1750,8 +1749,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-27T22:51:34.356Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIClipSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIClipSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample"
   },
   {
     "id": "20230116182927",
@@ -1776,11 +1775,12 @@
       "io.noties.adapt.ui.padding"
     ],
     "lastModified": "2024-11-27T22:51:34.358Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUILazySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUILazySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUILazySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUILazySample"
   },
   {
     "id": "20230116140759",
+    "title": "AdaptUI, Item inside ViewFactory",
     "description": "Usage of an Item in ViewFactory when building UI view (AdaptView)",
     "tags": [
       "adapt-ui",
@@ -1806,9 +1806,9 @@
       "io.noties.adapt.ui.shape.RoundedRectangleShape",
       "io.noties.adapt.ui.util.Gravity"
     ],
-    "lastModified": "2024-11-27T22:51:34.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIItemSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemSample"
+    "lastModified": "2026-01-05T02:58:03.348Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIItemSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemSample"
   },
   {
     "id": "20230109182559",
@@ -1820,8 +1820,8 @@
       "io.noties.adapt.view.AdaptView"
     ],
     "lastModified": "2024-11-17T22:40:44.804Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/view/AdaptViewConfigurationSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.view.AdaptViewConfigurationSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/view/AdaptViewConfigurationSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.view.AdaptViewConfigurationSample"
   },
   {
     "id": "20221126000447",
@@ -1908,8 +1908,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-25T01:36:08.935Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/flex/AdaptUIFlexInteractiveSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.flex.AdaptUIFlexInteractiveSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/flex/AdaptUIFlexInteractiveSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.flex.AdaptUIFlexInteractiveSample"
   },
   {
     "id": "20221016113609",
@@ -1935,8 +1935,8 @@
       "io.noties.adapt.ui.padding"
     ],
     "lastModified": "2024-11-27T22:51:34.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIExtensionsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIExtensionsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample"
   },
   {
     "id": "20221014142148",
@@ -1974,8 +1974,8 @@
       "io.noties.adapt.ui.state.backgroundWithState"
     ],
     "lastModified": "2024-11-27T22:51:34.356Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUICastSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUICastSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUICastSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUICastSample"
   },
   {
     "id": "20221009162741",
@@ -2012,8 +2012,8 @@
       "io.noties.adapt.ui.util.InputType"
     ],
     "lastModified": "2024-11-27T22:51:34.355Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIAccessibilitySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIAccessibilitySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample"
   },
   {
     "id": "20221009161232",
@@ -2042,8 +2042,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-17T21:38:32.339Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIViewGroupSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewGroupSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIViewGroupSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewGroupSample"
   },
   {
     "id": "20221008115412",
@@ -2096,8 +2096,8 @@
       "io.noties.adapt.ui.util.InputType"
     ],
     "lastModified": "2024-11-17T21:38:32.485Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUITextSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUITextSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextSample"
   },
   {
     "id": "20221006152015",
@@ -2132,8 +2132,8 @@
       "io.noties.adapt.ui.shape.RectangleShape"
     ],
     "lastModified": "2024-11-27T22:51:34.357Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIElementLayoutSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIElementLayoutSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIElementLayoutSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIElementLayoutSample"
   },
   {
     "id": "20221006102210",
@@ -2190,8 +2190,8 @@
       "io.noties.adapt.ui.util.dip"
     ],
     "lastModified": "2024-11-17T21:38:32.328Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIPagerSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPagerSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIPagerSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIPagerSample"
   },
   {
     "id": "20220926220755",
@@ -2250,8 +2250,8 @@
       "io.noties.adapt.ui.util.withAlphaComponent"
     ],
     "lastModified": "2024-11-17T21:38:32.342Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIShapeSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeSample"
   },
   {
     "id": "20220926192547",
@@ -2285,8 +2285,8 @@
       "io.noties.adapt.wrapper.OnBindWrapper"
     ],
     "lastModified": "2024-11-27T22:51:34.358Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIItemsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUIItemsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIItemsSample"
   },
   {
     "id": "20220612133759",
@@ -2316,8 +2316,8 @@
       "io.noties.adapt.ui.shape.RectangleShape"
     ],
     "lastModified": "2024-11-17T21:38:32.605Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/flex/FlexboxUISample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.flex.FlexboxUISample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/flex/FlexboxUISample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.flex.FlexboxUISample"
   },
   {
     "id": "20220610113434",
@@ -2364,11 +2364,13 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-11-17T22:40:44.790Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewpager/ViewPagerSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewpager.ViewPagerSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewpager/ViewPagerSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewpager.ViewPagerSample"
   },
   {
     "id": "20220523200713",
+    "title": "Adapt-UI sample",
+    "description": "usage of <tt>adapt-ui</tt> module to build simple layouts in Kotlin",
     "tags": [
       "adapt-ui"
     ],
@@ -2433,9 +2435,39 @@
       "io.noties.adapt.ui.util.dip",
       "io.noties.adapt.viewgroup.AdaptViewGroup"
     ],
-    "lastModified": "2024-11-25T00:42:51.670Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUISample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.adaptui.AdaptUISample"
+    "lastModified": "2026-01-05T02:58:40.525Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/adaptui/AdaptUISample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUISample"
+  },
+  {
+    "id": "20220404133658",
+    "title": "MarginWrapper",
+    "description": "<tt>MarginWrapper</tt> with different <tt>Edges</tt> usage",
+    "tags": [],
+    "imports": [
+      "io.noties.adapt.ui.util.dip",
+      "io.noties.adapt.util.Edges",
+      "io.noties.adapt.viewgroup.AdaptViewGroup"
+    ],
+    "lastModified": "2026-01-05T03:07:46.152Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/MarginWrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.MarginWrapperSample"
+  },
+  {
+    "id": "20220404124224",
+    "title": "FrameWrapper",
+    "description": "Usage of <tt>FrameWrapper</tt> with different values for <tt>width</tt>, <tt>height</tt> and <tt>contentGravity</tt>",
+    "tags": [
+      "wrapper"
+    ],
+    "imports": [
+      "io.noties.adapt.preview.Preview",
+      "io.noties.adapt.ui.util.dip",
+      "io.noties.adapt.viewgroup.AdaptViewGroup"
+    ],
+    "lastModified": "2026-01-05T03:07:46.159Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/FrameWrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.FrameWrapperSample"
   },
   {
     "id": "20220220214955",
@@ -2448,8 +2480,8 @@
       "io.noties.adapt.viewgroup.AdaptViewGroup"
     ],
     "lastModified": "2024-11-17T22:40:44.814Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/OnBindWrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.wrapper.OnBindWrapperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/OnBindWrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.OnBindWrapperSample"
   },
   {
     "id": "20220220212847",
@@ -2463,8 +2495,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-12-08T02:43:33.109Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/WrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.wrapper.WrapperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/WrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.wrapper.WrapperSample"
   },
   {
     "id": "20220220144816",
@@ -2482,8 +2514,8 @@
       "io.noties.adapt.wrapper.ItemWrapper"
     ],
     "lastModified": "2024-11-17T22:40:44.759Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewGridWrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridWrapperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewGridWrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridWrapperSample"
   },
   {
     "id": "20210329212452",
@@ -2497,8 +2529,8 @@
       "io.noties.adapt.recyclerview.AdaptRecyclerView"
     ],
     "lastModified": "2024-11-17T22:40:44.807Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewDividerWrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDividerWrapperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewDividerWrapperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDividerWrapperSample"
   },
   {
     "id": "20210326220725",
@@ -2516,8 +2548,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-25T00:41:28.211Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AlertDialogHasWrappedSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.AlertDialogHasWrappedSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AlertDialogHasWrappedSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogHasWrappedSample"
   },
   {
     "id": "20210326214950",
@@ -2534,8 +2566,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.286Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewWrappedEnabledSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.ListViewWrappedEnabledSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewWrappedEnabledSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewWrappedEnabledSample"
   },
   {
     "id": "20210326211532",
@@ -2552,8 +2584,8 @@
       "io.noties.adapt.wrapper.ItemWrapper"
     ],
     "lastModified": "2024-11-17T22:40:44.809Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewWrappedDecorationsSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewWrappedDecorationsSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewWrappedDecorationsSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewWrappedDecorationsSample"
   },
   {
     "id": "20210209021444",
@@ -2570,8 +2602,8 @@
       "io.noties.adapt.wrapper.ItemWrapper"
     ],
     "lastModified": "2024-11-17T22:40:44.758Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupWrappedSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupWrappedSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupWrappedSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupWrappedSample"
   },
   {
     "id": "20210205204648",
@@ -2587,8 +2619,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-11-17T22:40:44.797Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupTransitionViewGroupSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionViewGroupSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupTransitionViewGroupSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionViewGroupSample"
   },
   {
     "id": "20210127234203",
@@ -2601,8 +2633,8 @@
       "io.noties.adapt.view.AdaptView"
     ],
     "lastModified": "2024-11-17T22:40:44.771Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/view/ViewSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.view.ViewSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/view/ViewSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.view.ViewSample"
   },
   {
     "id": "20210126234155",
@@ -2615,8 +2647,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.578Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/GridViewSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.GridViewSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/GridViewSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.GridViewSample"
   },
   {
     "id": "20210126233614",
@@ -2629,8 +2661,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.362Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/StackViewSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.StackViewSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/StackViewSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.StackViewSample"
   },
   {
     "id": "20210126232916",
@@ -2643,8 +2675,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.512Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AdapterViewFlipperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.AdapterViewFlipperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AdapterViewFlipperSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AdapterViewFlipperSample"
   },
   {
     "id": "20210126223631",
@@ -2655,8 +2687,8 @@
     ],
     "imports": [],
     "lastModified": "2023-10-15T00:25:17.074Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickyReverseLayoutSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyReverseLayoutSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickyReverseLayoutSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyReverseLayoutSample"
   },
   {
     "id": "20210124212119",
@@ -2672,8 +2704,23 @@
       "io.noties.adapt.recyclerview.StickyItemDecoration"
     ],
     "lastModified": "2024-11-17T22:40:44.796Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickyGridSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickyGridSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickyGridSample"
+  },
+  {
+    "id": "20210123235615",
+    "title": "Spinner",
+    "description": "Usage with <tt>Spinner</tt>, (single view type only, Spinner requirement)",
+    "tags": [
+      "listview"
+    ],
+    "imports": [
+      "io.noties.adapt.listview.AdaptListView",
+      "io.noties.adapt.preview.Preview"
+    ],
+    "lastModified": "2026-01-05T03:07:46.120Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/SpinnerSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.SpinnerSample"
   },
   {
     "id": "20210122221658",
@@ -2695,8 +2742,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-11-17T20:50:07.099Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/MirroredSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.MirroredSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/MirroredSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.MirroredSample"
   },
   {
     "id": "20210122143311",
@@ -2712,8 +2759,8 @@
       "io.noties.adapt.viewgroup.TransitionChangeHandler"
     ],
     "lastModified": "2024-11-17T22:40:44.768Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupTransitionSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupTransitionSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupTransitionSample"
   },
   {
     "id": "20210122143305",
@@ -2727,8 +2774,23 @@
       "io.noties.adapt.viewgroup.AdaptViewGroup"
     ],
     "lastModified": "2024-11-17T22:40:44.794Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupSample"
+  },
+  {
+    "id": "20210122143249",
+    "title": "NO_ID in ViewGroup",
+    "description": "Indicates that an Item without ID (<tt>NO_ID</tt>) is recreated with each update",
+    "tags": [
+      "viewgroup"
+    ],
+    "imports": [
+      "io.noties.adapt.preview.Preview",
+      "io.noties.adapt.viewgroup.AdaptViewGroup"
+    ],
+    "lastModified": "2026-01-05T03:07:46.143Z",
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupNoIdSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupNoIdSample"
   },
   {
     "id": "20210122143242",
@@ -2743,8 +2805,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.617Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewSomeEnabledSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.ListViewSomeEnabledSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewSomeEnabledSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSomeEnabledSample"
   },
   {
     "id": "20210122143237",
@@ -2758,8 +2820,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.336Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.ListViewSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewSample"
   },
   {
     "id": "20210122143232",
@@ -2773,8 +2835,8 @@
       "io.noties.adapt.preview.Preview"
     ],
     "lastModified": "2024-11-17T21:38:32.649Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewAllEnabledSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.ListViewAllEnabledSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/ListViewAllEnabledSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.ListViewAllEnabledSample"
   },
   {
     "id": "20210122143224",
@@ -2790,8 +2852,8 @@
       "io.noties.adapt.listview.AdaptListView"
     ],
     "lastModified": "2024-12-04T00:51:11.159Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AlertDialogSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.AlertDialogSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/AlertDialogSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.listview.AlertDialogSample"
   },
   {
     "id": "20210122143214",
@@ -2807,8 +2869,8 @@
       "io.noties.adapt.wrapper.ItemWrapper"
     ],
     "lastModified": "2024-11-17T22:40:44.802Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/ViewPager2Sample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/ViewPager2Sample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.ViewPager2Sample"
   },
   {
     "id": "20210122143205",
@@ -2823,8 +2885,8 @@
       "io.noties.adapt.ui.util.dip"
     ],
     "lastModified": "2024-11-17T22:40:44.746Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickySample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickySample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewStickySample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewStickySample"
   },
   {
     "id": "20210122143200",
@@ -2846,8 +2908,8 @@
       "io.noties.adapt.ui.util.Gravity"
     ],
     "lastModified": "2024-11-17T22:40:44.731Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewSample"
   },
   {
     "id": "20210122143154",
@@ -2862,8 +2924,8 @@
       "io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler"
     ],
     "lastModified": "2024-11-17T22:40:44.734Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewNestedSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewNestedSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewNestedSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewNestedSample"
   },
   {
     "id": "20210122143147",
@@ -2878,8 +2940,8 @@
       "io.noties.adapt.recyclerview.AdaptRecyclerView"
     ],
     "lastModified": "2024-11-17T22:40:44.744Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewGridSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewGridSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridSample"
   },
   {
     "id": "20210122143122",
@@ -2893,55 +2955,7 @@
       "io.noties.adapt.recyclerview.DiffUtilDataSetChangedHandler"
     ],
     "lastModified": "2024-11-17T22:40:44.788Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewDiffSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDiffSample"
-  },
-  {
-    "tags": [
-      "listview"
-    ],
-    "imports": [
-      "io.noties.adapt.listview.AdaptListView",
-      "io.noties.adapt.preview.Preview"
-    ],
-    "lastModified": "2024-11-17T21:38:32.625Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/listview/SpinnerSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.listview.SpinnerSample"
-  },
-  {
-    "tags": [
-      "viewgroup"
-    ],
-    "imports": [
-      "io.noties.adapt.preview.Preview",
-      "io.noties.adapt.viewgroup.AdaptViewGroup"
-    ],
-    "lastModified": "2024-11-17T22:40:44.755Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/viewgroup/ViewGroupNoIdSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.viewgroup.ViewGroupNoIdSample"
-  },
-  {
-    "tags": [
-      "wrapper"
-    ],
-    "imports": [
-      "io.noties.adapt.preview.Preview",
-      "io.noties.adapt.ui.util.dip",
-      "io.noties.adapt.viewgroup.AdaptViewGroup"
-    ],
-    "lastModified": "2024-11-25T01:49:00.906Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/FrameWrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.wrapper.FrameWrapperSample"
-  },
-  {
-    "tags": [],
-    "imports": [
-      "io.noties.adapt.ui.util.dip",
-      "io.noties.adapt.util.Edges",
-      "io.noties.adapt.viewgroup.AdaptViewGroup"
-    ],
-    "lastModified": "2024-11-17T22:40:44.736Z",
-    "filePath": "../../sample/src/main/java/io/noties/adapt/sample/samples/wrapper/MarginWrapperSample.kt",
-    "qualifiedName": "io.noties.adapt.sample.samples.wrapper.MarginWrapperSample"
+    "file": "../../sample/src/main/java/io/noties/adapt/sample/samples/recyclerview/RecyclerViewDiffSample.kt",
+    "javaClassName": "io.noties.adapt.sample.samples.recyclerview.RecyclerViewDiffSample"
   }
 ]

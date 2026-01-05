@@ -15,9 +15,9 @@ import io.noties.adapt.sample.items.NoIdItem
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
 @AdaptSample(
-    "20210122143249",
-    "NO_ID in ViewGroup",
-    "Indicates that an Item without ID (<tt>NO_ID</tt>) is recreated with each update",
+    id = "20210122143249",
+    title = "NO_ID in ViewGroup",
+    description = "Indicates that an Item without ID (<tt>NO_ID</tt>) is recreated with each update",
     tags = ["viewgroup"]
 )
 class ViewGroupNoIdSample : SampleViewLayout() {

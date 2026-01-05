@@ -1,5 +1,7 @@
 # Adapt and AdaptUI
 
+YES! It *is* possible to have __native__ Android UI without XML!
+
 ## What it is?
 
 AdaptUI came as a solution to reduce context switches between code and various XML files. Along with
@@ -13,33 +15,12 @@ components on Android. A single-file component reduces context switches, allows 
 modification of view building blocks meanwhile giving an immediate feedback with the help of the
 preview. It keeps the loop running without the breaks.
 
-the problem is actually that SwiftUI is a complexity-hiding abstraction.
-No a complexity-hiding abstraction, if it does not work, go to the native view layer directly.
-Almost disappearing framework? Can be used to create view, create and update or just update?... no, this
-is not true, we cannot update without being created, well, in theory, we could use an Element and pass it a view, but
-this is crazy
 
 Copying when needed a minor change, non extensible, no configurable, values are limited to be provided by xml,
 make a padding `@dimen/content_padding + @dimen/additional_padding` is impossible leads to generating 
 more layers of indirection
 Comment a line in XML - error, cannot do it
 
-Moreover, with AdaptUI does not make commitment.. It does not require a special compiler - all it is
-using is Kotlin code. All it operates on - native Android views. It does provide conveniences on top
-of native views, but does not restrict access. You still can access a view underneath, create own
-elements, or extensions on elements.
-
-AdaptUI has been inspired by Flutter, Combine and SwiftUI. Important difference from Flutter is the
-direction is which elements are build - in Flutter you wrap target views with customization views,
-like Padding, SizedBox, etc, so in the end initial view becomes wrapped under multiple layers of
-customization - like a cabbage. It hurts readability and discoverability. Views also expect to
-receive all its arguments in constructor, which leaves little Flutter is like a pockemon cabbage.
-Target (conceptually important)
-views are hidden by multiple pockemon layers with weird names and zero discoverability. In order to
-find what it is inside (what view)
-it holds you need to unwrap the layers, which make a lot of noise whilst you do that. Easier to copy
-code, see how it behaves, just comment related code lines, no need to modify structure. The same is
-re
 
 Another things that {{positively}} distinguishes AdaptUI is AdaptUI does not come with any state
 system, it can work with any.

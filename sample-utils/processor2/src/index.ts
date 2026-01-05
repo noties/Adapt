@@ -9,8 +9,8 @@ type SampleMetadata = {
   tags: string[]
   imports: string[]
   lastModified: string
-  filePath: string
-  qualifiedName: string
+  file: string
+  javaClassName: string
 }
 
 type TagMap = Record<string, string>
@@ -82,6 +82,10 @@ async function describeFile(filePath: string, repoRoot: string, tagMap: TagMap):
 
   const annotationMap = parseAnnotationBody(annotation.body)
 
+  const javaClassName = packageName ? `${packageName}.${className}` : className
+  const filePathRelative = path.relative(repoRoot, filePath).split(path.sep).join('/')
+  const file = filePathRelative
+
   const sample: SampleMetadata = {
     id: parseStringValue(annotationMap['id']),
     title: parseStringValue(annotationMap['title']),
@@ -89,8 +93,8 @@ async function describeFile(filePath: string, repoRoot: string, tagMap: TagMap):
     tags: parseTags(annotationMap['tags']).map((entry) => resolveTagEntry(entry, tagMap)),
     imports: extractAdaptImports(source),
     lastModified: stats.mtime.toISOString(),
-    filePath: path.relative(repoRoot, filePath),
-    qualifiedName: packageName ? `${packageName}.${className}` : className,
+    file,
+    javaClassName,
   }
 
   return sample

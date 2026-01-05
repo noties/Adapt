@@ -11,9 +11,9 @@ import io.noties.adapt.util.Edges
 import io.noties.adapt.viewgroup.AdaptViewGroup
 
 @AdaptSample(
-    "20220404133658",
-    "MarginWrapper",
-    "<tt>MarginWrapper</tt> with different <tt>Edges</tt> usage"
+    id = "20220404133658",
+    title = "MarginWrapper",
+    description = "<tt>MarginWrapper</tt> with different <tt>Edges</tt> usage"
 )
 class MarginWrapperSample : SampleViewLayout() {
 

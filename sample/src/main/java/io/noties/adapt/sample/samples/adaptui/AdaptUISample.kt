@@ -91,8 +91,8 @@ import java.util.Date
 
 @AdaptSample(
     id = "20220523200713",
-    "Adapt-UI sample",
-    "usage of <tt>adapt-ui</tt> module to build simple layouts in Kotlin",
+    title = "Adapt-UI sample",
+    description = "usage of <tt>adapt-ui</tt> module to build simple layouts in Kotlin",
     tags = [Tags.adaptUi]
 )
 class AdaptUISample : SampleViewUI() {
