@@ -7,6 +7,7 @@ type SampleMetadata = {
   title?: string
   description?: string
   tags: string[]
+  imports: string[]
   lastModified: string
   filePath: string
   qualifiedName: string
@@ -15,7 +16,7 @@ type SampleMetadata = {
 type TagMap = Record<string, string>
 
 async function main(): Promise<void> {
-  const { target, tagsSource } = parseCliArgs(process.argv.slice(2))
+  const { target, tagsSource, outputFile } = parseCliArgs(process.argv.slice(2))
 
   if (!target) {
     console.error('Usage: npm start <kotlin-directory> [--tags-source <path>]')
@@ -42,7 +43,7 @@ async function main(): Promise<void> {
       }
     }
 
-    process.stdout.write(JSON.stringify(samples, null, 2))
+    await emitResult(samples, outputFile)
   } catch (error) {
     console.error('Failed to collect samples:', (error as Error).message)
     process.exitCode = 1
@@ -86,6 +87,7 @@ async function describeFile(filePath: string, repoRoot: string, tagMap: TagMap):
     title: parseStringValue(annotationMap['title']),
     description: parseStringValue(annotationMap['description']),
     tags: parseTags(annotationMap['tags']).map((entry) => resolveTagEntry(entry, tagMap)),
+    imports: extractAdaptImports(source),
     lastModified: stats.mtime.toISOString(),
     filePath: path.relative(repoRoot, filePath),
     qualifiedName: packageName ? `${packageName}.${className}` : className,
@@ -289,8 +291,20 @@ function resolveTagEntry(raw: string, tagMap: TagMap): string {
   return normalized.trim()
 }
 
-function parseCliArgs(args: string[]): { target?: string; tagsSource?: string } {
-  const result: { target?: string; tagsSource?: string } = {}
+function extractAdaptImports(source: string): string[] {
+  const imports: string[] = []
+  const regex = /^import\s+(io\.noties\.adapt\.(?!sample\.)[A-Za-z0-9_.]+)/gm
+  let match: RegExpExecArray | null = null
+
+  while ((match = regex.exec(source)) !== null) {
+    imports.push(match[1])
+  }
+
+  return [...new Set(imports)]
+}
+
+function parseCliArgs(args: string[]): { target?: string; tagsSource?: string; outputFile?: string } {
+  const result: { target?: string; tagsSource?: string; outputFile?: string } = {}
   const positional: string[] = []
 
   for (let i = 0; i < args.length; i += 1) {
@@ -308,6 +322,19 @@ function parseCliArgs(args: string[]): { target?: string; tagsSource?: string } 
       continue
     }
 
+    if (arg.startsWith('--output-file=')) {
+      result.outputFile = arg.split('=', 2)[1]
+      continue
+    }
+
+    if (arg === '--output-file') {
+      if (i + 1 < args.length) {
+        result.outputFile = args[i + 1]
+        i += 1
+      }
+      continue
+    }
+
     if (arg.startsWith('-')) {
       continue
     }
@@ -320,6 +347,17 @@ function parseCliArgs(args: string[]): { target?: string; tagsSource?: string } 
   }
 
   return result
+}
+
+async function emitResult(samples: SampleMetadata[], outputFile?: string): Promise<void> {
+  const sorted = [...samples].sort((a, b) => (b.id ?? '').localeCompare(a.id ?? ''))
+  const payload = JSON.stringify(sorted, null, 2)
+
+  if (outputFile) {
+    await fs.writeFile(outputFile, payload, 'utf-8')
+  } else {
+    process.stdout.write(payload)
+  }
 }
 
 async function loadTags(source?: string): Promise<TagMap> {

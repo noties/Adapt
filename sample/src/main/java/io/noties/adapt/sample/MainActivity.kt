@@ -199,7 +199,7 @@ class MainActivity : Activity() {
         companion object {
             const val DURATION = 250L
 
-            const val START_SCALE = 0.5F
+            const val START_SCALE = 0.75F
         }
 
         private var delayAction: Runnable? = null
@@ -285,8 +285,8 @@ class MainActivity : Activity() {
 
                 childContainer.animate()
                     .alpha(0F)
-                    .scaleX(START_SCALE)
-                    .scaleY(START_SCALE)
+//                    .scaleX(START_SCALE)
+//                    .scaleY(START_SCALE)
                     .translationY(childContainer.height / 2F)
                     .setDuration(DURATION)
                     .start()

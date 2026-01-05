@@ -60,3 +60,29 @@ Outline:
 ---+++---+++---+++---+++---+++
 
 
+> each kotlin source file contains imports. let's extract all imports starting with `io.noties.adapt.` (excluding `io.noties.adapt.sample.`) and add then to the results JavaScript object under `imports` property name. Outline what steps would be taken. Append this outline to the end of this file. Do not modify any code.
+
+
+---+++---+++---+++---+++---+++
+
+
+Outline:
+1. Update the processor to scan each Kotlin file for import statements that begin with `io.noties.adapt.` but explicitly skip any `io.noties.adapt.sample.` imports.
+2. Strip the `import` keyword and semicolon from each matching line and collect the package paths in an `imports` array while parsing the file.
+3. Add the resulting `imports` array to the output object alongside the existing id/title/description/tags/timestamp/path/qualified name fields.
+4. Document the new metadata field in the instructions so future executions know to emit the filtered import list.
+
+
+---+++---+++---+++---+++---+++
+
+
+> we need to output the result as a json file. accept a new input argument that would take the path at which to write the resulting JSON. JSON should include a flat list of files, sorted by id desc. outline what needs to be done and append outline to the end of this file. do no edit any code.
+
+
+---+++---+++---+++---+++---+++
+
+Outline:
+1. Add a command-line flag (e.g., `--output-file`) so callers can specify where to write the JSON result, defaulting to stdout if omitted.
+2. After collecting and sorting samples by descending `id`, serialize the array into JSON and write it to the provided path instead of spamming stdout.
+3. Ensure the written file contains the per-file metadata (id/title/description/tags/imports/timestamp/path/qualified name) so downstream tooling can consume it directly.
+4. Update the instructions so future runs include the new `--output-file` behavior and remind operators the data is sorted by `id` descending.
