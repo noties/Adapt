@@ -44,6 +44,7 @@ import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.preview.PreviewLayout
@@ -75,6 +76,7 @@ abstract class SampleView constructor() {
 
                     Image(R.drawable.ic_arrow_back_24)
                         .layout(Dimens.appBarHeight, Dimens.appBarHeight)
+                        .layoutGravity { leading }
                         .imageTint { text }
                         .imageScaleType { centerInside }
                         .background { Circle() }
@@ -92,7 +94,8 @@ abstract class SampleView constructor() {
                         .layoutFill()
                         .layoutMargin(horizontal = Dimens.appBarHeight)
                         .onClick { onAppBarTitleClick() }
-                        // NB! the screenshot testing is using LayoutLib and thus would report as in preview
+                        // NB! the screenshot testing is using LayoutLib and thus
+                        //  would report as a real-device in preview
 //                        .preview {
 //                            it.text(
 //                                "Pretty long description name that is going " +
@@ -103,6 +106,16 @@ abstract class SampleView constructor() {
                             // return proper value for tests
                             it.text(sample.name)
                         }
+
+                    Image(R.drawable.ic_info_24)
+                        .layout(Dimens.appBarHeight, Dimens.appBarHeight)
+                        .layoutGravity { trailing }
+                        .imageTint { text }
+                        .imageScaleType { centerInside }
+                        .background { Circle() }
+                        .foregroundDefaultSelectable()
+                        .clipToOutline()
+                        .onClick { onInfo() }
 
                 }.indent()
                     .layout(fill, Dimens.appBarHeight)
@@ -129,6 +142,10 @@ abstract class SampleView constructor() {
 
     protected open fun onBack() {
         context.activity?.onBackPressed()
+    }
+
+    private fun onInfo() {
+        TODO()
     }
 
     private fun onAppBarTitleClick() {

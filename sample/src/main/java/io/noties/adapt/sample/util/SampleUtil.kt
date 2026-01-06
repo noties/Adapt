@@ -70,10 +70,10 @@ object SampleUtil {
     }
 
     private fun init(json: JSONObject): Sample = Sample(
-        json.getString("id"),
-        json.getString("title"),
-        json.optString("description"),
-        json.optJSONArray("tags")?.let {
+        id = json.getString("id"),
+        name = json.getString("title"),
+        description = json.optString("description"),
+        tags = json.optJSONArray("tags")?.let {
             val list = mutableListOf<String>()
             for (i in 0 until it.length()) {
                 val tag = it.optString(i)
@@ -83,6 +83,18 @@ object SampleUtil {
             }
             list
         } ?: emptyList(),
-        json.getString("javaClassName")
+        javaClassName = json.getString("javaClassName"),
+        file = json.optString("file"),
+        lastModified = json.optString("lastModified"),
+        imports = json.optJSONArray("imports")?.let {
+            val list = mutableListOf<String>()
+            for (i in 0 until it.length()) {
+                val tag = it.optString(i)
+                if (!tag.isNullOrBlank()) {
+                    list.add(tag)
+                }
+            }
+            list
+        } ?: emptyList(),
     )
 }

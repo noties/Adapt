@@ -15,7 +15,10 @@ data class Sample(
     //  it turns out Html.fromHtml would try to obtain Resources in order to render some tags (b, strong) :'(
     val description: String?,
     val tags: List<String>,
-    val javaClassName: String
+    val javaClassName: String,
+    val file: String,
+    val lastModified: String,
+    val imports: List<String>,
 ) {
     companion object {
         fun empty() = Sample(
@@ -23,7 +26,10 @@ data class Sample(
             name = "",
             description = "",
             tags = emptyList(),
-            javaClassName = ""
+            javaClassName = "",
+            file = "",
+            lastModified = "",
+            imports = emptyList(),
         )
     }
 }
