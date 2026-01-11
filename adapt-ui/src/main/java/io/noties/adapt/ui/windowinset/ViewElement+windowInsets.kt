@@ -44,6 +44,10 @@ private class WindowInsetsFactoryBlockPre30(
     override fun unregisterOnWindowInsetsChangedListener() {
         unregister()
     }
+
+    override fun toString(): String {
+        return "WindowInsetsFactoryBlockPre30(insets=${insets.toShortString()})"
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -61,7 +65,7 @@ private class WindowInsetsFactoryBlockInsets30(
     }
 
     override fun toString(): String {
-        return "WindowInsetsFactoryBlockInsets(insets=$insets)"
+        return "WindowInsetsFactoryBlockInsets30(insets=$insets)"
     }
 }
 
@@ -102,6 +106,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onWindowInsetsChanged(
                         val targeted = windowInsets.getInsets(targetInsetsTypes.rawValue)
 
                         if (targeted != lastInsets) {
+                            // bull, how come it is not used?
                             lastInsets = targeted
                             val block =
                                 WindowInsetsFactoryBlockInsets30(targeted) { delegate.remove(this) }

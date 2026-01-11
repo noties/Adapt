@@ -10,8 +10,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import io.noties.adapt.sample.ui.color.background
 import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.sample.ui.dimen.appBarHeight
+import io.noties.adapt.sample.ui.element.SampleAppBar
 import io.noties.adapt.sample.util.KeyboardUtil
 import io.noties.adapt.sample.util.SampleUtil
+import io.noties.adapt.ui.alpha
 import io.noties.adapt.ui.app.dimen.Dimens
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundGradient
@@ -103,6 +105,8 @@ class MainActivity : Activity() {
                                 )
                         }
                     }
+                    .alpha(0F)
+//                    .foregroundColor { emeraldGreen }
 
                 ZStack { }
                     .layoutFill()
@@ -227,7 +231,7 @@ class MainActivity : Activity() {
                 childContainer = childContainer
             )
 
-            contentDivider.background = ShapeDrawable.invoke {
+            contentDivider.background = ShapeDrawable {
                 Rectangle {
                     fill(Gradient.linear {
                         edges { top.leading to bottom.trailing }

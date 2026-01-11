@@ -1,3 +1,5 @@
+- [ ] adapt.items processor to add, filter, map, everything (add dividers, conditional, remove)
+- 
 - [ ] view-pager class not found in a new project in preview
 - [ ] debug keep screen on
 - [ ] convert to bitmap
