@@ -145,7 +145,7 @@ abstract class SampleView constructor() {
     }
 
     private fun onInfo() {
-        TODO()
+//        TODO()
     }
 
     private fun onAppBarTitleClick() {

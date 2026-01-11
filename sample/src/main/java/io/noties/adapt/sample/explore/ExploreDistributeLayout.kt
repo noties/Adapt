@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 
+@Suppress("StopShip")
 object ExploreDistributeLayout {
     // predefined factories:
     // - Distribute.equalSpacing

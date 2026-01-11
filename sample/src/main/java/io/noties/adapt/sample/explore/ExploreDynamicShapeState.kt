@@ -8,6 +8,7 @@ import io.noties.adapt.ui.shape.ShapeFactoryBuilder
 import io.noties.adapt.ui.state.ViewState
 import io.noties.adapt.ui.util.AbsDrawable
 
+@Suppress("StopShip")
 object ExploreDynamicShapeState {
 
     // so, we need to cache previous one to check if it is the same
