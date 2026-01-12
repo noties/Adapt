@@ -21,7 +21,7 @@ if (script.exists()) {
     println "Running: ${script}"
     exec {
         workingDir "${rootProject.projectDir}/sample"
-        commandLine "sh", script.absolutePath
+        commandLine script.absolutePath
     }
 } else {
     println "Script not found: ${script}"
