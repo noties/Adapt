@@ -8,12 +8,12 @@ pluginManagement {
 
 rootProject.name = 'AdaptParent'
 include ':adapt'
-include ':sample'
-include ':sample-utils:processor'
 include ':adapt-ui'
 include ':adapt-ui-flex'
 include ':adapt-ui-test-shared'
 include ':adapt-kt'
+
+include ':sample'
 
 
 def script = new File("${rootProject.projectDir}/sample", "generate-samples.sh")

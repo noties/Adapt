@@ -30,7 +30,6 @@ import io.noties.adapt.sample.ui.text.subHeadline
 import io.noties.adapt.sample.ui.text.title3
 import io.noties.adapt.sample.util.HtmlUtil
 import io.noties.adapt.sample.util.normalized
-import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptRecyclerView
@@ -277,7 +276,6 @@ class SampleViewList(
                 .onView {
                     bind()
                 }
-                .windowInsetsPadding { ime }
 //                .onWindowInsetsChanged(insets = { ime }) {
 //
 ////                    appBar.layoutMargin(top = insetsTop).render()
@@ -292,16 +290,23 @@ class SampleViewList(
 //                        )
 //                    )
 //                }
-                .ifAvailable(version = Build.VERSION_CODES.R) {
-                    it.onView {
-                        val d = OnWindowInsetsChangedListenerDelegate.get(it)
-                        d?.add { _, insets ->
-                            if (!insets.isVisible(WindowInsets.Type.ime())) {
-                                if (searchView.hasFocus()) {
-                                    searchView.clearFocus()
+                .let {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        it
+                            .windowInsetsPadding { ime }
+                            .onView {
+                                val d = OnWindowInsetsChangedListenerDelegate.get(it)
+                                d?.add { _, insets ->
+                                    if (!insets.isVisible(WindowInsets.Type.ime())) {
+                                        if (searchView.hasFocus()) {
+                                            searchView.clearFocus()
+                                        }
+                                    }
                                 }
                             }
-                        }
+                    } else {
+                        // what can we do for earlier versions?
+                        it
                     }
                 }
         }
@@ -533,7 +538,7 @@ class SampleViewList(
             }.indent()
                 .layoutWrap()
                 .padding(horizontal = 12, vertical = 2)
-                .background(ShapeDrawable.invoke {
+                .background(ShapeDrawable {
                     Capsule()
                 }.reference(ref::drawable))
                 .foregroundDefaultSelectable()
