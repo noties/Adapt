@@ -7,10 +7,12 @@
 [![adapt](https://img.shields.io/maven-central/v/io.noties.adapt/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties.adapt%22%20AND%20a%3A%22adapt%22)
 
 ```gradle
-implementation "io.noties.adapt:adapt:${adaptVersion}"
-implementation "io.noties.adapt:adapt-kt:${adaptVersion}"
-implementation "io.noties.adapt:adapt-ui:${adaptVersion}"
-implementation "io.noties.adapt:adapt-ui-flex:${adaptVersion}"
+implementation platform('io.noties.adapt:bom:6.0')
+
+implementation 'io.noties.adapt:adapt'
+implementation 'io.noties.adapt:adapt-kt'
+implementation 'io.noties.adapt:adapt-ui'
+implementation 'io.noties.adapt:adapt-ui-flex'
 ```
 
 ## [AdaptUI](./adapt-ui/README.md)

@@ -22,6 +22,7 @@ allprojects {
     }
 }
 
+// additional maven repo to verify publishing locally
 subprojects {
     plugins.withId(libs.plugins.vanniktech.publish.get().pluginId) {
         publishing {
