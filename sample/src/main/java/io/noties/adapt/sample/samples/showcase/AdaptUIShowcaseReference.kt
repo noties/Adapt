@@ -1,14 +1,18 @@
 package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.gray
+import io.noties.adapt.sample.ui.color.red
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScrollStack
 import io.noties.adapt.ui.element.View
@@ -20,9 +24,9 @@ import io.noties.adapt.ui.layout
     id = "20230520013122",
     title = "[Showcase] AdaptUI reference elements",
     description = "Access to created elements as regular objects",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseReference : AdaptUISampleView() {
+class AdaptUIShowcaseReference : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         // Utility for VScroll { VStack { /**/ } }
         //  another one: HScrollStack
@@ -36,16 +40,20 @@ class AdaptUIShowcaseReference : AdaptUISampleView() {
             element.textSize(22)
 
             // `ifElement` will hold a reference to created elements
-            val ifElement = if (System.currentTimeMillis() % 2 == 0L) {
-                Text("Even system time")
+            val ifElement = if (isRunningScreenshotTests) {
+                Text("Screenshot tests system time")
             } else {
-                View()
-                    .layout(FILL, 48)
+                if (System.currentTimeMillis() % 2 == 0L) {
+                    Text("Even system time")
+                } else {
+                    View()
+                        .layout(fill, 48)
+                }
             }
 
             // NB! element is of View type, not TextView,
             //  so `.text*` functions are not available
-            ifElement.background(Color.GRAY)
+            ifElement.backgroundColor { gray }
 
             // reference a collection of elements (already added to parent)
             val elements = (0 until 100)
@@ -55,14 +63,15 @@ class AdaptUIShowcaseReference : AdaptUISampleView() {
             for (el in elements) {
                 el
                     .textSize(21)
-                    .textColor(Color.RED)
+                    .textColor { red }
             }
         }
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseReference(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseReference()
 }

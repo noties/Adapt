@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textColor
@@ -27,7 +27,7 @@ import io.noties.debug.Debug
     description = "Usage of multiple items inside <tt><b>RecyclerView</b></tt>",
     tags = ["recyclerview"]
 )
-class RecyclerViewSample : SampleView() {
+class RecyclerViewSample : SampleViewLayout() {
 
     override val layoutResId = R.layout.view_sample_recycler_view
 
@@ -37,7 +37,6 @@ class RecyclerViewSample : SampleView() {
 
         val adapt = AdaptRecyclerView.init(recyclerView)
 
-        // STOPSHIP:
         if (true) {
             adapt.setItems(listOf(MyItem("HEY!")))
             return
@@ -50,7 +49,7 @@ class RecyclerViewSample : SampleView() {
         override fun ViewFactory<ViewGroup.LayoutParams>.body() {
             Text(text)
                 .textSize(24)
-                .textColor(Colors.black)
+                .textColor { black }
                 .textGravity(Gravity.center)
                 .onLayoutParams {
                     Debug.e("lp:$it")

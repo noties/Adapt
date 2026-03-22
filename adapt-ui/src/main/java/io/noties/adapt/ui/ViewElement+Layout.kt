@@ -7,12 +7,13 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 
 /**
  * Specified layout dimensions for a view. Can be one of _normal_ layout attributes:
- * + [ViewGroup.LayoutParams.MATCH_PARENT] or [ViewFactory.FILL]
- * + [ViewGroup.LayoutParams.WRAP_CONTENT] or [ViewFactory.WRAP]
+ * + [ViewGroup.LayoutParams.MATCH_PARENT] or [ViewFactory.fill]
+ * + [ViewGroup.LayoutParams.WRAP_CONTENT] or [ViewFactory.wrap]
  * or an exact value specified in **density independent pixels** (dp), so when
  * specified `2` it would be converted to proper pixel value according to device density
  */
@@ -86,8 +87,21 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutWeight
 fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, LLP> = onLayoutParams {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
+
+/**
+ * Specifies `layout_gravity` for a view inside LinearLayout (`VStack` or `HStack`)
+ * ```kotlin
+ * VStack {
+ *   View().layoutGravity { center }
+ * }
+ * ```
+ */
+@JvmName("linearLayoutGravity")
+inline fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravity(
+    builder: GravityBuilder
+) = layoutGravity(builder(Gravity))
 
 /**
  * Specifies `layout_gravity` for a view inside FrameLayout (`ZStack`)
@@ -96,8 +110,16 @@ fun <V : View, LLP : LinearLayout.LayoutParams> ViewElement<V, LLP>.layoutGravit
 fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
     gravity: Gravity
 ): ViewElement<V, FLP> = onLayoutParams {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
+
+/**
+ * Specifies `layout_gravity` for a view inside FrameLayout (`ZStack`)
+ */
+@JvmName("frameLayoutGravity")
+inline fun <V : View, FLP : FrameLayout.LayoutParams> ViewElement<V, FLP>.layoutGravity(
+    builder: GravityBuilder
+) = layoutGravity(builder(Gravity))
 
 /**
  * Specifies value for all layout margins: `start`, `top`, `end` and `bottom`.
@@ -135,3 +157,17 @@ fun <V : View, MLP : ViewGroup.MarginLayoutParams> ViewElement<V, MLP>.layoutMar
     trailing?.dip?.also { mlp.rightMargin = it }
     bottom?.dip?.also { mlp.bottomMargin = it }
 }
+
+/**
+ * Assign supplied LayoutParams and return updated element
+ */
+fun <V : View, LP : LayoutParams, OUT_LP : LayoutParams> ViewElement<V, LP>.layoutParams(
+    params: OUT_LP
+): ViewElement<V, OUT_LP> = this
+    .let {
+        @Suppress("UNCHECKED_CAST")
+        it as ViewElement<V, OUT_LP>
+    }
+    .also { el ->
+        el.preAttachLayoutParams = params
+    }

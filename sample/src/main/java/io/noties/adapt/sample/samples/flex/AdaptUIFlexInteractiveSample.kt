@@ -17,22 +17,29 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Switch
 import android.widget.TextView
 import com.google.android.flexbox.FlexboxLayout
-import io.noties.adapt.sample.App
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.Colors
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.sample.samples.adaptui.SeekBar
 import io.noties.adapt.sample.samples.adaptui.seekBarOnChanged
 import io.noties.adapt.sample.samples.adaptui.seekBarTint
 import io.noties.adapt.sample.samples.adaptui.seekBarValue
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.children
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.activated
+import io.noties.adapt.ui.app.App
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.backgroundDefaultSelectable
 import io.noties.adapt.ui.clipToOutline
@@ -44,10 +51,11 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.flex.AlignContent
 import io.noties.adapt.ui.flex.AlignItems
 import io.noties.adapt.ui.flex.AlignSelf
@@ -66,6 +74,7 @@ import io.noties.adapt.ui.flex.layoutFlexWrapBefore
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.ifAvailable
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
@@ -86,10 +95,11 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
-import io.noties.adapt.ui.shape.StatefulShape
 import io.noties.adapt.ui.shape.copy
 import io.noties.adapt.ui.shape.reference
-import io.noties.adapt.ui.util.ColorStateListBuilder
+import io.noties.adapt.ui.state.StateListBuilder
+import io.noties.adapt.ui.state.backgroundWithState
+import io.noties.adapt.ui.state.textColorWithState
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.hex
@@ -101,9 +111,10 @@ import kotlin.math.roundToInt
 @AdaptSample(
     id = "20221126000447",
     title = "AdaptUI - Flex interactive guide",
-    description = "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/"
+    description = "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
+    tags = [Tags.flex, Tags.widget, Tags.interactive, Tags.adaptUi]
 )
-class AdaptUIFlexInteractiveSample : SampleView() {
+class AdaptUIFlexInteractiveSample : SampleViewLayout() {
     override val layoutResId: Int
         get() = R.layout.view_sample_frame
 
@@ -128,7 +139,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         FlexAlignContentMultiline()
                     )
 
-                }.layout(FILL, WRAP)
+                }.layout(fill, wrap)
                     // more at the bottom, so view can scroll more and dropdown is properly displayed
                     .padding(bottom = 128)
 
@@ -139,9 +150,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     private fun <V : View, LP : LayoutParams> ViewElement<V, LP>.renderInTransition(block: (ViewElement<V, LP>) -> Unit) {
         val group = (view as? ViewGroup) ?: (view.parent as ViewGroup)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            TransitionManager.endTransitions(group)
-        }
+        TransitionManager.endTransitions(group)
         block(this)
         TransitionManager.beginDelayedTransition(group)
         render()
@@ -151,8 +160,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     private fun <LP : FlexboxLayout.LayoutParams> ViewFactory<LP>.FlexItem(text: String): ViewElement<TextView, LP> =
         Text(text)
             .textSize(16)
-            .textColor(Colors.white)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textColor { white }
+            .textBold()
             .padding(horizontal = 16, vertical = 8)
             .background {
                 RoundedRectangle(8) {
@@ -185,7 +194,8 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
     private fun <V : FlexboxLayout, LP : LayoutParams> ViewElement<V, LP>.defaultFlexContainerStyle() =
         this
-            .flexAlignItems(AlignItems.stretch)
+//            .flexAlignItems(AlignItems.stretch)
+            .flexAlignItems { stretch }
             .padding(horizontal = 12, vertical = 4)
             .background(RoundedRectangleShape(2) {
                 stroke(Colors.black.withAlphaComponent(0.42F), 1, 8)
@@ -219,18 +229,16 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             }.text("Show Primary Axis")
                 .padding(bottom = 8)
                 .textColor(Colors.black)
-                .ifAvailable(Build.VERSION_CODES.M) {
-                    it.onView {
-                        it.thumbTintList = ColorStateListBuilder.create {
-                            set(android.R.attr.state_checked, Colors.white)
-                            setDefault(hex("#505a64"))
-                        }
+                .onView {
+                    it.thumbTintList = StateListBuilder.color {
+                        checked = white
+                        default = hex("#505a64")
                     }
                 }
                 .onViewCheckedChanged { _, checked ->
                     showPrimaryAxis(checked)
                 }
-                .layout(WRAP, WRAP)
+                .layout(wrap, wrap)
                 .layoutGravity(Gravity.center.trailing)
         }
 
@@ -243,7 +251,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             add(firstItem)
             FlexItem("the")
             FlexItem("world")
-        }.layout(FILL, 128 + 24)
+        }.layout(fill, 128 + 24)
             .defaultFlexContainerStyle()
             // we should have used normal foreground, but it is available from API 23
             .onView {
@@ -295,6 +303,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val base = AssetShape(drawable) {
             size(s, s, Gravity.center.bottom)
             tint(Colors.black.withAlphaComponent(0.2F))
+            tint { accent }
         }
         add(base)
         add(base.copy {
@@ -313,7 +322,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val flex = InteractiveFlex()
 
         FlexDirectionDropDown(flex)
-            .layout(FILL, WRAP)
+            .layout(fill, wrap)
             .padding(4)
     }
 
@@ -327,10 +336,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         HStack {
 
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             JustifyContentDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
         }.padding(horizontal = 2)
             .layoutMargin(top = 4)
@@ -342,11 +351,11 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val flex = InteractiveFlex()
         HStack {
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
             JustifyContentDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
             AlignItemsDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
         }
     }
 
@@ -356,9 +365,9 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val (flex, firstItem) = InteractiveFlexWithFirstFlexItemActive()
         HStack {
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
             AlignSelfDropDown(flex, firstItem)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
         }
     }
 
@@ -371,7 +380,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         HStack {
 
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             VStack {
 
@@ -379,7 +388,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
                 HStack {
                     DropDownLabel("flex-basis", true)
-                        .layout(0, WRAP, 1F)
+                        .layout(0, wrap, 1F)
                     valueView = Text()
                         .textColor(Colors.yellow)
                         .textSize(16)
@@ -388,9 +397,9 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 fun update(progress: Int) {
                     valueView.text(progress.toString()).render()
                     if (flex.view.isHorizontal) {
-                        firstItem.layout(progress.dip, WRAP).render()
+                        firstItem.layout(progress.dip, wrap).render()
                     } else {
-                        firstItem.layout(WRAP, progress.dip).render()
+                        firstItem.layout(wrap, progress.dip).render()
                     }
                 }
 
@@ -413,7 +422,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
                         })
                     }
-                }.layout(FILL, WRAP)
+                }.layout(fill, wrap)
                     .padding(vertical = 12)
 
                 flex.onView {
@@ -422,7 +431,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     }
                 }
 
-            }.layout(0, WRAP, 1F)
+            }.layout(0, wrap, 1F)
                 .padding(2)
         }
     }
@@ -434,7 +443,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         HStack {
 
             FlexDirectionDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             DropDown(
                 "flex-grow",
@@ -466,7 +475,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 fun <LP : LayoutParams> ViewFactory<LP>.TextEntry(isMinus: Boolean) =
                     Text(if (isMinus) "-" else "+")
                         .padding(horizontal = 8)
-                        .textFont(Typeface.MONOSPACE)
+                        .textTypeface(Typeface.MONOSPACE)
                         .textColor(Colors.black)
                         .textSize(20)
                         .background(CornersShape {
@@ -500,21 +509,19 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
             }.layoutFlexGrow(1F) // by default start with one
                 .layoutWrap()
-                .background(StatefulShape.drawable {
-                    val base = RoundedRectangleShape(4) {
+                .backgroundWithState {
+                    val base = RoundedRectangle(4) {
                         padding(2)
-                        fill(Colors.primary.withAlphaComponent(0.25F))
+                        fill { primary.withAlphaComponent(0.25F) }
 
                         RoundedRectangle(4) {
                             padding(1)
-                            stroke(Colors.primary)
+                            stroke(color = { primary })
                         }
                     }
-                    setActivated(base)
-                    setDefault(base.copy {
-                        alpha(0.5F)
-                    })
-                })
+                    activated = base
+                    default = base.copy { alpha(0.5F) }
+                }
                 .padding(horizontal = 4)
                 .reference(ref::view)
 
@@ -525,7 +532,6 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 fun View.flexLP(): FlexboxLayout.LayoutParams =
                     layoutParams as FlexboxLayout.LayoutParams
 
-                @SuppressLint("SetTextI18n")
                 fun Ref.updateGrow(own: Float, total: Float) {
                     val ownValue = own.roundToInt()
                     if (ownValue == 0) {
@@ -533,6 +539,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         growIndicator.text = "0"
                     } else {
                         view.isActivated = true
+                        @SuppressLint("SetTextI18n")
                         growIndicator.text = "$ownValue / ${total.roundToInt()}"
                     }
                 }
@@ -574,7 +581,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             Entry(right)
                 .onView { update() }
 
-        }.layout(FILL, 128)
+        }.layout(fill, 128)
             .defaultFlexContainerStyle()
     }
 
@@ -608,7 +615,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         textView.text = text
                     }
                 }
-        }.layout(basis, FILL)
+        }.layout(basis, fill)
             .background(RoundedRectangleShape(2) {
                 padding(1)
                 fill(Colors.primary.withAlphaComponent(0.25F))
@@ -625,10 +632,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 //                .layoutFlexShrink(2F)
             Entry(100)
         }.defaultFlexContainerStyle()
-            .layout(FILL, 128)
+            .layout(fill, 128)
 
         FlexContainerWidthOption(flex)
-            .layout(FILL, WRAP)
+            .layout(fill, wrap)
     }
 
     @Suppress("FunctionName")
@@ -643,25 +650,27 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         val flex = Flex {
 
             View()
-                .layout(height, FILL)
+                .layout(height, fill)
                 .background(OvalShape().fill(Colors.yellow))
                 .also { circles.add(it) }
             View()
-                .layout(128, FILL)
+                .layout(128, fill)
                 .layoutFlexGrow(1F)
                 .layoutMargin(horizontal = 4)
                 .background(CapsuleShape().stroke(Colors.primary).padding(1))
             View()
-                .layout(height, FILL)
+                .layout(height, fill)
                 .background(OvalShape().fill(Colors.yellow))
                 .also { circles.add(it) }
 
-        }.flexAlignItems(AlignItems.stretch)
+        }.indent()
+//            .flexAlignItems(AlignItems.stretch)
+            .flexAlignItems { stretch }
             .background(RoundedRectangleShape(2) {
                 stroke(hex("#40ff0000"))
 //                padding(horizontal = 8)
             })
-            .layout(FILL, height)
+            .layout(fill, height)
 
         HStack(Gravity.top) {
 
@@ -673,10 +682,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 circles.forEach { circle ->
                     circle.layoutFlexShrink(selected.second)
                 }
-            }.layout(0, WRAP, 1F)
+            }.layout(0, wrap, 1F)
 
             FlexContainerWidthOption(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
         }
     }
 
@@ -710,11 +719,12 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layoutMargin(top = 2)
                 .onView { tv ->
                     (tv.parent as View).onGlobalLayout {
+                        @SuppressLint("SetTextI18n")
                         tv.text = "Actual size: ${it.width.pxToDip}"
                     }
                 }
 
-        }.layout(basis, WRAP)
+        }.layout(basis, wrap)
             .padding(4)
             .background(RoundedRectangleShape(2) {
                 stroke(Colors.accent.withAlphaComponent(0.42F))
@@ -737,13 +747,14 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 listOf("nowrap (default)" to FlexWrap.nowrap, "wrap" to FlexWrap.wrap)
             ) { selected ->
                 flex.renderInTransition {
-                    flex.flexWrap(selected.second)
+//                    flex.flexWrap(selected.second)
+                    flex.flexWrap { selected.second }
                 }
             }
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
 
             FlexContainerWidthOption(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
         }
     }
 
@@ -754,7 +765,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
         val flex = Flex {
             FlexItem("Hello")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
             FlexItem("the")
                 .layout(0, 96)
@@ -764,10 +775,11 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layoutFlexWrapBefore()
                 .layoutFlexGrow(1F)
             FlexItem("!!!")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.wrap)
+//            .flexWrap(FlexWrap.wrap)
+            .flexWrap()
 
         AlignItemsDropDown(flex)
     }
@@ -784,7 +796,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
 
         val flex = Flex {
             FlexItem("Hello")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
             FlexItem("the")
                 .layout(0, 96)
@@ -794,15 +806,16 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 .layoutFlexWrapBefore()
                 .layoutFlexGrow(1F)
             FlexItem("!!!")
-                .layout(0, WRAP)
+                .layout(0, wrap)
                 .layoutFlexGrow(1F)
         }.defaultFlexContainerStyle()
-            .flexWrap(FlexWrap.wrap)
-            .layout(FILL, 96 * 2 + 32)
+//            .flexWrap(FlexWrap.wrap)
+            .flexWrap()
+            .layout(fill, 96 * 2 + 32)
 
         HStack {
             AlignItemsDropDown(flex)
-                .layout(0, WRAP, 1F)
+                .layout(0, wrap, 1F)
             DropDown(
                 "align-content",
                 listOf(
@@ -815,9 +828,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                 )
             ) { selected ->
                 flex.renderInTransition {
-                    flex.flexAlignContent(selected.second)
+//                    flex.flexAlignContent(selected.second)
+                    flex.flexAlignContent { selected.second }
                 }
-            }.layout(0, WRAP, 1F)
+            }.layout(0, wrap, 1F)
         }
     }
 
@@ -826,7 +840,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
         Text(name)
             .textSize(24)
             .textColor(Colors.primary)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textBold()
             .padding(horizontal = 16)
             .padding(top = 24, bottom = 8)
 
@@ -839,7 +853,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "row" to FlexDirection.row,
             "column" to FlexDirection.column
         )
-    ) { selected -> flex.renderInTransition { it.flexDirection(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexDirection { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.JustifyContentDropDown(
@@ -854,7 +868,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "space-around" to JustifyContent.spaceAround,
             "space-evenly" to JustifyContent.spaceEvenly
         )
-    ) { selected -> flex.renderInTransition { it.flexJustifyContent(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexJustifyContent { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.AlignItemsDropDown(
@@ -868,7 +882,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
             "flex-end" to AlignItems.flexEnd,
             "baseline" to AlignItems.baseline
         )
-    ) { selected -> flex.renderInTransition { it.flexAlignItems(selected.second) } }
+    ) { selected -> flex.renderInTransition { it.flexAlignItems { selected.second } } }
 
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.AlignSelfDropDown(
@@ -888,7 +902,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) { selected ->
         flex.renderInTransition {
             val lp = element.view.layoutParams as FlexboxLayout.LayoutParams
-            lp.alignSelf = selected.second.value
+            lp.alignSelf = selected.second.rawValue
             element.view.requestLayout()
         }
     }
@@ -900,7 +914,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
     ) = Text("$name:")
         .textSize(16)
         .textColor(if (isActive) Colors.yellow else Colors.black)
-        .textFont(Typeface.DEFAULT_BOLD)
+        .textBold()
 
     @Suppress("FunctionName")
     private fun <T, LP : LayoutParams> ViewFactory<LP>.DropDown(
@@ -949,7 +963,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                     val window = PopupWindow(
                         view,
                         element.view.width,
-                        WRAP
+                        wrap
                     )
                     window.isFocusable = true
                     window.elevation = 10.dip.toFloat()
@@ -979,10 +993,10 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                         Text(value.first)
                             .padding(16)
                             .textSize(16)
-                            .textColor(ColorStateListBuilder.create {
-                                setActivated(Colors.orange)
-                                setDefault(Colors.black)
-                            })
+                            .textColorWithState {
+                                activated = orange
+                                default = black
+                            }
                             .activated(selected == value.first)
                             .backgroundDefaultSelectable()
                             .also { element ->
@@ -992,7 +1006,7 @@ class AdaptUIFlexInteractiveSample : SampleView() {
                                 }
                             }
                     }
-                }.layout(FILL, WRAP)
+                }.layout(fill, wrap)
             }
         }
     }
@@ -1023,6 +1037,6 @@ private class Preview__AdaptUIFlexInteractiveSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIFlexInteractiveSample()
 }

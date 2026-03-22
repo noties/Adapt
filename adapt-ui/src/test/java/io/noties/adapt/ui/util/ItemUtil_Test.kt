@@ -1,6 +1,7 @@
 package io.noties.adapt.ui.util
 
 import android.view.ViewGroup
+import io.noties.adapt.Item
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.item.ElementItemNoRef
 import org.junit.Assert.*
@@ -20,8 +21,14 @@ class ItemUtil_Test {
         }
     }
 
+    class Divider: ElementItemNoRef(0L) {
+        override fun ViewFactory<ViewGroup.LayoutParams>.body() {
+            TODO("Not yet implemented")
+        }
+    }
+
     @Test
-    fun test() {
+    fun withIndexAsItemId() {
         val items = listOf(
             MyItem(),
             MyItem(),
@@ -35,6 +42,29 @@ class ItemUtil_Test {
             .forEach { (index, item) ->
                 assertEquals(index.toLong(), item.id())
             }
+    }
 
+    @Test
+    fun divided() {
+        val item = MyItem()
+        val divider = Divider()
+
+        val inputs = listOf(
+            listOf(),
+            listOf(item),
+            listOf(item, item)
+        )
+
+        for (items in inputs) {
+            val result = items.divided { divider }
+
+            val size = items.size
+            if (size == 0) {
+                assertEquals(result.toString(), 0, result.size)
+            } else {
+                val expected = size + (size - 1)
+                assertEquals(result.toString(), expected, result.size)
+            }
+        }
     }
 }

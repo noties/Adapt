@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.wrapper.DividerWrapper
 
@@ -15,7 +15,7 @@ import io.noties.adapt.sample.items.wrapper.DividerWrapper
     description = "Sample usage of <tt>ItemWrapper</tt> to add dividers to items inside a <tt>RecyclerView</tt>",
     tags = ["recyclerview", "wrapper"]
 )
-class RecyclerViewDividerWrapperSample : SampleView() {
+class RecyclerViewDividerWrapperSample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_recycler_view

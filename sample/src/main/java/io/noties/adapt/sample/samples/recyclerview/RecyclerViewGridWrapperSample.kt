@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
 import io.noties.adapt.Item.WrapperBuilder
-import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.samples.recyclerview.RecyclerViewGridWrapperSample.GridWrapped.Companion.grid
+import io.noties.adapt.wrapper.ItemWrapper
 import java.util.concurrent.atomic.AtomicInteger
 
 @AdaptSample(
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
     description = "<tt>Wrapper</tt> that determines a grid <b>span count</b> for an item",
     tags = ["recyclerview", "grid", "wrapper"]
 )
-class RecyclerViewGridWrapperSample : SampleView() {
+class RecyclerViewGridWrapperSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 

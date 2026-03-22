@@ -1,7 +1,6 @@
 package io.noties.adapt.sample.samples.viewpager
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -9,13 +8,18 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.magenta
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.text.title3
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptViewPager
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToPadding
+import io.noties.adapt.ui.element.AdaptPagerWrapContent
 import io.noties.adapt.ui.element.Element
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -23,23 +27,26 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ViewPagerOnPageChangeListener
 import io.noties.adapt.ui.element.pagerOnPageChangedListener
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.elevation
+import io.noties.adapt.ui.foregroundDefaultSelectable
+import io.noties.adapt.ui.indent
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.layout
+import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutMargin
+import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.setItems
 import io.noties.adapt.ui.shape.CircleShape
-import io.noties.adapt.ui.shape.CornersShape
-import io.noties.adapt.ui.shape.RoundedRectangleShape
-import io.noties.adapt.ui.shape.StatefulShape
+import io.noties.adapt.ui.shape.Corners
+import io.noties.adapt.ui.shape.RoundedRectangle
+import io.noties.adapt.ui.state.backgroundWithState
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.widget.AdaptPagerWrapContent
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 import io.noties.debug.Debug
 import kotlin.math.roundToInt
@@ -50,7 +57,7 @@ import kotlin.math.roundToInt
     description = "Usage with androidx.ViewPager",
     tags = ["viewpager"]
 )
-class ViewPagerSample : SampleView() {
+class ViewPagerSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_frame
 
@@ -68,27 +75,34 @@ class ViewPagerSample : SampleView() {
                     .textSize(21)
 
                 Element(::ViewPager)
-                    .layout(FILL, 128)
+                    .layout(fill, 128)
                     .onView(::processViewPager)
                     .adaptViewPager()
                     .setItems(items)
 
                 Text("Wrap height")
 
-                AdaptPagerWrapContent()
+                val adapt = AdaptPagerWrapContent()
                     .pagerOnPageChangedListener(object : ViewPagerOnPageChangeListener() {
                         override fun onPageSelected(position: Int) {
                             Debug.i("selected:$position count:$pagesCount vp:$viewPager")
                         }
                     })
                     .onView(::processViewPager)
-                    .layout(FILL, WRAP)
+                    .layout(fill, wrap)
                     .adaptViewPager { it.pageWidth(pageWidth) }
                     .setItems(items)
 
                 Text("At bottom")
                     .padding(16)
                     .textGravity(Gravity.center)
+                    .foregroundDefaultSelectable()
+                    .onClick {
+                        (items.dropLast(1) + PageItem("CHANGED!!"))
+                            .also {
+                                adapt.adapt.setItems(it)
+                            }
+                    }
             }
         }
     }
@@ -147,26 +161,27 @@ class ViewPagerSample : SampleView() {
                     .layout(64, 64)
 
                 Text()
-                    .textSize(21)
-                    .textColor(Color.BLACK)
-                    .textFont(fontStyle = Typeface.BOLD)
+                    .textSize { title3 }
+                    .textColor { black }
+                    .textBold()
                     .layoutMargin(leading = 8)
                     .reference(ref::textView)
                     .reference(ref::textElement)
 //                    .also { references.textElement = it }
 
-            }.layout(FILL, FILL)
+            }.indent()
+                .layoutFill()
                 .padding(16)
-                .background(StatefulShape.drawable {
-                    setSelected(CornersShape(leadingTop = 24, trailingBottom = 24) {
-                        fill(Color.MAGENTA)
+                .backgroundWithState {
+                    selected = Corners(leadingTop = 24, trailingBottom = 24) {
+                        fill { magenta }
                         padding(8)
-                    })
-                    setDefault(RoundedRectangleShape(8) {
-                        fill(Color.WHITE)
+                    }
+                    default = RoundedRectangle(8) {
+                        fill { white }
                         padding(8)
-                    })
-                })
+                    }
+                }
                 .elevation(2)
                 .clipToPadding(false)
         }

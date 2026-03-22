@@ -3,15 +3,19 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.samples.adaptui.Colors
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Pager
 import io.noties.adapt.ui.element.Text
@@ -28,16 +32,15 @@ import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.RoundedRectangle
-import io.noties.adapt.ui.util.Gravity
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230601135039",
     title = "[Showcase] AdaptUI, Pager element",
     description = "<em>Pager</em>, <em>ViewPager</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcasePager : AdaptUISampleView() {
+class AdaptUIShowcasePager : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
             Pager {
@@ -57,7 +60,7 @@ class AdaptUIShowcasePager : AdaptUISampleView() {
 
             }.indent()
                 // pager needs specific layout dimensions
-                .layout(FILL, 128)
+                .layout(fill, 128)
                 // offscreen page limit
                 .pagerOffscreenPageLimit(3)
                 .pagerOnPageSelectedListener { page ->
@@ -82,7 +85,7 @@ class AdaptUIShowcasePager : AdaptUISampleView() {
         @ColorInt color: Int
     ) = Text(title)
         .layoutFill()
-        .textGravity(Gravity.center)
+        .textGravity { center }
         .textSize(18)
         .pagerPageWidthRatio(0.82F)
         // content padding + shape padding
@@ -101,6 +104,6 @@ private class Preview__AdaptUIShowcasePager(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcasePager()
 }

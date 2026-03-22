@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
 
 class LinearGradient internal constructor(
     internal val type: Type,
@@ -13,7 +14,7 @@ class LinearGradient internal constructor(
 
     internal var tileMode: Shader.TileMode? = null
 
-    companion object {
+    companion object : Colors {
         /**
          * `LinearGradient.edges { top.leading to trailing }`
          */
@@ -47,6 +48,7 @@ class LinearGradient internal constructor(
                 val end = positionOfEdge(type.edges.second, bounds)
                 start to end
             }
+
             is Angle -> positionsOfAngle(type.angle, bounds)
         }
 
@@ -85,12 +87,39 @@ class LinearGradient internal constructor(
 
         @CheckResult
         fun setColors(
+            @ColorInt colors: Collection</*@ColorInt*/Int>
+        ) = LinearGradient(type, colors.toIntArray(), null)
+
+        @CheckResult
+        fun setColors(
             @ColorInt vararg colors: Int
         ): LinearGradient {
             return LinearGradient(
                 type,
                 createColors(*colors),
-                null
+                // spread equally
+                // A B => 0 1
+                // A B C => 0 (0.5) 1
+                // A B C D => 0 (0.33) (0.66) 1
+                run {
+                    val steps = colors.size
+                    if (steps < 2) {
+                        null
+                    } else {
+                        // 3 steps => 0F, 0.5F, 1F
+                        // 4 steps => 0F, 0.3334F, 0.6667F, 1F
+                        val step = 1F / (steps - 1)
+                        val out = FloatArray(colors.size)
+                        out[0] = 0F
+                        out[steps - 1] = 1F
+                        var currentValue = 0F
+                        for (i in (1 until steps - 1)) {
+                            currentValue += step
+                            out[i] = currentValue
+                        }
+                        out
+                    }
+                }
             )
         }
 

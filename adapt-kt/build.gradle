@@ -1,0 +1,48 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.vanniktech.publish)
+}
+
+android {
+    namespace 'io.noties.adapt.kt'
+
+    compileSdkVersion config['target-sdk']
+
+    defaultConfig {
+        minSdkVersion config['min-sdk']
+        targetSdkVersion config['target-sdk']
+    }
+
+    compileOptions {
+        sourceCompatibility config['java-target']
+        targetCompatibility config['java-target']
+    }
+
+    kotlinOptions {
+        jvmTarget = config['java-target']
+    }
+
+    // even if you do not use resources, robolectric still requires this,
+    //  otherwise it would skip tests
+    testOptions.unitTests.includeAndroidResources = true
+    lint {
+        fatal 'StopShip'
+    }
+
+}
+
+dependencies {
+    api project(':adapt')
+
+    api libs.androidx.annotations
+
+    testImplementation libs.kotlin.reflect
+    testImplementation libs.junit
+    testImplementation libs.robolectric
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+}

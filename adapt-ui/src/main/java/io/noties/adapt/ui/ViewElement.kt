@@ -31,6 +31,10 @@ open class ViewElement<V : View, LP : LayoutParams>(
          *   //     to render _now_, then explicit `render` call can be used
          *   .render()
          * ```
+         * If created `ViewElement` needs also layout parameters, then regular extensions:
+         * - `castLayout` - which casts received layout params and fails when mismatched
+         * - `ifCastLayout` - which allows selectively apply certain layout configuration
+         *  if received parameters would be of the same type only (and without affecting the rest)
          */
         fun <V : View> create(
             view: V
@@ -45,6 +49,9 @@ open class ViewElement<V : View, LP : LayoutParams>(
 
     var isRendering: Boolean = false
         private set
+
+    // layout-params that would be applied to view before being added to parent
+    var preAttachLayoutParams: LP? = null
 
     internal val layoutParamsBlocks: MutableList<(LP) -> Unit> = mutableListOf()
     internal val viewBlocks: MutableList<(V) -> Unit> = mutableListOf()
@@ -66,6 +73,13 @@ open class ViewElement<V : View, LP : LayoutParams>(
     ): ViewElement<V, LP> = this.also {
         it.layoutParamsBlocks.add(block)
         scheduleRendering()
+    }
+
+    fun renderPreAttach() {
+        preAttachLayoutParams?.also {
+            view.layoutParams = it
+            preAttachLayoutParams = null
+        }
     }
 
     fun render() {

@@ -234,7 +234,7 @@ fun <V : View> ViewElement<V, ViewPagerLayoutParams>.pagerDecor(
     gravity: Gravity? = null
 ) = onLayoutParams { lp ->
     lp.isDecor = true
-    gravity?.also { lp.gravity = it.value }
+    gravity?.also { lp.gravity = it.rawValue }
 }
 
 /**

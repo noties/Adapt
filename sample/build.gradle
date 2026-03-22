@@ -1,15 +1,17 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.paparazzi)
+}
 
 final def gitBranch = {
     "git rev-parse --abbrev-ref HEAD".execute().text.trim()
 }.memoize()
 
 android {
+    namespace 'io.noties.adapt.sample'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         applicationId 'io.noties.adapt.sample'
@@ -21,36 +23,47 @@ android {
         buildConfigField 'String', 'GIT_BUILD_BRANCH', "\"${gitBranch()}\""
     }
 
-    lintOptions {
-        fatal 'StopShip'
+    buildFeatures {
+        buildConfig = true
     }
 
-    sourceSets {
-        main {
-            java {
-                srcDirs += '../sample-utils/annotation'
-                // does not work :'(
-                exclude '**/Preview__*'
-//                excludes += '**/Preview__**'
-            }
-
-            // does not work :'(
-            kotlin {
-                exclude '**/Preview__*'
-//                exclude '**/Preview__*.kt'
-//                excludes += '**/Preview__*.kt'
-            }
-        }
+    compileOptions {
+        sourceCompatibility = config['java-target']
+        targetCompatibility = config['java-target']
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = config['java-target']
     }
-}
 
-kapt {
-    arguments {
-        arg('io.noties.adapt.samples_file', "${projectDir}/samples.json".toString())
+    lint {
+        fatal 'StopShip'
+    }
+
+    signingConfigs {
+        final def password = System.getenv('ADAPT_KEYSTORE_PASS') ?: ''
+        release {
+            storeFile project.file('sample.keystore')
+            storePassword password
+            keyAlias 'adapt'
+            keyPassword password
+        }
+    }
+
+    buildTypes {
+        // sign with the same key
+        debug {
+            signingConfig signingConfigs.release
+        }
+
+        release {
+            signingConfig signingConfigs.release
+
+            // enable minification in order to validate proguard
+            minifyEnabled true
+            
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.pro'
+        }
     }
 }
 
@@ -59,17 +72,18 @@ dependencies {
     implementation project(':adapt')
     implementation project(':adapt-ui')
     implementation project(':adapt-ui-flex')
+    implementation project(':adapt-kt')
 
-    implementation deps['x-recyclerview']
-    implementation deps['x-viewpager']
-    implementation deps['x-viewpager2']
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.viewpager
+    implementation libs.androidx.viewpager2
 
-    implementation 'io.noties:debug:5.1.0'
+    implementation libs.noties.debug
 
-    implementation deps['flexbox']
+    implementation libs.google.flexbox
 
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 //    compileOnly 'androidx.appcompat:appcompat:1.6.1'
 
-    kapt project(':sample-utils:processor')
+    testImplementation libs.junit
 }

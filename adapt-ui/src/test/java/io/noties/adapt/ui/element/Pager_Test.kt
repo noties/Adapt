@@ -28,6 +28,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
+import org.mockito.Mockito
 import org.mockito.Mockito.RETURNS_MOCKS
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
@@ -344,7 +345,7 @@ class Pager_Test {
         }
         ElementViewFactory.Pager = { mocked }
 
-        val listener = mock(ViewPagerOnPageChangeListener::class.java)
+        val listener = mock(ViewPagerOnPageChangeListener::class.java, Mockito.CALLS_REAL_METHODS)
 
         val vp = obtainView {
             Pager {}
@@ -370,7 +371,7 @@ class Pager_Test {
         }
         ElementViewFactory.Pager = { mocked }
 
-        val listener = mock(ViewPagerOnPageChangeListener::class.java)
+        val listener = mock(ViewPagerOnPageChangeListener::class.java, Mockito.CALLS_REAL_METHODS)
 
         val vp = obtainView {
             Pager {}
@@ -442,7 +443,7 @@ class Pager_Test {
 
         val lp = view.layoutParams as ViewPagerLayoutParams
         assertTrue(lp.isDecor)
-        assertEquals(gravity.value, lp.gravity)
+        assertEquals(gravity.rawValue, lp.gravity)
     }
 
     @Test

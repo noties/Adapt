@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 
 import io.noties.adapt.Item;
@@ -52,7 +53,7 @@ public class ItemWrapperTest {
 
     @Test
     public void unwrap_multiple() {
-        final Item<?> item = mock(Item.class);
+        final Item<?> item = mock(Item.class, Mockito.CALLS_REAL_METHODS);
         final Item<?> wrapped = item
                 .wrap(Wrap.create())
                 .wrap(Wrap.create());

@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.Item;
@@ -69,6 +70,8 @@ public class AdaptViewPager implements Adapt {
     private final ConfigurationImpl configuration;
     private final Adapter adapter;
 
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
+
     private List<Item<?>> items = Collections.emptyList();
 
     AdaptViewPager(@NonNull ViewPager viewPager, @NonNull ConfigurationImpl configuration) {
@@ -97,6 +100,8 @@ public class AdaptViewPager implements Adapt {
     public void setItems(@Nullable List<Item<?>> items) {
         this.items = ListUtils.freeze(items);
         adapter.notifyDataSetChanged();
+
+        triggerOnItemsChanged(items);
     }
 
     @Override
@@ -120,8 +125,30 @@ public class AdaptViewPager implements Adapt {
         }
     }
 
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
+        }
+    }
+
     @Nullable
     public View findViewForAdapterPosition(int position) {
+        // it is possible that this method might be called when there is no data yet
+        //  with `0` item as position
+        if (position < 0 || position >= items.size()) {
+            return null;
+        }
+
         //noinspection rawtypes
         final Item item = items.get(position);
 
@@ -205,6 +232,16 @@ public class AdaptViewPager implements Adapt {
         @Override
         public float getPageWidth(int position) {
             return configuration.pageWidth;
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            if (!(object instanceof View)) {
+                return POSITION_NONE;
+            }
+
+            final Item<?> item = (Item<?>) ((View) object).getTag(ID_ITEM);
+            return items.indexOf(item);
         }
     }
 

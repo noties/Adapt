@@ -5,16 +5,12 @@ import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import io.noties.adapt.ui.state.ViewStateBuilder
 import io.noties.adapt.ui.testutil.mockt
-import io.noties.adapt.ui.util.DrawableState
-import io.noties.adapt.ui.util.DrawableStateSet
-import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.robolectric.RobolectricTestRunner
@@ -129,106 +125,81 @@ class ShapeDrawable_Test {
         assertEquals(false, drawable.setState(intArrayOf(android.R.attr.state_enabled)))
     }
 
-    @Test
-    fun `stateful - all`() {
-        val callbacks: ShapeDrawable<Unit>.(DrawableStateSet) -> Unit = mockt()
+    private data class StatefulIntegrationInput(
+        val name: String,
+        val filterBuilder: ViewStateBuilder?,
+        val states: List<IntArray>,
+        val expectedResults: List<Boolean>,
+        val expectedCallbackStates: List<Set<Int>>
+    )
 
-        // when no specific state is requested, all states are being reported
-        val drawable = ShapeDrawable(RectangleShape())
-        drawable.stateful(
-            emptySet(),
-            callbacks
-        )
-        assertEquals(true, drawable.isStateful)
+    @Test
+    fun `stateful integration`() {
+        val pressed = android.R.attr.state_pressed
+        val enabled = android.R.attr.state_enabled
 
         val inputs = listOf(
-            intArrayOf(999, 888, 777, -666),
-            intArrayOf(999, 888, 777),
-            intArrayOf(999, 888, -666),
-            intArrayOf(999, 888),
-            intArrayOf(0, 1),
-            intArrayOf(-1),
-            intArrayOf(android.R.attr.state_enabled)
+            StatefulIntegrationInput(
+                name = "stateful without filter",
+                filterBuilder = null,
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(pressed, enabled),
+                    intArrayOf(pressed, enabled)
+                ),
+                expectedResults = listOf(true, true, false),
+                expectedCallbackStates = listOf(
+                    setOf(pressed),
+                    setOf(pressed, enabled)
+                )
+            ),
+            StatefulIntegrationInput(
+                name = "stateful filtered by pressed",
+                filterBuilder = { this.pressed },
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(enabled),
+                    intArrayOf(enabled)
+                ),
+                expectedResults = listOf(true, true, false),
+                expectedCallbackStates = listOf(
+                    setOf(pressed),
+                    emptySet()
+                )
+            ),
+            StatefulIntegrationInput(
+                name = "stateful with empty filter",
+                filterBuilder = { default },
+                states = listOf(
+                    intArrayOf(pressed),
+                    intArrayOf(enabled)
+                ),
+                expectedResults = listOf(false, false),
+                expectedCallbackStates = emptyList()
+            )
         )
 
         for (input in inputs) {
-            assertEquals(true, drawable.setState(input))
-        }
-        val captor = ArgumentCaptor.forClass(DrawableStateSet::class.java)
-        verify(
-            callbacks, times(inputs.size)
-        ).invoke(eq(drawable), captor.capture() ?: DrawableStateSet(intArrayOf(Int.MIN_VALUE)))
+            val callbacks = mutableListOf<Set<Int>>()
+            val drawable = ShapeDrawable(RectangleShape())
 
-        captor.allValues.withIndex()
-            .map { it.value.state to inputs[it.index] }
-            .forEach { assertArrayEquals(it.first, it.second) }
-
-        drawable.clearStateful()
-        assertEquals(false, drawable.isStateful)
-    }
-
-    @Test
-    fun `stateful - set`() {
-        val callbacks: ShapeDrawable<Unit>.(DrawableStateSet) -> Unit = mockt()
-        val drawableCallback: Drawable.Callback = mockt()
-        val set = (DrawableState.activated + DrawableState.checked).toList()
-
-        // when no specific state is requested, all states are being reported
-        val drawable = ShapeDrawable(RectangleShape())
-        drawable.callback = drawableCallback
-        drawable.stateful(
-            set.toSet(),
-            callbacks
-        )
-        assertEquals(true, drawable.isStateful)
-
-        val noTrigger = listOf(
-            intArrayOf(999, 888, 777, -666),
-            intArrayOf(999, 888, 777),
-            intArrayOf(999, 888, -666),
-            intArrayOf(999, 888),
-            intArrayOf(0, 1),
-            intArrayOf(-1),
-            intArrayOf(android.R.attr.state_enabled)
-        )
-
-        // should not trigger change
-        for (input in noTrigger) {
-            assertEquals(false, drawable.setState(input))
-        }
-
-        // should trigger change
-        val trigger = noTrigger.withIndex()
-            .map { (i, a) ->
-                when (i % 3) {
-                    0 -> a.plus(set[0].value)
-                    1 -> a.plus(set[1].value)
-                    2 -> a.plus(intArrayOf(set[0].value, set[1].value))
-                    else -> error("Unexpected index")
-                }
+            drawable.stateful(filter = input.filterBuilder) {
+                callbacks += it.rawValues
             }
 
-        for (input in trigger) {
-            assertEquals(input.contentToString(), true, drawable.setState(input))
-        }
+            assertEquals(true, drawable.isStateful)
 
-        val captor = ArgumentCaptor.forClass(DrawableStateSet::class.java)
-        verify(
-            callbacks,
-            times(trigger.size)
-        ).invoke(eq(drawable), captor.capture() ?: DrawableStateSet(intArrayOf(Int.MIN_VALUE)))
-
-        captor.allValues.withIndex()
-            .forEach {
-                assertArrayEquals(it.value.state, trigger[it.index])
+            val results = input.states.map { state ->
+                drawable.setState(state)
             }
 
-        drawable.clearStateful()
-        assertEquals(false, drawable.isStateful)
+            assertEquals(input.name, input.expectedResults, results)
+            assertEquals(input.name, input.expectedCallbackStates, callbacks)
 
-        // invalidated each time state changes + first time when statefulness is requested +
-        //  one time drawable is set stateless
-        verify(drawableCallback, times(trigger.size + 2)).invalidateDrawable(eq(drawable))
+            drawable.clearStateful()
+            assertEquals(false, drawable.isStateful)
+            assertEquals(false, drawable.setState(intArrayOf(pressed)))
+        }
     }
 
     @Test

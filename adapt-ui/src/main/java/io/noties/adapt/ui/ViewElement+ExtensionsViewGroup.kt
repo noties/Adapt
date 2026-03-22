@@ -2,6 +2,9 @@ package io.noties.adapt.ui
 
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.OnHierarchyChangeListener
+import io.noties.adapt.ui.util.OnHierarchyChangeListenerRegistration
+import io.noties.adapt.ui.util.addOnHierarchyChangeListener
 import io.noties.adapt.ui.util.children
 
 /**
@@ -83,4 +86,36 @@ fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.transitionGroup(
     transitionGroup: Boolean = true
 ): ViewElement<V, LP> = onView {
     it.isTransitionGroup = transitionGroup
+}
+
+/**
+ *
+ */
+fun <V : ViewGroup, LP : LayoutParams> ViewElement<V, LP>.onHierarchyChanged(
+    onAdded: OnHierarchyChangeListenerRegistration.(parent: V, child: View) -> Unit = { _, _ -> },
+    onRemoved: OnHierarchyChangeListenerRegistration.(parent: V, child: View) -> Unit = { _, _ -> },
+    onChanged: OnHierarchyChangeListenerRegistration.(parent: V) -> Unit
+) = this.onView {
+
+    lateinit var registration: OnHierarchyChangeListenerRegistration
+
+    registration = it.addOnHierarchyChangeListener(object : OnHierarchyChangeListener {
+        override fun onChildViewAdded(parent: View, child: View) {
+            onAdded(
+                registration,
+                parent as V,
+                child
+            )
+            onChanged(registration, parent)
+        }
+
+        override fun onChildViewRemoved(parent: View, child: View) {
+            onRemoved(
+                registration,
+                parent as V,
+                child
+            )
+            onChanged(registration, parent)
+        }
+    })
 }

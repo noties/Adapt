@@ -6,12 +6,19 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
@@ -20,10 +27,10 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.textAllCaps
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.textTypeface
 import io.noties.adapt.ui.focusable
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -35,25 +42,26 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.noClip
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.padding
+import io.noties.adapt.ui.shape.Capsule
 import io.noties.adapt.ui.shape.CapsuleShape
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeDrawable
 import io.noties.adapt.ui.shape.Text
-import io.noties.adapt.ui.util.DrawableState
+import io.noties.adapt.ui.state.onViewStateChange
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
-import io.noties.adapt.ui.util.onDrawableStateChange
 import io.noties.adapt.ui.util.withAlphaComponent
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230513001821",
-    title = "DrawableState",
-    description = "Receive drawable state updates"
+    title = "ViewState",
+    description = "Receive view state updates (previously known-as: <tt>DrawableState</tt>)",
+    tags = [Tags.adaptUi]
 )
-class AdaptUIDrawableStateSample : AdaptUISampleView() {
+class AdaptUIDrawableStateSample : SampleViewUI() {
 
     /**
      * In order to receive all drawable states reliably a stateful drawable must be used
@@ -68,15 +76,15 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 .textGravity(Gravity.center)
                 .padding(12)
                 .layoutMargin(16)
-                .background(CapsuleShape {
-                    fill(Colors.primary)
-                }.newDrawable().stateful(setOf(DrawableState.pressed)))
-                .onDrawableStateChange { textView, drawableState ->
-                    Debug.e("state:$drawableState")
-                    textView.clearAnimation()
+                .background(ShapeDrawable {
+                    Capsule { fill { primary } }
+                }.stateful())
+                .onViewStateChange { view, viewState ->
+                    Debug.e("state:$viewState")
+                    view.clearAnimation()
 
-                    val target = if (drawableState.pressed) 0.82F else 1F
-                    textView.animate()
+                    val target = if (viewState.isPressed) 0.82F else 1F
+                    view.animate()
                         .alpha(target)
                         .setDuration(250L)
                         .start()
@@ -92,14 +100,14 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                     .layoutGravity(Gravity.center)
             } else {
                 val view = View()
-                    .layout(FILL, 128)
+                    .layout(fill, 128)
                     .focusable(true)
                     .background(createStatefulShapeDrawable().stateful { state ->
                         Debug.i("state:$state")
-                        ref.pressed.hidden(!state.pressed)
-                        ref.focused.hidden(!state.focused)
-                        ref.enabled.hidden(!state.enabled)
-                        ref.activated.hidden(!state.activated)
+                        ref.pressed.hidden(!state.isPressed)
+                        ref.focused.hidden(!state.isFocused)
+                        ref.enabled.hidden(!state.isEnabled)
+                        ref.activated.hidden(!state.isActivated)
                     })
                     .onClick {
                         Debug.i("clicked!")
@@ -127,10 +135,10 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
 
             HStack {
                 ElevatingButton("Normal")
-                    .layout(0, WRAP, 1F)
+                    .layout(0, wrap, 1F)
                     .layoutMargin(horizontal = 8)
                 ElevatingButton("Pressed")
-                    .layout(0, WRAP, 1F)
+                    .layout(0, wrap, 1F)
                     .layoutMargin(horizontal = 8)
                     .onView { it.isPressed = true }
             }.layoutMargin(top = 16)
@@ -152,7 +160,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
         .textAllCaps()
         .padding(12, 4)
         .layoutMargin(horizontal = 4)
-        .layout(0, WRAP, 1F)
+        .layout(0, wrap, 1F)
         .background(CapsuleShape().fill(Colors.primary))
         .ifAvailable(Build.VERSION_CODES.O) {
             it.foregroundDefaultSelectable()
@@ -165,7 +173,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
         label: String
     ) = Text(label)
         .textSize(21)
-        .textFont(Typeface.MONOSPACE)
+        .textTypeface(Typeface.MONOSPACE)
         .textAllCaps()
         .textColor(Colors.white)
         .textSingleLine()
@@ -180,15 +188,15 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                 }
             }
         }.stateful { state ->
-            if (state.pressed) {
+            if (state.isPressed) {
                 shape.shadow(12)
             } else {
                 shape.shadow(2)
             }
         })
-        .onDrawableStateChange { textView, drawableStateSet ->
-            val y = if (drawableStateSet.pressed) -2 else 0
-            textView.translationY = y.dip.toFloat()
+        .onViewStateChange { view, viewState ->
+            val y = if (viewState.isPressed) -2 else 0
+            view.translationY = y.dip.toFloat()
         }
         .onClick {
 
@@ -235,7 +243,7 @@ class AdaptUIDrawableStateSample : AdaptUISampleView() {
                     textSize(18)
                     textStrikethrough()
                     textGravity(Gravity.leading.bottom)
-                    textColor(Colors.accent)
+                    textColor { accent }
                     padding(8)
                 }
             }
@@ -249,6 +257,6 @@ private class Preview__AdaptUIDrawableStateSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIDrawableStateSample()
 }

@@ -37,7 +37,7 @@ class TextInput_Test {
         )
         for (input in inputs) {
             val view = obtainView { TextInput(input) } as EditText
-            assertEquals(input.value, view.inputType)
+            assertEquals(input.rawValue, view.inputType)
         }
     }
 }

@@ -1,52 +1,56 @@
-<img src="./art/logo_social.png" width="90%" alt="logo" />
+<img src="./assets/adapt-social.jpg" width="90%" alt="logo" />
 
-# Adapt &amp; AdaptUI 
-
-__Adapt__ is a UI library to create decoupled widget components. They can be
-  used in a `RecyclerView`, `ListView`, inside a `LinearLayout` or used directly as a `View` interchangeably, 
-  no code involved. One `Item` to rule them all. Layout preview enabled.
-
-__AdaptUI__ is en enhanced Android view DSL builder that brings together dynamism 
-  and flexibility of __Adapt__ to native Android views. It aims to provide convenience 
-  and peace of mind for developers, meanwhile fixing pain points 
-  of Android XML - missing composability, reuse and customization. They are all included out of box. 
-  It is a _disappearing_
-  view and layout builder that gives total control of created views, without imposing any
-  limitations or forcing the use of certain tools or compilers. A view is a view. As it should have been.
+# Adapt &amp; AdaptUI
 
 ## Install
 
-[![adapt](https://img.shields.io/maven-central/v/io.noties/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties%22%20AND%20a%3A%22adapt%22)
+[![adapt](https://img.shields.io/maven-central/v/io.noties.adapt/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties.adapt%22%20AND%20a%3A%22adapt%22)
 
 ```gradle
-implementation "io.noties:adapt:${adaptVersion}"
-implementation "io.noties:adapt-ui:${adaptVersion}"
-implementation "io.noties:adapt-ui-flex:${adaptVersion}"
+implementation platform('io.noties.adapt:bom:6.0')
+
+implementation 'io.noties.adapt:adapt'
+implementation 'io.noties.adapt:adapt-kt'
+implementation 'io.noties.adapt:adapt-ui'
+implementation 'io.noties.adapt:adapt-ui-flex'
 ```
 
 ## [AdaptUI](./adapt-ui/README.md)
-<img src="./art/ui_showcase_text2.jpg" height="480px">
 
-🚧 All showcase previews can be accessed via [dedicate page](./PREVIEW_SHOWCASE.md)
+> Fluent (no-xml) Android-View DSL in Kotlin.
 
-🚧 Documentation might still be a bit lacking, but most of the features in `adapt-ui` module
-  come with a [dedicated sample](./sample/src/main/java/io/noties/adapt/sample/samples) class file. 
-  What better can explain the functionality than the code, right? ;)
+With flexibility in mind and total control over the process.
+Can be used as an enhancement over existing native Android widgets and layouts.
+Creates advanced Android views and layouts in openly-explorable and readable way.
+Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 
+<img src="./assets/showcase/ui_showcase_text2.jpg" height="480px">
+<a href="./PREVIEW_SHOWCASE.md">🖼️ More previews like this</a><br /><br />
+<a href="./adapt-ui/README.md">➡️ Continue reading</a>
+
+---
+
+🚧 \[Documentation is under construction]. Meanwhile, most of the features
+  come with a [dedicated sample or samples](./sample/src/main/java/io/noties/adapt/sample/samples). They include
+  always relevant code that could be also previewed in the [installed sample application](./releases/latest).
+  Along with Layout Preview in Android Studio to play-around.
+
+---
 
 ## [Adapt](./adapt/README.md)
 
-![gif](./art/preview.gif)
-![XML layout-preview](./art/layout_preview.png)
+Android **true** adapter. ViewGroup _agnostique_ adapter that interchangeably
+renders items across `RecyclerView`, `ListView`, `ViewPager`, `LinearLayout`, `FlexboxLayout`, or any other `ViewGroup`.
 
-🚧 Documentation might still be a bit lacking, but most of the features in `adapt` module
-  come with a [dedicated sample](./sample/src/main/java/io/noties/adapt/sample/samples) class file.
-  What better can explain the functionality than the code, right? ;)
+![gif](./assets/preview.gif)
+![XML layout-preview](./assets/layout_preview.png)
+
+[➡️ Continue reading](./adapt/README.md)
 
 ## License
 
 ```
-  Copyright 2021 Dimitry Ivanov (legal@noties.io)
+  Copyright 2026 Dimitry Ivanov (hey@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

@@ -12,5 +12,5 @@ fun <LP: LayoutParams> ViewFactory<LP>.VScrollStack(
     children: ViewFactory<LinearLayout.LayoutParams>.() -> Unit
 ) = VScroll {
     VStack(gravity, children)
-        .layout(FILL, WRAP)
+        .layout(fill, wrap)
 }

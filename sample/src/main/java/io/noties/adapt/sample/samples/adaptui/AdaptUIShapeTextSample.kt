@@ -5,13 +5,21 @@ import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.sample.util.HtmlUtil
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -30,21 +38,14 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.Text
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.withAlphaComponent
-import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230515172204",
     title = "TextShape",
-    "Shape that draws text with <em>StaticLayout</em>",
-    tags = ["shape", "adapt-ui"]
+    description = "Shape that draws text with <em>StaticLayout</em>",
+    tags = [Tags.adaptUi, Tags.shape]
 )
-class AdaptUIShapeTextSample : AdaptUISampleView() {
-
-    init {
-        val gravity = android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL
-        val flag = gravity and android.view.Gravity.HORIZONTAL_GRAVITY_MASK
-        Debug.i("gravity:$gravity flag:$flag and:${flag and android.view.Gravity.CENTER_HORIZONTAL} (CENTER_HOR:${android.view.Gravity.CENTER_HORIZONTAL})")
-    }
+class AdaptUIShapeTextSample : SampleViewUI() {
 
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
@@ -52,18 +53,18 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 Text("!!!Text shape is available only since O (26)")
                     .textSize(18)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .layoutWrap()
-                    .layoutGravity(Gravity.center)
+                    .layoutGravity { center }
                 return@VStack
             }
 
             View()
-                .layout(FILL, 256)
+                .layout(fill, 256)
                 .background(createTextShape1())
 
             View()
-                .layout(FILL, 256)
+                .layout(fill, 256)
                 .background(createTextShape2())
         }
     }
@@ -76,8 +77,8 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
         Text {
             text("Hello there! ".repeat(10))
             textSize(21)
-            textColor(Colors.white)
-            textGravity(Gravity.center)
+            textColor { white }
+            textGravity { center }
             textMaxLines(4)
             textShadow(4, color = Colors.orange)
             textBold()
@@ -86,7 +87,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             textUnderline()
             textStrikethrough()
 
-            fill(Colors.yellow)
+            fill { yellow }
 //            sizeRelative(0.5F, 0.5F, gravity = Gravity.center)
             padding(24)
 
@@ -106,7 +107,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
             }
 
             Circle {
-                fill(Colors.accent)
+                fill { accent }
             }
         }
     }
@@ -119,7 +120,7 @@ class AdaptUIShapeTextSample : AdaptUISampleView() {
         Text {
             text("OLD")
             textSize(16)
-            textGravity(Gravity.top.trailing)
+            textGravity { top.trailing }
             textRotation(45F)
             translate(x = 4, y = 0)
             textBold()
@@ -209,6 +210,6 @@ private class Preview__AdaptUIShapeTextSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShapeTextSample()
 }

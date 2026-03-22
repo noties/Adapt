@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import java.util.*
 
 class NoIdItem : Item<NoIdItem.Holder>(NO_ID) {
@@ -20,6 +21,10 @@ class NoIdItem : Item<NoIdItem.Holder>(NO_ID) {
     }
 
     override fun bind(holder: Holder) {
-        holder.textView.text = holder.created.toString()
+        holder.textView.text = if (isRunningScreenshotTests) {
+            Date(0L).toString()
+        } else {
+            holder.created.toString()
+        }
     }
 }

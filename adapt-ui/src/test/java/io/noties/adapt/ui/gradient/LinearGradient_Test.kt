@@ -188,22 +188,35 @@ class LinearGradient_Test {
     }
 
     @Test
-    fun `createShader - colors`() {
+    fun `createShader - colors - withPositions`() {
         val inputs = listOf(
-            intArrayOf(1, 2) to null,
-            intArrayOf(3, 4, 5) to floatArrayOf(0F, 0.42F, 1F)
+            intArrayOf(3, 4, 5) to floatArrayOf(0F, 0.42F, 1F),
         )
+
         for ((colors, positions) in inputs) {
             val gradient = LinearGradient.angle(98F)
-                .let {
-                    if (positions != null) {
-                        it.setColors(
-                            *colors.zip(positions.toList()).toTypedArray()
-                        )
-                    } else {
-                        it.setColors(*colors)
-                    }
-                }
+                .setColors(*colors.zip(positions.toList()).toTypedArray())
+            Assert.assertArrayEquals(colors, gradient.colors)
+            Assert.assertArrayEquals(positions, gradient.positions, 0.01F)
+
+            val shadow = createShaderShadow(gradient, Rect(0, 0, 100, 100))
+            Assert.assertArrayEquals(colors, shadow.colors)
+            Assert.assertArrayEquals(positions, shadow.positions, 0.01F)
+        }
+    }
+
+    @Test
+    fun `createShader - colors`() {
+        val inputs = listOf(
+            intArrayOf(1, 2) to floatArrayOf(0F, 1F),
+            intArrayOf(3, 4, 5) to floatArrayOf(0F, 0.5F, 1F),
+            intArrayOf(6, 7, 8, 9, 10) to floatArrayOf(0F, 0.25F, 0.5F, 0.75F, 1F)
+        )
+
+        for ((colors, positions) in inputs) {
+            val gradient = LinearGradient.angle(98F)
+                .setColors(*colors)
+
             Assert.assertArrayEquals(colors, gradient.colors)
             Assert.assertArrayEquals(positions, gradient.positions, 0.01F)
 

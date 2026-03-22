@@ -13,12 +13,17 @@ import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
@@ -27,7 +32,6 @@ import io.noties.adapt.ui.gradient.PositionsOfAngle
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.onClick
-import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
 import io.noties.debug.Debug
 import kotlin.math.roundToInt
@@ -35,15 +39,15 @@ import kotlin.math.roundToInt
 @AdaptSample(
     id = "20230518004635",
     title = "UI, LinearGradient interactive",
-    tags = ["adapt-ui", "shape", "gradient", "interactive"]
+    tags = [Tags.adaptUi, Tags.shape, Tags.gradient, Tags.interactive]
 )
-class AdaptUILinearGradientSample : AdaptUISampleView() {
+class AdaptUILinearGradientSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         ZStack {
             val drawable = GradientAngleDrawable()
             View()
-                .layout(FILL, 400)
-                .layoutGravity(Gravity.center)
+                .layout(fill, 400)
+                .layoutGravity { center }
                 .background(drawable)
                 .onClick {
                     if (drawable.isRunning) {
@@ -177,6 +181,6 @@ private class Preview__AdaptUILinearGradientSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUILinearGradientSample()
 }

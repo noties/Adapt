@@ -1,17 +1,16 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
-import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -20,8 +19,8 @@ import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.text
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
@@ -32,31 +31,25 @@ import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.RectangleShape
-import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20221006152015",
     title = "AdaptUI layout attributes",
-    tags = ["adapt-ui", "ui-layout"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIElementLayoutSample : SampleView() {
-    override val layoutResId: Int
-        get() = R.layout.view_sample_frame
+class AdaptUIElementLayoutSample : SampleViewUI() {
+    override fun ViewFactory<LayoutParams>.body() {
+        VScroll {
+            VStack {
 
-    override fun render(view: View) {
-        ViewFactory.addChildren(view as ViewGroup) {
-            VScroll {
-                VStack {
+                // usage of specific to LinearLayout attributes
+                Header("LinearLayout attributes")
+                LinearLayoutSample()
 
-                    // usage of specific to LinearLayout attributes
-                    Header("LinearLayout attributes")
-                    LinearLayoutSample()
-
-                    ZStack {
-                        Header("FrameLayout attributes")
-                    }.layout(FILL, 128)
-                    FrameLayoutSample()
-                }
+                ZStack {
+                    Header("FrameLayout attributes")
+                }.layout(fill, 128)
+                FrameLayoutSample()
             }
         }
     }
@@ -65,9 +58,9 @@ class AdaptUIElementLayoutSample : SampleView() {
     private fun ViewFactory<LayoutParams>.Header(text: String) {
         Text(text)
             .text(text)
-            .textFont(Typeface.DEFAULT_BOLD)
+            .textBold()
             .textSize(16)
-            .textColor(Colors.black)
+            .textColor { black }
             .padding(horizontal = 16, vertical = 8)
     }
 
@@ -84,7 +77,7 @@ class AdaptUIElementLayoutSample : SampleView() {
             HStack {
                 Text("HStack #1")
             }.background(strokeBackground())
-                .layout(FILL, 0, 1F)
+                .layout(fill, 0, 1F)
 
             ZStack {
 
@@ -92,32 +85,32 @@ class AdaptUIElementLayoutSample : SampleView() {
 
                     Text("VStack")
                         .background(strokeBackground())
-                        .layout(FILL, 0)
+                        .layout(fill, 0)
                         // standalone layoutWeight is also available
                         .layoutWeight(1F)
 
                     HStack {
 
                         Text("HStack #2")
-                            .layout(0, FILL, 1F)
+                            .layout(0, fill, 1F)
 
                         View()
                             .layout(12, 12)
                             .layoutMargin(4)
                             // by default HStack has CENTER_VERTICAL
-                            .layoutGravity(Gravity.bottom)
+                            .layoutGravity { bottom }
                             .background(strokeBackground())
 
-                    }.layout(FILL, 32)
+                    }.layout(fill, 32)
                         .background(strokeBackground())
 
                 }.layoutFill()
                     .layoutMargin(4)
 
             }.background(strokeBackground())
-                .layout(FILL, 0, 3F)
+                .layout(fill, 0, 3F)
 
-        }.layout(FILL, 128)
+        }.layout(fill, 128)
             .padding(4)
             .background(strokeBackground())
     }
@@ -128,24 +121,24 @@ class AdaptUIElementLayoutSample : SampleView() {
 
             Text("START|TOP")
                 .layoutWrap()
-                .layoutGravity(Gravity.leading.top)
+                .layoutGravity { leading.top }
                 .layoutMargin(top = 8)
 
             Text("END|TOP")
                 .layoutWrap()
-                .layoutGravity(Gravity.trailing.top)
+                .layoutGravity { trailing.top }
                 .layoutMargin(trailing = 8)
 
             Text("CENTER")
                 .layoutWrap()
-                .layoutGravity(Gravity.center)
+                .layoutGravity { center }
 
             Text("CENTER_HORIZONTAL|BOTTOM")
                 .layoutWrap()
-                .layoutGravity(Gravity.bottom.center)
+                .layoutGravity { bottom.center }
                 .layoutMargin(bottom = 8)
 
-        }.layout(FILL, 128)
+        }.layout(fill, 128)
             .padding(16)
             .background {
                 Rectangle {
@@ -162,6 +155,6 @@ private class Preview__AdaptUIElementLayoutSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIElementLayoutSample()
 }

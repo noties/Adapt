@@ -53,7 +53,7 @@ class CircleShape(block: CircleShape.() -> Unit = {}) : Shape() {
         return gravity?.let {
             val side = radius * 2
             android.view.Gravity.apply(
-                it.value,
+                it.rawValue,
                 side,
                 side,
                 bounds,

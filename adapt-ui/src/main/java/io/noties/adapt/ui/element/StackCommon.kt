@@ -4,6 +4,7 @@ import android.widget.LinearLayout
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 
 val VStackDefaultGravity: Gravity get() = Gravity.center.top
 
@@ -15,8 +16,12 @@ val HStackDefaultGravity: Gravity get() = Gravity.center.leading
 fun <V : LinearLayout, LP : LayoutParams> ViewElement<V, LP>.stackGravity(
     gravity: Gravity
 ) = onView {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
+
+fun <V : LinearLayout, LP : LayoutParams> ViewElement<V, LP>.stackGravity(
+    builder: GravityBuilder
+) = stackGravity(builder(Gravity))
 
 /**
  * @see LinearLayout.setBaselineAligned

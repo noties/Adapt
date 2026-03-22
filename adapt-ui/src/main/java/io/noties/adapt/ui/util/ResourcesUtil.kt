@@ -16,6 +16,9 @@ import org.xmlpull.v1.XmlPullParser
  * - `8 pixels at 2F density` (4 * 2)
  * - `12 pixels at 3F density` (4 * 3)
  * - etc
+ *
+ * _Note_ that the name is intentionally different from `dp` extension in Android Compose, so
+ * two do not collide possibly creating confusion
  */
 val Int.dip: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5F).toInt()
@@ -25,6 +28,8 @@ val Int.dip: Int
  * - `12.pxToDip` == `4` at 3F density (12 / 3)
  */
 val Int.pxToDip: Int get() = (this / Resources.getSystem().displayMetrics.density + 0.5F).toInt()
+
+val Int.pxToDp get() = pxToDip
 
 
 fun Resources.createAttributeSet(
@@ -48,17 +53,25 @@ fun Resources.createAttributeSet(
         null
     }
 } catch (t: Throwable) {
+    // omg, they are the same
+    // Error: Mismatched tags: the e() and isLoggable() calls typically should pass the same tag: "adapt-ui" versus "adapt-ui" [LogTagMismatch]
+    //        Log.e("adapt-ui", null, t)
+    @Suppress("LogTagMismatch")
     if (Log.isLoggable("adapt-ui", Log.ERROR)) {
         Log.e("adapt-ui", null, t)
     }
     null
 }
 
-internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
+fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable? {
     val array = context.obtainStyledAttributes(intArrayOf(attr))
     try {
         return array.getDrawable(0)
     } catch (t: Throwable) {
+        // omg, they are the same
+        // Error: Mismatched tags: the e() and isLoggable() calls typically should pass the same tag: "adapt-ui" versus "adapt-ui" [LogTagMismatch]
+        //        Log.e("adapt-ui", null, t)
+        @Suppress("LogTagMismatch")
         if (Log.isLoggable("adapt-ui", Log.ERROR)) {
             Log.e("adapt-ui", null, t)
         }
@@ -68,7 +81,7 @@ internal fun resolveDrawableAttr(context: Context, @AttrRes attr: Int): Drawable
     return null
 }
 
-internal fun resolveDefaultSelectableDrawable(context: Context): Drawable? = resolveDrawableAttr(
+fun resolveDefaultSelectableDrawable(context: Context): Drawable? = resolveDrawableAttr(
     context,
     android.R.attr.selectableItemBackground
 )

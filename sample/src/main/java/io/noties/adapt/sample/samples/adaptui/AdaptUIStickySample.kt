@@ -5,16 +5,21 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.alpha
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VScroll
+import io.noties.adapt.ui.element.VStackReverseDrawingOrder
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -22,16 +27,16 @@ import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.onClick
 import io.noties.adapt.ui.onElementView
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.widget.VStackReverseDrawingOrder
 import io.noties.adapt.ui.sticky.stickyVerticalScrollContainer
 import io.noties.adapt.ui.sticky.stickyView
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230403235622",
-    title = "AdaptUI[Explore] sticky with reverse linear layout"
+    title = "Sticky view with reverse linear layout",
+    tags = [Tags.adaptUi, Tags.widget]
 )
-class AdaptUIStickySample : AdaptUISampleView() {
+class AdaptUIStickySample : SampleViewUI() {
 
     lateinit var element: View
 
@@ -82,8 +87,8 @@ class AdaptUIStickySample : AdaptUISampleView() {
     private fun <LP : LayoutParams> ViewFactory<LP>.Sticky(text: String) = Text(text)
         .padding(16)
         .alpha(0.75F)
-        .background(Colors.black)
-        .textColor(Colors.white)
+        .backgroundColor { black }
+        .textColor { white }
         .ifAvailable(Build.VERSION_CODES.M) {
             it.foregroundDefaultSelectable()
         }
@@ -93,7 +98,7 @@ class AdaptUIStickySample : AdaptUISampleView() {
     @Suppress("FunctionName")
     private fun <LP : LayoutParams> ViewFactory<LP>.Regular(text: String) = Text(text)
         .padding(8)
-        .background(Colors.orange)
+        .backgroundColor { orange }
 }
 
 @Preview
@@ -102,6 +107,6 @@ private class Preview__AdaptUIStickySample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIStickySample()
 }

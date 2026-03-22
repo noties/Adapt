@@ -1,12 +1,16 @@
 package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.steelBlue
+import io.noties.adapt.sample.ui.isRunningScreenshotTests
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.Text
@@ -21,10 +25,11 @@ import io.noties.adapt.ui.layoutFill
     id = "20230520005529",
     title = "[Showcase] AdaptUI control flow",
     description = "<em>For loop</em>, <em>forEach</em>, <em>if-else</em>, <em>while</em>",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseControlFlow : AdaptUISampleView() {
+class AdaptUIShowcaseControlFlow : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
+        // NB! code is executed ONCE when run
         VStack {
 
             // Normal control flow, this creates 3 text views
@@ -39,13 +44,20 @@ class AdaptUIShowcaseControlFlow : AdaptUISampleView() {
                     .textSize(16 + it)
             }
 
-            // if check for some condition
-            if (System.currentTimeMillis() % 2 == 0L) {
+            if (isRunningScreenshotTests) {
                 Text("if, current time is even")
-                    .textColor(Color.RED)
-            } else {
+                    .textColor { salmonRed }
                 Text("else, current time is odd")
-                    .textColor(Color.BLUE)
+                    .textColor { steelBlue }
+            } else {
+                // if check for some condition
+                if (System.currentTimeMillis() % 2 == 0L) {
+                    Text("if, current time is even")
+                        .textColor { salmonRed }
+                } else {
+                    Text("else, current time is odd")
+                        .textColor { steelBlue }
+                }
             }
 
             // version check
@@ -58,8 +70,9 @@ class AdaptUIShowcaseControlFlow : AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseControlFlow(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseControlFlow()
 }

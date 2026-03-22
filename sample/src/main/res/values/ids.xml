@@ -7,4 +7,9 @@
     <item name="divider_overlay_drawable" type="id" />
 
     <item name="adapt_internal_on_focus_delegate" type="id" />
-</resources>
+
+    <item name="adapt_scrollable_if_scrolls_container" type="id" />
+
+    <item name="adapt_grid_overlay_priority" type="id" />
+    <item name="adapt_ui_on_window_insets_changed_listener_delegate" type="id" />
+ </resources>

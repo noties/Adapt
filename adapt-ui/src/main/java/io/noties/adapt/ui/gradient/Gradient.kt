@@ -5,12 +5,34 @@ import android.graphics.Rect
 import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.util.toHexString
+
+typealias GradientBuilder = Gradient.Factory.() -> Gradient
 
 abstract class Gradient {
     abstract fun createShader(bounds: Rect): Shader
 
-    companion object {
+    interface Factory: Colors {
+        fun linear(linear: LinearGradient.Companion.() -> LinearGradient): Gradient {
+            return linear(LinearGradient)
+        }
+
+        fun radial(radial: RadialGradient.Companion.() -> RadialGradient): Gradient {
+            return radial(RadialGradient)
+        }
+
+        fun sweep(sweep: SweepGradient.Companion.() -> SweepGradient): Gradient {
+            return sweep(SweepGradient)
+        }
+    }
+
+    companion object: Factory {
+
+        fun create(gradient: GradientBuilder) : Gradient {
+            return gradient(this)
+        }
+
         @CheckResult
         fun positionOfEdge(edge: GradientEdge, bounds: Rect): PointF {
             val pair: Pair<Int, Int> = when (edge.type) {

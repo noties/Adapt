@@ -22,8 +22,11 @@ import io.noties.adapt.viewpager.AdaptViewPager
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -89,7 +92,8 @@ class AdaptElement_Test {
 
         Assert.assertNotNull(ref.adaptViewPager2)
         // recycler adapter is used and view-pager2 is not persisted
-        Assert.assertNull(ref.adaptViewPager2?.recyclerView())
+        //  UPD, now we listen for `onAttachedToRecyclerView` and return it
+        Assert.assertNotNull(ref.adaptViewPager2?.recyclerView())
     }
 
     @Test
@@ -106,9 +110,10 @@ class AdaptElement_Test {
             lateinit var viewAdapt: AdaptView
         }
 
-        val view: View = io.noties.adapt.ui.testutil.mockt()
-        val item: Item<*> = io.noties.adapt.ui.testutil.mockt {
-            on { createHolder(any(), any()) } doReturn Item.Holder(view)
+        val view: View = Mockito.mock(View::class.java)
+        val item: Item<*> = Mockito.mock(Item::class.java).also {
+            whenever(it.createHolder(any(), any()))
+                .then { Item.Holder(view) }
         }
 
         val ref = Ref()

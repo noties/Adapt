@@ -28,7 +28,9 @@ fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTint(
 /**
  * @see ProgressBar.setIndeterminateTintList
  * @see ProgressBar.setProgressTintList
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.StateListBuilder
+ * @see io.noties.adapt.ui.state.progressTintWithState
  */
 fun <V : ProgressBar, LP : LayoutParams> ViewElement<V, LP>.progressTint(
     colorStateList: ColorStateList

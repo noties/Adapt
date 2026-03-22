@@ -12,8 +12,11 @@ import android.graphics.Shader
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 import io.noties.adapt.ui.util.toHexString
 import kotlin.math.roundToInt
@@ -61,6 +64,8 @@ abstract class Shape : ShapeFactory {
         it.hidden = hidden.takeIf { b -> b }
     }
 
+    // TODO: remove gravity from here (and similr - like sizeRelative)
+    // TODO: overload - size(value) = applied to wh, size(h, v) applied respectively to own dimension
     // if null, then use bounds value (if null is stored property, if null is passed to the function,
     //  this argument is ignored)
     fun size(
@@ -74,9 +79,15 @@ abstract class Shape : ShapeFactory {
         return this
     }
 
+    /**
+     * Supply size based on contains dimensions.
+     * - 1F = all available parent dimension
+     * - 0.5F - half of parent available dimension
+     * - 3F - 3 times parent available dimension
+     */
     fun sizeRelative(
-        @FloatRange(from = 0.0, to = 1.0) width: Float? = null,
-        @FloatRange(from = 0.0, to = 1.0) height: Float? = null,
+        width: Float? = null,
+        height: Float? = null,
         gravity: Gravity? = null
     ): Shape = this.apply {
         width?.also { this.width = Dimension.Relative(it) }
@@ -86,6 +97,10 @@ abstract class Shape : ShapeFactory {
 
     fun gravity(gravity: Gravity) = this.also {
         this.gravity = gravity
+    }
+
+    fun gravity(builder: GravityBuilder) = this.also {
+        gravity(builder(Gravity))
     }
 
     /**
@@ -232,11 +247,31 @@ abstract class Shape : ShapeFactory {
         }
     }
 
+    fun fill(builder: ColorsBuilder) = this.also {
+        fill(builder(Colors))
+    }
+
     fun fill(gradient: Gradient?): Shape = this.also {
         this.fill = (fill ?: Fill()).apply {
             this.gradient = gradient
             this.color = null
         }
+    }
+
+    fun stroke(
+        color: ColorsBuilder,
+        width: Int? = 1,
+        dashWidth: Int? = null,
+        dashGap: Int? = null
+    ): Shape = this.also {
+        stroke = (stroke ?: Stroke())
+            .apply {
+                this.color = color(Colors)
+                this.gradient = null
+                width?.also { this.width = it }
+                dashWidth?.also { this.dashWidth = it }
+                dashGap?.also { this.dashGap = it }
+            }
     }
 
     fun stroke(
@@ -435,7 +470,7 @@ abstract class Shape : ShapeFactory {
             val gravity = this.gravity
             if (gravity != null) {
                 android.view.Gravity.apply(
-                    gravity.value,
+                    gravity.rawValue,
                     w,
                     h,
                     bounds,

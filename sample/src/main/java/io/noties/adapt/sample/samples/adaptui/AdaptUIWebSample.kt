@@ -7,38 +7,42 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.Toast
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Progress
 import io.noties.adapt.ui.element.Text
+import io.noties.adapt.ui.element.Web
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.element.webChromeClient
+import io.noties.adapt.ui.element.webClient
+import io.noties.adapt.ui.element.webOnElementReady
 import io.noties.adapt.ui.layout
 import io.noties.adapt.ui.layoutFill
 import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.padding
-import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.visible
-import io.noties.adapt.ui.widget.Web
 import io.noties.adapt.ui.widget.WebViewPlaceholder
-import io.noties.adapt.ui.widget.webChromeClient
-import io.noties.adapt.ui.widget.webClient
-import io.noties.adapt.ui.widget.webOnElementReady
 import io.noties.debug.Debug
 
 @AdaptSample(
     id = "20230510172026",
     title = "WebView element",
-    tags = ["webview", "web"]
+    tags = [Tags.adaptUi, Tags.webView, Tags.widget]
 )
-class AdaptUIWebSample : AdaptUISampleView() {
+class AdaptUIWebSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         ZStack {
 
@@ -54,22 +58,22 @@ class AdaptUIWebSample : AdaptUISampleView() {
                 ZStack {
                     Text("WebView inflation failed for the first time, please stand-by")
                         .textSize(16)
-                        .textColor(Colors.black)
+                        .textColor { black }
                         .layoutWrap()
-                        .layoutGravity(Gravity.center)
+                        .layoutGravity { center }
                         .padding(16)
                 }.layoutFill()
-                    .background(Colors.orange)
+                    .backgroundColor { orange }
 
             }.layoutFill()
                 .webOnElementReady {
                     // process created web view
-                    it.background(Colors.accent)
+                    it.backgroundColor { accent }
                 }
 
             val progress = Progress()
                 .layout(36, 36)
-                .layoutGravity(Gravity.center)
+                .layoutGravity { center }
 
 //            Element {
 //                ProgressBar(it, null, android.R.attr.progressBarStyleHorizontal)
@@ -110,9 +114,9 @@ class AdaptUIWebSample : AdaptUISampleView() {
         ViewFactory.addChildren<WebViewPlaceholder, FrameLayout.LayoutParams>(webViewPlaceholder) {
             Text("Failed to inflate WebView")
                 .textSize(21)
-                .textColor(Colors.primary)
+                .textColor { primary }
                 .layoutWrap()
-                .layoutGravity(Gravity.center)
+                .layoutGravity { center }
                 .padding(16)
         }
     }
@@ -136,6 +140,6 @@ private class Preview__AdaptUIWebSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIWebSample()
 }

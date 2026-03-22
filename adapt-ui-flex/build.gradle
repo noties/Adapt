@@ -1,13 +1,13 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.vanniktech.publish)
 }
 
 android {
     namespace 'io.noties.adapt.ui.flex'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         minSdkVersion config['min-sdk']
@@ -15,37 +15,34 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility config['java-target']
+        targetCompatibility config['java-target']
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
+        jvmTarget = config['java-target']
     }
 
     // even if you do not use resources, robolectric still requires this,
     //  otherwise it would skip tests
     testOptions.unitTests.includeAndroidResources = true
-
-    lintOptions {
+    lint {
         fatal 'StopShip'
     }
+
 }
 
 dependencies {
     api project(':adapt-ui')
 
-    api deps['x-annotations']
+    api libs.androidx.annotations
 
-    api deps['flexbox']
+    api libs.google.flexbox
 
     testImplementation project(':adapt-ui-test-shared')
 }
 
-apply from: '../publish.gradle'
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+}

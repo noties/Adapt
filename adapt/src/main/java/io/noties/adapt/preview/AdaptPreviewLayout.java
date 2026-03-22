@@ -34,6 +34,8 @@ public abstract class AdaptPreviewLayout extends FrameLayout {
         final Adapt adapt = createAdapt(layout);
 
         adapt.setItems(ItemUtils.assignIdsAccordingToIndex(items()));
+
+        onCreated();
     }
 
     @NonNull
@@ -71,5 +73,9 @@ public abstract class AdaptPreviewLayout extends FrameLayout {
     @NonNull
     protected Adapt createAdapt(@NonNull ViewGroup viewGroup) {
         return AdaptViewGroup.init(viewGroup);
+    }
+
+    protected void onCreated() {
+
     }
 }

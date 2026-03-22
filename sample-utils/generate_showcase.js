@@ -24,36 +24,154 @@ const screenshots = {
     '20230716140149': 'ui_showcase_web.jpg'
 };
 
+const processScreenshotFile = (sample) => {
+    const id = sample['id'];
+    const screenshot = screenshots[id];
+
+    // check required file exists
+    if (!screenshot) {
+        return {
+            message: "Missing required screenshot for showcase",
+            ...sample
+        }
+    }
+
+    // the path should be from the root
+    //  but this script is not at the root...
+    const path = `../assets/showcase/${screenshot}`;
+    const exists = fs.existsSync(path);
+
+    if (!exists) {
+        throw {
+            message: "Showcase screenshot is not found",
+            path,
+            ...sample
+        }
+    }
+
+    return path;
+};
+
+const processSourceFile = (sample) => {
+    const className = (() => {
+        const re = /.*\.(\w+)/
+        const match = sample['javaClassName'].match(re);
+        return match[1];
+    })();
+
+    const filePath = `../sample/src/main/java/io/noties/adapt/sample/samples/showcase/${className}.kt`
+    const exists = fs.existsSync(filePath);
+
+    if (!exists) {
+        throw {
+            message: "Source file is not found",
+            filePath,
+            className,
+            ...sample
+        }
+    }
+
+    return {
+        className,
+        filePath,
+    };
+};
+
 const json = fs.readFileSync('../sample/samples.json', { encoding: 'utf-8' });
 const samples = JSON.parse(json)
     .filter(sample => sample['tags'].includes('showcase'))
     .sort((lhs, rhs) => rhs.id < lhs.id)
     .reverse()
     .map(sample => {
+
+        const screenshot = processScreenshotFile(sample);
+        const { className, filePath } = processSourceFile(sample);
+
+        if (!className || !filePath) {
+            throw {
+                message: "Unexpected state, missing required properties",
+                className,
+                filePath
+            }
+        }
+
         return {
             title: sample['title'],
             description: sample['description'],
-            screenshot: screenshots[sample['id']],
-            className: (() => {
-                const re = /.*\.(\w+)/
-                const match = sample['javaClassName'].match(re);
-                return match[1];
-            })()
+            screenshot,
+            className,
+            filePath,
         };
     })
     .map(sample => {
-        return `<tr>
-<td>
-    <div>
-        <h3>${sample.title}</h3>
-        <span>${sample.description}</span>
-        <br />
-        <a href="./sample/src/main/java/io/noties/adapt/sample/samples/showcase/${sample.className}.kt">${sample.className}</a>
-    </div>
-</td>
-<td><a href="./art/${sample.screenshot}"><img src="./art/${sample.screenshot}"></a></td>
+        return `
+<tr>
+    <td>
+        <div>
+            <h3>${sample.title}</h3>
+            <span>${sample.description}</span>
+            <br />
+            <a href="${sample.filePath}">${sample.className}</a>
+        </div>
+    </td>
+    <td><a href="${sample.screenshot}"><img src="${sample.screenshot}"></a></td>
 </tr>`
     })
-    .join("");
+    .join("\n\n");
 
-console.log(samples);
+
+const file = '../PREVIEW_SHOWCASE.md';
+
+const template = (() => {
+    const text = fs.readFileSync(file, { encoding: 'utf-8' });
+
+    const markerStart = '<!-- FROM HERE -->';
+    const markerEnd = '<!-- TO HERE -->';
+
+    const header = (() => {
+        const index = text.indexOf(markerStart);
+        // (null > -1) = true (jshit)
+        if (index && index > -1) {
+            // all the text above the marker
+            return text.substring(0, index).trim();
+        } else {
+            throw {
+                message: "Missing marker-start",
+                markerStart
+            }
+        }
+    })();
+
+    const footer = (() => {
+        const index = text.indexOf(markerEnd);
+        if (index && index > -1) {
+            return text.substring(index + markerEnd.length).trim();
+        } else {
+            throw {
+                message: "Missing marker-end",
+                markerEnd
+            }
+        }
+    })();
+
+    return {
+        header,
+        footer,
+        markerStart,
+        markerEnd
+    };
+})();
+
+const newContent = `
+${template.header}
+
+${template.markerStart}
+
+${samples}
+
+${template.markerEnd}
+
+${template.footer}
+`;
+
+fs.writeFileSync(file, newContent, { encoding: 'utf-8' });

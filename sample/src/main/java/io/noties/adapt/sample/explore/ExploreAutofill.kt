@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.view.autofill.AutofillManager
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import io.noties.adapt.sample.explore.ExploreOnFocusChangeListener.onFocusChanged
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.onClick
+import io.noties.adapt.ui.util.onFocusChanged
 
 object ExploreAutofill {
 

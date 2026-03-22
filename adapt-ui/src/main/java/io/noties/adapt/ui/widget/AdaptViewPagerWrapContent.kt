@@ -1,25 +1,13 @@
 package io.noties.adapt.ui.widget
 
 import android.content.Context
-import android.os.Build
 import android.transition.TransitionManager
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import io.noties.adapt.ui.LayoutParams
-import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.element.Element
 import io.noties.adapt.viewpager.AdaptViewPager
 import kotlin.math.roundToInt
 
-/**
- * NB! in order to function ViewPager must be initialized with AdaptViewPager.init
- * @since $UNRELEASED;
- */
-@Suppress("FunctionName")
-fun <LP : LayoutParams> ViewFactory<LP>.AdaptPagerWrapContent(
-) = Element { AdaptViewPagerWrapContent(it) }
-
-// view pager is great, if it is added to a scroll view, then the scroll view is not scrolling
+// view pager is great, but if it is added to a scroll view, then the scroll view is not scrolling
 /**
  * Requires ViewPager to be initialized with Adapt - [AdaptViewPager.init]
  * @since $UNRELEASED;
@@ -65,10 +53,9 @@ class AdaptViewPagerWrapContent(context: Context) : ViewPager(context) {
     private fun heightSpec(originalWidthSpec: Int, originalHeightSpec: Int): Int? {
 
         val adapt = AdaptViewPager.find(this)
-        val heightMode = MeasureSpec.getMode(originalHeightSpec)
         val currentItem = this.currentItem
 
-        if (adapt == null || currentItem < 0 || MeasureSpec.AT_MOST != heightMode) {
+        if (adapt == null || currentItem < 0) {
             return null
         }
 
@@ -99,9 +86,7 @@ class AdaptViewPagerWrapContent(context: Context) : ViewPager(context) {
     class DefaultChangeHandler : ChangeHandler {
         override fun beforeChange(pager: AdaptViewPagerWrapContent) {
             val parent = pager.parent as? ViewGroup ?: return
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                TransitionManager.endTransitions(parent)
-            }
+            TransitionManager.endTransitions(parent)
             TransitionManager.beginDelayedTransition(parent)
         }
 

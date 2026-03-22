@@ -17,7 +17,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.HStack(
     ElementViewFactory.HStack,
     {
         it.orientation = LinearLayout.HORIZONTAL
-        it.gravity = gravity.value
+        it.gravity = gravity.rawValue
     },
     children
 )

@@ -11,6 +11,8 @@ import androidx.annotation.DrawableRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
 
 @Suppress("FunctionName")
 fun <LP : LayoutParams> ViewFactory<LP>.Image(): ViewElement<ImageView, LP> =
@@ -77,6 +79,32 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
     it.scaleType = scaleType
 }
 
+@JvmInline
+value class ImageScaleType(val rawValue: ScaleType) {
+    companion object {
+        val matrix get() = ImageScaleType(ScaleType.MATRIX)
+        val fitXY get() = ImageScaleType(ScaleType.FIT_XY)
+        val fitStart get() = ImageScaleType(ScaleType.FIT_START)
+        val fitCenter get() = ImageScaleType(ScaleType.FIT_CENTER)
+        val fitEnd get() = ImageScaleType(ScaleType.FIT_END)
+        val center get() = ImageScaleType(ScaleType.CENTER)
+        val centerCrop get() = ImageScaleType(ScaleType.CENTER_CROP)
+        val centerInside get() = ImageScaleType(ScaleType.CENTER_INSIDE)
+
+        fun raw(rawValue: ScaleType) = ImageScaleType(rawValue)
+    }
+}
+
+/**
+ * Scale Type
+ * @see ImageView.setScaleType
+ */
+fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageScaleType(
+    builder: ImageScaleType.Companion.() -> ImageScaleType
+): ViewElement<V, LP> = onView {
+    it.scaleType = builder(ImageScaleType).rawValue
+}
+
 /**
  * Null value for the `mode` argument would not set it, otherwise tint value becomes
  * cleared according to the documentation.
@@ -89,11 +117,19 @@ fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
 ): ViewElement<V, LP> = imageTint(ColorStateList.valueOf(color), mode)
 
 /**
+ * @see ImageView.setImageTintList
+ */
+inline fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
+    block: ColorsBuilder
+) = imageTint(block(Colors))
+
+/**
  * Null value for the `mode` argument would not set it, otherwise tint value becomes
  * cleared according to the documentation.
  * @see ImageView.setImageTintList
  * @see ImageView.setImageTintMode
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.imageTintWithState
  */
 fun <V : ImageView, LP : LayoutParams> ViewElement<V, LP>.imageTint(
     colorStateList: ColorStateList?,

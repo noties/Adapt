@@ -1,5 +1,164 @@
 [
   {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickyCardHeaderSample",
+    "id": "20241211001529",
+    "title": "Sticky header card",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "sticky"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.windowsinsets.WindowInsetsSample",
+    "id": "20241203023735",
+    "title": "WindowInsets usage",
+    "description": "Usage of \u003ctt\u003eWindowInsets\u003c/tt\u003e (with limited pre-30 support)",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.item.ItemTypeFactorySample",
+    "id": "20241130014533",
+    "title": "ItemTypeFactory usage",
+    "description": "",
+    "tags": [
+      "adapt-ui"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBordersSample",
+    "id": "20241110154706",
+    "title": "Grid borders",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridAnimatedLetterSample",
+    "id": "20241107234915",
+    "title": "Grid alphabet animated",
+    "description": "Draws letters with grid cells and animates transition between them",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayItemSample",
+    "id": "20241106025706",
+    "title": "GridOverlay with adapter Item",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlayPlacementSample",
+    "id": "20241104022011",
+    "title": "Grid overlay layout placements",
+    "description": "Various samples of different span rules to layout overlay elements",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridBasicSample",
+    "id": "20241103154220",
+    "title": "Grid sample",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.grid.GridOverlaySample",
+    "id": "20241102225551",
+    "title": "GridOverlay",
+    "description": "Usage of Grid overlays (background, foreground, etc) with TransitionManager to build dynamic and animatable grids",
+    "tags": [
+      "adapt-ui",
+      "grid",
+      "interactive",
+      "widget"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIViewStateSample",
+    "id": "20241017013604",
+    "title": "AdaptUI ViewState",
+    "description": "Usage of ViewState (also known as \u0026quot;drawable state\u0026quot; on native Android layer), \u003ctt\u003epressed\u003c/tt\u003e, \u003ctt\u003efocused\u003c/tt\u003e and other android.R.attr attributes",
+    "tags": [
+      "adapt-ui",
+      "view-state"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.getter.AdaptGetterSample",
+    "id": "20240924213029",
+    "title": "AdaptGetter usage",
+    "description": "",
+    "tags": [
+      "getter"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUiTextInputImeOptionsSample",
+    "id": "20240331120232",
+    "title": "Text.textImeOptions",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "text"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIScrollIfScrollsSample",
+    "id": "20240327011222",
+    "title": "AdaptUI. Scroll if content scrolls else wrap height",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "interactive",
+      "recipe"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUITextInputTypeSample",
+    "id": "20240326221901",
+    "title": "Text.textInputType",
+    "description": "",
+    "tags": [
+      "adapt-ui",
+      "text"
+    ]
+  },
+  {
+    "javaClassName": "io.noties.adapt.sample.samples.adaptui.ActivitySetContentUISample",
+    "id": "20240326215919",
+    "title": "Activity.setContentUI",
+    "description": "Helper function to set \u003ctt\u003eActivity\u0027s\u003c/tt\u003e content via \u003ctt\u003eAdaptUI\u003c/tt\u003e",
+    "tags": [
+      "adapt-ui",
+      "util"
+    ]
+  },
+  {
     "javaClassName": "io.noties.adapt.sample.samples.showcase.AdaptUIShowcaseWeb",
     "id": "20230716140149",
     "title": "[Showcase] AdaptUI Web element",
@@ -15,7 +174,8 @@
     "title": "Pivot",
     "description": "Handling of pivot point (x,y) for scale and rotate",
     "tags": [
-      "adapt-ui"
+      "adapt-ui",
+      "interactive"
     ]
   },
   {
@@ -277,7 +437,6 @@
     "tags": [
       "adapt-ui",
       "gradient",
-      "graphics",
       "shape"
     ]
   },
@@ -294,9 +453,11 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIDrawableStateSample",
     "id": "20230513001821",
-    "title": "DrawableState",
-    "description": "Receive drawable state updates",
-    "tags": []
+    "title": "ViewState",
+    "description": "Receive view state updates (previously known-as: \u003ctt\u003eDrawableState\u003c/tt\u003e)",
+    "tags": [
+      "adapt-ui"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIShapeShadowSample",
@@ -315,23 +476,29 @@
     "title": "WebView element",
     "description": "",
     "tags": [
-      "web",
-      "webview"
+      "adapt-ui",
+      "web-view",
+      "widget"
     ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIStickySample",
     "id": "20230403235622",
-    "title": "AdaptUI[Explore] sticky with reverse linear layout",
+    "title": "Sticky view with reverse linear layout",
     "description": "",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "widget"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIRelativeSample",
     "id": "20230402020404",
     "title": "[Explore] UI, RelativeLayout concept",
     "description": "",
-    "tags": []
+    "tags": [
+      "explore"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIClipSample",
@@ -376,7 +543,12 @@
     "id": "20221126000447",
     "title": "AdaptUI - Flex interactive guide",
     "description": "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/",
-    "tags": []
+    "tags": [
+      "adapt-ui",
+      "flex",
+      "interactive",
+      "widget"
+    ]
   },
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIExtensionsSample",
@@ -399,11 +571,11 @@
   {
     "javaClassName": "io.noties.adapt.sample.samples.adaptui.AdaptUIAccessibilitySample",
     "id": "20221009162741",
-    "title": "AdaptUI - Accessibility",
+    "title": "AdaptUI - Accessibility (a11y)",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-accessibility"
+      "accessibility",
+      "adapt-ui"
     ]
   },
   {
@@ -412,8 +584,7 @@
     "title": "AdaptUI - ViewGroup",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-viewgroup"
+      "adapt-ui"
     ]
   },
   {
@@ -423,8 +594,7 @@
     "description": "",
     "tags": [
       "adapt-ui",
-      "ui-text",
-      "ui-text-input"
+      "text"
     ]
   },
   {
@@ -433,8 +603,7 @@
     "title": "AdaptUI layout attributes",
     "description": "",
     "tags": [
-      "adapt-ui",
-      "ui-layout"
+      "adapt-ui"
     ]
   },
   {
@@ -444,7 +613,7 @@
     "description": "Usage of \u003cdef\u003ePager\u003c/def\u003e element (ViewPager)",
     "tags": [
       "adapt-ui",
-      "ui-pager"
+      "pager"
     ]
   },
   {
@@ -454,7 +623,7 @@
     "description": "Asset, Capsule, Circle, Corners, Oval, Rectangle, RoundedRectangle",
     "tags": [
       "adapt-ui",
-      "ui-shape"
+      "shape"
     ]
   },
   {
@@ -473,7 +642,8 @@
     "description": "",
     "tags": [
       "adapt-ui",
-      "flexbox"
+      "flex",
+      "widget"
     ]
   },
   {

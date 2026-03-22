@@ -15,7 +15,7 @@ class $SAMPLE_NAME$: io.noties.adapt.sample.samples.adaptui.AdaptUISampleView() 
     }
 }
 
-@io.noties.adapt.sample.util.Preview
+@io.noties.adapt.preview.Preview
 @Suppress("ClassName", "unused")
 private class Preview__$SAMPLE_NAME$(
     context: android.content.Context, 

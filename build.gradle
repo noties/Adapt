@@ -1,13 +1,11 @@
-buildscript {
-    ext.kotlin_version = '1.7.21'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.paparazzi) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.vanniktech.publish) apply false
 }
 
 allprojects {
@@ -16,50 +14,32 @@ allprojects {
         mavenCentral()
     }
 
-    group = 'io.noties'
-    version = '5.0.0'
+    group = 'io.noties.adapt'
+    version = '6.0'
 
-    tasks.withType(Javadoc) {
+    tasks.withType(Javadoc).configureEach {
         enabled(false)
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-wrapper {
-    gradleVersion '7.3.3'
-    distributionType 'all'
+// additional maven repo to verify publishing locally
+subprojects {
+    plugins.withId(libs.plugins.vanniktech.publish.get().pluginId) {
+        publishing {
+            repositories {
+                maven {
+                    name = 'localDir'
+                    url = "file:${rootProject.rootDir}/.maven"
+                }
+            }
+        }
+    }
 }
 
 ext {
-
     config = [
-            'min-sdk'    : 21,
-            'target-sdk' : 33,
-            'build-tools': '33.0.2'
-    ]
-
-    deps = [
-            'x-annotations' : 'androidx.annotation:annotation:1.5.0',
-            // https://developer.android.com/jetpack/androidx/releases/recyclerview
-            'x-recyclerview': 'androidx.recyclerview:recyclerview:1.2.1',
-            'x-viewpager'   : 'androidx.viewpager:viewpager:1.0.0',
-            'x-viewpager2'  : 'androidx.viewpager2:viewpager2:1.0.0',
-
-            // https://github.com/google/flexbox-layout
-            'flexbox': 'com.google.android.flexbox:flexbox:3.0.0',
-
-            'junit4'        : 'junit:junit:4.13.2',
-
-            // https://github.com/mockito/mockito
-            'mockito'       : 'org.mockito:mockito-core:4.8.0',
-
-            // https://github.com/robolectric/robolectric
-            'robolectric'   : 'org.robolectric:robolectric:4.9',
-
-            // https://github.com/mockito/mockito-kotlin
-            'mockito-kotlin': 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+            'min-sdk'    : 23,
+            'target-sdk' : 35,
+            'java-target': org.gradle.api.JavaVersion.VERSION_11
     ]
 }

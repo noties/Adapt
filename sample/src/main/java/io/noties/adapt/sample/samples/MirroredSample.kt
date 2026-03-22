@@ -12,15 +12,16 @@ import androidx.viewpager2.widget.ViewPager2
 import io.noties.adapt.Adapt
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.ItemGenerator
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
 import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.PageIndicatorItem
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 import io.noties.adapt.viewgroup.AdaptViewGroup
 import io.noties.adapt.viewgroup.TransitionChangeHandler
 
@@ -31,7 +32,7 @@ import io.noties.adapt.viewgroup.TransitionChangeHandler
             "<tt>LinearLayout inside ScrollView</tt> are initialized to duplicate content (same items)",
     tags = ["recyclerview", "listview", "viewgroup", "viewpager2"]
 )
-class MirroredSample : SampleView() {
+class MirroredSample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_viewpager2

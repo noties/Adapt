@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.noties.adapt.Item
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 
@@ -16,7 +16,7 @@ import io.noties.adapt.sample.items.ControlItem
     description = "<b><tt>RecyclerView</tt></b> with <tt>GridLayoutManager</tt>",
     tags = ["recyclerview", "grid"]
 )
-class RecyclerViewGridSample : SampleView() {
+class RecyclerViewGridSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view
 

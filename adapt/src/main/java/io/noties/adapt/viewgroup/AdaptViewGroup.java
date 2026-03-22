@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -23,6 +24,15 @@ import io.noties.adapt.util.ListUtils;
 public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     public interface Configuration {
+
+        /**
+         * if {@param hideIfEmpty} is {@code true}, then container ViewGroup
+         * will have visibility=GONE if adapt is empty, otherwise container\'s visibility won\'t be modified.
+         * <p>
+         * By default - {@code true}
+         */
+        @NonNull
+        Configuration hideIfEmpty(boolean hideIfEmpty);
 
         @NonNull
         Configuration layoutInflater(@NonNull LayoutInflater inflater);
@@ -98,12 +108,16 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
     private static final int ID_ITEM = R.id.adapt_internal_item;
     private static final int ID_HOLDER = R.id.adapt_internal_holder;
 
+    private final boolean hideIfEmpty;
     private final ViewGroup viewGroup;
     private final ConfigurationImpl configuration;
+
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
 
     private List<Item<? extends Item.Holder>> items;
 
     AdaptViewGroup(@NonNull ViewGroup viewGroup, @NonNull ConfigurationImpl configuration) {
+        this.hideIfEmpty = configuration.hideIfEmpty;
         this.viewGroup = viewGroup;
         this.configuration = configuration;
 
@@ -143,9 +157,23 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
             if (items == null
                     || items.isEmpty()) {
+
                 // no need to validate what we have at this point -> nothing should be displayed
                 changeHandler.removeAll(viewGroup);
+
+                // check if empty
+                if (hideIfEmpty) {
+                    viewGroup.setVisibility(View.GONE);
+                }
+
                 return;
+            }
+
+            // check if setting is ON (otherwise do not check visibility
+            if (hideIfEmpty) {
+                if (viewGroup.getVisibility() != View.VISIBLE) {
+                    viewGroup.setVisibility(View.VISIBLE);
+                }
             }
 
             configuration.adaptViewGroupDiff.diff(
@@ -159,12 +187,30 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
             changeHandler.end(viewGroup);
 
             this.items = items;
+
+            triggerOnItemsChanged(items);
         }
     }
 
     @Override
     public void notifyAllItemsChanged() {
         setItems(items);
+    }
+
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
+        }
     }
 
     @Nullable
@@ -234,9 +280,17 @@ public class AdaptViewGroup implements Adapt, AdaptViewGroupDiff.Parent {
 
     private static class ConfigurationImpl implements Configuration {
 
+        private boolean hideIfEmpty = true;
         private LayoutInflater inflater;
         private AdaptViewGroupDiff adaptViewGroupDiff = AdaptViewGroupDiff.create();
         private ChangeHandler changeHandler = new ViewGroupChangeHandler();
+
+        @NonNull
+        @Override
+        public Configuration hideIfEmpty(boolean hideIfEmpty) {
+            this.hideIfEmpty = hideIfEmpty;
+            return this;
+        }
 
         @NonNull
         @Override

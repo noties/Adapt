@@ -1,5 +1,6 @@
 package io.noties.adapt.ui
 
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.SystemClock
@@ -9,8 +10,15 @@ import android.view.View.VISIBLE
 import android.view.ViewTreeObserver
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
-import androidx.annotation.RequiresApi
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.dimen.Dimens
+import io.noties.adapt.ui.app.dimen.DimensBuilder
+import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.gradient.GradientBuilder
+import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.shape.ShapeFactory
 import io.noties.adapt.ui.shape.ShapeFactoryBuilder
@@ -92,11 +100,36 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.tag(
  * Background
  * @see View.setBackgroundColor
  */
+@Deprecated(
+    "Use `backgroundColor` instead",
+    replaceWith = ReplaceWith(
+        "backgroundColor(color)",
+        imports = ["io.noties.adapt.ui.backgroundColor"]
+    )
+)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
+    @ColorInt color: Int
+) = backgroundColor(color)
+
+/**
+ * Background
+ * @see View.setBackgroundColor
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundColor(
     @ColorInt color: Int
 ): ViewElement<V, LP> = onView {
     it.setBackgroundColor(color)
 }
+
+/**
+ * Background that receives [Colors] instance to provide named color values
+ * ```kotlin
+ * Text()
+ *   .background { main }
+ * ```
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundColor(builder: ColorsBuilder) =
+    backgroundColor(builder(Colors))
 
 /**
  * @see View.setBackground
@@ -123,6 +156,17 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.background(
 ): ViewElement<V, LP> = background(block(ShapeFactory.NoOp))
 
 /**
+ * @see View.setBackground
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundGradient(
+    gradient: GradientBuilder
+): ViewElement<V, LP> = background {
+    Rectangle {
+        fill(gradient(Gradient))
+    }
+}
+
+/**
  * @see background(Int)
  * @see background(Drawable?)
  */
@@ -132,17 +176,46 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundDefaultSelectable
     }
 
 /**
+ * @see backgroundResource(Int)
+ * @see background(Drawable?)
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.backgroundResource(
+    @DrawableRes id: Int
+): ViewElement<V, LP> = onView {
+    it.setBackgroundResource(id)
+}
+
+
+/**
+ * Foreground color
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
+    @ColorInt color: Int
+) = foreground(ColorDrawable(color))
+
+/**
+ * Foreground color
+ * ```kotlin
+ * View()
+ *   .foregroundColor { main }
+ * ```
+ * @see Colors
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundColor(
+    builder: ColorsBuilder
+) = foregroundColor(builder(Colors))
+
+/**
  * Foreground
  * @see View.setForeground
  * @see View.setForegroundGravity
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     drawable: Drawable?,
     gravity: Gravity? = null
 ): ViewElement<V, LP> = onView { view ->
     view.foreground = drawable
-    gravity?.also { view.foregroundGravity = it.value }
+    gravity?.also { view.foregroundGravity = it.rawValue }
 }
 
 /**
@@ -150,7 +223,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
  * @see View.setForegroundGravity
  * @see Shape.newDrawable
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     shape: Shape,
     gravity: Gravity? = null
@@ -162,7 +234,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
  * @see Shape.newDrawable
  * @see ShapeFactory
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
     gravity: Gravity? = null,
     block: ShapeFactoryBuilder
@@ -171,7 +242,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foreground(
 /**
  * @see View.setForeground
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.foregroundDefaultSelectable(): ViewElement<V, LP> =
     onView {
         it.foreground = resolveDefaultSelectableDrawable(it.context)
@@ -244,7 +314,7 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.selected(
  * @see View.setVisibility
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.visible(
-    visible: Boolean
+    visible: Boolean = true
 ): ViewElement<V, LP> = onView {
     it.visibility = if (visible) VISIBLE else GONE
 }
@@ -302,6 +372,18 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
 ): ViewElement<V, LP> = onView {
     it.elevation = elevation.dip.toFloat()
 }
+
+/**
+ * Elevation
+ * ```kotlin
+ * View()
+ *   .elevation { elevationLight }
+ * ```
+ * @see View.setElevation
+ */
+inline fun <V : View, LP : LayoutParams> ViewElement<V, LP>.elevation(
+    builder: DimensBuilder
+) = elevation(builder(Dimens))
 
 /**
  * Translation
@@ -385,14 +467,49 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewScrollChanged(
     }
 }
 
+@JvmInline
+value class OverScrollMode(val rawValue: Int) {
+    companion object {
+        val never: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_NEVER)
+        val always: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_ALWAYS)
+        val ifContentScrolls: OverScrollMode get() = OverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS)
+
+        fun raw(rawValue: Int) = OverScrollMode(rawValue)
+    }
+}
+
 /**
  * OverScrollMode
  * @see View.setOverScrollMode
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
+    builder: OverScrollMode.Companion.() -> OverScrollMode
+) = onView {
+    it.overScrollMode = builder(OverScrollMode).rawValue
+}
+
+/**
+ * OverScrollMode
+ * @see View.setOverScrollMode
+ */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Consider using overScrollMode builder version")
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
     overScrollMode: Int
 ): ViewElement<V, LP> = onView {
     it.overScrollMode = overScrollMode
+}
+
+@JvmInline
+value class ScrollBarStyle(val rawValue: Int) {
+    companion object {
+        val insideOverlay: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        val insideInset: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        val outsideOverlay: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+        val outsideInset: ScrollBarStyle get() = ScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
+
+        fun raw(value: Int) = ScrollBarStyle(value)
+    }
 }
 
 /**
@@ -400,10 +517,31 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.overScrollMode(
  * @see View.setScrollBarStyle
  */
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
+    builder: ScrollBarStyle.Companion.() -> ScrollBarStyle
+): ViewElement<V, LP> = onView {
+    it.scrollBarStyle = builder(ScrollBarStyle).rawValue
+}
+
+/**
+ * ScrollBarStyle
+ * @see View.setScrollBarStyle
+ */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Prefer the builder version")
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarStyle(
     scrollBarStyle: Int
 ): ViewElement<V, LP> = onView {
     it.scrollBarStyle = scrollBarStyle
 }
+
+/**
+ * Scroll bars
+ * @see View.setHorizontalScrollBarEnabled
+ * @see View.setVerticalScrollBarEnabled
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.scrollBarsEnabled(
+    value: Boolean
+) = scrollBarsEnabled(horizontal = value, vertical = value)
 
 /**
  * Scroll bars
@@ -518,8 +656,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.onViewPreDrawOnce(
     block(it)
     unregisterOnPreDraw()
 }
-
-// TODO: use normal and unregister on first event
 
 /**
  * NB! This is a callback when view is attached to [android.view.Window], not its parent
@@ -685,4 +821,9 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.pivotRelative(
     value: Float
 ) = pivotRelative(value, value)
+
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.requestFocus() = onView {
+    it.requestFocus()
+}
+
 

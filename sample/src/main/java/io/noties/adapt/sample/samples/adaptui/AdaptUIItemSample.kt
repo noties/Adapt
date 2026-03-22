@@ -2,17 +2,19 @@ package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
+import io.noties.adapt.preview.Preview
 import io.noties.adapt.sample.ItemGenerator
-import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.CardItem
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -29,53 +31,48 @@ import io.noties.adapt.ui.util.Gravity
 
 @AdaptSample(
     id = "20230116140759",
-    "AdaptUI, Item inside ViewFactory",
+    title = "AdaptUI, Item inside ViewFactory",
     description = "Usage of an Item in ViewFactory when building UI view (AdaptView)",
-    tags = ["adapt-ui", "adapt-view"]
+    tags = [Tags.adaptUi, Tags.adaptView]
 )
-class AdaptUIItemSample : SampleView() {
+class AdaptUIItemSample : SampleViewUI() {
+    override fun ViewFactory<LayoutParams>.body() {
+        VStack {
 
-    override val layoutResId: Int = R.layout.view_sample_frame
+            Text("This is just some inline text")
+                .textSize(16)
+                .textColor { black }
+                .padding(16)
 
-    override fun render(view: View) {
-        ViewFactory.addChildren(view as ViewGroup) {
-            VStack {
+            View()
+                .adaptView(CardItem("Q", Colors.orange, "It is an ITEM"))
 
-                Text("This is just some inline text")
-                    .textSize(16)
-                    .textColor(Colors.black)
-                    .padding(16)
+            Text("This is just some inline text")
+                .textSize(16)
+                .textColor(Colors.black)
+                .padding(16)
 
-                View()
-                    .adaptView(CardItem("Q", Colors.orange, "It is an ITEM"))
+            // references AdaptElement<AdaptView>
+            val adapt = View()
+                .adaptView {
+                    it.item(CardItem("Q", Colors.orange, "It is an ITEM #2"))
+                    it.changeHandlerTransitionParent()
+                }
 
-                Text("This is just some inline text")
-                    .textSize(16)
-                    .textColor(Colors.black)
-                    .padding(16)
-
-                // references AdaptElement<AdaptView>
-                val adapt = View()
-                    .adaptView {
-                        it.item(CardItem("Q", Colors.orange, "It is an ITEM #2"))
-                        it.changeHandlerTransitionParent()
+            Text("Click me")
+                .textSize(17)
+                .textAllCaps()
+                .textColor(Colors.black)
+                .textGravity(Gravity.center)
+                .layoutMargin(16)
+                .padding(horizontal = 16, vertical = 12)
+                .background(RoundedRectangleShape(8).fill(Colors.orange))
+                .also { element ->
+                    ItemGenerator.reset()
+                    element.onClick {
+                        adapt.adapt.setItem(ItemGenerator.next(0)[0])
                     }
-
-                Text("Click me")
-                    .textSize(17)
-                    .textAllCaps()
-                    .textColor(Colors.black)
-                    .textGravity(Gravity.center)
-                    .layoutMargin(16)
-                    .padding(horizontal = 16, vertical = 12)
-                    .background(RoundedRectangleShape(8).fill(Colors.orange))
-                    .also { element ->
-                        ItemGenerator.reset()
-                        element.onClick {
-                            adapt.adapt.setItem(ItemGenerator.next(0)[0])
-                        }
-                    }
-            }
+                }
         }
     }
 }
@@ -86,6 +83,6 @@ private class Preview__AdaptUIItemSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIItemSample()
 }

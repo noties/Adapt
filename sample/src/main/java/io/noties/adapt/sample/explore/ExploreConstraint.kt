@@ -1,19 +1,29 @@
 package io.noties.adapt.sample.explore
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.FloatRange
-import androidx.constraintlayout.widget.ConstraintLayout
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.element.ElementGroup
 
+@Suppress("StopShip")
 object ExploreConstraint {
+
+    abstract class ConstraintLayout(context: Context) : ViewGroup(context) {
+        abstract class LayoutParams: ViewGroup.LayoutParams(0, 0)
+
+        companion object {
+            fun create(context: Context): ConstraintLayout = TODO()
+        }
+    }
+
     @Suppress("FunctionName")
     fun <LP : ViewGroup.LayoutParams> ViewFactory<LP>.Constraint(
         children: ViewFactory<ConstraintLayout.LayoutParams>.() -> Unit
     ): ViewElement<ConstraintLayout, LP> = ElementGroup(
-        { ConstraintLayout(it) },
+        { ConstraintLayout.create(it) },
         children
     )
 

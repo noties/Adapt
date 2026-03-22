@@ -17,7 +17,7 @@ fun <LP : LayoutParams> ViewFactory<LP>.VStack(
     ElementViewFactory.VStack,
     {
         it.orientation = LinearLayout.VERTICAL
-        it.gravity = gravity.value
+        it.gravity = gravity.rawValue
     },
     children
 )

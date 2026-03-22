@@ -13,6 +13,8 @@ import io.noties.adapt.ui.ViewFactory
  * and then replace self with children of the supplied factory. Multiple children
  * are supported. Setting visibility [View.VISIBLE] or [View.INVISIBLE] is the same
  * as calling [LazyView.inject] directly
+ *
+ * @see io.noties.adapt.ui.element.Lazy
  */
 @SuppressLint("ViewConstructor")
 open class LazyView internal constructor(
@@ -78,8 +80,8 @@ open class LazyView internal constructor(
         return true
     }
 
-    override fun onDraw(canvas: Canvas?) = Unit
-    override fun dispatchDraw(canvas: Canvas?) = Unit
+    override fun onDraw(canvas: Canvas) = Unit
+    override fun dispatchDraw(canvas: Canvas) = Unit
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(0, 0)

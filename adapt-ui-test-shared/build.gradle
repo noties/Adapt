@@ -1,13 +1,12 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace 'io.noties.adapt.ui.test'
 
     compileSdkVersion config['target-sdk']
-    buildToolsVersion config['build-tools']
 
     defaultConfig {
         minSdkVersion config['min-sdk']
@@ -15,12 +14,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility config['java-target']
+        targetCompatibility config['java-target']
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = config['java-target']
     }
 
     // even if you do not use resources, robolectric still requires this,
@@ -31,8 +30,8 @@ android {
 dependencies {
     api project(':adapt-ui')
 
-    api deps['junit4']
-    api deps['mockito']
-    api deps['mockito-kotlin']
-    api deps['robolectric']
+    api libs.junit
+    api libs.mockito.core
+    api libs.mockito.kotlin
+    api libs.robolectric
 }

@@ -1,11 +1,16 @@
 package io.noties.adapt.sample.samples.showcase
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.green
+import io.noties.adapt.sample.ui.color.red
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
@@ -20,21 +25,20 @@ import io.noties.adapt.ui.util.Gravity
 @AdaptSample(
     id = "20230601100213",
     title = "[Showcase] AdaptUI shape composition",
-    description = "",
-    tags = ["adapt-ui", "showcase", "shape"]
+    tags = [Tags.adaptUi, Tags.showcase, Tags.shape]
 )
-class AdaptUIShowcaseShapeComposition: AdaptUISampleView() {
+class AdaptUIShowcaseShapeComposition : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         View()
             .layoutFill()
             .background {
                 // root rectangle, by default receives whole view bounds
                 Rectangle {
-                    fill(Color.BLACK)
+                    fill { black }
 
                     // add a child circle
                     Circle {
-                        fill(Color.RED)
+                        fill { red }
                         // Circle by default uses Gravity.center, but if it has explicit bounds
                         //  it would need additional Gravity argument to be centered
                         size(48, 48, Gravity.center)
@@ -46,13 +50,13 @@ class AdaptUIShowcaseShapeComposition: AdaptUISampleView() {
                     val capsule = CapsuleShape {
                         sizeRelative(0.75F, 0.2F, Gravity.center.top)
                         translate(y = 48)
-                        fill(Color.GREEN)
+                        fill { green }
 
                         // child would be restricted to parent bounds
                         RoundedRectangle(12) {
                             // negative padding is available
                             padding(-24)
-                            fill(Color.YELLOW)
+                            fill { yellow }
                             alpha(0.25F)
                         }
                     }
@@ -62,8 +66,9 @@ class AdaptUIShowcaseShapeComposition: AdaptUISampleView() {
     }
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseShapeComposition(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseShapeComposition()
 }

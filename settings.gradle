@@ -1,7 +1,31 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = 'AdaptParent'
+
+include ':bom'
+
 include ':adapt'
-include ':sample'
-include ':sample-utils:processor'
 include ':adapt-ui'
 include ':adapt-ui-flex'
 include ':adapt-ui-test-shared'
+include ':adapt-kt'
+
+include ':sample'
+
+
+def script = new File("${rootProject.projectDir}/sample", "generate-samples.sh")
+if (script.exists()) {
+    println "Running: ${script}"
+    exec {
+        workingDir "${rootProject.projectDir}/sample"
+        commandLine "bash", script.absolutePath
+    }
+} else {
+    println "Script not found: ${script}"
+}

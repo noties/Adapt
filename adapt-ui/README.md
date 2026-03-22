@@ -1,7 +1,7 @@
 
 ## AdaptUI
 
-<img src="../art/ui_showcase_text2.jpg" height="480px">
+<img src="../assets/showcase/ui_showcase_text2.jpg" height="480px">
 
 🚧 All showcase previews can be accessed via [dedicate page](../PREVIEW_SHOWCASE.md)
 
@@ -56,7 +56,7 @@ val view = ViewFactory.newView(viewGroup)
   //  but it is possible to postpone rendering until view is attached to window
   .renderOnAttach()
   .create {
-    // root view will receive passed LayoutParams(12, 66)    
+    // root view will receive passed LayoutParams(12, 66)
     HStack {
       // just a generic View
       View()
@@ -82,7 +82,7 @@ val view = ViewFactory.newView(viewGroup)
 * `ZStack` -&gt; `android.widget.FrameLayout`
 
 #### Composite elements:
-* `HScrollStack` -&gt; `HScroll { HStack { /*children*/ } }` 
+* `HScrollStack` -&gt; `HScroll { HStack { /*children*/ } }`
 * `VScrollStack` -&gt; `VScroll { VStack { /*children*/ } }`
 
 #### Special elements:
@@ -190,8 +190,8 @@ Image()
   .elevation(4)
 ```
 
-If some functionality is not covered by provided extensions `onView` allows getting
-access to created view directly:
+If some functionality is not covered by provided
+extensions `onView` allows getting access to created view directly:
 
 ```kotlin
 Text()
@@ -214,8 +214,8 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.activated(
 // looses original types, BEWARE - limits fluent usage
 fun ViewElement<out View, *>.activated2(
   activated: Boolean = true
-) = onView { 
-  it.isActivated = activated 
+) = onView {
+  it.isActivated = activated
 }
 
 ViewFactory.createView(context) {
@@ -290,7 +290,7 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textPrimary() = this
 Text()
   .textPrimary()
   // still possible to customize it further
-  // overrides value from style extension 
+  // overrides value from style extension
   .textSize(21)
 ```
 

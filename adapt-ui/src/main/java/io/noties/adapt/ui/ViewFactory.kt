@@ -3,11 +3,10 @@ package io.noties.adapt.ui
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import io.noties.adapt.ui.util.onAttachedOnce
 
-typealias LayoutParams = ViewGroup.LayoutParams
-
-class ViewFactory<out LP : LayoutParams>(
+// TODO: change to interface (the same as colors, ect)
+//  provide helper to subclass and create final view
+open class ViewFactory<out LP : LayoutParams>(
     val context: Context,
     viewGroup: ViewGroup? = null
 ) : ViewFactoryConstants {
@@ -51,9 +50,16 @@ class ViewFactory<out LP : LayoutParams>(
 
         fun createView(
             context: Context,
-            children: ViewFactory<LayoutParams>.(Unit) -> Unit
+            children: ViewFactory<LayoutParams>.() -> Unit
         ): View = newView(context).create(children)
 
+        fun createView(
+            viewGroup: ViewGroup,
+            children: ViewFactory<LayoutParams>.() -> Unit
+        ): View = newView(viewGroup.context, viewGroup).create(children)
+
+        // TODO: consider removing the ref, it is a little weird, ref can be provided
+        //  with normal ways, so we do not complicate the api of the feature
         fun <R : Any> createView(
             context: Context,
             ref: R,
@@ -78,8 +84,20 @@ class ViewFactory<out LP : LayoutParams>(
             g: G,
             children: ViewFactory<LP>.() -> Unit
         ) {
+            addChildren(
+                ViewFactory(g),
+                g,
+                children
+            )
+        }
 
-            val factory = ViewFactory<LP>(g)
+        @JvmName("addChildrenViewFactory")
+        fun <VF : ViewFactory<LP>, G : ViewGroup, LP : LayoutParams> addChildren(
+            factory: VF,
+            g: G,
+            children: VF.() -> Unit
+        ) {
+
             val context = factory.context
 
             children(factory)
@@ -91,6 +109,7 @@ class ViewFactory<out LP : LayoutParams>(
                     el as ViewElement<View, LP>
 
                     val view = el.init(context)
+                    el.renderPreAttach()
 
                     // now layoutParams are generated
                     g.addView(view)
@@ -100,41 +119,27 @@ class ViewFactory<out LP : LayoutParams>(
         }
     }
 
-    class ViewCreator<LP : LayoutParams> internal constructor(
+    class ViewCreator(
         val context: Context,
         val viewGroup: ViewGroup?,
-        val layoutParams: LP,
-        // can request to render on first attach
-        val renderOnAttach: Boolean = false
+        val layoutParams: LayoutParams? = defaultLayoutParams,
     ) {
 
         companion object {
-            val defaultLayoutParams: LayoutParams
+            private val defaultLayoutParams: LayoutParams
                 get() = LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT
                 )
-
-            operator fun invoke(context: Context, viewGroup: ViewGroup?) = ViewCreator(
-                context,
-                viewGroup,
-                defaultLayoutParams
-            )
         }
 
-        fun <T : LayoutParams> layoutParams(layoutParams: T): ViewCreator<T> = ViewCreator(
-            context, viewGroup, layoutParams
-        )
+        fun <LP: LayoutParams> create(
+            children: ViewFactory<LP>.() -> Unit
+        ): View = create(Unit) {
+            children()
+        }
 
-        fun renderOnAttach(): ViewCreator<LP> = ViewCreator(
-            context, viewGroup, layoutParams, true
-        )
-
-        fun create(
-            children: ViewFactory<LP>.(Unit) -> Unit
-        ): View = create(Unit, children)
-
-        fun <R : Any> create(
+        fun <LP: LayoutParams, R : Any> create(
             ref: R,
             children: ViewFactory<LP>.(R) -> Unit
         ): View {
@@ -146,13 +151,15 @@ class ViewFactory<out LP : LayoutParams>(
 
             // ensure single element
             if (elements.size != 1) {
-                throw IllegalStateException("Unexpected state, view must contain exactly one root element")
+                throw IllegalStateException("Unexpected state, view must contain exactly " +
+                        "one root element, elements:$elements")
             }
 
             @Suppress("UNCHECKED_CAST")
             val root = elements[0] as ViewElement<View, LP>
 
             val view = root.init(context)
+            root.renderPreAttach()
 
             // NB! apply layout params only if original view does not contain them
             //  if it does, use them
@@ -160,13 +167,8 @@ class ViewFactory<out LP : LayoutParams>(
                 view.layoutParams = layoutParams
             }
 
-            if (renderOnAttach) {
-                // we assume that layout params would be already processed by parent
-                view.onAttachedOnce { root.render() }
-            } else {
-                // trigger render now
-                root.render()
-            }
+            // trigger render now
+            root.render()
 
             return view
         }

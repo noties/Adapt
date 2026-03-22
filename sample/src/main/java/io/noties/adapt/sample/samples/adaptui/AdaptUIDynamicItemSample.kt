@@ -5,12 +5,18 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.TextView
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
@@ -39,16 +45,15 @@ import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.copy
-import io.noties.adapt.ui.util.Gravity
 import java.util.Date
 
 @AdaptSample(
     id = "20230715105856",
     title = "[Explore] Dynamic Item",
     description = "Direct usage of an <em>Item</em> inside ViewFactory builder",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi]
 )
-class AdaptUIDynamicItemSample : AdaptUISampleView() {
+class AdaptUIDynamicItemSample : SampleViewUI() {
 
     private lateinit var updateItem: UpdateItem<MyMutableItem>
 
@@ -57,7 +62,7 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
 
             Text("Some text")
                 .textSize(21)
-                .textGravity(Gravity.center)
+                .textGravity { center }
                 .textBold()
                 .padding(16)
 
@@ -124,15 +129,15 @@ class AdaptUIDynamicItemSample : AdaptUISampleView() {
                         Text()
                             .reference(ref::letterView)
                             .layout(96, 96)
-                            .textGravity(Gravity.center)
-                            .textColor(Colors.white)
+                            .textGravity { center }
+                            .textColor { white }
                             .textBold()
                             .textSize(24)
                         Text()
                             .reference(ref::textView)
-                            .layoutGravity(Gravity.center.vertical)
+                            .layoutGravity { center.vertical }
                             .layoutMargin(leading = 8)
-                            .textColor(Colors.black)
+                            .textColor { black }
                             .textSize(17)
                     }.indent()
                         .background(base.copy())
@@ -160,6 +165,6 @@ private class Preview__AdaptUIDynamicItemSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIDynamicItemSample()
 }

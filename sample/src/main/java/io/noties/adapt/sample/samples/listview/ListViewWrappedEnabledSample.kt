@@ -7,14 +7,14 @@ import android.view.View
 import android.widget.ListView
 import io.noties.adapt.Item
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.PlainItem
 import io.noties.adapt.sample.items.wrapper.ColorBackgroundWrapper
 import io.noties.adapt.sample.items.wrapper.backgroundColor
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 
 @AdaptSample(
     id = "20210326214950",
@@ -22,7 +22,7 @@ import io.noties.adapt.sample.util.PreviewSampleView
     description = "Explicitly register <tt>ItemWrapper</tt> in a <tt>ListView</tt> with a <tt>Key</tt>",
     tags = ["listview", "wrapper", "key"]
 )
-class ListViewWrappedEnabledSample : SampleView() {
+class ListViewWrappedEnabledSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_list_view
 
@@ -67,6 +67,6 @@ private class Preview__ListViewWrappedEnabledSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = ListViewWrappedEnabledSample()
 }

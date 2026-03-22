@@ -1,3 +1,5 @@
+// I think it is obsolete now and should be removed
+
 final def isRelease = project.hasProperty('release')
 final def isSnapshot = project.hasProperty('snapshot')
 
@@ -15,6 +17,9 @@ if (isRelease || isSnapshot) {
     apply plugin: 'signing'
 
     afterEvaluate {
+        // ossrh migration
+        // https://www.endoflineblog.com/migrate-maven-central-publishing-to-central-portal-for-a-gradle-project
+        // TODO: investigate the https://github.com/vanniktech/gradle-maven-publish-plugin/
         publishing {
 
             publications {
@@ -56,16 +61,16 @@ if (isRelease || isSnapshot) {
             }
 
             repositories {
-                // local repository - in a directory
+//                // local repository - in a directory
 //                maven {
-//                    url "$rootDir/repo"
+//                    url MAVEN_LOCAL_DIR
 //                }
 
                 // sonatype
                 maven {
                     url isRelease
-                            ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                            : 'https://oss.sonatype.org/content/repositories/snapshots/'
+                            ? 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
+                            : 'https://central.sonatype.com/repository/maven-snapshots/'
 
                     credentials(PasswordCredentials) {
                         username NEXUS_USERNAME

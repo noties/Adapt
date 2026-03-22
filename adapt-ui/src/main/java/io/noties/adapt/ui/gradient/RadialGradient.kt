@@ -6,6 +6,7 @@ import android.graphics.Shader
 import androidx.annotation.CheckResult
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.shape.Dimension
 import kotlin.math.min
 
@@ -21,7 +22,7 @@ class RadialGradient internal constructor(
     internal var radius: Dimension? = null
     internal var tileMode: Shader.TileMode? = null
 
-    companion object {
+    companion object : Colors {
 
         @CheckResult
         fun center() = Builder(Edge(null))
@@ -63,6 +64,7 @@ class RadialGradient internal constructor(
             } else {
                 positionOfEdge(type.edge, bounds)
             }
+
             is Angle -> {
                 val (start, _) = positionsOfAngle(type.angle, bounds)
                 start
@@ -108,6 +110,15 @@ class RadialGradient internal constructor(
         ): RadialGradient = RadialGradient(
             type,
             intArrayOf(startColor, endColor),
+            null
+        )
+
+        @CheckResult
+        fun setColors(
+            @ColorInt colors: Collection</*@ColorInt*/Int>
+        ) = RadialGradient(
+            type,
+            colors.toIntArray(),
             null
         )
 

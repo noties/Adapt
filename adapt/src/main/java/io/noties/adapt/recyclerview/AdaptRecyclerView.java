@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.noties.adapt.Adapt;
 import io.noties.adapt.AdaptException;
@@ -127,6 +129,8 @@ public class AdaptRecyclerView implements Adapt {
         }
     };
 
+    private final CopyOnWriteArrayList<OnItemsChangedListener> listeners = new CopyOnWriteArrayList<>();
+
     private List<Item<? extends Item.Holder>> items;
 
     AdaptRecyclerView(@Nullable final RecyclerView recyclerView, @NonNull ConfigurationImpl configuration) {
@@ -139,7 +143,11 @@ public class AdaptRecyclerView implements Adapt {
 
     @Nullable
     public RecyclerView recyclerView() {
-        return recyclerView;
+        final RecyclerView recyclerView = this.recyclerView;
+        if (recyclerView != null) {
+            return recyclerView;
+        }
+        return adapter.attachedRecyclerView();
     }
 
     @NonNull
@@ -160,6 +168,8 @@ public class AdaptRecyclerView implements Adapt {
                 ListUtils.freeze(items),
                 changeResultCallback
         );
+
+        triggerOnItemsChanged(items);
     }
 
     @Override
@@ -176,6 +186,22 @@ public class AdaptRecyclerView implements Adapt {
         }
     }
 
+    @Override
+    public void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void triggerOnItemsChanged(@Nullable List<Item<?>> items) {
+        for (OnItemsChangedListener listener : listeners) {
+            listener.onItemsChanged(items);
+        }
+    }
+
     public static abstract class Adapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
         @NonNull
         public abstract Item<?> getItem(int position);
@@ -187,9 +213,32 @@ public class AdaptRecyclerView implements Adapt {
 
         private LayoutInflater inflater;
 
+        @Nullable
+        private WeakReference<RecyclerView> attachedRecyclerView = null;
+
         @NonNull
         AdaptRecyclerView adaptRecyclerView() {
             return AdaptRecyclerView.this;
+        }
+
+        @Nullable
+        RecyclerView attachedRecyclerView() {
+            final WeakReference<RecyclerView> current = attachedRecyclerView;
+            return current != null ? current.get() : null;
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            attachedRecyclerView = new WeakReference<>(recyclerView);
+        }
+
+        @Override
+        public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+            final WeakReference<RecyclerView> current = attachedRecyclerView;
+            final RecyclerView currentRecyclerView = current != null ? current.get() : null;
+            if (currentRecyclerView == recyclerView) {
+                attachedRecyclerView = null;
+            }
         }
 
         @NonNull

@@ -5,13 +5,15 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
+import io.noties.adapt.sample.samples.Tags
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
-import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.ElementStyle
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
@@ -27,9 +29,9 @@ import io.noties.adapt.ui.padding
     id = "20230522113544",
     title = "[Showcase] AdaptUI, element style",
     description = "Combine common styles to be reused",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseStyle : AdaptUISampleView() {
+class AdaptUIShowcaseStyle : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -40,6 +42,8 @@ class AdaptUIShowcaseStyle : AdaptUISampleView() {
                 // TextStyles expect a sibling of a TextView
                 // overrides `textSize` specified before
                 .style(TextStyles.body)
+                // the same as above
+                .textStyle { body }
                 // overrides value from the style
                 .textSize(20)
 
@@ -67,13 +71,13 @@ class AdaptUIShowcaseStyle : AdaptUISampleView() {
     }
 
     private val backgrounded = ElementStyle.generic {
-        it.background(Color.GRAY)
+        it.backgroundColor(Color.GRAY)
             .padding(16)
     }
 
     // only available in LinearLayout.LayoutParams context
     private val weighted = ElementStyle.layout<LinearLayout.LayoutParams> {
-        it.layout(0, WRAP, 1F)
+        it.layout(0, wrap, 1F)
             .padding(16)
     }
 
@@ -85,8 +89,9 @@ class AdaptUIShowcaseStyle : AdaptUISampleView() {
     ) = this.style(style.invoke(TextStyles))
 }
 
+@Preview
 private class PreviewAdaptUIShowcaseStyle(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcaseStyle()
 }

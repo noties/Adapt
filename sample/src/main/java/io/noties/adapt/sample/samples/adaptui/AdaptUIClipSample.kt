@@ -3,17 +3,21 @@ package io.noties.adapt.sample.samples.adaptui
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.widget.ImageView
 import android.widget.LinearLayout
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Image
@@ -44,7 +48,7 @@ import io.noties.adapt.ui.util.Gravity
     description = "Create a circle avatar view with shape clipping",
     tags = ["shape", "clip"]
 )
-class AdaptUIClipSample : AdaptUISampleView() {
+class AdaptUIClipSample : SampleViewUI() {
 
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
@@ -59,13 +63,13 @@ class AdaptUIClipSample : AdaptUISampleView() {
                         @Suppress("UNCHECKED_CAST")
                         it as ViewElement<*, LinearLayout.LayoutParams>
                     }
-                    .layout(0, FILL, 1F)
+                    .layout(0, fill, 1F)
 
                 Image(R.drawable.ic_shuffle_24_white)
-                    .imageScaleType(ImageView.ScaleType.FIT_CENTER)
-                    .layout(0, FILL, 1F)
+                    .imageScaleType { fitCenter }
+                    .layout(0, fill, 1F)
 
-            }.layout(FILL, 256)
+            }.layout(fill, 256)
 
             // Arc is not supported, Line, Text, Label
             listOf(
@@ -91,13 +95,13 @@ class AdaptUIClipSample : AdaptUISampleView() {
                                 .ifAvailable(Build.VERSION_CODES.M) {
                                     it.foreground {
                                         Rectangle {
-                                            fill(Colors.orange)
+                                            fill { orange }
 
                                             LabelShape(shape::class.java.simpleName)
                                                 .also { add(it) }
-                                                .textGravity(Gravity.center)
+                                                .textGravity { center }
                                                 .textSize(16)
-                                                .textColor(Colors.white)
+                                                .textColor { white }
                                         }
                                     }
                                 }
@@ -106,8 +110,8 @@ class AdaptUIClipSample : AdaptUISampleView() {
                                 .clipToOutline()
                         }
                     }.padding(8)
-                        .background(Colors.black)
-                        .layout(FILL, WRAP)
+                        .backgroundColor { black }
+                        .layout(fill, wrap)
                 }
 
         }.layoutFill()
@@ -147,6 +151,6 @@ private class Preview__AdaptUIClipSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIClipSample()
 }

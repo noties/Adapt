@@ -8,13 +8,23 @@ import java.util.List;
 
 public interface Adapt {
 
+    interface OnItemsChangedListener {
+        void onItemsChanged(@Nullable List<Item<?>> items);
+    }
+
     @NonNull
     @CheckResult
     List<Item<?>> items();
 
+    // TODO: we should have signature that would not accept null-items in supplied list,
+    //  like `List<@NotNull Any>`
     void setItems(@Nullable List<Item<?>> items);
 
     void notifyAllItemsChanged();
 
     void notifyItemChanged(@NonNull Item<?> item);
+
+    void registerOnItemsChangedListener(@NonNull OnItemsChangedListener listener);
+
+    void unregisterOnItemsChangedListener(@NonNull OnItemsChangedListener listener);
 }

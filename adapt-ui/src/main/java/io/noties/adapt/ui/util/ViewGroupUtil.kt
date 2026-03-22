@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.R
 
-internal inline val ViewGroup.children: List<View>
+inline val ViewGroup.children: List<View>
     get() = (0 until childCount)
         .map { getChildAt(it) }
 

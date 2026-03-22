@@ -4,21 +4,30 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
 import io.noties.adapt.Item
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.yellow
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptView
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.HStack
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.View
+import io.noties.adapt.ui.element.ZStackSquare
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textSingleLine
 import io.noties.adapt.ui.element.textSize
+import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.gradient.GradientEdge
 import io.noties.adapt.ui.gradient.LinearGradient
 import io.noties.adapt.ui.gradient.RadialGradient
@@ -34,15 +43,14 @@ import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
 import io.noties.adapt.ui.shape.Shape
 import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.widget.ZStackSquare
 
 @AdaptSample(
     id = "20230517155636",
     title = "UI, shape gradients",
     description = "LinearGradient, RadialGradient, SweepGradient",
-    tags = ["adapt-ui", "shape", "gradient", "graphics"]
+    tags = [Tags.adaptUi, Tags.shape, Tags.gradient]
 )
-class AdaptUIGradientSample : AdaptUISampleView() {
+class AdaptUIGradientSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -51,12 +59,14 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                     HStack {
                         for (item in it) {
                             ZStackSquare { View().adaptView(item) }
-                                .layout(0, 0, 1F)
+                                .layout(fill, 0, 1F)
                         }
 
-                        for (i in it.size until 3) {
-                            View().layout(0, 0, 1F)
+                        // fill with empty views, so rows are equals
+                        repeat(3 - it.size) {
+                            View().layout(fill, 0, 1F)
                         }
+
                     }
                 }
 
@@ -74,18 +84,22 @@ class AdaptUIGradientSample : AdaptUISampleView() {
         "LG.edges+positions" to CornersShape {
             corners(4, 8, 16, 32)
             padding(2)
-            val gradient = LinearGradient.edges { leading to trailing }
-                .setColors(
-                    Colors.black to 0F,
-                    Colors.accent to 0.25F,
-                    Colors.accent to 0.75F,
-                    Colors.orange to 1F
-                )
-            fill(gradient)
+
+            fill(Gradient.create {
+                linear {
+                    edges { leading to trailing }
+                        .setColors(
+                            black to 0F,
+                            accent to 0.25F,
+                            accent to 0.75F,
+                            orange to 1F
+                        )
+                }
+            })
         },
         "LG.stroke" to RectangleShape {
             padding(4)
-            add(RoundedRectangle(8) {
+            RoundedRectangle(8) {
                 padding(4)
                 stroke(
                     LinearGradient.edges { top.leading to bottom.trailing }
@@ -93,23 +107,25 @@ class AdaptUIGradientSample : AdaptUISampleView() {
                     8
                 )
 
-                add(Arc(45F, 270F) {
+                Arc(45F, 270F) {
                     size(48, 48, Gravity.center)
                     fill(LinearGradient.angle(7F).setColors(Colors.accent, Colors.primary))
-                })
-            })
+                }
+            }
         },
         "LG.stroke+dash" to RectangleShape {
             padding(4)
-            add(RoundedRectangle(12) {
+            RoundedRectangle(12) {
                 padding(4)
                 stroke(
-                    LinearGradient.angle(270F).setColors(Colors.black, Colors.orange),
+                    with(Colors) {
+                        LinearGradient.angle(270F).setColors(black, orange)
+                    },
                     8,
                     16,
                     4
                 )
-            })
+            }
         },
         "RG.center" to RectangleShape {
             fill(
@@ -153,7 +169,7 @@ class AdaptUIGradientSample : AdaptUISampleView() {
 
                 Text(name)
                     .textSize(14)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .textSingleLine(true)
                     .padding(8)
 
@@ -172,6 +188,6 @@ private class Preview__AdaptUIGradientSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIGradientSample()
 }

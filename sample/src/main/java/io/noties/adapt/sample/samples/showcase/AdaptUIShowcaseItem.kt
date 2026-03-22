@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Adapt
 import io.noties.adapt.listview.AdaptListView
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
-import io.noties.adapt.sample.samples.adaptui.Colors
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptRecyclerView
@@ -41,9 +41,9 @@ import io.noties.debug.Debug
             "in different contexts: directly in UI layout, in a " +
             "<em>ViewGroup</em>, <em>RecyclerView</em> or <em>ListView</em> " +
             "(via <em>AlertDialog</em>)",
-    tags = ["adapt-ui", "showcase"]
+    tags = [Tags.adaptUi, Tags.showcase]
 )
-class AdaptUIShowcaseItem : AdaptUISampleView() {
+class AdaptUIShowcaseItem : SampleViewUI() {
 
     private lateinit var adaptViewGroup: Adapt
     private lateinit var adaptRecyclerView: Adapt
@@ -120,7 +120,7 @@ class AdaptUIShowcaseItem : AdaptUISampleView() {
             Text()
                 .reference(ref::textView2)
                 .textSize(17)
-                .textColor(Colors.black)
+                .textColor { black }
                 .padding(16, 12)
                 .onView {
                     Debug.e(it)
@@ -136,6 +136,6 @@ private class Preview__AdaptUIShowcaseItem(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShowcaseItem()
 }

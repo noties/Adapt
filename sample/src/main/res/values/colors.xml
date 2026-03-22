@@ -5,6 +5,7 @@
     <color name="primaryDark">#00414b</color>
     <color name="accent">#00a8d1</color>
     <color name="yellow">#ffd500</color>
+    <color name="purple">#AF52DE</color>
 
     <color name="white">#fff</color>
     <color name="transparent">#00000000</color>
@@ -18,5 +19,11 @@
 
     <color name="search_bar_background">#15000000</color>
     <color name="search_bar_text_secondary">#40000000</color>
+
+    <color name="steelBlue">#3581B8</color>
+    <color name="naplesYellow">#F5D547</color>
+    <color name="salmon">#FF7E6B</color>
+    <color name="purpureus">#A657AE</color>
+    <color name="emerald">#06D6A0</color>
 
 </resources>

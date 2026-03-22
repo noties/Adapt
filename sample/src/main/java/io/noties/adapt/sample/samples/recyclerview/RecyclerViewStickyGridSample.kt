@@ -8,11 +8,11 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.StickyItemDecoration
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
-import java.util.*
+import java.util.Date
 
 @AdaptSample(
     id = "20210124212119",
@@ -20,7 +20,7 @@ import java.util.*
     description = "<tt>StickyItemDecoration</tt> with <tt>GridLayoutManager</tt>",
     tags = ["recyclerview", "grid"]
 )
-class RecyclerViewStickyGridSample : SampleView() {
+class RecyclerViewStickyGridSample : SampleViewLayout() {
     override val layoutResId: Int
         get() = R.layout.view_sample_recycler_view_sticky
 

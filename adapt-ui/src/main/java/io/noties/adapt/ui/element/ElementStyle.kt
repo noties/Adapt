@@ -4,12 +4,17 @@ import android.view.View
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactoryConstants
+import io.noties.adapt.ui.app.style.ViewStyles
 
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.style(
     style: ElementStyle<V, LP>
 ) = this.also {
-    style.block.invoke(ViewFactoryConstants.Impl, it)
+    style.block.invoke(ViewFactoryConstants, it)
 }
+
+fun <V: View, LP: LayoutParams> ViewElement<V, LP>.style(
+    builder: ViewStyles.() -> ElementStyle<V, LP>
+) = style(builder(ViewStyles))
 
 class ElementStyle<in V : View, in LP : LayoutParams> private constructor(
     val block: ViewFactoryConstants.(ViewElement<@UnsafeVariance V, @UnsafeVariance LP>) -> Unit
@@ -20,15 +25,15 @@ class ElementStyle<in V : View, in LP : LayoutParams> private constructor(
         ) = ElementStyle(block)
 
         fun generic(
-            block: ViewFactoryConstants.(ViewElement<out View, out LayoutParams>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<View, LayoutParams>) -> Unit
         ) = ElementStyle(block)
 
         fun <V : View> view(
-            block: ViewFactoryConstants.(ViewElement<V, out LayoutParams>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<V, LayoutParams>) -> Unit
         ) = ElementStyle(block)
 
         fun <LP : LayoutParams> layout(
-            block: ViewFactoryConstants.(ViewElement<out View, LP>) -> Unit
+            block: ViewFactoryConstants.(ViewElement<View, LP>) -> Unit
         ) = ElementStyle(block)
 
         fun <V : View, LP : LayoutParams> viewLayout(

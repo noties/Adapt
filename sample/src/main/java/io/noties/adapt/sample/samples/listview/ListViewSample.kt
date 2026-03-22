@@ -5,11 +5,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ListView
 import io.noties.adapt.listview.AdaptListView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
 
 @AdaptSample(
     id = "20210122143237",
@@ -17,7 +17,7 @@ import io.noties.adapt.sample.util.PreviewSampleView
     description = "Usage inside <tt><b>ListView</b></tt>",
     tags = ["listview"]
 )
-class ListViewSample : SampleView() {
+class ListViewSample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_list_view
 
@@ -36,6 +36,6 @@ private class Preview__ListViewSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = ListViewSample()
 }

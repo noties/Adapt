@@ -8,6 +8,7 @@ import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.item.ElementItemNoRef
@@ -149,11 +150,11 @@ class ExploreAdaptUIBinding {
     fun hey(context: Context) {
         ViewFactory.createView(context) {
             Text()
-                .layout(FILL, WRAP)
+                .layout(fill, wrap)
 //                .textStylePrimary()
                 .bind(color) {
                     Debug.i("color:$it")
-                    background(it)
+                    backgroundColor(it)
                 }
         }
     }

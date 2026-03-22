@@ -1,7 +1,12 @@
 package io.noties.adapt.ui.util
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import android.view.ViewTreeObserver.OnPreDrawListener
+import io.noties.adapt.ui.LayoutParams
+import io.noties.adapt.ui.ViewElement
 
 fun <V : View> V.onPreDrawOnce(block: (V) -> Unit) {
     val view = this
@@ -41,4 +46,48 @@ fun <V : View> V.onDetachedOnce(block: (V) -> Unit) {
             view.removeOnAttachStateChangeListener(this)
         }
     })
+}
+
+/**
+ * Turn a view into `ViewElement<View, *>`
+ * ```kotlin
+ * val text: TextView = /* obtain view */
+ * text.element
+ *   .textSize { body }
+ * ```
+ */
+val <V : View> V.element: ViewElement<V, LayoutParams> get() = ViewElement.create(this)
+
+inline fun <V : View> V.renderElement(block: (ViewElement<V, out LayoutParams>) -> Unit) {
+    val element = this.element
+    try {
+        block(element)
+    } finally {
+        element.render()
+    }
+}
+
+/**
+ * Searches for the holding Activity
+ */
+val View.activity: Activity?
+    get() {
+        return context.activity
+    }
+
+/**
+ * Searches for focused view in dedicated to this view Activity
+ */
+val View.currentFocus: View? get() = activity?.currentFocus
+
+
+fun <V : View> V.addOnLayoutChangeListenerSimple(
+    callback: (V) -> Unit
+): View.OnLayoutChangeListener {
+    @Suppress("UNCHECKED_CAST")
+    val listener = View.OnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+        callback(v as V)
+    }
+    this.addOnLayoutChangeListener(listener)
+    return listener
 }

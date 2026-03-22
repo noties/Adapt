@@ -16,6 +16,7 @@ import io.noties.adapt.ui.element.HyphenationFrequency
 import io.noties.adapt.ui.element.JustificationMode
 import io.noties.adapt.ui.gradient.Gradient
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.dip
 import kotlin.math.roundToInt
 
@@ -59,6 +60,12 @@ interface BaseTextShapeDataSetter<THIS : BaseTextShapeData> : BaseTextShapeData 
         textGravity: Gravity?
     ) = (this as THIS).also {
         it.textGravity = textGravity
+    }
+
+    fun textGravity(
+        builder: GravityBuilder
+    ) = (this as THIS).also {
+        this.textGravity = builder(Gravity)
     }
 
     /**
@@ -263,13 +270,13 @@ class TextShape(
                     .also { builder ->
                         with(textData) {
                             textGravity?.also { builder.setAlignment(horizontalAlignment(it)) }
-                            textBreakStrategy?.also { builder.setBreakStrategy(it.value) }
+                            textBreakStrategy?.also { builder.setBreakStrategy(it.rawValue) }
                             textHyphenationFrequency?.also {
                                 builder.setHyphenationFrequency(
-                                    it.value
+                                    it.rawValue
                                 )
                             }
-                            textJustificationMode?.also { builder.setJustificationMode(it.value) }
+                            textJustificationMode?.also { builder.setJustificationMode(it.rawValue) }
 
                             // NB! ellipsize is only applied when there are maxLines
                             textMaxLines?.also {
@@ -300,7 +307,7 @@ class TextShape(
                         //  positioned freely on the canvas
                         textData.textGravity?.also { gravity ->
                             android.view.Gravity.apply(
-                                gravity.value,
+                                gravity.rawValue,
                                 contentWidth,
                                 contentHeight,
                                 bounds,
@@ -324,7 +331,6 @@ class TextShape(
             return layout
         }
 
-        @Suppress("MoveVariableDeclarationIntoWhen")
         @SuppressLint("RtlHardcoded")
         internal fun horizontalAlignment(gravity: Gravity): Layout.Alignment {
             return when {

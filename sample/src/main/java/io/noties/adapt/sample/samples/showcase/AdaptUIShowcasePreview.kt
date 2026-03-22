@@ -3,10 +3,11 @@ package io.noties.adapt.sample.samples.showcase
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.samples.adaptui.AdaptUISamplePreview
-import io.noties.adapt.sample.samples.adaptui.AdaptUISampleView
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
@@ -28,7 +29,7 @@ import io.noties.adapt.ui.visible
     description = "Control how elements are rendering in layout preview window",
     tags = ["showcase", "adapt-ui"]
 )
-class AdaptUIShowcasePreview : AdaptUISampleView() {
+class AdaptUIShowcasePreview : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack {
 
@@ -67,8 +68,9 @@ class AdaptUIShowcasePreview : AdaptUISampleView() {
         }
 }
 
+@Preview
 private class PreviewAdaptUIShowcasePreview(context: Context, attrs: AttributeSet?) :
-    AdaptUISamplePreview(context, attrs) {
-    override val sample: AdaptUISampleView
+    PreviewSampleView(context, attrs) {
+    override val sampleView
         get() = AdaptUIShowcasePreview()
 }

@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import io.noties.adapt.Item
-import io.noties.adapt.wrapper.ItemWrapper
 import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
+import io.noties.adapt.wrapper.ItemWrapper
 
 @AdaptSample(
     id = "20210122143214",
@@ -18,7 +18,7 @@ import io.noties.adapt.sample.annotation.AdaptSample
             "<tt>ItemWrapper</tt> that modifies existing items to <tt>match_parent</tt> them",
     tags = ["recyclerview", "viewpager2"]
 )
-class ViewPager2Sample : SampleView() {
+class ViewPager2Sample : SampleViewLayout() {
 
     override val layoutResId: Int
         get() = R.layout.view_sample_viewpager2

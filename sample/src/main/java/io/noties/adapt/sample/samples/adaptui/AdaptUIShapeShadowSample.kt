@@ -1,22 +1,28 @@
 package io.noties.adapt.sample.samples.adaptui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.noties.adapt.Item
+import io.noties.adapt.preview.Preview
 import io.noties.adapt.recyclerview.AdaptRecyclerView
+import io.noties.adapt.sample.PreviewSampleView
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.accent
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.orange
+import io.noties.adapt.sample.ui.color.primary
+import io.noties.adapt.sample.ui.color.white
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
 import io.noties.adapt.ui.adaptRecyclerView
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.clipToOutline
 import io.noties.adapt.ui.element.Recycler
@@ -26,8 +32,8 @@ import io.noties.adapt.ui.element.View
 import io.noties.adapt.ui.element.ZStack
 import io.noties.adapt.ui.element.recyclerGridLayoutManager
 import io.noties.adapt.ui.element.textAutoSize
+import io.noties.adapt.ui.element.textBold
 import io.noties.adapt.ui.element.textColor
-import io.noties.adapt.ui.element.textFont
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.foregroundDefaultSelectable
 import io.noties.adapt.ui.ifAvailable
@@ -60,9 +66,9 @@ import io.noties.debug.Debug
 @AdaptSample(
     id = "20230512142056",
     title = "AdaptUI, shape shadow",
-    tags = ["adapt-ui", "shape", "shadow"]
+    tags = [Tags.adaptUi, Tags.shape, Tags.shadow]
 )
-class AdaptUIShapeShadowSample : AdaptUISampleView() {
+class AdaptUIShapeShadowSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         ZStack {
 
@@ -104,23 +110,23 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                 fill(Colors.white)
                 shadow(12, Colors.black.withAlphaComponent(0.5F))
 
-                add(Circle {
+                Circle {
                     padding(12)
-                    fill(Colors.primary)
+                    fill { primary }
                     shadow(12, Colors.primary)
 
-                    add(Circle {
+                    Circle {
                         padding(12)
-                        fill(Colors.orange)
+                        fill { orange }
                         shadow(12, Colors.orange)
 
-                        add(Circle {
+                        Circle {
                             padding(12)
                             fill(0xFFff0000.toInt())
                             shadow(12, Colors.white)
-                        })
-                    })
-                })
+                        }
+                    }
+                }
             },
             ShapeItem("Follows content", RectangleShape()) {
                 fill(Colors.white)
@@ -140,18 +146,18 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                 shadow(8)
             },
             ShapeItem("Rotated 2X", RectangleShape()) {
-                add(Rectangle {
+                Rectangle {
                     fill(Colors.white)
                     sizeRelative(0.75F, 0.25F, Gravity.center)
                     rotate(45F)
                     shadow(8, Colors.orange)
-                })
-                add(Rectangle {
+                }
+                Rectangle {
                     fill(Colors.white)
                     sizeRelative(0.75F, 0.25F, Gravity.center)
                     rotate(-45F)
                     shadow(16, Colors.primary)
-                })
+                }
             },
             ShapeItem("Offset", RectangleShape()) {
                 fill(Colors.white)
@@ -196,14 +202,14 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                 Text()
                     .reference(ref::nameView)
                     .layoutWrap()
-                    .layoutGravity(Gravity.center)
+                    .layoutGravity { center }
                     .textSize(14)
-                    .textColor(Colors.black)
+                    .textColor { black }
                     .padding(horizontal = 8)
                     .ifAvailable(Build.VERSION_CODES.O) {
                         it.textAutoSize(8, 14)
                     }
-            }.layout(FILL, 120)
+            }.layout(fill, 120)
                 .noClip()
                 .padding(8)
         }
@@ -229,13 +235,13 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
 
                         Text("The title of the card!")
                             .textSize(20)
-                            .textColor(Colors.orange)
-                            .textFont(fontStyle = Typeface.BOLD)
+                            .textColor { orange }
+                            .textBold()
                             .translation(x = -16, y = -16)
 
                         Text("The text on top is clipped, so no content would exit the card area")
                             .textSize(16)
-                            .textColor(Colors.white)
+                            .textColor { white }
                             .padding(8)
                     }
                         // just set, it won't be drawn, but will clip content
@@ -249,11 +255,11 @@ class AdaptUIShapeShadowSample : AdaptUISampleView() {
                         }
 
                 }.background(base.copy {
-                    fill(Colors.primary)
+                    fill { primary }
                     shadow(12, Colors.accent)
                 })
 
-            }.layout(FILL, 128)
+            }.layout(fill, 128)
                 .padding(16)
                 .noClip()
         }
@@ -266,6 +272,6 @@ private class Preview__AdaptUIShapeShadowSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIShapeShadowSample()
 }

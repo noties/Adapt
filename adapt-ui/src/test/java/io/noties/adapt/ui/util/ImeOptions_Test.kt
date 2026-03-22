@@ -28,56 +28,102 @@ import org.robolectric.annotation.Config
 class ImeOptions_Test {
 
     @Test
-    fun companion() {
+    fun nonTerminating() {
         val inputs = listOf(
             ImeOptions.none to IME_NULL,
-            ImeOptions.actionUnspecified to IME_ACTION_UNSPECIFIED,
-            ImeOptions.actionNone to IME_ACTION_NONE,
-            ImeOptions.actionGo to IME_ACTION_GO,
-            ImeOptions.actionSearch to IME_ACTION_SEARCH,
-            ImeOptions.actionSend to IME_ACTION_SEND,
-            ImeOptions.actionNext to IME_ACTION_NEXT,
-            ImeOptions.actionDone to IME_ACTION_DONE,
-            ImeOptions.actionPrevious to IME_ACTION_PREVIOUS,
             ImeOptions.noPersonalizedLearning to IME_FLAG_NO_PERSONALIZED_LEARNING,
             ImeOptions.noFullScreen to IME_FLAG_NO_FULLSCREEN,
-            ImeOptions.noExactUi to IME_FLAG_NO_EXTRACT_UI,
+            ImeOptions.noExtractUi to IME_FLAG_NO_EXTRACT_UI,
             ImeOptions.noEnterAction to IME_FLAG_NO_ENTER_ACTION,
             ImeOptions.navigatePrevious to IME_FLAG_NAVIGATE_PREVIOUS,
             ImeOptions.navigateNext to IME_FLAG_NAVIGATE_NEXT,
             ImeOptions.forceAscii to IME_FLAG_FORCE_ASCII,
+            ImeOptions.noPersonalizedLearning.noFullScreen to (IME_FLAG_NO_PERSONALIZED_LEARNING or IME_FLAG_NO_FULLSCREEN),
+            ImeOptions.noExtractUi.noEnterAction to (IME_FLAG_NO_EXTRACT_UI or IME_FLAG_NO_ENTER_ACTION),
+            ImeOptions.navigatePrevious.navigateNext to (IME_FLAG_NAVIGATE_PREVIOUS or IME_FLAG_NAVIGATE_NEXT),
+            ImeOptions.forceAscii.noPersonalizedLearning to (IME_FLAG_FORCE_ASCII or IME_FLAG_NO_PERSONALIZED_LEARNING)
         )
 
+        var i = 0
+
         for ((ime, expected) in inputs) {
-            assertEquals(ime.toString(), expected, ime.value)
+            val s = "${i++} expected:${toImeOptionsString(expected)} ime:$ime"
+
+            val (rawValue, editorAction) = ime
+            assertEquals(s, rawValue, ime.rawValue)
+            assertEquals(s, editorAction, ime.editorAction)
+
+            assertEquals(s, expected, ime.rawValue)
+            assertNull(s, ime.editorAction)
         }
     }
 
     @Test
-    fun instance() {
+    fun terminating() {
         val inputs = listOf(
-            ImeOptions.actionDone.actionGo.actionNone.actionUnspecified.actionSearch to IME_ACTION_SEARCH,
-            ImeOptions.forceAscii.actionSend.actionGo.noExactUi to (IME_FLAG_FORCE_ASCII or IME_ACTION_GO or IME_FLAG_NO_EXTRACT_UI),
-            ImeOptions.none.none to IME_NULL,
-            ImeOptions.actionUnspecified.actionUnspecified to IME_ACTION_UNSPECIFIED,
-            ImeOptions.actionNone.actionNone to IME_ACTION_NONE,
-            ImeOptions.actionGo.actionGo to IME_ACTION_GO,
-            ImeOptions.actionSearch.actionSearch to IME_ACTION_SEARCH,
-            ImeOptions.actionSend.actionSend to IME_ACTION_SEND,
-            ImeOptions.actionNext.actionNext to IME_ACTION_NEXT,
-            ImeOptions.actionDone.actionDone to IME_ACTION_DONE,
-            ImeOptions.actionPrevious.actionPrevious to IME_ACTION_PREVIOUS,
-            ImeOptions.noPersonalizedLearning.noPersonalizedLearning to IME_FLAG_NO_PERSONALIZED_LEARNING,
-            ImeOptions.noFullScreen.noFullScreen to IME_FLAG_NO_FULLSCREEN,
-            ImeOptions.noExactUi.noExactUi to IME_FLAG_NO_EXTRACT_UI,
-            ImeOptions.noEnterAction.noEnterAction to IME_FLAG_NO_ENTER_ACTION,
-            ImeOptions.navigatePrevious.navigatePrevious to IME_FLAG_NAVIGATE_PREVIOUS,
-            ImeOptions.navigateNext.navigateNext to IME_FLAG_NAVIGATE_NEXT,
-            ImeOptions.forceAscii.forceAscii to IME_FLAG_FORCE_ASCII,
+            // action-none and action-unspecified does not register editor-action-listener
+            ImeOptions.actionNone to IME_ACTION_NONE,
+            ImeOptions.actionUnspecified to IME_ACTION_UNSPECIFIED
         )
 
         for ((ime, expected) in inputs) {
-            assertEquals(ime.toString(), expected, ime.value)
+            val s = ime.toString()
+
+            assertEquals(s, expected, ime.rawValue)
+            assertNull(s, ime.editorAction)
+
+            val (rawValue, editorAction) = ime
+            assertEquals(s, expected, rawValue)
+            assertNull(s, editorAction)
+        }
+    }
+
+    @Test
+    fun terminating_with_action() {
+        val inputs = listOf(
+            ImeOptions.actionGo() to IME_ACTION_GO,
+            ImeOptions.actionGo {} to IME_ACTION_GO,
+            ImeOptions.actionSearch() to IME_ACTION_SEARCH,
+            ImeOptions.actionSearch {} to IME_ACTION_SEARCH,
+            ImeOptions.actionSend() to IME_ACTION_SEND,
+            ImeOptions.actionSend {} to IME_ACTION_SEND,
+            ImeOptions.actionNext() to IME_ACTION_NEXT,
+            ImeOptions.actionNext {} to IME_ACTION_NEXT,
+            ImeOptions.actionDone() to IME_ACTION_DONE,
+            ImeOptions.actionDone {} to IME_ACTION_DONE,
+            ImeOptions.actionPrevious() to IME_ACTION_PREVIOUS,
+            ImeOptions.actionPrevious {} to IME_ACTION_PREVIOUS,
+        )
+
+        for ((ime, expected) in inputs) {
+            val s = "expected:${toImeOptionsString(expected)} ime:$ime"
+
+            assertEquals(s, expected, ime.rawValue)
+            assertNotNull(s, ime.editorAction)
+
+            val (rawValue, editorAction) = ime
+            assertEquals(s, expected, rawValue)
+            assertNotNull(s, editorAction)
+        }
+    }
+
+    @Test
+    fun mix() {
+        val inputs = listOf(
+            ImeOptions.forceAscii.noPersonalizedLearning.actionGo() to (IME_FLAG_FORCE_ASCII or IME_FLAG_NO_PERSONALIZED_LEARNING or IME_ACTION_GO),
+            ImeOptions.noExtractUi.noFullScreen.navigateNext.actionNext() to (IME_FLAG_NO_EXTRACT_UI or IME_FLAG_NO_FULLSCREEN or IME_FLAG_NAVIGATE_NEXT or IME_ACTION_NEXT)
+        )
+
+        for ((ime, expected) in inputs) {
+            val s = "expected:${toImeOptionsString(expected)} ime:$ime"
+
+            // mask with action
+            assertEquals(s, expected, ime.rawValue)
+            assertNotNull(s, ime.editorAction)
+
+            val (rawValue, editorAction) = ime
+            assertEquals(s, expected, rawValue)
+            assertNotNull(s, editorAction)
         }
     }
 }

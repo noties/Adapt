@@ -7,7 +7,7 @@ import io.noties.adapt.recyclerview.AdaptRecyclerView
 import io.noties.adapt.recyclerview.StickyItemDecoration
 import io.noties.adapt.sample.ItemGenerator
 import io.noties.adapt.sample.R
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.sample.SampleViewLayout
 import io.noties.adapt.sample.annotation.AdaptSample
 import io.noties.adapt.sample.items.ControlItem
 import io.noties.adapt.sample.items.SectionItem
@@ -22,7 +22,7 @@ import java.util.Date
     description = "<b>Sticky</b> item decoration in <tt><b>RecyclerView</b></tt>",
     tags = ["recyclerview"]
 )
-open class RecyclerViewStickySample : SampleView() {
+open class RecyclerViewStickySample : SampleViewLayout() {
 
     override val layoutResId: Int = R.layout.view_sample_recycler_view_sticky
 

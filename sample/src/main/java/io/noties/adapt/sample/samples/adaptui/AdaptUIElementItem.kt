@@ -7,7 +7,9 @@ import android.widget.TextView
 import io.noties.adapt.Item
 import io.noties.adapt.preview.AdaptPreviewLayout
 import io.noties.adapt.sample.App
+import io.noties.adapt.sample.ui.color.black
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
@@ -17,10 +19,7 @@ import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.item.ElementItem
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.reference
-import io.noties.adapt.ui.shape.RoundedRectangle
 import io.noties.adapt.ui.shape.RoundedRectangleShape
-import io.noties.adapt.ui.util.Gravity
-import io.noties.adapt.ui.util.createLayoutParams
 
 class AdaptUIElementItem(val text: String) :
     ElementItem<AdaptUIElementItem.Ref>(hash(text), ::Ref) {
@@ -33,8 +32,8 @@ class AdaptUIElementItem(val text: String) :
             Text()
                 // already SP
                 .textSize(16)
-                .textColor(Colors.black)
-                .textGravity(Gravity.center)
+                .textColor { black }
+                .textGravity { center }
                 // values are already DP
                 .padding(vertical = 24, horizontal = 16)
                 .reference(ref::textView)
@@ -50,12 +49,12 @@ class AdaptUIElementItem(val text: String) :
         }
     }
 
-    override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
-        // by default width:MATCH and height:WRAP is used
-        // can specify which layoutParams to use instead
-        // NB! also possible to create default params for given parent
-        return parent.createLayoutParams() ?: super.createLayoutParams(parent)
-    }
+//    override fun createLayoutParams(parent: ViewGroup): ViewGroup.LayoutParams {
+//        // by default width:MATCH and height:WRAP is used
+//        // can specify which layoutParams to use instead
+//        // NB! also possible to create default params for given parent
+//        return parent.createLayoutParams() ?: super.createDefaultLayoutParams(parent)
+//    }
 }
 
 // unfortunately `private class` is not really private and each

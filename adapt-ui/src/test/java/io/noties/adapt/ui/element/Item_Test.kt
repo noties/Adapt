@@ -46,7 +46,7 @@ class Item_Test {
 
         val ref = Ref()
 
-        val view  = ViewFactory.newView(viewGroup).create {
+        val view  = ViewFactory.createView(viewGroup) {
             Item(mock.item) { it.changeHandler(changeHandler) }
                 .referenceUpdate(ref::updateItem)
         }

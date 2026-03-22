@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -18,10 +17,21 @@ import androidx.annotation.StringRes
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewElement
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
+import io.noties.adapt.ui.app.color.ColorsBuilder
+import io.noties.adapt.ui.app.string.Strings
+import io.noties.adapt.ui.app.string.StringsBuilder
+import io.noties.adapt.ui.app.text.TextSizes
+import io.noties.adapt.ui.app.text.TextSizesBuilder
+import io.noties.adapt.ui.app.text.TextStyles
 import io.noties.adapt.ui.gradient.Gradient
+import io.noties.adapt.ui.gradient.GradientBuilder
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 import io.noties.adapt.ui.util.ImeOptions
+import io.noties.adapt.ui.util.ImeOptionsBuilder
 import io.noties.adapt.ui.util.InputType
+import io.noties.adapt.ui.util.InputTypeBuilder
 import io.noties.adapt.ui.util.TextWatcherHideIfEmpty
 import io.noties.adapt.ui.util.TypefaceStyle
 import io.noties.adapt.ui.util.dip
@@ -32,6 +42,13 @@ fun <LP : LayoutParams> ViewFactory<LP>.Text(
     text: CharSequence? = null
 ): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
     text?.also { tv.text = it }
+}
+
+@Suppress("FunctionName")
+fun <LP : LayoutParams> ViewFactory<LP>.Text(
+    @StringRes resId: Int
+): ViewElement<TextView, LP> = Element(ElementViewFactory.Text) { tv ->
+    tv.setText(resId)
 }
 
 /**
@@ -45,6 +62,20 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSize(
 }
 
 /**
+ * Text size
+ * ```kotlin
+ * Text()
+ *   .textSize { body }
+ * ```
+ * @see TextView.setTextSize
+ * @see textSize
+ * @see TextSizes
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSize(
+    builder: TextSizesBuilder,
+) = textSize(builder(TextSizes))
+
+/**
  * @see textColor(android.content.res.ColorStateList)
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
@@ -54,14 +85,32 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
 }
 
 /**
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * Text color
+ * ```kotlin
+ * Text()
+ *   .textColor { main }
+ * ```
+ * @see Colors
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
+    builder: ColorsBuilder
+) = textColor(builder(Colors))
+
+/**
  * @see TextView.setTextColor
+ * @see io.noties.adapt.ui.state.textColorWithState
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.StateListBuilder
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textColor(
     colorStateList: ColorStateList
 ): ViewElement<V, LP> = onView {
     it.setTextColor(colorStateList)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
+    gradient: GradientBuilder
+): ViewElement<V, LP> = textGradient(gradient(Gradient))
 
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGradient(
     gradient: Gradient
@@ -116,16 +165,29 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textShadow(
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
     gravity: Gravity
 ): ViewElement<V, LP> = onView {
-    it.gravity = gravity.value
+    it.gravity = gravity.rawValue
 }
+
+/**
+ * Text gravity
+ * ```kotlin
+ * Text()
+ *   .textGravity { center.vertical }
+ * ```
+ * @see Gravity
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textGravity(
+    builder: GravityBuilder
+) = textGravity(builder(Gravity))
 
 /**
  * Typeface
  * @see TextView.setTypeface
  * @see textTypeface
  */
+// cannot replaceWith with different parameters (int vs TypefaceStyle)
 @Suppress("DeprecatedCallableAddReplaceWith")
-@Deprecated("Use `textTypeface`")
+@Deprecated(message = "Use `textTypeface`")
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textFont(
     font: Typeface? = null,
     fontStyle: Int = Typeface.NORMAL
@@ -135,8 +197,13 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
     typeface: Typeface? = null,
     typefaceStyle: TypefaceStyle = TypefaceStyle.normal
 ): ViewElement<V, LP> = onView {
-    it.setTypeface(typeface, typefaceStyle.value)
+    it.setTypeface(typeface, typefaceStyle.rawValue)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textTypeface(
+    typeface: Typeface? = null,
+    builder: TypefaceStyle.Companion.() -> TypefaceStyle
+) = textTypeface(typeface, builder(TypefaceStyle))
 
 /**
  * Makes text typeface style **bold**.
@@ -217,6 +284,15 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
 }
 
 /**
+ * @see TextView.setText
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.text(
+    strings: StringsBuilder
+): ViewElement<V, LP> = onView {
+    it.text = strings(Strings)
+}
+
+/**
  * Hint
  * @see TextView.setHint
  */
@@ -224,6 +300,16 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
     hint: CharSequence?
 ): ViewElement<V, LP> = onView {
     it.hint = hint
+}
+
+/**
+ * Hint
+ * @see TextView.setHint
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHint(
+    hint: StringsBuilder
+): ViewElement<V, LP> = onView {
+    it.hint = hint(Strings)
 }
 
 /**
@@ -238,8 +324,22 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
 
 /**
  * Hint text color
+ * ```kotlin
+ * Text()
+ *   .textHintColor { placeholder }
+ * ```
+ * @see Colors
+ */
+inline fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
+    builder: ColorsBuilder
+) = textHintColor(builder(Colors))
+
+/**
+ * Hint text color
  * @see TextView.setHintTextColor
- * @see io.noties.adapt.ui.util.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.ColorStateListBuilder
+ * @see io.noties.adapt.ui.state.StateListBuilder
+ * @see io.noties.adapt.ui.state.textHintColorWithState
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHintColor(
     colorStateList: ColorStateList
@@ -256,6 +356,26 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
 ): ViewElement<V, LP> = onView {
     it.ellipsize = truncateAt
 }
+
+@JvmInline
+value class TextEllipsize(val rawValue: TextUtils.TruncateAt) {
+    companion object {
+        val start get() = TextEllipsize(TextUtils.TruncateAt.START)
+        val middle get() = TextEllipsize(TextUtils.TruncateAt.MIDDLE)
+        val end get() = TextEllipsize(TextUtils.TruncateAt.END)
+        val marquee get() = TextEllipsize(TextUtils.TruncateAt.MARQUEE)
+
+        fun raw(value: TextUtils.TruncateAt) = TextEllipsize(value)
+    }
+}
+
+/**
+ * Ellipsize
+ * @see TextView.setEllipsize
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textEllipsize(
+    builder: TextEllipsize.Companion.() -> TextEllipsize
+): ViewElement<V, LP> = textEllipsize(builder(TextEllipsize).rawValue)
 
 /**
  * Maximum lines
@@ -280,9 +400,12 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSingleLine(
 /**
  * HyphenationFrequency
  */
-@RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
-value class HyphenationFrequency(val value: Int) {
+value class HyphenationFrequency(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE)
         val normal: HyphenationFrequency get() = HyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL)
@@ -293,20 +416,29 @@ value class HyphenationFrequency(val value: Int) {
 /**
  * @see TextView.setHyphenationFrequency
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
     hyphenationFrequency: HyphenationFrequency
 ): ViewElement<V, LP> = onView {
-    it.hyphenationFrequency = hyphenationFrequency.value
+    it.hyphenationFrequency = hyphenationFrequency.rawValue
 }
+
+/**
+ * @see TextView.setHyphenationFrequency
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textHyphenationFrequency(
+    builder: HyphenationFrequency.Companion.() -> HyphenationFrequency
+): ViewElement<V, LP> = textHyphenationFrequency(builder(HyphenationFrequency))
 
 /**
  * BreakStrategy
  * @see TextView.setBreakStrategy
  */
-@RequiresApi(Build.VERSION_CODES.M)
 @JvmInline
-value class BreakStrategy(val value: Int) {
+value class BreakStrategy(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val simple: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_SIMPLE)
         val balanced: BreakStrategy get() = BreakStrategy(Layout.BREAK_STRATEGY_BALANCED)
@@ -317,12 +449,18 @@ value class BreakStrategy(val value: Int) {
 /**
  * @see TextView.setBreakStrategy
  */
-@RequiresApi(Build.VERSION_CODES.M)
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
     breakStrategy: BreakStrategy
 ): ViewElement<V, LP> = onView {
-    it.breakStrategy = breakStrategy.value
+    it.breakStrategy = breakStrategy.rawValue
 }
+
+/**
+ * @see TextView.setBreakStrategy
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
+    builder: BreakStrategy.Companion.() -> BreakStrategy
+): ViewElement<V, LP> = textBreakStrategy(builder(BreakStrategy))
 
 /**
  * JustificationMode
@@ -332,7 +470,11 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textBreakStrategy(
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @JvmInline
-value class JustificationMode(val value: Int) {
+value class JustificationMode(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_NONE)
         val interWord: JustificationMode get() = JustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
@@ -346,10 +488,20 @@ value class JustificationMode(val value: Int) {
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
     mode: JustificationMode
 ): ViewElement<V, LP> = onView {
-    it.justificationMode = mode.value
+    it.justificationMode = mode.rawValue
 }
 
 /**
+ * @see JustificationMode
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
+    builder: JustificationMode.Companion.() -> JustificationMode
+): ViewElement<V, LP> = textJustificationMode(builder(JustificationMode))
+
+/**
+ * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
+ * for this to work.
  * Supplied values are in SP (so, 12 == 12.sp)
  * @see TextView.setAutoSizeTextTypeUniformWithPresetSizes
  */
@@ -361,6 +513,8 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
 }
 
 /**
+ * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
+ * for this to work.
  * Supplied values are in SP. Maximum value by default uses current [TextView.getTextSize]
  * @see TextView.setAutoSizeTextTypeUniformWithConfiguration
  */
@@ -417,27 +571,34 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textLetterSpacing(
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
     inputType: InputType
-) = onView { it.inputType = inputType.value }
+) = onView { it.inputType = inputType.rawValue }
 
 /**
- * Ime Options
+ * InputType
+ * @see TextView.setInputType
+ */
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textInputType(
+    builder: InputTypeBuilder
+) = onView { it.inputType = builder(InputType).rawValue }
+
+/**
+ * Builder requires that action is specified last (terminating)
+ *
+ * ```kotlin
+ * Text("Hello")
+ *   .textImeOptions { noExtractUi.noFullScreen.actionDone { /*done callback*/ } }
+ * ```
  * @see TextView.setImeOptions
  * @see TextView.setOnEditorActionListener
  */
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textImeOptions(
-    imeOptions: ImeOptions,
-    onActionListener: ((V, action: ImeOptions) -> Boolean)? = null
+    builder: ImeOptionsBuilder
 ) = onView {
-    it.imeOptions = imeOptions.value
-
-    onActionListener?.also { listener ->
-        val action = imeOptions.value and EditorInfo.IME_MASK_ACTION
-        it.setOnEditorActionListener { _, actionId, _ ->
-            if (action != 0 && actionId != action) {
-                false
-            } else {
-                listener(it, ImeOptions(actionId))
-            }
-        }
-    }
+    val (rawValue, editorAction) = builder(ImeOptions)
+    it.imeOptions = rawValue
+    it.setOnEditorActionListener(editorAction)
 }
+
+fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textStyle(
+    block: TextStyles.() -> ElementStyle<TextView, LayoutParams>
+) = this.style { block(TextStyles) }

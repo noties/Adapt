@@ -1,9 +1,7 @@
 package io.noties.adapt.ui
 
-import android.os.Build
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 
 /**
@@ -26,7 +24,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityDescription(
 }
 
 @JvmInline
-value class ImportantForAccessibility(val value: Int) {
+value class ImportantForAccessibility(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val yes: ImportantForAccessibility get() = ImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES)
         val no: ImportantForAccessibility get() = ImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
@@ -49,8 +51,15 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
     importantForAccessibility: ImportantForAccessibility
 ): ViewElement<V, LP> = onView {
-    it.importantForAccessibility = importantForAccessibility.value
+    it.importantForAccessibility = importantForAccessibility.rawValue
 }
+
+/**
+ * @see View.setImportantForAccessibility
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityImportant(
+    builder: ImportantForAccessibility.Companion.() -> ImportantForAccessibility
+): ViewElement<V, LP> = accessibilityImportant(builder(ImportantForAccessibility))
 
 /**
  * @see View.setLabelFor
@@ -75,7 +84,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLabelFor(
 /**
  * @see View.setAccessibilityTraversalBefore
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefore(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
@@ -85,7 +93,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefor
 /**
  * @see View.setAccessibilityTraversalBefore
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefore(
     provider: () -> ViewElement<out View, *>,
 ): ViewElement<V, LP> = this.also {
@@ -97,7 +104,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalBefor
 /**
  * @see View.setAccessibilityTraversalAfter
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter(
     @IdRes targetId: Int,
 ): ViewElement<V, LP> = onView {
@@ -107,7 +113,6 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter
 /**
  * @see View.setAccessibilityTraversalAfter
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter(
     provider: () -> ViewElement<out View, *>,
 ): ViewElement<V, LP> = this.also {
@@ -117,7 +122,11 @@ fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityTraversalAfter
 }
 
 @JvmInline
-value class AccessibilityLiveRegion(val value: Int) {
+value class AccessibilityLiveRegion(val rawValue: Int) {
+
+    @Deprecated("Use `rawValue`", ReplaceWith("rawValue"))
+    val value: Int get() = rawValue
+
     companion object {
         val none: AccessibilityLiveRegion get() = AccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_NONE)
         val polite: AccessibilityLiveRegion get() = AccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE)
@@ -131,8 +140,15 @@ value class AccessibilityLiveRegion(val value: Int) {
 fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLiveRegion(
     liveRegion: AccessibilityLiveRegion,
 ): ViewElement<V, LP> = onView {
-    it.accessibilityLiveRegion = liveRegion.value
+    it.accessibilityLiveRegion = liveRegion.rawValue
 }
+
+/**
+ * @see View.setAccessibilityLiveRegion
+ */
+fun <V : View, LP : LayoutParams> ViewElement<V, LP>.accessibilityLiveRegion(
+    builder: AccessibilityLiveRegion.Companion.() -> AccessibilityLiveRegion,
+): ViewElement<V, LP> = accessibilityLiveRegion(builder(AccessibilityLiveRegion))
 
 
 // if view has id use it, otherwise generate a new id (and assign it to the view)

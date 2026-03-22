@@ -8,19 +8,29 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.ViewGroup.MarginLayoutParams
-import io.noties.adapt.sample.SampleView
+import io.noties.adapt.preview.Preview
+import io.noties.adapt.sample.PreviewSampleView
+import io.noties.adapt.sample.SampleViewUI
 import io.noties.adapt.sample.annotation.AdaptSample
-import io.noties.adapt.sample.util.Preview
-import io.noties.adapt.sample.util.PreviewSampleView
+import io.noties.adapt.sample.samples.Tags
+import io.noties.adapt.sample.ui.color.black
+import io.noties.adapt.sample.ui.color.salmonRed
+import io.noties.adapt.sample.ui.color.text
+import io.noties.adapt.sample.ui.color.textSecondary
+import io.noties.adapt.sample.ui.color.yellow
+import io.noties.adapt.sample.ui.element.SampleHint
 import io.noties.adapt.ui.LayoutParams
 import io.noties.adapt.ui.ViewFactory
+import io.noties.adapt.ui.app.color.Colors
 import io.noties.adapt.ui.background
+import io.noties.adapt.ui.backgroundColor
 import io.noties.adapt.ui.element.Text
 import io.noties.adapt.ui.element.VStack
 import io.noties.adapt.ui.element.textColor
 import io.noties.adapt.ui.element.textGravity
 import io.noties.adapt.ui.element.textSize
 import io.noties.adapt.ui.layoutFill
+import io.noties.adapt.ui.layoutGravity
 import io.noties.adapt.ui.layoutMargin
 import io.noties.adapt.ui.layoutWrap
 import io.noties.adapt.ui.noClip
@@ -31,25 +41,24 @@ import io.noties.adapt.ui.overlay
 import io.noties.adapt.ui.padding
 import io.noties.adapt.ui.pivot
 import io.noties.adapt.ui.pivotRelative
+import io.noties.adapt.ui.scale
+import io.noties.adapt.ui.shape.Label
+import io.noties.adapt.ui.shape.Rectangle
 import io.noties.adapt.ui.util.Gravity
 import io.noties.adapt.ui.util.dip
-import io.noties.adapt.ui.util.hex
+import io.noties.adapt.ui.util.withAlphaComponent
 
 @AdaptSample(
     id = "20230715160110",
     title = "Pivot",
     description = "Handling of pivot point (x,y) for scale and rotate",
-    tags = ["adapt-ui"]
+    tags = [Tags.adaptUi, Tags.interactive]
 )
-class AdaptUIPivotSample : AdaptUISampleView() {
+class AdaptUIPivotSample : SampleViewUI() {
     override fun ViewFactory<LayoutParams>.body() {
         VStack(Gravity.center.horizontal) {
 
-            Text("Click to rotate around pivot point.\nLong click to scale up or down")
-                .textGravity(Gravity.center.horizontal)
-                .textSize(16)
-                .textColor(Colors.black)
-                .padding(16)
+            SampleHint("Click to rotate around pivot point.\nLong click to scale up or down")
 
             // Default pivot values (should be at view center)
             PivotElement()
@@ -57,14 +66,17 @@ class AdaptUIPivotSample : AdaptUISampleView() {
             // Explicit pivot point at 16.dp x 16.dp
             PivotElement()
                 .pivot(16, 16)
+                .scale(2F)
 
             // relative to view bounds equal pivot values for both x and y
             PivotElement()
                 .pivotRelative(0.75F)
+                .scale(2F)
 
             // relative to view bounds pivot values
             PivotElement()
                 .pivotRelative(0.25F, 0.75F)
+                .scale(2F)
 
             // Negative values are fine
             PivotElement()
@@ -76,10 +88,10 @@ class AdaptUIPivotSample : AdaptUISampleView() {
 
     @Suppress("FunctionName")
     private fun <LP : MarginLayoutParams> ViewFactory<LP>.PivotElement() = Text("PIVOT")
-        .textColor(Colors.black)
+        .textColor { black }
         .textSize(16)
         .layoutWrap()
-        .background(Colors.yellow)
+        .backgroundColor { yellow }
         .layoutMargin(16)
         .padding(16)
         .also { el ->
@@ -149,9 +161,7 @@ class AdaptUIPivotSample : AdaptUISampleView() {
     }
 }
 
-@Suppress("unused")
-private val Colors.pivot: Int
-    get() = hex("#f00")
+private val Colors.pivot get() = hex("#f00")
 
 @Preview
 @Suppress("ClassName", "unused")
@@ -159,6 +169,6 @@ private class Preview__AdaptUIPivotSample(
     context: Context,
     attrs: AttributeSet?
 ) : PreviewSampleView(context, attrs) {
-    override val sampleView: SampleView
+    override val sampleView
         get() = AdaptUIPivotSample()
 }

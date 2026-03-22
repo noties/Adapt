@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.graphics.Typeface
 import android.text.TextPaint
 import io.noties.adapt.ui.util.Gravity
+import io.noties.adapt.ui.util.GravityBuilder
 
 interface BaseLabelShapeData : CommonTextPaintData {
     var text: String?
@@ -26,6 +27,12 @@ interface BaseLabelShapeDataSetter<THIS : BaseLabelShapeData> : BaseLabelShapeDa
         textGravity: Gravity?
     ) = (this as THIS).also {
         it.textGravity = textGravity
+    }
+
+    fun textGravity(
+        builder: GravityBuilder
+    ) = (this as THIS).also {
+        it.textGravity = builder(Gravity)
     }
 
     fun textRotation(
@@ -91,6 +98,8 @@ class LabelShape(
 
         val textPaint = cache.textPaint(data)
 
+//        measureDrawRect(bounds)
+
         // normal alignment, we would locate the whole text based on gravity
         textPaint.textAlign = Paint.Align.LEFT
 
@@ -105,7 +114,7 @@ class LabelShape(
 
         (textGravity ?: Gravity.leading.top).also {
             android.view.Gravity.apply(
-                it.value,
+                it.rawValue,
                 width,
                 height,
                 bounds,
@@ -127,6 +136,20 @@ class LabelShape(
             rect.top.toFloat() + textTop,
             textPaint
         )
+    }
+
+    fun measureDrawRect() {
+        val text = data.text ?: return
+
+        val textPaint = cache.textPaint(data)
+
+        // normal alignment, we would locate the whole text based on gravity
+        textPaint.textAlign = Paint.Align.LEFT
+
+        // measure text
+        textPaint.getTextBounds(text, 0, text.length, rect)
+
+        drawRect().set(rect)
     }
 
     override fun drawChildren(canvas: Canvas, bounds: Rect) {
