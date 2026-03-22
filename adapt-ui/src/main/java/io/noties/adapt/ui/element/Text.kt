@@ -500,21 +500,25 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textJustificationMode(
 ): ViewElement<V, LP> = textJustificationMode(builder(JustificationMode))
 
 /**
- * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
- * for this to work.
+ * Please note that for this to work max-lines of `1` should be applied.
+ * It is done automatically via `applySingleLine` argument.
  * Supplied values are in SP (so, 12 == 12.sp)
  * @see TextView.setAutoSizeTextTypeUniformWithPresetSizes
  */
 @RequiresApi(Build.VERSION_CODES.O)
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
-    textSizes: IntArray
+    textSizes: IntArray,
+    applySingleLine: Boolean = true,
 ): ViewElement<V, LP> = onView {
     it.setAutoSizeTextTypeUniformWithPresetSizes(textSizes, TypedValue.COMPLEX_UNIT_SP)
+    if (applySingleLine) {
+        it.maxLines = 1
+    }
 }
 
 /**
- * Please note that you _might_ need to use [textMaxLines] (`textMaxLines(1)`) in order
- * for this to work.
+ * Please note that for this to work max-lines of `1` should be applied.
+ * It is done automatically via `applySingleLine` argument.
  * Supplied values are in SP. Maximum value by default uses current [TextView.getTextSize]
  * @see TextView.setAutoSizeTextTypeUniformWithConfiguration
  */
@@ -522,7 +526,8 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
     minimumTextSize: Int,
     maximumTextSize: Int? = null,
-    stepGranularity: Int? = 1
+    stepGranularity: Int? = 1,
+    applySingleLine: Boolean = true
 ): ViewElement<V, LP> = onView {
     it.setAutoSizeTextTypeUniformWithConfiguration(
         minimumTextSize,
@@ -530,6 +535,9 @@ fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textAutoSize(
         stepGranularity ?: 1,
         TypedValue.COMPLEX_UNIT_SP
     )
+    if (applySingleLine) {
+        it.maxLines = 1
+    }
 }
 
 fun <V : TextView, LP : LayoutParams> ViewElement<V, LP>.textSelectable(

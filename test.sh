@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eou pipefail
+
 # execute test and checks
 ./gradlew \
   :adapt:test \
