@@ -22,6 +22,19 @@ allprojects {
     }
 }
 
+subprojects {
+    plugins.withId(libs.plugins.vanniktech.publish.get().pluginId) {
+        publishing {
+            repositories {
+                maven {
+                    name = 'localDir'
+                    url = "file:${rootProject.rootDir}/.maven"
+                }
+            }
+        }
+    }
+}
+
 ext {
     config = [
             'min-sdk'    : 23,

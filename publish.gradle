@@ -1,3 +1,5 @@
+// I think it is obsolete now and should be removed
+
 final def isRelease = project.hasProperty('release')
 final def isSnapshot = project.hasProperty('snapshot')
 

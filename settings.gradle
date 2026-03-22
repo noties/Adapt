@@ -7,6 +7,9 @@ pluginManagement {
 }
 
 rootProject.name = 'AdaptParent'
+
+include ':bom'
+
 include ':adapt'
 include ':adapt-ui'
 include ':adapt-ui-flex'
