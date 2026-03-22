@@ -7,7 +7,7 @@
 [![adapt](https://img.shields.io/maven-central/v/io.noties.adapt/adapt.svg?label=adapt)](http://search.maven.org/#search|ga|1|g%3A%22io.noties.adapt%22%20AND%20a%3A%22adapt%22)
 
 ```gradle
-implementation platform('io.noties.adapt:bom:6.0')
+implementation platform("io.noties.adapt:bom:$adaptVersion")
 
 implementation 'io.noties.adapt:adapt'
 implementation 'io.noties.adapt:adapt-kt'
