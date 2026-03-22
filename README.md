@@ -1,4 +1,4 @@
-<img src="./art/logo_social.png" width="90%" alt="logo" />
+<img src="./assets/adapt-social.jpg" width="90%" alt="logo" />
 
 # Adapt &amp; AdaptUI
 
@@ -15,12 +15,14 @@ implementation "io.noties.adapt:adapt-ui-flex:${adaptVersion}"
 
 ## [AdaptUI](./adapt-ui/README.md)
 
-Android View DSL in fluent Kotlin. With flexibility in mind and total control over the process. 
-Can be used as an enhancement over existing native Android widgets and layouts. 
-Creates advanced Android views and layouts in openly-explorable and readable way. 
+> Fluent (no-xml) Android-View DSL in Kotlin.
+
+With flexibility in mind and total control over the process.
+Can be used as an enhancement over existing native Android widgets and layouts.
+Creates advanced Android views and layouts in openly-explorable and readable way.
 Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 
-<img src="./art/ui_showcase_text2.jpg" height="480px">
+<img src="./assets/showcase/ui_showcase_text2.jpg" height="480px">
 <a href="./PREVIEW_SHOWCASE.md">🖼️ More previews like this</a><br /><br />
 <a href="./adapt-ui/README.md">➡️ Continue reading</a>
 
@@ -28,7 +30,7 @@ Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 
 🚧 \[Documentation is under construction]. Meanwhile, most of the features
   come with a [dedicated sample or samples](./sample/src/main/java/io/noties/adapt/sample/samples). They include
-  always relevant code that could be also previewed in the [installed sample application](./releases/latest). 
+  always relevant code that could be also previewed in the [installed sample application](./releases/latest).
   Along with Layout Preview in Android Studio to play-around.
 
 ---
@@ -38,15 +40,15 @@ Influenced by SwiftUI. Adapted to Kotlin.<!-- Android Compose? -->
 Android **true** adapter. ViewGroup _agnostique_ adapter that interchangeably
 renders items across `RecyclerView`, `ListView`, `ViewPager`, `LinearLayout`, `FlexboxLayout`, or any other `ViewGroup`.
 
-![gif](./art/preview.gif)
-![XML layout-preview](./art/layout_preview.png)
+![gif](./assets/preview.gif)
+![XML layout-preview](./assets/layout_preview.png)
 
 [➡️ Continue reading](./adapt/README.md)
 
 ## License
 
 ```
-  Copyright 2021 Dimitry Ivanov (legal@noties.io)
+  Copyright 2026 Dimitry Ivanov (hey@noties.io)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

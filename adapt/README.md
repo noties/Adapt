@@ -23,8 +23,8 @@ can be displayed **without modification** in those parent widgets:
 <em><sup>\*\*\*\*</sup> &mdash; `AlertDailog` accepts a `ListAdapter`</em><br />
 
 
-![gif](../art/preview.gif)
-![XML layout-preview](../art/layout_preview.png)
+![gif](../assets/preview.gif)
+![XML layout-preview](../assets/layout_preview.png)
 
 
 ### Pros
@@ -44,7 +44,7 @@ class PageIndicatorItem(
     var selected: Boolean,
     val onClick: (PageIndicatorItem) -> Unit
 ) : ItemLayout(hash(title), R.layout.item_page_indicator) {
-    
+
     override fun bind(holder: CachedHolder) {
         // obtain required view (cached internally by the holder)
         val titleView: TextView = holder.requireView(R.id.title)
@@ -113,7 +113,7 @@ Additionally there is also `create` factory method that creates `AdaptRecyclerVi
 without actual `RecyclerView` - for example to be used with `ViewPager2`:
 
 ```kotlin
-// additionally can also specify `dataSetChangedHandler` 
+// additionally can also specify `dataSetChangedHandler`
 //  and `hasStableIds` if supplied configurator lambda
 val adapt = AdaptRecyclerView.create()
 val viewPager2: ViewPager2 = view.findViewById(R.id.view_pager2)
@@ -133,9 +133,9 @@ val adapt = AdaptListView.init(listView) {
     //  optional, by default true
     it.hasStableIds(false)
 
-    // indicates if all items are enabled, in ListView's language if all items should be 
+    // indicates if all items are enabled, in ListView's language if all items should be
     //  clickable (delivered by ListView.OnItemClickListener) and have a divider after them
-    // by default false, all disabled unless specified further 
+    // by default false, all disabled unless specified further
     //  by enabling individual items (see below)
     it.areAllItemsEnabled(true);
 
@@ -208,7 +208,7 @@ The core `Item` class (which `ItemLayout` subclasses) is `Item`:
 class SectionItem(val text: String) :
     Item<SectionItem.Holder>(hash(SectionItem::class, text)) {
 
-    // this holder does not cache views returned by `requireView` and `findView` 
+    // this holder does not cache views returned by `requireView` and `findView`
     class Holder(view: View) : Item.Holder(view) {
         val textView: TextView = requireView(R.id.text)
     }
@@ -318,7 +318,7 @@ adapt.setItems(items)
 
 AlertDialog.Builder(context)
     .setAdapter(adapt.adapter()) { _, _ ->
-        
+
     }
     .show()
 ```
@@ -330,7 +330,7 @@ Please note that explicit registration is required in only some cases of `ListVi
 val item = TextItem("This is text")
   .wrap(BackgroundWrapper.init(0xFFff0000))
 
-// instead of 
+// instead of
 val item = BackgroundWrapper(0xFFff0000, TextItem("This is text"))
 
 // which can be turned into an extension function:

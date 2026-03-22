@@ -294,8 +294,8 @@ class SampleViewList(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                         it
                             .windowInsetsPadding { ime }
-                            .onView {
-                                val d = OnWindowInsetsChangedListenerDelegate.get(it)
+                            .onView { view ->
+                                val d = OnWindowInsetsChangedListenerDelegate.get(view)
                                 d?.add { _, insets ->
                                     if (!insets.isVisible(WindowInsets.Type.ime())) {
                                         if (searchView.hasFocus()) {
